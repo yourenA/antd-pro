@@ -287,7 +287,7 @@ export default class DeviceManage extends PureComponent {
       },
       {
         title: '操作',
-        width:150,
+        width:120,
         render: (val, record, index) => (
           <p>
             <a href="javascript:;" onClick={()=>{

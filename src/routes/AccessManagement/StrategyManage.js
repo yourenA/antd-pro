@@ -252,7 +252,7 @@ export default class StrategyManage extends PureComponent {
       },
       {
         title: '操作',
-        width:150,
+        width:120,
         render: (val, record, index) => (
           <p>
             <a href="javascript:;" onClick={()=>{
