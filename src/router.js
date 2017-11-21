@@ -13,7 +13,7 @@ function RouterConfig({ history }) {
         <Switch>
           <Route path="/login" component={UserLayout} />
           <Route path="/" component={BasicLayout} />
-          <Redirect to="/" />
+
         </Switch>
       </Router>
     </LocaleProvider>
