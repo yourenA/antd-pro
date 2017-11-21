@@ -12,9 +12,19 @@ import GlobalFooter from '../components/GlobalFooter';
 import { getNavData } from '../common/nav';
 import { getRouteData } from '../utils/utils';
 import waterLogo from '../images/water.png'
-import DeviceManage from '../routes/AccessManagement/DeviceManage';
-import IdentifyManage from '../routes/AccessManagement/IdentifyManage';
-import StrategyManage from '../routes/AccessManagement/StrategyManage';
+// import DeviceManage from '../routes/AccessManagement/DeviceManage';
+// import IdentifyManage from '../routes/AccessManagement/IdentifyManage';
+// import StrategyManage from '../routes/AccessManagement/StrategyManage';
+import asyncComponent from './../AsyncComponent'
+const DeviceManage = asyncComponent(() =>
+import(/* webpackChunkName: "DeviceManage" */ "../routes/AccessManagement/DeviceManage")
+)
+const StrategyManage = asyncComponent(() =>
+import(/* webpackChunkName: "StrategyManage" */ "../routes/AccessManagement/StrategyManage")
+)
+const IdentifyManage = asyncComponent(() =>
+import(/* webpackChunkName: "IdentifyManage" */ "../routes/AccessManagement/IdentifyManage")
+)
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
