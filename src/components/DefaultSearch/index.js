@@ -1,0 +1,64 @@
+/**
+ * Created by Administrator on 2017/11/17.
+ */
+import React, {Component} from 'react';
+import {Form,DatePicker,Row,Col,Input,Button} from 'antd';
+import moment from 'moment'
+const RangePicker = DatePicker.RangePicker;
+const FormItem = Form.Item;
+class SearchForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const {dispatch, form} = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      const rangeTimeValue = fieldsValue['range-time-picker'];
+      const values = {
+        query: fieldsValue.query,
+        started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
+        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
+      };
+      this.props.handleSearch({...values,page:1})
+    });
+  }
+  handleFormReset = () => {
+    const {form} = this.props;
+    form.resetFields();
+    this.props.handleFormReset()
+  }
+  render() {
+    const {getFieldDecorator} = this.props.form;
+    return (
+      <Form onSubmit={this.handleSubmit} layout="inline">
+        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+          <Col md={8} sm={24}>
+            <FormItem label="实例名称">
+              {getFieldDecorator('query')(
+                <Input placeholder="请输入"/>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="创建时间">
+              {getFieldDecorator('range-time-picker')(
+                <RangePicker   />
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span>
+              <Button type="primary" htmlType="submit">查询</Button>
+              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    )
+  }
+}
+const DefaultSearch = Form.create()(SearchForm);
+export default DefaultSearch;

@@ -1,0 +1,98 @@
+@import "~antd/lib/style/themes/default.less";
+@import "../../utils/utils.less";
+
+.tableList {
+  .tableListOperator {
+    margin-bottom: 16px;
+    button {
+      margin-right: 8px;
+    }
+  }
+}
+
+.tableListForm {
+  :global {
+    .ant-form-item {
+      margin-bottom: 24px;
+      margin-right: 0;
+      display: flex;
+      > .ant-form-item-label {
+        width: auto;
+        line-height: 32px;
+        padding-right: 8px;
+      }
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+  .submitButtons {
+    display: block;
+    white-space: nowrap;
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (max-width: @screen-lg) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 8px;
+  }
+}
+
+.pagination {
+  float: right;
+}
+
+:global {
+  .description {
+    width: 150px;
+    .edit {
+      display: none;
+    }
+  }
+  .ant-divider{
+    margin: 0 6px;
+    display: inline-block;
+    height: 8px;
+    width: 1px;
+    background: #ccc;
+  }
+}
+
+:global {
+  .description:hover {
+    .edit {
+      display: inline-block;
+    }
+  }
+  .addInDevice{
+    text-align: center;
+    margin-bottom: 15px;
+
+  }
+  .small-table-desc{
+    margin-bottom: 15px;
+    span{
+      margin-right: 5px;
+    }
+  }
+  fieldset{
+    border: 1px solid #cccccc;
+    padding-top: 15px !important;
+    border-radius: 2px;
+    legend{
+      .anticon{
+        color: @primary-color;
+        margin-right: 5px;
+      }
+      width: auto !important;
+    }
+  }
+}
+
