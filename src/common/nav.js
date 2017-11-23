@@ -31,8 +31,8 @@ import BlankLayout from '../layouts/BlankLayout';
 // import NewPage from '../routes/NewPage';
 
 import Login from '../routes/User/Login';
-import Register from '../routes/User/Register';
-import RegisterResult from '../routes/User/RegisterResult';
+// import Register from '../routes/User/Register';
+// import RegisterResult from '../routes/User/RegisterResult';
 
 import Endpoints from '../routes/AccessManagement/Endpoints';
 const data = [{
@@ -85,8 +85,8 @@ const data = [{
   // },
     {
     name: '接入管理',            // 页面名称，会展示在菜单栏中
-    path: 'access-management',               // 匹配的路由
-    icon: 'file',              // 页面图标，会展示在菜单栏中
+    path: 'access-management',   // 匹配的路由
+    icon: 'tool',              // 页面图标，会展示在菜单栏中
     children: [{
       name: '实例列表',
       path: 'endpoints',
@@ -104,14 +104,6 @@ const data = [{
       name: '登录',
       path: 'login',
       component: Login,
-    }, {
-      name: '注册',
-      path: 'register',
-      component: Register,
-    }, {
-      name: '注册结果',
-      path: 'register-result',
-      component: RegisterResult,
     }],
   }],
 }, {

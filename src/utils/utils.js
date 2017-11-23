@@ -133,10 +133,9 @@ export function converErrorCodeToMsg (error) {
   if (error.response.status === 401) {
     message.error(messageJson['token fail']);
     removeLoginStorage();
-    // setTimeout(function () {
-    //   console.log('路由跳转')
-    //   routerRedux.replace('/login')
-    // },1000)
+    setTimeout(function () {
+      window.location.reload()
+    },1000)
   } else if (!error.response.data.errors) {
     message.error(error.response.data.message);
   } else if (error.response.status === 422) {
@@ -149,6 +148,7 @@ export function converErrorCodeToMsg (error) {
 }
 
 export function convertPoliciesTopic  (form)  {
+  console.log('form',form)
   const addPoliciesDate = {
     name: form.name,
     description: form.desc,
@@ -162,24 +162,28 @@ export function convertPoliciesTopic  (form)  {
         }
         if (form[k].authority == 0) {
           addPoliciesDate.permissions.push({
+            id:form[k].id,
             topic: form[k].name,
             allow_publish: -1,
             allow_subscribe: 1
           })
         } else if (form[k].authority == 1) {
           addPoliciesDate.permissions.push({
+            id:form[k].id,
             topic: form[k].name,
             allow_publish: 1,
             allow_subscribe: -1
           })
         } else if (form[k].authority == 2) {
           addPoliciesDate.permissions.push({
+            id:form[k].id,
             topic: form[k].name,
             allow_publish: 1,
             allow_subscribe: 1
           })
         }else{
           addPoliciesDate.permissions.push({
+            id:form[k].id,
             topic: form[k].name,
             allow_publish: form[k].allow_publish,
             allow_subscribe: form[k].allow_subscribe

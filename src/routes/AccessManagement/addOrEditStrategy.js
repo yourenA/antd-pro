@@ -95,7 +95,7 @@ class AddPoliciesForm extends Component {
           required={true}
           key={k}>
           {getFieldDecorator(`topics-${k}`, {
-            initialValue: (editRecord&&permissionsLen>k)?{name:editRecord.permissions.data[k].topic,authority:authority}:{name: '', authority: '0'},
+            initialValue: (editRecord&&permissionsLen>k)?{name:editRecord.permissions.data[k].topic,id:editRecord.permissions.data[k].id,authority:authority}:{name: '', authority: '0',id:null},
           })(<ThemeInput />)}
           <Icon
             style={{cursor: 'pointer'}}
@@ -205,6 +205,7 @@ class ThemeInput extends React.Component {
           onChange={this.handleNumberChange}
           style={{width: '45%', marginRight: '3%'}}
         />
+        <Input type="hidden"/>
         <Select
           value={state.authority}
           size={size}
