@@ -11,12 +11,9 @@ import {
   Pagination,
   message
 } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Endpoints.less';
 import {Link,routerRedux} from 'dva/router';
 import AddOrEditIdentify from './addOrEditIdentify.js'
 import DefaultSearch from './../../components/DefaultSearch/index'
-const FormItem = Form.Item;
 
 @connect(state => ({
   endpoints:state.endpoints,
@@ -44,12 +41,6 @@ export default class StrategyManage extends PureComponent {
   componentDidMount() {
     const {dispatch} = this.props;
     const endpoint_id=this.props.match.params.id;
-    dispatch({
-      type: 'endpoints/fetchName',
-      payload: {
-        endpoint_id,
-      }
-    });
     dispatch({
       type: 'strategy/fetch',
       payload: {
@@ -228,6 +219,14 @@ export default class StrategyManage extends PureComponent {
         }
         dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/strategy`));
         break;
+      case 'rule':
+        if(this.props.match.path.split('/')[4] !== key){
+          dispatch({
+            type: 'rule/reset',
+          });
+        }
+        dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/rule`));
+        break;
       default:
         break;
     }
@@ -283,49 +282,51 @@ export default class StrategyManage extends PureComponent {
     }, {
       key: 'strategy',
       tab: '策略管理',
+    }, {
+      key: 'rule',
+      tab: '规则管理',
     }];
     return (
-      <PageHeaderLayout title={{key:'identify',label:`${name}身份管理`}} breadcrumb={[{name:'接入管理'},{name:'实例列表',link:'/access-management/endpoints'},{name:`身份管理`}]}
-                        tabList={tabList}
-                        onTabChange={this.handleTabChange}>
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>
-              <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
-            </div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>创建</Button>
-            </div>
-            <Table
-              loading={loading}
-              rowKey={record => record.id}
-              dataSource={data}
-              columns={columns}
-              pagination={false}
-            />
-            <Pagination showQuickJumper className={styles.pagination} total={meta.pagination.total}
-                        current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                        style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+    <div>
+      <Card bordered={false}>
+        <div className='tableList'>
+          <div className='tableListForm'>
+            <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
           </div>
-        </Card>
-        <Modal
-          title="创建身份"
-          visible={modalVisible}
-          onOk={this.handleAdd}
-          onCancel={() => this.handleModalVisible()}
-        >
-          <AddOrEditIdentify strategy={strategy.data} wrappedComponentRef={(inst) => this.identifyFormRef = inst}/>
-        </Modal>
-        <Modal
-          key={ Date.parse(new Date())}
-          title="修改身份"
-          visible={modalEditVisible}
-          onOk={this.handleEdit}
-          onCancel={() => this.handleModalEditVisible()}
-        >
-          <AddOrEditIdentify strategy={strategy.data} wrappedComponentRef={(inst) => this.identifyEditFormRef = inst} editRecord={editRecord}/>
-        </Modal>
-      </PageHeaderLayout>
+          <div className='tableListOperator'>
+            <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>创建</Button>
+          </div>
+          <Table
+            loading={loading}
+            rowKey={record => record.id}
+            dataSource={data}
+            columns={columns}
+            pagination={false}
+          />
+          <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
+                      current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
+                      onChange={this.handPageChange}/>
+        </div>
+      </Card>
+      <Modal
+        title="创建身份"
+        visible={modalVisible}
+        onOk={this.handleAdd}
+        onCancel={() => this.handleModalVisible()}
+      >
+        <AddOrEditIdentify strategy={strategy.data} wrappedComponentRef={(inst) => this.identifyFormRef = inst}/>
+      </Modal>
+      <Modal
+        key={ Date.parse(new Date())}
+        title="修改身份"
+        visible={modalEditVisible}
+        onOk={this.handleEdit}
+        onCancel={() => this.handleModalEditVisible()}
+      >
+        <AddOrEditIdentify strategy={strategy.data} wrappedComponentRef={(inst) => this.identifyEditFormRef = inst} editRecord={editRecord}/>
+      </Modal>
+    </div>
+
     );
   }
   }

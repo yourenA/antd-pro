@@ -11,8 +11,6 @@ import {
   Pagination,
   message
 } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Endpoints.less';
 import {Link,routerRedux} from 'dva/router';
 import AddOrEditStrategy from './addOrEditStrategy.js'
 import DefaultSearch from './../../components/DefaultSearch/index'
@@ -29,11 +27,6 @@ export default class StrategyManage extends PureComponent {
     modalVisible: false,
     modalEditVisible:false,
     editRecord:{},
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-    selectedRowKeys: [],
-    totalCallNo: 0,
     query: '',
     page: 1,
     started_at:'',
@@ -43,12 +36,6 @@ export default class StrategyManage extends PureComponent {
   componentDidMount() {
     const {dispatch} = this.props;
     const endpoint_id=this.props.match.params.id;
-    dispatch({
-      type: 'endpoints/fetchName',
-      payload: {
-        endpoint_id,
-      }
-    });
     dispatch({
       type: 'strategy/fetch',
       payload: {
@@ -219,6 +206,14 @@ export default class StrategyManage extends PureComponent {
         }
         dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/strategy`));
         break;
+      case 'rule':
+        if(this.props.match.path.split('/')[4] !== key){
+          dispatch({
+            type: 'rule/reset',
+          });
+        }
+        dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/rule`));
+        break;
       default:
         break;
     }
@@ -307,6 +302,9 @@ export default class StrategyManage extends PureComponent {
     }, {
       key: 'strategy',
       tab: '策略管理',
+    }, {
+      key: 'rule',
+      tab: '规则管理',
     }];
     const expandedRowRender = (record)=> {
       return (
@@ -322,15 +320,13 @@ export default class StrategyManage extends PureComponent {
       );
     }
     return (
-      <PageHeaderLayout title={{key:'strategy',label:`${name}策略管理`}} breadcrumb={[{name:'接入管理'},{name:'实例列表',link:'/access-management/endpoints'},{name:`策略管理`}]}
-                        tabList={tabList}
-                        onTabChange={this.handleTabChange}>
+      <div>
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>
+          <div className='tableList'>
+            <div className='tableListForm'>
               <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
             </div>
-            <div className={styles.tableListOperator}>
+            <div className='tableListOperator'>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>创建</Button>
             </div>
             <Table
@@ -341,9 +337,9 @@ export default class StrategyManage extends PureComponent {
               columns={columns}
               pagination={false}
             />
-            <Pagination showQuickJumper className={styles.pagination} total={meta.pagination.total}
+            <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
                         current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                        style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                         onChange={this.handPageChange}/>
           </div>
         </Card>
         <Modal
@@ -363,7 +359,7 @@ export default class StrategyManage extends PureComponent {
         >
           <AddOrEditStrategy  wrappedComponentRef={(inst) => this.editFormRef = inst} editRecord={editRecord}/>
         </Modal>
-      </PageHeaderLayout>
+      </div>
     );
   }
   }

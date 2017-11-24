@@ -21,3 +21,4 @@ function RouterConfig({ history }) {
 }
 
 export default RouterConfig;
+

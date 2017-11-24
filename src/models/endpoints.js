@@ -26,13 +26,16 @@ export default {
         payload: false,
       });
     },
-    *fetchName({ payload }, { call, put }) {
+    *fetchName({ payload ,callback}, { call, put }) {
       const response = yield call(queryName, payload);
       console.log(response)
       yield put({
         type: 'saveName',
         payload:  response.data.name
       });
+      if(response.status===200){
+        if (callback) callback();
+      }
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);

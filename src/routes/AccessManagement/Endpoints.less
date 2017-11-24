@@ -1,17 +1,17 @@
 @import "~antd/lib/style/themes/default.less";
 @import "../../utils/utils.less";
 
-.tableList {
-  .tableListOperator {
-    margin-bottom: 16px;
-    button {
-      margin-right: 8px;
+:global{
+  .tableList {
+    .tableListOperator {
+      margin-bottom: 16px;
+      button {
+        margin-right: 8px;
+      }
     }
   }
-}
+  .tableListForm {
 
-.tableListForm {
-  :global {
     .ant-form-item {
       margin-bottom: 24px;
       margin-right: 0;
@@ -31,25 +31,7 @@
     white-space: nowrap;
     margin-bottom: 24px;
   }
-}
 
-@media screen and (max-width: @screen-lg) {
-  .tableListForm :global(.ant-form-item) {
-    margin-right: 24px;
-  }
-}
-
-@media screen and (max-width: @screen-md) {
-  .tableListForm :global(.ant-form-item) {
-    margin-right: 8px;
-  }
-}
-
-.pagination {
-  float: right;
-}
-
-:global {
   .description {
     width: 150px;
     .edit {
@@ -63,9 +45,7 @@
     width: 1px;
     background: #ccc;
   }
-}
 
-:global {
   .description:hover {
     .edit {
       display: inline-block;
@@ -94,5 +74,26 @@
       width: auto !important;
     }
   }
+
+  .pagination {
+    float: right;
+    margin-top: 10px !important; ;
+  }
 }
+
+
+@media screen and (max-width: @screen-lg) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 8px;
+  }
+}
+
+
+
 

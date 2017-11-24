@@ -17,15 +17,8 @@ import waterLogo from '../images/water.png'
 // import StrategyManage from '../routes/AccessManagement/StrategyManage';
 import NotFound from './../routes/Exception/404';
 import asyncComponent from './../AsyncComponent'
-const DeviceManage = asyncComponent(() =>
-import(/* webpackChunkName: "DeviceManage" */ "../routes/AccessManagement/DeviceManage")
-)
-const StrategyManage = asyncComponent(() =>
-import(/* webpackChunkName: "StrategyManage" */ "../routes/AccessManagement/StrategyManage")
-)
-const IdentifyManage = asyncComponent(() =>
-import(/* webpackChunkName: "IdentifyManage" */ "../routes/AccessManagement/IdentifyManage")
-)
+import EndpointDetailLayout from './../routes/AccessManagement/EndpointDetailLayout'
+
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
@@ -282,20 +275,11 @@ class BasicLayout extends React.PureComponent {
                     />
                   )
                 }
-
                 )
               }
               <Route
-                path='/access-management/endpoints/:id/device'
-                component={DeviceManage}
-              />
-              <Route
-                path='/access-management/endpoints/:id/identify'
-                component={IdentifyManage}
-              />
-              <Route
-                path='/access-management/endpoints/:id/strategy'
-                component={StrategyManage}
+                path='/access-management/endpoints/:id'
+                component={EndpointDetailLayout}
               />
               <Redirect exact from="/" to="/access-management/endpoints" />
               <Route component={NotFound} />

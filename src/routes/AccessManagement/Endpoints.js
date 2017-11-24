@@ -1,12 +1,9 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'dva';
 import {
-  Row,
-  Col,
   Card,
   Form,
   Input,
-  Select,
   Icon,
   Button,
   Dropdown,
@@ -20,7 +17,7 @@ import {
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import moment from 'moment'
-import styles from './Endpoints.less';
+import  './Endpoints.less';
 import {Link} from 'dva/router';
 import DefaultSearch from './../../components/DefaultSearch/index'
 
@@ -301,11 +298,11 @@ export default class EndpointsList extends PureComponent {
     return (
       <PageHeaderLayout title="实例列表" breadcrumb={[{name: '接入管理'}, {name: '实例列表'}]}>
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>
+          <div className='tableList'>
+            <div className='tableListForm'>
               <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
             </div>
-            <div className={styles.tableListOperator}>
+            <div className='tableListOperator'>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
               {
                 selectedRows.length > 0 && (
@@ -338,7 +335,7 @@ export default class EndpointsList extends PureComponent {
               pagination={false}
               onChange={this.handleTableChange}
             />
-            <Pagination showQuickJumper className={styles.pagination} total={meta.pagination.total}
+            <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
                         current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
                         style={{marginTop: '10px'}} onChange={this.handPageChange}/>
           </div>

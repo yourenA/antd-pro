@@ -12,9 +12,7 @@ import {
   message,
   Badge
 } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import moment from 'moment'
-import styles from './Endpoints.less';
 import {Link,routerRedux} from 'dva/router';
 import DefaultSearch from './../../components/DefaultSearch/index'
 import AddOrEditDevice from './addOrEditDevice.js'
@@ -41,13 +39,6 @@ export default class DeviceManage extends PureComponent {
   componentDidMount() {
     const {dispatch} = this.props;
     const endpoint_id=this.props.match.params.id;
-    dispatch({
-      type: 'endpoints/fetchName',
-      payload: {
-        endpoint_id,
-      }
-    });
-
     dispatch({
       type: 'device/fetch',
       payload: {
@@ -235,6 +226,14 @@ export default class DeviceManage extends PureComponent {
 
         dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/strategy`));
         break;
+      case 'rule':
+        if(this.props.match.path.split('/')[4] !== key){
+          dispatch({
+            type: 'rule/reset',
+          });
+        }
+        dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/rule`));
+        break;
       default:
         break;
     }
@@ -358,17 +357,18 @@ export default class DeviceManage extends PureComponent {
     }, {
       key: 'strategy',
       tab: '策略管理',
+    }, {
+      key: 'rule',
+      tab: '规则管理',
     }];
     return (
-      <PageHeaderLayout title={{key:'device',label:`${name}设备管理`}} breadcrumb={[{name:'接入管理'},{name:'实例列表',link:'/access-management/endpoints'},{name:`设备管理`}]}
-                        tabList={tabList}
-                        onTabChange={this.handleTabChange}>
+      <div>
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>
+          <div className='tableList'>
+            <div className='tableListForm'>
               <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
             </div>
-            <div className={styles.tableListOperator}>
+            <div className='tableListOperator'>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>添加设备</Button>
               <Button icon="plus" type="primary" >批量添加设备</Button>
             </div>
@@ -380,7 +380,7 @@ export default class DeviceManage extends PureComponent {
               columns={columns}
               pagination={false}
             />
-            <Pagination showQuickJumper className={styles.pagination} total={meta.pagination.total}
+            <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
                         current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
                         style={{marginTop: '10px'}} onChange={this.handPageChange}/>
           </div>
@@ -401,7 +401,8 @@ export default class DeviceManage extends PureComponent {
         >
           <AddOrEditDevice editRecord={editRecord} endpoint_id={endpoint_id}  strategy={strategy.data} identify={identify.data}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
         </Modal>
-      </PageHeaderLayout>
+      </div>
+
     );
   }
   }

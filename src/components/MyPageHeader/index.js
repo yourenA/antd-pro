@@ -45,7 +45,7 @@ export default class PageHeader extends PureComponent {
           tabList.length &&
           <Tabs
             className={styles.tabs}
-            defaultActiveKey={tabDefaultValue[0].key}
+            defaultActiveKey={tabDefaultValue[0]?tabDefaultValue[0].key:''}
             onTabClick={this.onChange}
           >
             {
