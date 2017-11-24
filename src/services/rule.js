@@ -37,3 +37,12 @@ export async function edit({endpoint_id,name,description,from,select,where,desti
     },
   });
 }
+
+export async function editStatus({endpoint_id,id,status}) {
+  return request(`/endpoints/${endpoint_id}/rules/${id}/status`, {
+    method: 'PUT',
+    data: {
+      status
+    },
+  });
+}

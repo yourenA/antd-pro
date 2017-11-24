@@ -1,4 +1,4 @@
-import { query,add,remove,edit,queryOneRule } from '../services/rule';
+import { query,add,remove,edit,queryOneRule,editStatus } from '../services/rule';
 
 export default {
   namespace: 'rule',
@@ -54,6 +54,13 @@ export default {
     },
     *edit({ payload, callback }, { call, put }) {
       const response = yield call(edit, payload.data);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *editStatus({ payload, callback }, { call, put }) {
+      const response = yield call(editStatus, payload.data);
       console.log(response)
       if(response.status===200){
         if (callback) callback();

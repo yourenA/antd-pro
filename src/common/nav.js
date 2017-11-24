@@ -45,6 +45,12 @@ import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserMa
 const UsergroupManage = asyncComponent(() =>
 import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupManage")
 )
+const DataStatistics = asyncComponent(() =>
+import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataStatistics")
+)
+const DistributionGraph = asyncComponent(() =>
+import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/DistributionGraph")
+)
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -115,7 +121,7 @@ const data = [{
     {
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system-management',   // 匹配的路由
-      icon: 'appstore-o',              // 页面图标，会展示在菜单栏中
+      icon: 'setting',              // 页面图标，会展示在菜单栏中
       children: [{
         name: '用户管理',
         path: 'user',
@@ -124,6 +130,20 @@ const data = [{
         name: '用户管理',
         path: 'usergroup',
         component:UsergroupManage,
+      }],
+    },
+    {
+      name: '应用',            // 页面名称，会展示在菜单栏中
+      path: 'application',   // 匹配的路由
+      icon: 'appstore-o',              // 页面图标，会展示在菜单栏中
+      children: [{
+        name: '数据统计',
+        path: 'dataStatistics',
+        component:DataStatistics,
+      },{
+        name: '分布图',
+        path: 'DistributionGraph',
+        component:DistributionGraph,
       }],
     }],
 }, {

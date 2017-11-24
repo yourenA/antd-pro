@@ -157,6 +157,38 @@ export default class StrategyManage extends PureComponent {
       }
     });
   }
+  handleEditStatus=(id,status)=>{
+    let sendStatus=0;
+    if(status===1){
+      sendStatus=-1;
+    }else{
+      sendStatus=1;
+    }
+    const that=this;
+    this.props.dispatch({
+      type: 'rule/editStatus',
+      payload: {
+        data: {
+          endpoint_id: this.props.match.params.id,
+          id,
+          status:sendStatus
+        }
+      },
+      callback: function () {
+        message.success('修改状态成功')
+        that.props.dispatch({
+          type: 'rule/fetch',
+          payload: {
+            endpoint_id: that.props.match.params.id,
+            query: that.state.query,
+            started_at: that.state.started_at,
+            ended_at: that.state.ended_at,
+            page: that.state.page
+          }
+        });
+      }
+    });
+  }
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
@@ -232,13 +264,17 @@ export default class StrategyManage extends PureComponent {
       },
       {
         title: '操作',
-        width:120,
+        width:150,
         render: (val, record, index) => (
           <p>
             <a href="javascript:;" onClick={()=>{
                dispatch(routerRedux.push(`/access-management/endpoints/${this.props.match.params.id}/rule/${record.id}`))
 
             }}>编辑</a>
+            <span className="ant-divider" />
+            <a href="javascript:;" onClick={()=>{
+              this.handleEditStatus(record.id,record.status)
+            }}>{record.status===1?'禁用':'启用'}</a>
             <span className="ant-divider" />
             <Popconfirm placement="topRight" title={ `确定要删除吗?`}
                         onConfirm={()=>this.handleRemove(record.id)}>
