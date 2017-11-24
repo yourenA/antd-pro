@@ -5,7 +5,7 @@ import './polyfill';
 // import './g2';
 // import { browserHistory } from 'dva/router';
 import './index.less';
-
+import  './Endpoints.less';
 // 1. Initialize
 const app = dva({
   // history: browserHistory,

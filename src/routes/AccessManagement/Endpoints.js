@@ -17,7 +17,6 @@ import {
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import moment from 'moment'
-import  './Endpoints.less';
 import {Link} from 'dva/router';
 import DefaultSearch from './../../components/DefaultSearch/index'
 

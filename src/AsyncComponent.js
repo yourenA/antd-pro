@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {Spin} from 'antd'
 const asyncComponent = loadComponent => (
     class AsyncComponent extends React.Component {
         state = {
@@ -30,7 +30,7 @@ const asyncComponent = loadComponent => (
 
         render() {
             const { Component } = this.state;
-            return (Component) ? <Component {...this.props} /> : null;
+            return (Component) ? <Component {...this.props} /> : <Spin size="large"  style={{width: '100%',margin:'40px 0 !important'}} />;
         }
     }
 );

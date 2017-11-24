@@ -34,8 +34,11 @@ import Login from '../routes/User/Login';
 // import Register from '../routes/User/Register';
 // import RegisterResult from '../routes/User/RegisterResult';
 
-import Endpoints from '../routes/AccessManagement/Endpoints';
+// import Endpoints from '../routes/AccessManagement/Endpoints';
 import asyncComponent from './../AsyncComponent'
+const Endpoints = asyncComponent(() =>
+import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
+)
 const OrganizationManage = asyncComponent(() =>
 import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
 )
