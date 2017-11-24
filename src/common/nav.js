@@ -35,6 +35,16 @@ import Login from '../routes/User/Login';
 // import RegisterResult from '../routes/User/RegisterResult';
 
 import Endpoints from '../routes/AccessManagement/Endpoints';
+import asyncComponent from './../AsyncComponent'
+const OrganizationManage = asyncComponent(() =>
+import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
+)
+const UserManage = asyncComponent(() =>
+import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
+)
+const UsergroupManage = asyncComponent(() =>
+import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupManage")
+)
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -92,7 +102,30 @@ const data = [{
       path: 'endpoints',
       component: Endpoints,
     }],
-  }],
+  },   {
+      name: '平台管理',            // 页面名称，会展示在菜单栏中
+      path: 'platform-management',   // 匹配的路由
+      icon: 'api',              // 页面图标，会展示在菜单栏中
+      children: [{
+        name: '组织管理',
+        path: 'organization',
+        component:OrganizationManage,
+      }],
+    },
+    {
+      name: '系统管理',            // 页面名称，会展示在菜单栏中
+      path: 'system-management',   // 匹配的路由
+      icon: 'appstore-o',              // 页面图标，会展示在菜单栏中
+      children: [{
+        name: '用户管理',
+        path: 'user',
+        component:UserManage,
+      },{
+        name: '用户管理',
+        path: 'usergroup',
+        component:UsergroupManage,
+      }],
+    }],
 }, {
   component: UserLayout,
   layout: 'UserLayout',

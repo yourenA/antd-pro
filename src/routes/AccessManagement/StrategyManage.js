@@ -327,7 +327,7 @@ export default class StrategyManage extends PureComponent {
               <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
             </div>
             <div className='tableListOperator'>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>创建</Button>
+              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>创建策略</Button>
             </div>
             <Table
               expandedRowRender={(record)=>expandedRowRender(record) }
