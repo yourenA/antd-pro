@@ -248,7 +248,7 @@ export default class StrategyManage extends PureComponent {
         dataIndex: 'policy_name',
       },{
         title: '创建时间',
-        dataIndex: '创建时间',
+        dataIndex: 'created_at',
       },
       {
         title: '操作',
@@ -273,19 +273,6 @@ export default class StrategyManage extends PureComponent {
         ),
       },
     ];
-    const tabList = [{
-      key: 'device',
-      tab: '设备管理',
-    }, {
-      key: 'identify',
-      tab: '身份管理',
-    }, {
-      key: 'strategy',
-      tab: '策略管理',
-    }, {
-      key: 'rule',
-      tab: '规则管理',
-    }];
     return (
     <div>
       <Card bordered={false}>

@@ -47,7 +47,10 @@ class AddPoliciesForm extends Component {
             item.uuid = item.id
           })
           that.setState({
-            data: editRecord.destinations.data
+            data: editRecord.destinations.data,
+            select:editRecord.select,
+            from:editRecord.from,
+            where:editRecord.where,
           })
         }
       });

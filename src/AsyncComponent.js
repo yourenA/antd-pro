@@ -10,7 +10,6 @@ const asyncComponent = loadComponent => (
             if (this.hasLoadedComponent()) {
                 return;
             }
-
             loadComponent()
                 .then(module =>{
                     return module
