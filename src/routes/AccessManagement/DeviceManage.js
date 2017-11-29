@@ -105,11 +105,6 @@ export default class DeviceManage extends PureComponent {
       modalEditVisible: !!flag,
     });
   }
-  handleAddInput = (e) => {
-    this.setState({
-      addInputValue: e.target.value,
-    });
-  }
 
   handleAdd = () => {
     const that = this;

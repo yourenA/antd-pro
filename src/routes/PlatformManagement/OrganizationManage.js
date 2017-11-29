@@ -12,94 +12,130 @@ import {
   Table,
   Alert,
   Modal,
-  Pagination,
-  message
+  message,
+  List
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import moment from 'moment'
 import {Link} from 'dva/router';
-import DefaultSearch from './../../components/DefaultSearch/index'
-
-const FormItem = Form.Item;
-
+import AddOrEditOrganization from './addOrEditOrganization'
+import styles from './CardList.less';
+const avatar = [
+  'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png', // Alipay
+  'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png', // Angular
+  'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png', // Ant Design
+  'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png', // Ant Design Pro
+  'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png', // Bootstrap
+  'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png', // React
+  'https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png', // Vue
+  'https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png', // Webpack
+];
+const title = [
+  ' Alipay',
+  ' Angular',
+  ' Ant Design',
+  ' Ant Design Pro',
+  ' Bootstrap',
+  ' React',
+  ' Vue',
+  ' Webpack',
+];
+const desc = [
+  ' 这是一段变焦长的描述，Alipay',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。Angular',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。Ant Design',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。Ant Design Pro',
+  ' 这是一段变焦长的描述Bootstrap',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。React',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。Vue',
+  ' 这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。这是一段变焦长的描述，这是一段不较长的描述。Webpack',
+];
 @connect(state => ({
-  endpoints: state.endpoints,
+  organization: state.organization,
 }))
 @Form.create()
 export default class EndpointsList extends PureComponent {
-  state = {
-    addInputValue: '',
-    modalVisible: false,
-    modalEditVisible:false,
-    editRecord:{},
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-    selectedRowKeys: [],
-    totalCallNo: 0,
-    query: '',
-    page: 1,
-    started_at:'',
-    ended_at:'',
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+      modalEditVisible:false,
+      data: [{
+        id: '0',
+        avatar: avatar[Math.floor(Math.random() * avatar.length)],
+        title: title[Math.floor(Math.random() * avatar.length)],
+        description: desc[Math.floor(Math.random() * avatar.length)]
+      },
+        {
+          id: '01',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '02',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '03',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '04',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '05',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '06',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '07',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        },
+        {
+          id: '08',
+          avatar: avatar[Math.floor(Math.random() * avatar.length)],
+          title: title[Math.floor(Math.random() * avatar.length)],
+          description: desc[Math.floor(Math.random() * avatar.length)]
+        }]
+    }
+  }
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch({
-      type: 'endpoints/fetch',
+      type: 'organization/fetch',
       payload: {
         page: 1
       }
     });
   }
-
-
-  handleMenuClick = (e) => {
-    console.log('handleRemoveAll')
-    switch (e.key) {
-      case 'remove':
-        this.handleRemoveAll()
-        break;
-      default:
-        break;
-    }
-  }
-
-  handleSelectRows = (rows) => {
-    this.setState({
-      selectedRows: rows,
-    });
-  }
-  handleFormReset = () => {
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'endpoints/fetch',
-      payload: {},
-    });
-    this.setState({
-      page:1,
-      query:'',
-      started_at:'',
-      ended_at:''
-    })
-  }
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'endpoints/fetch',
+      type: 'organization/fetch',
       payload: {
-        ...values,
+        name:values,
       },
     });
-
     this.setState({
-      query:values.query,
-      started_at:values.started_at,
-      ended_at:values.ended_at,
-      page:values.page
+      query:values,
     })
   }
-
   handleModalVisible = (flag) => {
     this.setState({
       modalVisible: !!flag,
@@ -110,63 +146,45 @@ export default class EndpointsList extends PureComponent {
       modalEditVisible: !!flag,
     });
   }
-  handleAddInput = (e) => {
-    this.setState({
-      addInputValue: e.target.value,
-    });
-  }
-
   handleAdd = () => {
     const that = this;
+    const formValues =this.formRef.props.form.getFieldsValue();
     this.props.dispatch({
-      type: 'endpoints/add',
+      type: 'organization/add',
       payload: {
-        name: this.state.addInputValue,
+        ...formValues
       },
       callback: function () {
-        message.success('添加实例成功')
+        message.success('创建机构成功')
         that.setState({
           modalVisible: false,
         });
         that.props.dispatch({
-          type: 'endpoints/fetch',
+          type: 'organization/fetch',
           payload: {
-            query:that.state.query,
-            started_at:that.state.started_at,
-            ended_at:that.state.ended_at,
-            page:that.state.page
+            query: that.state.query,
           }
         });
       }
     });
-
   }
-  handleEditInput=(e)=>{
-    this.setState({
-      editRecord: {...this.state.editRecord,description:e.target.value}
-    });
-  }
-  handleEdit=()=>{
-    console.log(this.state.editRecord.description)
+  handleEdit = () => {
     const that = this;
+    const formValues =this.editFormRef.props.form.getFieldsValue();
     this.props.dispatch({
-      type: 'endpoints/edit',
+      type: 'organization/edit',
       payload: {
-        id:this.state.editRecord.id,
-        description: this.state.editRecord.description
+        ...formValues
       },
       callback: function () {
-        message.success('修改实例成功')
+        message.success('修改机构成功')
         that.setState({
-          modalEditVisible: false,
+          modalVisible: false,
         });
         that.props.dispatch({
-          type: 'endpoints/fetch',
+          type: 'organization/fetch',
           payload: {
-            query:that.state.query,
-            started_at:that.state.started_at,
-            ended_at:that.state.ended_at,
-            page:that.state.page
+            query: that.state.query,
           }
         });
       }
@@ -175,198 +193,161 @@ export default class EndpointsList extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'endpoints/remove',
-      payload: id,
+      type: 'organization/remove',
+      payload: {
+        id:id,
+      },
       callback: function () {
-        message.success('删除实例成功')
+        message.success('删除设备成功')
         that.props.dispatch({
-          type: 'endpoints/fetch',
+          type: 'organization/fetch',
           payload: {
             query:that.state.query,
-            started_at:that.state.started_at,
-            ended_at:that.state.ended_at,
-            page:that.state.page
           }
         });
       }
     });
   }
-
-  handleRemoveAll = ()=> {
-    console.log(this.state.selectedRowKeys)
+  handleForbid = ()=> {
+    const id=this.state.editRecord.id
+    console.log(id)
+    const that = this;
+    this.props.dispatch({
+      type: 'organization/remove',
+      payload: {
+        id:id,
+      },
+      callback: function () {
+        message.success('删除设备成功')
+        that.props.dispatch({
+          type: 'organization/fetch',
+          payload: {
+            query:that.state.query,
+          }
+        });
+      }
+    });
   }
-
-
-  handleRowSelectChange = (selectedRowKeys, selectedRows) => {
-    const totalCallNo = selectedRows.reduce((sum, val) => {
-      return sum + parseFloat(val.callNo, 10);
-    }, 0);
-
-    if (this.handleSelectRows) {
-      this.handleSelectRows(selectedRows);
-    }
-
-    this.setState({selectedRowKeys, totalCallNo});
+  handleResetPassword = ()=> {
+    const id=this.state.editRecord.id
+    console.log(id)
+    const that = this;
+    this.props.dispatch({
+      type: 'organization/remove',
+      payload: {
+        id:id,
+      },
+      callback: function () {
+        message.success('删除设备成功')
+        that.props.dispatch({
+          type: 'organization/fetch',
+          payload: {
+            query:that.state.query,
+          }
+        });
+      }
+    });
   }
-
-
-  cleanSelectedKeys = () => {
-    this.handleRowSelectChange([], []);
+  onVisibleChange=(visible)=>{
+    console.log(visible)
   }
-  handPageChange = (page)=> {
-    this.handleSearch({page: page,query:this.state.query,ended_at:this.state.ended_at,started_at:this.state.started_at})
-  }
-
   render() {
-    const {endpoints: {data, meta, loading}} = this.props;
-    const {selectedRows, modalVisible, addInputValue, selectedRowKeys, modalEditVisible,editRecord} = this.state;
-    const columns = [
-      {
-        title: '实例名称',
-        dataIndex: 'name',
-        render: (val, record, index) => {
-          return (
-            <Link to={`/access-management/endpoints/${record.id}/device`}>
-              {val}
-            </Link>
-          )
-        }
-      },
-      {
-        title: '描述',
-        dataIndex: 'description',
-        className: 'description',
-        render: (val, record, index) => {
-          return (
-            <div className='' title={val}>
-              {(val && val.length > 20) ? val.substring(0, 20) + '...' : val}
-              <Icon type="edit" className="edit" style={{cursor:'pointer'}} onClick={()=>{
-                this.setState({
-                  editRecord:record,
-                })
-                this.handleModalEditVisible(true)
-              }}/>
-            </div>
-          )
-        }
-      },
-      {
-        title: '地址',
-        dataIndex: 'ip',
-        render: (val, record, index)=> {
-          return (
-            <div>
-              <p>{record.mqtt_hostname}</p>
-              <p>{record.mqtt_tls_hostname}</p>
-              <p>{record.websocket_hostname}</p>
-            </div>
-          )
+    const {organization: {data, meta, loading}} = this.props;
+    const { modalVisible,   modalEditVisible,editRecord} = this.state;
+    const pageHeaderContent = (
+      <div style={{ textAlign: 'center' }}>
+        <Input.Search
+          placeholder="请输入"
+          enterButton="搜索"
+          size="large"
+          onSearch={this.handleSearch}
+          style={{ maxWidth: 522,width:'100%' }}
+        />
+      </div>
+    );
 
-        }
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'created_at',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-      },
-      {
-        title: '操作',
-        width:60,
-        render: (val, record, index) => (
-          <p>
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                        onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
-            </Popconfirm>
-          </p>
-        ),
-      },
-    ];
-    const menu = (
-      <Menu selectedKeys={[]} onClick={this.handleMenuClick}>
-        <Menu.Item key="remove">删除选中内容</Menu.Item>
+    const itemMenu = (
+      <Menu>
+        <Menu.Item >
+          <a onClick={this.handleResetPassword}>重置密码</a>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={this.handleForbid}>禁用</a>
+        </Menu.Item>
       </Menu>
     );
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.handleRowSelectChange,
-      getCheckboxProps: record => ({
-        disabled: record.disabled,
-      }),
-    };
     return (
-      <PageHeaderLayout title={{label:'组织管理'}} breadcrumb={[{name: '平台管理'}, {name: '组织管理'}]}>
-    {/*    <Card bordered={false}>
-          <div className='tableList'>
-            <div className='tableListForm'>
-              <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
-            </div>
-            <div className='tableListOperator'>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
-              {
-                selectedRows.length > 0 && (
-                  <span>
-                    <Dropdown overlay={menu}>
-                      <Button>
-                        更多操作 <Icon type="down"/>
-                      </Button>
-                    </Dropdown>
-                  </span>
-                )
-              }
-            </div>
-            <Alert
-              message={(
-                <p>
-                  已选择 <a style={{fontWeight: 600}}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-                  <a onClick={this.cleanSelectedKeys} style={{marginLeft: 24}}>清空</a>
-                </p>
-              )}
-              type="info"
-              showIcon
-            />
-            <Table
-              loading={loading}
-              rowKey={record => record.id}
-              rowSelection={rowSelection}
-              dataSource={[]}
-              columns={columns}
-              pagination={false}
-              onChange={this.handleTableChange}
-            />
-            <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                        current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                        style={{marginTop: '10px'}} onChange={this.handPageChange}/>
-          </div>
-        </Card>*/}
+      <PageHeaderLayout title={{label: '机构管理'}} breadcrumb={[{name: '平台管理'}, {name: '机构管理'}]}
+                        content={pageHeaderContent}>
+        <List
+          rowKey="id"
+          grid={{gutter: 24, lg: 3, md: 2, sm: 1, xs: 1}}
+          dataSource={['', ...this.state.data]}
+          renderItem={item => (item ? (
+              <List.Item key={item.id}>
+                <Card hoverable className={styles.card} actions={[
+                  <a onClick={()=>{
+                    this.setState(
+                      {
+                        editRecord:item,
+                        modalEditVisible:true
+                      }
+                    )
+                  }}>修改</a>
+                  ,
+                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                              onConfirm={()=>this.handleRemove(item.id)}>
+                    <a>删除</a>
+                  </Popconfirm>,
+                  <Dropdown onVisibleChange={(visible)=>{
+                    if(visible){
+                      this.setState({
+                        editRecord:item,
+                      })
+                    }else{
+                      this.setState({
+                        editRecord:{},
+                      })
+                    }
+
+                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>]}>
+                  <Card.Meta
+                    className={styles.antCardMeta}
+                    avatar={<img alt="" className={styles.cardAvatar} src={item.avatar}/>}
+                    title={<a href="#">{item.title}</a>}
+                    description={(
+                      <p className={styles.cardDescription}>
+                        <span>{item.description}</span>
+                      </p>
+                    )}
+                  />
+                </Card>
+              </List.Item>
+            ) : (
+              <List.Item>
+                <Button onClick={() => this.handleModalVisible(true)} type="dashed" className={styles.newButton}>
+                  <Icon type="plus"/> 新建机构
+                </Button>
+              </List.Item>
+            )
+          )}
+        />
         <Modal
-          title="创建实例"
+          title="新建机构"
           visible={modalVisible}
           onOk={this.handleAdd}
           onCancel={() => this.handleModalVisible()}
         >
-          <FormItem
-            labelCol={{span: 5}}
-            wrapperCol={{span: 15}}
-            label="实例名称"
-            extra='说明：名称由英文字母（a-z，不区分大小写）、数字（0-9）、下划线“_”以及连字符“-”（即中横线）构成，不能使用空格及特殊字符（如！、$、&、?等）。“-” 不能单独或连续使用，不能放在开头或结尾。'
-          >
-            <Input placeholder="请输入" onChange={this.handleAddInput} value={addInputValue}/>
-          </FormItem>
+          <AddOrEditOrganization  wrappedComponentRef={(inst) => this.formRef = inst}/>
         </Modal>
         <Modal
-          title="修改描述"
+          key={ Date.parse(new Date())}
+          title="修改机构"
           visible={modalEditVisible}
           onOk={this.handleEdit}
           onCancel={() => this.handleModalEditVisible()}
         >
-          <FormItem
-            labelCol={{span: 5}}
-            wrapperCol={{span: 15}}
-            label="描述"
-          >
-            <Input placeholder="请输入" type="textarea" rows={4}  onChange={this.handleEditInput}  value={editRecord.description}/>
-          </FormItem>
+          <AddOrEditOrganization  wrappedComponentRef={(inst) => this.editFormRef = inst} editRecord={editRecord}/>
         </Modal>
       </PageHeaderLayout>
     );

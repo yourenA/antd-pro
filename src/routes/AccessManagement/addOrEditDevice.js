@@ -57,6 +57,11 @@ class AddDeviceForm extends Component {
       }
     });
   }
+  cancel=()=>{
+    this.setState({
+      newIdentify: false,
+    })
+  }
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -74,7 +79,7 @@ class AddDeviceForm extends Component {
         return (
           <fieldset>
             <legend><Icon type="plus-square" />新建身份</legend>
-            <AddOrEditIdentify cb={this.addIdentify} endpoint_id={this.props.endpoint_id}  strategy={this.props.strategy}  addInDevice={true}/>
+            <AddOrEditIdentify cancel={this.cancel} cb={this.addIdentify} endpoint_id={this.props.endpoint_id}  strategy={this.props.strategy}  addInDevice={true}/>
           </fieldset>
         )
       }

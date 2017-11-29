@@ -20,7 +20,7 @@ export default class PageHeader extends PureComponent {
     }
   };
   render() {
-    const {title,tabList}=this.props
+    const {title,tabList,content}=this.props
     const tabDefaultValue = tabList && (tabList.filter(item => item.key===title.key));
     return (
       <div className={styles.pageHeader}>
@@ -39,6 +39,13 @@ export default class PageHeader extends PureComponent {
         </Breadcrumb>
         <div className={styles.title}>
           <h3>{title.label}</h3>
+        </div>
+        <div className={styles.detail}>
+          <div className={styles.main}>
+            <div className={styles.row}>
+              {content && <div className={styles.content}>{content}</div>}
+            </div>
+          </div>
         </div>
         {
           tabList &&

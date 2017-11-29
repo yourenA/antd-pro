@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon, Avatar, Dropdown, Spin } from 'antd';
+import { Layout, Menu, Icon, Avatar, Dropdown, Spin ,BackTop} from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { Link, Route, Redirect, Switch } from 'dva/router';
@@ -18,7 +18,10 @@ import waterLogo from '../images/water.png'
 import NotFound from './../routes/Exception/404';
 import asyncComponent from './../AsyncComponent'
 import EndpointDetailLayout from './../routes/AccessManagement/EndpointDetailLayout'
-
+const UsergroupLayout = asyncComponent(() =>
+import
+(/* webpackChunkName: "UsergroupLayout" */ "./../routes/SystemManagement/UsergroupLayout")
+)
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
@@ -228,7 +231,7 @@ class BasicLayout extends React.PureComponent {
             {...menuProps}
             onOpenChange={this.handleOpenChange}
             selectedKeys={this.getCurrentMenuSelectedKeys()}
-            style={{ margin: '16px 0', width: '100%' }}
+            style={{ padding: '16px 0', width: '100%' }}
           >
             {this.getNavMenuItems(this.menus)}
           </Menu>
@@ -263,6 +266,7 @@ class BasicLayout extends React.PureComponent {
             </div>
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
+            <BackTop />
             <Switch>
               {
                 getRouteData('BasicLayout').map(item =>{
@@ -280,6 +284,10 @@ class BasicLayout extends React.PureComponent {
               <Route
                 path='/access-management/endpoints/:id'
                 component={EndpointDetailLayout}
+              />
+              <Route
+                path='/system-management/usergroup/:id'
+                component={UsergroupLayout}
               />
               <Redirect exact from="/" to="/access-management/endpoints" />
               <Route component={NotFound} />

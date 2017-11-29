@@ -42,11 +42,14 @@ import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints
 const OrganizationManage = asyncComponent(() =>
 import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
 )
+const PlatformSetting = asyncComponent(() =>
+import(/* webpackChunkName: "PlatformSetting" */ "./../routes/PlatformManagement/PlatformSetting")
+)
 const UserManage = asyncComponent(() =>
 import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
 )
 const UsergroupManage = asyncComponent(() =>
-import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupManage")
+import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupLayout")
 )
 const DataStatistics = asyncComponent(() =>
 import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataStatistics")
@@ -116,9 +119,13 @@ const data = [{
       path: 'platform-management',   // 匹配的路由
       icon: 'api',              // 页面图标，会展示在菜单栏中
       children: [{
-        name: '组织管理',
+        name: '机构管理',
         path: 'organization',
         component:OrganizationManage,
+      },{
+        name: '平台设置',
+        path: 'setting',
+        component:PlatformSetting,
       }],
     },
     {
@@ -129,8 +136,9 @@ const data = [{
         name: '用户管理',
         path: 'user',
         component:UserManage,
+        exact:true
       },{
-        name: '用户管理',
+        name: '用户组管理',
         path: 'usergroup',
         component:UsergroupManage,
       }],

@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/user';
+import { query,add,remove,edit } from '../services/organization';
 
 export default {
-  namespace: 'user',
+  namespace: 'organization',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},

@@ -140,7 +140,7 @@ class AddPoliciesForm extends Component {
               wrapperCol={ {
                 offset: 13,
               }}>
-              <Button  style={{marginRight:'10px'}}>
+              <Button  style={{marginRight:'10px'}} onClick={this.props.cancel}>
                 取消
               </Button>
               <Button   type="primary" htmlType="submit">

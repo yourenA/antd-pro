@@ -23,7 +23,6 @@ import DefaultSearch from './../../components/DefaultSearch/index'
 @Form.create()
 export default class StrategyManage extends PureComponent {
   state = {
-    addInputValue: '',
     modalVisible: false,
     modalEditVisible:false,
     editRecord:{},
@@ -99,11 +98,6 @@ export default class StrategyManage extends PureComponent {
   handleModalEditVisible= (flag) => {
     this.setState({
       modalEditVisible: !!flag,
-    });
-  }
-  handleAddInput = (e) => {
-    this.setState({
-      addInputValue: e.target.value,
     });
   }
 

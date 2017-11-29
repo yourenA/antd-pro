@@ -66,6 +66,11 @@ class AddPoliciesForm extends Component {
       }
     });
   }
+  cancel=()=>{
+    this.setState({
+      newStrategy: false,
+    })
+  }
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -77,13 +82,14 @@ class AddPoliciesForm extends Component {
         sm: {span: 15},
       }
     };
+
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const newformItemsWrap = ()=> {
       if (this.state.newStrategy) {
         return (
           <fieldset>
             <legend><Icon type="plus-square" />新建策略</legend>
-            <AddOrEditStrategy  cb={this.addStrategy} addInDevice={true}/>
+            <AddOrEditStrategy cancel={this.cancel}  cb={this.addStrategy} addInDevice={true}/>
           </fieldset>
         )
       }
@@ -160,7 +166,7 @@ class AddPoliciesForm extends Component {
               wrapperCol={ {
                 offset: 13,
               }}>
-              <Button  style={{marginRight:'10px'}}>
+              <Button  style={{marginRight:'10px'}} onClick={this.props.cancel}>
                 取消
               </Button>
               <Button   type="primary" htmlType="submit">
