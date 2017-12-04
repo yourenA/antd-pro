@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {Form, Icon, Input, Card, Tooltip, Button, Table, Popconfirm, Checkbox, message} from 'antd';
 import {connect} from 'dva';
 import {Link, routerRedux} from 'dva/router';
+import request from './../../utils/request'
+import groupBy from 'lodash/groupBy'
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 @connect(state => ({
@@ -14,12 +16,16 @@ class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
     this.uuid = 0;
-    this.isNew = this.props.match.params.ruleId === 'add' ? true : false;
+    this.isNew = this.props.match.params.id === 'add' ? true : false;
     this.state = {
-      plainOptions:['Apple', 'Pear', 'Orange'],
-      checkedList: ['Apple', 'Orange'],
-      indeterminate: true,
+      userManageCheckedList: [],
+      otherCheckedList: [],
+      other:[],
+      userManage:[],
+      userIndeterminate: false,
+      otherIndeterminate: false,
       checkAll: false,
+      otherCheckAll: false,
       editRecord: {}
     }
   }
@@ -28,24 +34,71 @@ class AddPoliciesForm extends Component {
     const {dispatch} = this.props;
     const id = this.props.match.params.id;
     const that = this;
-    if (this.isNew) {
-      console.log('新建规则')
-    } else {
-      console.log('修改规则')
-      dispatch({
-        type: 'usergroup/fetchOneusergroup',
-        payload: {
-          id
-        },
-        callback: function () {
-          const {usergroup:{editRecord}}=that.props
-          that.setState({
-            data: editRecord.destinations.data,
-          })
-        }
-      });
 
-    }
+    request(`/permissions`,{
+      method:'GET',
+      params:{
+        return:'all',
+        type:'only_company'
+      }
+    }).then((response)=>{
+      console.log('response',response)
+      const group=groupBy(response.data.data,'group')
+      console.log('group',group)
+      that.setState({
+        other:group['其他'].reduce((result,item)=>{
+          result.push({label:item.display_name,value:item.name})
+          return result
+        },[]),
+        userManage:group['用户管理'].reduce((result,item)=>{
+          result.push({label:item.display_name,value:item.name})
+          return result
+        },[]),
+      },function () {
+
+        if (this.isNew) {
+          console.log('新建用户组')
+        } else {
+          console.log('修改用户组')
+          dispatch({
+            type: 'usergroup/fetchOneusergroup',
+            payload: {
+              id
+            },
+            callback: function () {
+              const {usergroup:{editRecord}}=that.props;
+              const selectGroup=groupBy(editRecord.permissions.data,'group')
+              console.log('selectGroup',selectGroup)
+              that.setState({
+                otherCheckedList:selectGroup['其他']?selectGroup['其他'].reduce((result,item)=>{
+                  result.push(item.name)
+                  return result
+                },[]):[],
+                userManageCheckedList:selectGroup['用户管理']?selectGroup['用户管理'].reduce((result,item)=>{
+                  result.push(item.name)
+                  return result
+                },[]):[],
+              },function () {
+
+                that.setState({
+                  userIndeterminate: !!this.state.userManageCheckedList.length && (this.state.userManageCheckedList.length < this.state.userManage.length),
+                  checkAll: this.state.userManageCheckedList.length === this.state.userManage.length,
+
+                  otherIndeterminate: !!this.state.otherCheckedList.length && (this.state.otherCheckedList.length < this.state.other.length),
+                  otherCheckAll: this.state.otherCheckedList.length === this.state.other.length,
+                })
+
+              })
+            }
+          });
+
+        }
+      })
+
+
+
+
+    })
   }
 
   handleSubmit = (e)=> {
@@ -57,13 +110,13 @@ class AddPoliciesForm extends Component {
         if (!err) {
           console.log(values)
           const type = this.isNew ? 'usergroup/add' : 'usergroup/edit';
-          const msg = this.isNew ? '创建规则成功' : '修改规则成功';
+          const msg = this.isNew ? '创建用户组成功' : '修改用户组成功';
           const data = this.isNew ? {
-            id,
+            permissions:this.state.otherCheckedList.concat(this.state.userManageCheckedList),
             ...values
           } : {
             id,
-            destinations: this.state.data,
+            permissions:this.state.otherCheckedList.concat(this.state.userManageCheckedList),
             ...values
           };
           this.props.dispatch({
@@ -80,18 +133,36 @@ class AddPoliciesForm extends Component {
       }
     );
   }
-  onChange = (checkedList) => {
+  onChange = (userManageCheckedList) => {
     this.setState({
-      checkedList,
-      indeterminate: !!checkedList.length && (checkedList.length < this.state.plainOptions.length),
-      checkAll: checkedList.length === this.state.plainOptions.length,
+      userManageCheckedList,
+      userIndeterminate: !!userManageCheckedList.length && (userManageCheckedList.length < this.state.userManage.length),
+      checkAll: userManageCheckedList.length === this.state.userManage.length,
     });
   }
   onCheckAllChange = (e) => {
     this.setState({
-      checkedList: e.target.checked ? this.state.plainOptions : [],
-      indeterminate: false,
+      userManageCheckedList: e.target.checked ? this.state.userManage.map((item,index)=>{
+        return item.value
+      }) : [],
+      userIndeterminate: false,
       checkAll: e.target.checked,
+    });
+  }
+  onChangeOther = (otherCheckedList) => {
+    this.setState({
+      otherCheckedList,
+      otherIndeterminate: !!otherCheckedList.length && (otherCheckedList.length < this.state.other.length),
+      otherCheckAll: otherCheckedList.length === this.state.other.length,
+    });
+  }
+  onCheckAllChangeOther = (e) => {
+    this.setState({
+      otherCheckedList: e.target.checked ? this.state.other.map((item,index)=>{
+        return item.value
+      }) : [],
+      otherIndeterminate: false,
+      otherCheckAll: e.target.checked,
     });
   }
   render() {
@@ -116,14 +187,14 @@ class AddPoliciesForm extends Component {
     return (
       <div>
         <Card bordered={false}>
-          <Form onSubmit={this.handleSubmit}>
+          <Form >
             <h3  className="form-title" >基本信息</h3>
             <FormItem
               {...formItemLayoutWithLabel}
               label='名称'
             >
-              {getFieldDecorator('name', {
-                initialValue: !this.isNew ? editRecord.name : '',
+              {getFieldDecorator('display_name', {
+                initialValue: !this.isNew ? editRecord.display_name : '',
                 rules: [{required: true, message: '名称不能为空'}],
               })(
                 <Input disabled={this.props.editRecord ? true : false}/>
@@ -147,14 +218,14 @@ class AddPoliciesForm extends Component {
             >
                 <div className="checkgroup-title" >
                   <Checkbox
-                    indeterminate={this.state.indeterminate}
+                    indeterminate={this.state.userIndeterminate}
                     onChange={this.onCheckAllChange}
                     checked={this.state.checkAll}
                   >
                     账号管理
                   </Checkbox>
                 </div>
-                <CheckboxGroup options={this.state.plainOptions} value={this.state.checkedList} onChange={this.onChange} />
+                <CheckboxGroup options={this.state.userManage}  value={this.state.userManageCheckedList} onChange={this.onChange} />
             </FormItem>
             <FormItem
               {...formItemLayoutWithOutLabel}
@@ -162,14 +233,14 @@ class AddPoliciesForm extends Component {
             >
               <div className="checkgroup-title" >
                 <Checkbox
-                  indeterminate={this.state.indeterminate}
-                  onChange={this.onCheckAllChange}
-                  checked={this.state.checkAll}
+                  indeterminate={this.state.otherIndeterminate}
+                  onChange={this.onCheckAllChangeOther}
+                  checked={this.state.otherCheckAll}
                 >
-                  费用管理
+                  其他
                 </Checkbox>
               </div>
-              <CheckboxGroup options={this.state.plainOptions} value={this.state.checkedList} onChange={this.onChange} />
+              <CheckboxGroup options={this.state.other}  value={this.state.otherCheckedList} onChange={this.onChangeOther} />
             </FormItem>
             <FormItem
               wrapperCol={ {
@@ -181,7 +252,7 @@ class AddPoliciesForm extends Component {
               }}>
                 取消
               </Button>
-              <Button style={{width: '40%'}} type="primary" htmlType="submit">
+              <Button style={{width: '40%'}} type="primary" onClick={this.handleSubmit}>
                 确定
               </Button>
             </FormItem>

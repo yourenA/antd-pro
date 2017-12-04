@@ -265,13 +265,11 @@ export default class DeviceManage extends PureComponent {
         title: '状态',
         dataIndex: 'status',
         render:(val,record,index)=>{
-          if(val===-1){
-            return(
-              <span>
-                 <Badge status="error" />{record.status_explain}
+          return(
+            <span>
+                 <Badge status={`${val===-1?"error":"success"}`} />{record.status_explain}
               </span>
-            )
-          }
+          )
         }
       },
       {

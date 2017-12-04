@@ -50,10 +50,11 @@ class SearchForm extends Component {
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <span>
+            <FormItem >
               <Button type="primary" htmlType="submit">查询</Button>
               <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            </span>
+            </FormItem>
+
           </Col>
         </Row>
       </Form>

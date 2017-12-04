@@ -109,38 +109,47 @@ const data = [{
     name: '接入管理',            // 页面名称，会展示在菜单栏中
     path: 'access-management',   // 匹配的路由
     icon: 'tool',              // 页面图标，会展示在菜单栏中
+    permissions:['iot_hub_management'],
     children: [{
       name: '实例列表',
       path: 'endpoints',
       component: Endpoints,
+      permissions:['iot_hub_management'],
     }],
   },   {
       name: '平台管理',            // 页面名称，会展示在菜单栏中
       path: 'platform-management',   // 匹配的路由
       icon: 'api',              // 页面图标，会展示在菜单栏中
+      permissions:['company_add_and_edit','company_status_edit','company_delete'],
       children: [{
         name: '机构管理',
         path: 'organization',
         component:OrganizationManage,
+        permissions:['company_add_and_edit','company_status_edit','company_delete'],
       },{
         name: '平台设置',
         path: 'setting',
         component:PlatformSetting,
+        permissions:['company_add_and_edit','company_status_edit','company_delete'],
       }],
     },
     {
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system-management',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
+      permissions:['user_add_and_edit','user_add_and_edit','user_add_and_edit','user_delete','role_add_and_edit','role_add_and_edit','role_delete'],
       children: [{
         name: '用户管理',
         path: 'user',
         component:UserManage,
+        permissions:['user_add_and_edit','user_default_password_edit','user_status_edit','user_delete'],
         exact:true
       },{
         name: '用户组管理',
         path: 'usergroup',
         component:UsergroupManage,
+        permissions:['role_add_and_edit','role_add_and_edit','role_delete'],
+
       }],
     },
     {

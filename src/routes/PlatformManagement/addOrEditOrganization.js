@@ -36,7 +36,7 @@ class OrganizationForm extends Component {
           )}
         >
           {getFieldDecorator('name', {
-            initialValue: this.props.editRecord ? this.props.editRecord.title : '',
+            initialValue: this.props.editRecord ? this.props.editRecord.name : '',
             rules: [{required: true, message: '目的地值不能为空'}],
           })(
             <Input />

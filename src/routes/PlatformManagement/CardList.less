@@ -5,6 +5,7 @@
   margin-bottom: -24px;
 
   .card {
+
     :global {
 
       .ant-card-meta-title {
@@ -27,6 +28,7 @@
 
 .antCardMeta{
   min-height: 95px !important;
+  overflow: hidden;
 }
 
 .extraImg {
@@ -52,9 +54,11 @@
   height: 48px;
   border-radius: 48px;
 }
-
+.cardTitle{
+  width: 100%;
+}
 .cardDescription {
-  .textOverflowMulti();
+  .textOverflowMulti(2);
 }
 
 .pageHeaderContent {

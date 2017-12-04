@@ -1,4 +1,4 @@
-import { query,add,remove,edit } from '../services/organization';
+import { query,add,remove,edit,editStatus,resetPassword } from '../services/organization';
 
 export default {
   namespace: 'organization',
@@ -34,6 +34,20 @@ export default {
     },
     *edit({ payload, callback }, { call, put }) {
       const response = yield call(edit, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *editStatus({ payload, callback }, { call, put }) {
+      const response = yield call(editStatus, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *resetPassword({ payload, callback }, { call, put }) {
+      const response = yield call(resetPassword, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();

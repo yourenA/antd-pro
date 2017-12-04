@@ -185,7 +185,7 @@ export default class StrategyManage extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除规则成功')
+        message.success('删除用户组成功')
         that.props.dispatch({
           type: 'usergroup/fetch',
           payload: {
@@ -212,7 +212,7 @@ export default class StrategyManage extends PureComponent {
     const columns = [
       {
         title: '名称',
-        dataIndex: 'name',
+        dataIndex: 'display_name',
       },{
         title: '描述',
         dataIndex: 'description',
@@ -226,6 +226,17 @@ export default class StrategyManage extends PureComponent {
         }
       },
       {
+        title: '状态',
+        dataIndex: 'status',
+        render:(val,record,index)=>{
+            return(
+              <span>
+                 <Badge status={`${val===-1?"error":"success"}`} />{record.status_explain}
+              </span>
+            )
+        }
+      },
+      {
         title: '操作',
         width:150,
         render: (val, record, index) => (
@@ -235,9 +246,10 @@ export default class StrategyManage extends PureComponent {
 
             }}>编辑</a>
             <span className="ant-divider" />
-            <a href="javascript:;" onClick={()=>{
-              this.handleEditStatus(record.id,record.status)
-            }}>{record.status===1?'禁用':'启用'}</a>
+            <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+                        onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
+            <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
+              </Popconfirm>
             <span className="ant-divider" />
             <Popconfirm placement="topRight" title={ `确定要删除吗?`}
                         onConfirm={()=>this.handleRemove(record.id)}>

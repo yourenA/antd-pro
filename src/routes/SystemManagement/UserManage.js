@@ -9,7 +9,10 @@ import {
   Modal,
   Pagination,
   message,
-  Dropdown
+  Dropdown,
+  Menu,
+  Icon,
+  Badge
 } from 'antd';
 import AddOrEditUser from './addOrEditUser'
 import DefaultSearch from './../../components/DefaultSearch/index'
@@ -42,8 +45,19 @@ export default class StrategyManage extends PureComponent {
         page: 1
       }
     });
+    dispatch({
+      type: 'usergroup/fetch',
+      payload: {
+        return: 'all'
+      }
+    });
   }
-
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'usergroup/reset',
+    });
+  }
 
   handleFormReset = () => {
     const {dispatch} = this.props;
@@ -95,8 +109,8 @@ export default class StrategyManage extends PureComponent {
       type: 'user/add',
       payload: {
         data: {
-          name: formValues.name,
-          policy_id: formValues.policy_id.key,
+          ...formValues,
+          role_id: formValues.role_id.key,
         },
       },
       callback: function () {
@@ -125,9 +139,10 @@ export default class StrategyManage extends PureComponent {
       type: 'user/edit',
       payload: {
         data: {
-          policy_id: formValues.policy_id.key,
-          id: this.state.editRecord.id,
-        }
+          ...formValues,
+          role_id: formValues.role_id.key,
+          id:this.state.editRecord.id
+        },
       },
       callback: function () {
         message.success('修改用户成功')
@@ -167,7 +182,57 @@ export default class StrategyManage extends PureComponent {
       }
     });
   }
-
+  handleEditStatus=(id,status)=>{
+    let sendStatus=0;
+    if(status===1){
+      sendStatus=-1;
+    }else{
+      sendStatus=1;
+    }
+    const that=this;
+    this.props.dispatch({
+      type: 'user/editStatus',
+      payload: {
+        data: {
+          id,
+          status:sendStatus
+        }
+      },
+      callback: function () {
+        message.success('修改状态成功')
+        that.props.dispatch({
+          type: 'user/fetch',
+          payload: {
+            query: that.state.query,
+            started_at: that.state.started_at,
+            ended_at: that.state.ended_at,
+            page: that.state.page
+          }
+        });
+      }
+    });
+  }
+  handleResetPassword = (id)=> {
+    const that = this;
+    this.props.dispatch({
+      type: 'user/resetPassword',
+      payload: {
+        id: id,
+      },
+      callback: function () {
+        message.success('重置密码成功')
+        that.props.dispatch({
+          type: 'user/fetch',
+          payload: {
+            query: that.state.query,
+            started_at: that.state.started_at,
+            ended_at: that.state.ended_at,
+            page: that.state.page
+          }
+        });
+      }
+    });
+  }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
@@ -180,42 +245,65 @@ export default class StrategyManage extends PureComponent {
   render() {
     const {user: {data, meta, loading}, } = this.props;
     const {modalVisible, modalEditVisible, editRecord} = this.state;
+    const itemMenu = (
+      <Menu>
+        <Menu.Item>
+          <a onClick={()=>{this.handleResetPassword(this.state.editRecord.id)}}>重置密码</a>
+        </Menu.Item>
+        {this.state.editRecord.lock===-1&&<Menu.Item>
+          <a onClick={()=>{this.handleRemove(this.state.editRecord.id)}}>删除</a>
+        </Menu.Item>}
+
+      </Menu>
+    );
     const columns = [
       {
         title: '用户账号',
-        dataIndex: 'name',
+        dataIndex: 'username',
+      },
+      {
+        title: '部门',
+        dataIndex: 'role_display_name',
       },
       {
         title: '姓名',
-        dataIndex: 'things_count',
+        dataIndex: 'real_name',
       },
       {
         title: '工号',
-        dataIndex: 'policy_name',
-      }, {
-        title: '部门',
-        dataIndex: 'created_at',
+        dataIndex: 'job_number',
       },{
         title: '电话',
-        dataIndex: 'created_at1',
+        dataIndex: 'mobile',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        render:(val,record,index)=>{
+          return(
+            <span>
+                 <Badge status={`${val===-1?"error":"success"}`} />{record.status_explain}
+              </span>
+          )
+        }
       },
       {
         title: '操作',
-        width: 120,
+        width: 170,
         render: (val, record, index) => (
           <p>
-            <a href="javascript:;" onClick={()=> {
+            {record.lock!==1&&<a href="javascript:;" onClick={()=> {
               this.setState(
                 {
                   editRecord: record,
                   modalEditVisible: true
                 }
               )
-            }}>编辑</a>
+            }}>编辑</a>}
             <span className="ant-divider"/>
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                        onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+            <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+                        onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
+              <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
             </Popconfirm>
             <span className="ant-divider"/>
             <Dropdown onVisibleChange={(visible)=>{
@@ -229,7 +317,7 @@ export default class StrategyManage extends PureComponent {
                 })
               }
 
-            }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>]}>
+            }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
           </p>
         ),
       },

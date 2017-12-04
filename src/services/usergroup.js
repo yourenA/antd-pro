@@ -1,8 +1,8 @@
 import request from '../utils/request';
 
 
-export async function query({endpoint_id,...resetParams}) {
-  return request(`/endpoints/${endpoint_id}/things`,{
+export async function query({...resetParams}) {
+  return request(`/roles`,{
     method:'GET',
     params:{
       ...resetParams
@@ -10,26 +10,39 @@ export async function query({endpoint_id,...resetParams}) {
   });
 }
 
-export async function remove({endpoint_id,id}) {
-  return request(`/endpoints/${endpoint_id}/things/${id}`, {
+export async function queryOneUsergroup({id}) {
+  return request(`/roles/${id}`,{
+    method:'GET',
+  });
+}
+export async function remove({id}) {
+  return request(`/roles/${id}`, {
     method: 'DELETE',
   });
 }
 
-export async function add({endpoint_id,...restParams}) {
-  return request(`/endpoints/${endpoint_id}/things`, {
+export async function add({data}) {
+  return request(`/roles`, {
     method: 'POST',
     data: {
-      ...restParams,
+      ...data,
     },
   });
 }
 
-export async function edit({endpoint_id,id,...restParams}) {
-  return request(`/endpoints/${endpoint_id}/things/${id}`, {
+export async function edit({data:{id,...data}}) {
+  return request(`/roles/${id}`, {
     method: 'PUT',
     data: {
-      ...restParams,
+      ...data,
+    },
+  });
+}
+export async function editStatus({data:{id,status}}) {
+  return request(`/roles/${id}/status`, {
+    method: 'PUT',
+    data: {
+      status,
     },
   });
 }

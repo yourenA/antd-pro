@@ -3,7 +3,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
 import {message} from 'antd'
 import messageJson from './message.json';
-import { routerRedux } from 'dva/router';
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
@@ -112,11 +111,9 @@ const removeLoginStorage = () => {
   sessionStorage.removeItem('username');
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('permissions');
-  sessionStorage.clear();
   localStorage.removeItem('username');
   localStorage.removeItem('token');
   localStorage.removeItem('permissions');
-  localStorage.clear();
 };
 exports.removeLoginStorage = removeLoginStorage;
 

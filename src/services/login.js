@@ -2,12 +2,13 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 
-export async function fakeAccountLogin({username,password}) {
+export async function fakeAccountLogin({username,password,company_id}) {
   return request(`/login`, {
     method: 'POST',
     data: {
       username,
-      password
+      password,
+      company_id
     },
   });
 }

@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import { Link, Route, Redirect, Switch } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
+import intersection from 'lodash/intersection';
 import styles from './BasicLayout.less';
 import HeaderSearch from '../components/HeaderSearch';
 import GlobalFooter from '../components/GlobalFooter';
@@ -75,6 +76,8 @@ class BasicLayout extends React.PureComponent {
     return { location, breadcrumbNameMap };
   }
   componentDidMount() {
+
+
     // console.log(this.menus)
     this.props.dispatch({
       type: 'login/checkLoginState',
@@ -115,6 +118,10 @@ class BasicLayout extends React.PureComponent {
     return keys;
   }
   getNavMenuItems(menusData, parentPath = '') {
+    let permissions=(localStorage.getItem('permissions')?JSON.parse(localStorage.getItem('permissions'))
+      :sessionStorage.getItem('permissions')?JSON.parse(sessionStorage.getItem('permissions')):[]).map((item,index)=>{
+      return item.name
+    })
     if (!menusData) {
       return [];
     }
@@ -129,38 +136,43 @@ class BasicLayout extends React.PureComponent {
         itemPath = `${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
       }
       if (item.children && item.children.some(child => child.name)) {
-        return (
-          <SubMenu
-            title={
-              item.icon ? (
-                <span>
-                  <Icon type={item.icon} />
+        if(intersection(permissions,item.permissions).length>0 || !item.permissions) {
+          return (
+            <SubMenu
+              title={
+                item.icon ? (
+                  <span>
+                  <Icon type={item.icon}/>
                   <span>{item.name}</span>
                 </span>
-              ) : item.name
-            }
-            key={item.key || item.path}
-          >
-            {this.getNavMenuItems(item.children, itemPath)}
-          </SubMenu>
-        );
+                ) : item.name
+              }
+              key={item.key || item.path}
+            >
+              {this.getNavMenuItems(item.children, itemPath)}
+            </SubMenu>
+          );
+        }
       }
       const icon = item.icon && <Icon type={item.icon} />;
-      return (
-        <Menu.Item key={item.key || item.path}>
-          {
-            /^https?:\/\//.test(itemPath) ? (
-              <a href={itemPath} target={item.target}>
-                {icon}<span>{item.name}</span>
-              </a>
-            ) : (
-              <Link to={itemPath} target={item.target}>
-                {icon}<span>{item.name}</span>
-              </Link>
-            )
-          }
-        </Menu.Item>
-      );
+      if(intersection(permissions,item.permissions).length>0 || !item.permissions){
+        return (
+          <Menu.Item key={item.key || item.path}>
+            {
+              /^https?:\/\//.test(itemPath) ? (
+                <a href={itemPath} target={item.target}>
+                  {icon}<span>{item.name}</span>
+                </a>
+              ) : (
+                <Link to={itemPath} target={item.target}>
+                  {icon}<span>{item.name}</span>
+                </Link>
+              )
+            }
+          </Menu.Item>
+        );
+      }
+
     });
   }
   getPageTitle() {
@@ -289,7 +301,12 @@ class BasicLayout extends React.PureComponent {
                 path='/system-management/usergroup/:id'
                 component={UsergroupLayout}
               />
-              <Redirect exact from="/" to="/access-management/endpoints" />
+              {
+                (localStorage.getItem('role_display_name')==='系统管理员'|| sessionStorage.getItem('role_display_name')==='系统管理员')?
+                  <Redirect exact from="/" to="/access-management/endpoints" />
+                  : <Redirect exact from="/" to="/system-management/user" />
+              }
+
               <Route component={NotFound} />
             </Switch>
             <GlobalFooter

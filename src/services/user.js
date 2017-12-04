@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 
 export async function query({endpoint_id,...resetParams}) {
-  return request(`/endpoints/${endpoint_id}/things`,{
+  return request(`/users`,{
     method:'GET',
     params:{
       ...resetParams
@@ -10,14 +10,19 @@ export async function query({endpoint_id,...resetParams}) {
   });
 }
 
-export async function remove({endpoint_id,id}) {
-  return request(`/endpoints/${endpoint_id}/things/${id}`, {
+export async function remove({id}) {
+  return request(`/users/${id}`, {
     method: 'DELETE',
   });
 }
 
-export async function add({endpoint_id,...restParams}) {
-  return request(`/endpoints/${endpoint_id}/things`, {
+export async function resetPassword({id}) {
+  return request(`/users/${id}/default_password`, {
+    method: 'PUT',
+  });
+}
+export async function add({data:{...restParams}}) {
+  return request(`/users`, {
     method: 'POST',
     data: {
       ...restParams,
@@ -25,11 +30,20 @@ export async function add({endpoint_id,...restParams}) {
   });
 }
 
-export async function edit({endpoint_id,id,...restParams}) {
-  return request(`/endpoints/${endpoint_id}/things/${id}`, {
+export async function edit({data:{id,...restParams}}) {
+  return request(`/users/${id}`, {
     method: 'PUT',
     data: {
       ...restParams,
+    },
+  });
+}
+
+export async function editStatus({data:{id,status}}) {
+  return request(`/users/${id}/status`, {
+    method: 'PUT',
+    data: {
+      status,
     },
   });
 }

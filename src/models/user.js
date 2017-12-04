@@ -1,4 +1,4 @@
-import { query,add,remove,edit } from '../services/user';
+import { query,add,remove,edit ,editStatus,resetPassword} from '../services/user';
 
 export default {
   namespace: 'user',
@@ -39,8 +39,21 @@ export default {
         if (callback) callback();
       }
     },
+    *editStatus({ payload, callback }, { call, put }) {
+      const response = yield call(editStatus, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(remove, payload);
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *resetPassword({ payload, callback }, { call, put }) {
+      const response = yield call(resetPassword, payload);
       if(response.status===200){
         if (callback) callback();
       }

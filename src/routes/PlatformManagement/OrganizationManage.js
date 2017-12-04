@@ -13,7 +13,9 @@ import {
   Alert,
   Modal,
   message,
-  List
+  List,
+  Badge,
+  Tooltip
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {Link} from 'dva/router';
@@ -58,7 +60,7 @@ export default class EndpointsList extends PureComponent {
     super(props);
     this.state = {
       modalVisible: false,
-      modalEditVisible:false,
+      modalEditVisible: false,
       data: [{
         id: '0',
         avatar: avatar[Math.floor(Math.random() * avatar.length)],
@@ -115,6 +117,7 @@ export default class EndpointsList extends PureComponent {
         }]
     }
   }
+
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch({
@@ -124,16 +127,17 @@ export default class EndpointsList extends PureComponent {
       }
     });
   }
+
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({
       type: 'organization/fetch',
       payload: {
-        name:values,
+        name: values,
       },
     });
     this.setState({
-      query:values,
+      query: values,
     })
   }
   handleModalVisible = (flag) => {
@@ -141,14 +145,14 @@ export default class EndpointsList extends PureComponent {
       modalVisible: !!flag,
     });
   }
-  handleModalEditVisible= (flag) => {
+  handleModalEditVisible = (flag) => {
     this.setState({
       modalEditVisible: !!flag,
     });
   }
   handleAdd = () => {
     const that = this;
-    const formValues =this.formRef.props.form.getFieldsValue();
+    const formValues = this.formRef.props.form.getFieldsValue();
     this.props.dispatch({
       type: 'organization/add',
       payload: {
@@ -170,16 +174,17 @@ export default class EndpointsList extends PureComponent {
   }
   handleEdit = () => {
     const that = this;
-    const formValues =this.editFormRef.props.form.getFieldsValue();
+    const formValues = this.editFormRef.props.form.getFieldsValue();
     this.props.dispatch({
       type: 'organization/edit',
       payload: {
+        id:this.state.editRecord.id,
         ...formValues
       },
       callback: function () {
         message.success('修改机构成功')
         that.setState({
-          modalVisible: false,
+          modalEditVisible: false,
         });
         that.props.dispatch({
           type: 'organization/fetch',
@@ -195,130 +200,131 @@ export default class EndpointsList extends PureComponent {
     this.props.dispatch({
       type: 'organization/remove',
       payload: {
-        id:id,
+        id: id,
       },
       callback: function () {
         message.success('删除设备成功')
         that.props.dispatch({
           type: 'organization/fetch',
           payload: {
-            query:that.state.query,
+            query: that.state.query,
           }
         });
       }
     });
   }
-  handleForbid = ()=> {
-    const id=this.state.editRecord.id
+  handleForbid = (id,status)=> {
+    console.log(id)
+    if(status===1){
+      status=-1
+    }else if(status===-1){
+      status=1
+    }
+    const that = this;
+    this.props.dispatch({
+      type: 'organization/editStatus',
+      payload: {
+        id: id,
+        status
+      },
+      callback: function () {
+        message.success('修改状态成功')
+        that.props.dispatch({
+          type: 'organization/fetch',
+          payload: {
+            query: that.state.query,
+          }
+        });
+      }
+    });
+  }
+  handleResetPassword = (id)=> {
     console.log(id)
     const that = this;
     this.props.dispatch({
-      type: 'organization/remove',
+      type: 'organization/resetPassword',
       payload: {
-        id:id,
+        id: id,
       },
       callback: function () {
-        message.success('删除设备成功')
+        message.success('重置密码成功')
         that.props.dispatch({
           type: 'organization/fetch',
           payload: {
-            query:that.state.query,
+            query: that.state.query,
           }
         });
       }
     });
   }
-  handleResetPassword = ()=> {
-    const id=this.state.editRecord.id
-    console.log(id)
-    const that = this;
-    this.props.dispatch({
-      type: 'organization/remove',
-      payload: {
-        id:id,
-      },
-      callback: function () {
-        message.success('删除设备成功')
-        that.props.dispatch({
-          type: 'organization/fetch',
-          payload: {
-            query:that.state.query,
-          }
-        });
-      }
-    });
-  }
-  onVisibleChange=(visible)=>{
+  onVisibleChange = (visible)=> {
     console.log(visible)
   }
+
   render() {
     const {organization: {data, meta, loading}} = this.props;
-    const { modalVisible,   modalEditVisible,editRecord} = this.state;
+    const {modalVisible, modalEditVisible, editRecord} = this.state;
     const pageHeaderContent = (
-      <div style={{ textAlign: 'center' }}>
+      <div style={{textAlign: 'center'}}>
         <Input.Search
           placeholder="请输入"
           enterButton="搜索"
           size="large"
           onSearch={this.handleSearch}
-          style={{ maxWidth: 522,width:'100%' }}
+          style={{maxWidth: 522, width: '100%'}}
         />
       </div>
     );
 
-    const itemMenu = (
-      <Menu>
-        <Menu.Item >
-          <a onClick={this.handleResetPassword}>重置密码</a>
-        </Menu.Item>
-        <Menu.Item>
-          <a onClick={this.handleForbid}>禁用</a>
-        </Menu.Item>
-      </Menu>
-    );
     return (
       <PageHeaderLayout title={{label: '机构管理'}} breadcrumb={[{name: '平台管理'}, {name: '机构管理'}]}
                         content={pageHeaderContent}>
         <List
           rowKey="id"
           grid={{gutter: 24, lg: 3, md: 2, sm: 1, xs: 1}}
-          dataSource={['', ...this.state.data]}
-          renderItem={item => (item ? (
+          dataSource={['', ...data]}
+          renderItem={(item, index)=> (item ? (
               <List.Item key={item.id}>
                 <Card hoverable className={styles.card} actions={[
-                  <a onClick={()=>{
+                  <Popconfirm placement="topRight" title={ `确定要重置密码吗?`}
+                              onConfirm={()=>this.handleResetPassword(item.id)}>
+                    <a>重置密码</a>
+                  </Popconfirm>,
+                  <Popconfirm placement="topRight" title={ `确定要${item.status === -1 ? "启用" : "禁用"}吗?`}
+                              onConfirm={()=>this.handleForbid(item.id, item.status)}>
+                    <a>{item.status === -1 ? "启用" : "禁用"}</a>
+                  </Popconfirm>,
+                  item.lock === -1 && <a onClick={()=> {
                     this.setState(
                       {
-                        editRecord:item,
-                        modalEditVisible:true
+                        editRecord: item,
+                        modalEditVisible: true
                       }
                     )
                   }}>修改</a>
                   ,
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                              onConfirm={()=>this.handleRemove(item.id)}>
+                  item.lock === -1 && <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                                                  onConfirm={()=>this.handleRemove(item.id)}>
                     <a>删除</a>
                   </Popconfirm>,
-                  <Dropdown onVisibleChange={(visible)=>{
-                    if(visible){
-                      this.setState({
-                        editRecord:item,
-                      })
-                    }else{
-                      this.setState({
-                        editRecord:{},
-                      })
-                    }
-
-                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>]}>
+                 ]}>
                   <Card.Meta
                     className={styles.antCardMeta}
-                    avatar={<img alt="" className={styles.cardAvatar} src={item.avatar}/>}
-                    title={<a href="#">{item.title}</a>}
+                    avatar={<div>
+                      <img alt="" className={styles.cardAvatar} src={avatar[index % avatar.length]}/>
+                      {item.status === 1 ? <p>已{item.status_explain}</p> : <p> 已{item.status_explain}</p>}
+                    </div>}
+                    title={item.lock===1?<p className={styles.cardTitle}>{item.name}</p>:<a href="#" className={styles.cardTitle}>{item.name}</a>}
                     description={(
-                      <p className={styles.cardDescription}>
-                        <span>{item.description}</span>
-                      </p>
+                      <div>
+                        <p>管理员用户名 : {item.management_username}</p>
+                        <p className={styles.cardDescription}>
+                          <Tooltip title={item.description}>
+                            <span>{item.description}</span>
+                          </Tooltip>
+                        </p>
+                      </div>
+
                     )}
                   />
                 </Card>
@@ -338,7 +344,7 @@ export default class EndpointsList extends PureComponent {
           onOk={this.handleAdd}
           onCancel={() => this.handleModalVisible()}
         >
-          <AddOrEditOrganization  wrappedComponentRef={(inst) => this.formRef = inst}/>
+          <AddOrEditOrganization wrappedComponentRef={(inst) => this.formRef = inst}/>
         </Modal>
         <Modal
           key={ Date.parse(new Date())}
@@ -347,7 +353,7 @@ export default class EndpointsList extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.handleModalEditVisible()}
         >
-          <AddOrEditOrganization  wrappedComponentRef={(inst) => this.editFormRef = inst} editRecord={editRecord}/>
+          <AddOrEditOrganization wrappedComponentRef={(inst) => this.editFormRef = inst} editRecord={editRecord}/>
         </Modal>
       </PageHeaderLayout>
     );

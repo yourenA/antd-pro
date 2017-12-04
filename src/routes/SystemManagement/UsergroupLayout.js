@@ -26,7 +26,7 @@ export default class Manage extends PureComponent {
             component={UsergroupManage}
           />
           <Route
-            path='/system-management/usergroup/:ruleId'
+            path='/system-management/usergroup/:id'
             component={AddOrEditUsergroup}
           />
         </Switch>

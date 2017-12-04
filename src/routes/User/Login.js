@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert } from 'antd';
+import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert ,Select} from 'antd';
 import styles from './Login.less';
-
+import request from './../../utils/request'
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
-
+const Option = Select.Option;
 @connect(state => ({
   login: state.login,
 }))
@@ -15,12 +15,22 @@ export default class Login extends Component {
   state = {
     count: 0,
     type: 'account',
+    companiesList:[]
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.login.status === 'ok') {
-      this.props.dispatch(routerRedux.push('/'));
-    }
+  componentDidMount() {
+    const that=this;
+    request(`/available_companies`,{
+      method:'GET',
+      params:{
+        return:'all'
+      }
+    }).then((response)=>{
+      console.log('response',response)
+      that.setState({
+        companiesList:response.data.data
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -46,20 +56,28 @@ export default class Login extends Component {
   }
 
   handleSubmit = (e) => {
+    console.log('submit')
     e.preventDefault();
     const { type } = this.state;
     this.props.form.validateFields({ force: true },
       (err, values) => {
+        console.log('values')
         if (!err) {
+          console.log('type',type)
           this.props.dispatch({
             type: `login/${type}Submit`,
-            payload: values,
+            payload: {
+              ...values,
+              company_id:values.company_id.key,
+            },
           });
         }
       }
     );
   }
-
+  handleChange=(value)=>{
+    localStorage.setItem('organization',JSON.stringify(value))
+  }
   renderMessage = (message) => {
     return (
       <Alert
@@ -86,6 +104,20 @@ export default class Login extends Component {
                 login.submitting === false &&
                 this.renderMessage('账户或密码错误')
               }
+              <FormItem
+              >
+                {getFieldDecorator('company_id', {
+                  onChange: this.handleChange,
+                  initialValue: localStorage.getItem('organization')?{key:JSON.parse(localStorage.getItem('organization')).key,label:JSON.parse(localStorage.getItem('organization')).label}:{key:'0',label:'系统'},
+                  rules: [
+                    {required: true, message: '请选择机构'},
+                  ],
+                })(
+                  <Select labelInValue={true}  size="large">
+                    { this.state.companiesList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+                  </Select>
+                )}
+              </FormItem>
               <FormItem>
                 {getFieldDecorator('username', {
                   rules: [{
@@ -173,7 +205,7 @@ export default class Login extends Component {
               <Checkbox className={styles.autoLogin}>自动登录</Checkbox>
             )}
             <a className={styles.forgot} href="">忘记密码</a>
-            <Button size="large" className={styles.submit} type="primary" htmlType="submit">
+            <Button size="large"  className={styles.submit} type="primary" htmlType="submit">
               登录
             </Button>
           </FormItem>
