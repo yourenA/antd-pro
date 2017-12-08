@@ -7,6 +7,7 @@ export default {
   state: {
     username:'',
     token:'',
+    role_display_name:'',
     permissions:[],
     status: undefined,
   },
@@ -15,6 +16,7 @@ export default {
     *checkLoginState({payload},{call,put}){
       const username = localStorage.getItem('username') || sessionStorage.getItem('username');
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const role_display_name = localStorage.getItem('role_display_name') || sessionStorage.getItem('role_display_name');
       const permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse( sessionStorage.getItem('permissions'));
       if (username&&token) {
         yield put({
@@ -22,6 +24,7 @@ export default {
           payload: {
             username,
             token,
+            role_display_name,
             permissions
           },
         });
@@ -41,7 +44,7 @@ export default {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
-          sessionStorage.setItem('role_display_name', response.data.role_display_name);
+          localStorage.setItem('role_display_name', response.data.role_display_name);
 
         }
         yield put({
@@ -50,6 +53,7 @@ export default {
             username:response.data.username,
             token:response.data.token,
             permissions:response.data.permissions.data,
+            role_display_name:response.data.role_display_name,
             status:true
           },
         });
@@ -89,6 +93,7 @@ export default {
         token: payload.token,
         permissions:payload.permissions,
         status: payload.status,
+        role_display_name:payload.role_display_name
       };
     },
     changeSubmitting(state, { payload }) {

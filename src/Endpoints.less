@@ -95,6 +95,37 @@
     border-bottom: 1px solid #E9E9E9;
     margin-bottom: 12px;
   }
+
+  .desc-title,.desc-detail{
+    line-height: 22px;
+    padding-bottom: 16px;
+    color: rgba(0, 0, 0, 0.65);
+    display: table-cell;
+    vertical-align: top;
+  }
+  .desc-title{
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.95);
+    &:after{
+      content: ":";
+      margin: 0 8px 0 2px;
+      position: relative;
+      top: -0.5px;
+    }
+  }
+  .edit{
+    color: lighten(@primary-color,10%);
+    cursor: pointer;
+  }
+  .float-tag{
+    float: left;
+    display: inline-block;
+    background: lighten(@primary-color,10%);
+    color: #ffffff;
+    padding: 5px 5px;
+    margin: 5px;
+  }
+
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
     background: @primary-color !important;
   }
@@ -123,6 +154,8 @@
     width: 100%;
     overflow: hidden;
   }
+
+
 }
 
 

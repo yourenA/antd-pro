@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu, Icon, Avatar, Dropdown, Spin ,BackTop} from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
-import { Link, Route, Redirect, Switch } from 'dva/router';
+import { Link, Route, Redirect, Switch,routerRedux } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import intersection from 'lodash/intersection';
@@ -22,6 +22,11 @@ import EndpointDetailLayout from './../routes/AccessManagement/EndpointDetailLay
 const UsergroupLayout = asyncComponent(() =>
 import
 (/* webpackChunkName: "UsergroupLayout" */ "./../routes/SystemManagement/UsergroupLayout")
+)
+
+const UserInfo = asyncComponent(() =>
+import
+(/* webpackChunkName: "UserInfo" */ "./../routes/UserInfo/Index")
 )
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -98,6 +103,9 @@ class BasicLayout extends React.PureComponent {
       this.props.dispatch({
         type: 'login/logout',
       });
+    }else if(key === 'userInfo'){
+      this.props.dispatch(routerRedux.push(`/user-info`));
+
     }
   }
   getDefaultCollapsedSubMenus(props) {
@@ -211,7 +219,7 @@ class BasicLayout extends React.PureComponent {
     const {  collapsed, login } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        <Menu.Item ><Icon type="user" />个人中心</Menu.Item>
+        <Menu.Item key="userInfo"><Icon type="user" />个人中心</Menu.Item>
         <Menu.Item ><Icon type="setting" />设置</Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
@@ -300,6 +308,10 @@ class BasicLayout extends React.PureComponent {
               <Route
                 path='/system-management/usergroup/:id'
                 component={UsergroupLayout}
+              />
+              <Route
+                path='/user-info'
+                component={UserInfo}
               />
               {
                 (localStorage.getItem('role_display_name')==='系统管理员'|| sessionStorage.getItem('role_display_name')==='系统管理员')?
