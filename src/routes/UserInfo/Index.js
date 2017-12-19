@@ -93,8 +93,8 @@ export default class EndpointsList extends PureComponent {
             <Card
               bordered={false}
               title="安全信息"
-              bodyStyle={{padding: 24}}
             >
+              <Row>
               <Col md={24} sm={24}>
                 <div className="desc-title">密码</div>
                 <div className="desc-detail edit" onClick={()=> {
@@ -105,6 +105,7 @@ export default class EndpointsList extends PureComponent {
                   )
                 }}>修改<Icon type="edit"/></div>
               </Col>
+                </Row>
             </Card>
 
           </Col>

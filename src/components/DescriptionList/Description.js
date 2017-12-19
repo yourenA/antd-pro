@@ -5,6 +5,7 @@ import styles from './index.less';
 import responsive from './responsive';
 
 const Description = ({ term, column, className, children, ...restProps }) => {
+  /*column是通过React.cloneElement传递过来*/
   const clsString = classNames(styles.description, className);
   return (
     <Col className={clsString} {...responsive[column]} {...restProps}>

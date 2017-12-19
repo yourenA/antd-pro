@@ -14,12 +14,13 @@ import {
   Modal,
   Pagination,
   message,
-  Tree
+  Tree,
+  Steps,
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {Link} from 'dva/router';
 import DefaultSearch from './../../components/DefaultSearch/index'
-
+const { Step } = Steps;
 const TreeNode = Tree.TreeNode;
 @connect(state => ({
   endpoints: state.endpoints,
@@ -67,6 +68,25 @@ export default class EndpointsList extends PureComponent {
     });
   }
   render() {
+    const desc1 = (
+      <div >
+        <div>
+          曲丽丽
+          <Icon type="dingding-o" style={{ marginLeft: 8 }} />
+        </div>
+        <div>2016-12-12 12:32</div>
+      </div>
+    );
+
+    const desc2 = (
+      <div >
+        <div>
+          周毛毛
+          <Icon type="dingding-o" style={{ color: '#00A0E9', marginLeft: 8 }} />
+        </div>
+        <div><a href="">催一下</a></div>
+      </div>
+    );
     return (
       <PageHeaderLayout title={{label: '组织管理'}} breadcrumb={[{name: '平台管理'}, {name: '组织管理'}]}>
         <Card bordered={false} >
@@ -74,6 +94,16 @@ export default class EndpointsList extends PureComponent {
             <Tree  showLine>
               {this.renderTreeNodes(this.state.treeData)}
             </Tree>
+          </div>
+        </Card>
+        <Card bordered={false} style={{marginTop:'24px'}}>
+          <div>
+            <Steps direction='horizontal' current={1} progressDot >
+              <Step title="创建项目" description={desc1} />
+              <Step title="部门初审" description={desc2} />
+              <Step title="财务复核" />
+              <Step title="完成" />
+            </Steps>
           </div>
         </Card>
       </PageHeaderLayout>
