@@ -79,8 +79,6 @@ class Dashboard extends PureComponent {
   }
 
   componentDidMount() {
-    console.log('layout',document.querySelector('.meter-table').offsetTop)
-    console.log('layout',document.body.offsetHeight)
     this.setState({
       tableY:document.body.offsetHeight-document.querySelector('.meter-table').offsetTop-(68+54+50+38+15)
     })
