@@ -218,6 +218,7 @@ export default class EndpointsList extends PureComponent {
   }
 
   render() {
+
     const {endpoints: {data, meta, loading}} = this.props;
     const {selectedRows, modalVisible, addInputValue, selectedRowKeys, modalEditVisible,editRecord} = this.state;
     const columns = [

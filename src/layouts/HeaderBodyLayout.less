@@ -1,0 +1,39 @@
+@import "~antd/lib/style/themes/default.less";
+
+.header {
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  position:fixed;
+  z-index:9999;
+  :global {
+    .logo {
+      float: left;
+      font-size: 22px;
+      color: #ffffff;
+      margin: -2px 10px 0 24px;
+      a{
+        text-decoration: none;
+      }
+    }
+
+  }
+}
+.layoutContainer{
+  margin-top: 68px;
+}
+.account {
+  .avatar {
+    margin: 18px 8px 18px 0;
+    color: #fff;
+    vertical-align: middle;
+    text-align: center;
+    :global{
+      .anticon{
+        margin-right: 0;
+      }
+    }
+  }
+}
+

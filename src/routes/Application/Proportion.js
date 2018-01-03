@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-export default class EndpointsList extends PureComponent {
+export default class Proportion extends PureComponent {
   constructor(props) {
     super(props);
     this.echarts= window.echarts;
@@ -9,7 +9,10 @@ export default class EndpointsList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dynamic();
+    const that=this;
+    setTimeout(function () {
+      that.dynamic();
+    },0);
     window.addEventListener('resize',this.resizeChart)
   }
   componentWillUnmount(){
@@ -22,12 +25,9 @@ export default class EndpointsList extends PureComponent {
   }
   dynamic=()=>{
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
+    console.log(document.querySelector('.proportion-data').offsetWidth)
     let option = {
-      title : {
-        text: '某站点用户访问来源',
-        subtext: '纯属虚构',
-        x:'center'
-      },
+      title :'',
       tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -72,6 +72,7 @@ export default class EndpointsList extends PureComponent {
 
     const that=this;
     that.myChart.setOption(option);
+    that.myChart.resize();
   }
   render() {
     return (

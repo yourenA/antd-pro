@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-export default class EndpointsList extends PureComponent {
+export default class DynamicData extends PureComponent {
   constructor(props) {
     super(props);
     this.echarts= window.echarts;
@@ -9,7 +9,11 @@ export default class EndpointsList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dynamic();
+    const that=this;
+    setTimeout(()=>{
+      that.dynamic();
+    },0)
+
     window.addEventListener('resize',this.resizeChart)
   }
   componentWillUnmount(){

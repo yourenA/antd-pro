@@ -1,7 +1,7 @@
 import BasicLayout from '../layouts/BasicLayout';
 import UserLayout from '../layouts/UserLayout';
 import BlankLayout from '../layouts/BlankLayout';
-
+import HeaderBodyLayout from '../layouts/HeaderBodyLayout';
 // import Analysis from '../routes/Dashboard/Analysis';
 // import Monitor from '../routes/Dashboard/Monitor';
 // import Workplace from '../routes/Dashboard/Workplace';
@@ -56,6 +56,13 @@ import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataSta
 )
 const DistributionGraph = asyncComponent(() =>
 import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/DistributionGraph")
+)
+
+const CommunityAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
+)
+const NewPage = asyncComponent(() =>
+import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
 const data = [{
   component: BasicLayout,
@@ -164,6 +171,107 @@ const data = [{
         name: '分布图',
         path: 'DistributionGraph',
         component:DistributionGraph,
+      }],
+    }],
+},{
+  component: HeaderBodyLayout,
+  layout: 'HeaderBodyLayout',
+  name: '首页', // for breadcrumb
+  path: 'main',
+  children: [
+    {
+      name: '实时数据分析',            // 页面名称，会展示在菜单栏中
+      path: 'real_time_data',   // 匹配的路由
+      icon: 'area-chart',              // 页面图标，会展示在菜单栏中
+      permissions:['iot_hub_management'],
+      children: [{
+        name: '小区水量分析',
+        path: 'community_analysis',
+        component: CommunityAnalysis,
+        permissions:['iot_hub_management'],
+      },{
+        name: '户表水量分析',
+        path: 'user_meter_analysis',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '户表使用年限',
+        path: 'user_meter_life',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      }],
+    },  {
+      name: '运行管理',            // 页面名称，会展示在菜单栏中
+      path: 'run_manage',   // 匹配的路由
+      icon: 'dashboard',              // 页面图标，会展示在菜单栏中
+      permissions:['iot_hub_management'],
+      children: [{
+        name: '导入集中器',
+        path: 'import_concentrator',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '集中器管理',
+        path: 'concentrator_manage',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '指令和状态查看',
+        path: 'status_check',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '用户档案',
+        path: 'user_archives',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      }],
+    },{
+      name: '系统管理',            // 页面名称，会展示在菜单栏中
+      path: 'system_manage',   // 匹配的路由
+      icon: 'setting',              // 页面图标，会展示在菜单栏中
+      permissions:['iot_hub_management'],
+      children: [{
+        name: '厂商管理',
+        path: 'company_manage',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '水表类型查询',
+        path: 'water_meter_search',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '集中器类型查询',
+        path: 'concentrator_type_search',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '交换数据库设置',
+        path: 'change_dbase_setting',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      }],
+    },{
+      name: '异常分析',            // 页面名称，会展示在菜单栏中
+      path: 'unusual_analysis',   // 匹配的路由
+      icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
+      permissions:['iot_hub_management'],
+      children: [{
+        name: '集中器异常分析',
+        path: 'concentrator_unusual_analysis',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '水表异常分析',
+        path: 'meter_unusual_analysis',
+        component: NewPage,
+        permissions:['iot_hub_management'],
+      },{
+        name: '统计日报',
+        path: 'statistics_daily',
+        component: NewPage,
+        permissions:['iot_hub_management'],
       }],
     }],
 }, {

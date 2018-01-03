@@ -61,7 +61,7 @@ class BasicLayout extends React.PureComponent {
     super(props);
     // 把一级 Layout 的 children 作为菜单项
     this.menus = getNavData().reduce((arr, current) => {
-      if(current.layout ==='UserLayout' || current.showInSibar===false  ){
+      if(current.layout ==='UserLayout'|| current.layout ==='HeaderBodyLayout' || current.showInSibar===false  ){
         return arr.concat([])
       }
       return arr.concat(current.children)
@@ -81,8 +81,6 @@ class BasicLayout extends React.PureComponent {
     return { location, breadcrumbNameMap };
   }
   componentDidMount() {
-
-
     // console.log(this.menus)
     this.props.dispatch({
       type: 'login/checkLoginState',
@@ -285,7 +283,7 @@ class BasicLayout extends React.PureComponent {
               ) : <Spin size="small" style={{ marginLeft: 8 }} />}
             </div>
           </Header>
-          <Content style={{ margin: '24px 24px 0', height: '100%' }}>
+          <Content style={{  height: '100%' }}>
             <BackTop />
             <Switch>
               {

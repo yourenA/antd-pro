@@ -46,7 +46,6 @@ export default class EndpointsList extends PureComponent {
             >
               <Proportion />
             </Card>
-
           </Col>
         </Row>
       </PageHeaderLayout>

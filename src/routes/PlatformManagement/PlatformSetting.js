@@ -31,7 +31,7 @@ export default class EndpointsList extends PureComponent {
     super(props);
     this.state = {
       treeData: [
-        { title: 'Expand to load', key: '0',children:[ { title: 'Child Node', key: `11` }, { title: 'Child Node', key: `12` }, { title: 'Child Node', key: `13` }]},
+        { title: ' Expand Expand  to load', key: '0',children:[ { title: 'Child ChildChild Node', key: `11` }, { title: 'Child Node', key: `12` }, { title: 'Child Node', key: `13` }]},
         { title: 'Expand to load', key: '1' ,children:[ { title: 'Child Node', key: `21` }, { title: 'Child Node', key: `22` }, { title: 'Child Node', key: `23` }]},
         { title: 'Expand to load', key: '2' ,children:[ { title: 'Child Node', key: `31` }, { title: 'Child Node', key: `32` }, { title: 'Child Node', key: `33` }]},
       ],
@@ -91,7 +91,7 @@ export default class EndpointsList extends PureComponent {
       <PageHeaderLayout title={{label: '组织管理'}} breadcrumb={[{name: '平台管理'}, {name: '组织管理'}]}>
         <Card bordered={false} >
           <div>
-            <Tree  showLine>
+            <Tree  showLine style={{width:100,overflow:'hidden'}}>
               {this.renderTreeNodes(this.state.treeData)}
             </Tree>
           </div>
