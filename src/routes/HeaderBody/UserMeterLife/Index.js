@@ -1,24 +1,24 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Button, Layout, message} from 'antd';
+import {Pagination , Table , Card, Button, Layout,message} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './../../../components/DefaultSearch/index'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
-const {Content} = Layout;
+const { Content} = Layout;
 @connect(state => ({
   endpoints: state.endpoints,
 }))
-class CommunityAnalysis extends PureComponent {
+class UserMeterLife extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      tableY: 0,
+      tableY:0,
       query: '',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
-      started_at: '',
-      ended_at: '',
+      initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      started_at:'',
+      ended_at:'',
       area: '',
     }
   }
@@ -113,49 +113,30 @@ class CommunityAnalysis extends PureComponent {
           )
         }
       },
-      {title: '水表编号', width: 120, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '水表类型', width: 120, dataIndex: 'age', key: 'age', fixed: 'left'},
-      {title: '集中器编号', dataIndex: 'address', key: '1', width: 120,},
-      {title: '安装地址', dataIndex: 'address', key: '2', width: 150,},
-      {title: '上次抄见', dataIndex: 'address', key: '3', width: 120,},
-      {title: '上次抄见时间', dataIndex: 'address', key: '4', width: 200,},
-      {title: '本次抄见', dataIndex: 'set', key: '5', width: 120,},
-      {title: '本次抄见时间', dataIndex: 'address', key: '6', width: 200},
-      {title: '应收水量', dataIndex: 'address', key: '7'},
-      {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 283,
-        render: (val, record, index) => {
-          return (
-            <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record.id)}>点抄 901F</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>点抄 90EF</Button>
-              <Button type="danger" size='small' onClick={()=>this.operate(record.id)}>停用</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>关阀</Button>
-            </div>
-          )
-        }
-      },
+      { title: '水表编号', width: 150, dataIndex: 'name', key: 'name' },
+      { title: '用户名称', width: 150, dataIndex: 'age', key: 'age' },
+      { title: '集中器编号', dataIndex: 'address', key: '1', width: 150, },
+      { title: '安装位置', dataIndex: 'address', key: '2' ,width: 150 },
+      { title: '安装时间', dataIndex: 'address', key: '3' ,width: 150,},
+      { title: '年限', dataIndex: 'address', key: '4' ,},
     ];
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}  siderLoadedCallback={this.siderLoadedCallback}/>
-        <Content style={{background: '#fff'}}>
+        <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '小区水量分析'}]}>
-              <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表使用年限'}]}>
+              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch   wrappedComponentRef={(inst) => this.formRef = inst}
-                                     handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                                   initRange={this.state.initRange}/>
+                    <DefaultSearch
+                      wrappedComponentRef={(inst) => this.formRef = inst}
+                      handleSearch={this.handleSearch} handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
                   </div>
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if(record.description===''){
                       return 'error'
                     }
                   }}
@@ -164,7 +145,7 @@ class CommunityAnalysis extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1600, y: this.state.tableY}}
+                  scroll={{ x: 900, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />
@@ -172,7 +153,7 @@ class CommunityAnalysis extends PureComponent {
                             current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
                             style={{marginTop: '10px'}} onChange={this.handPageChange}/>
               </Card>
-            </PageHeaderLayout>
+          </PageHeaderLayout>
           </div>
         </Content>
       </Layout>
@@ -180,4 +161,4 @@ class CommunityAnalysis extends PureComponent {
   }
 }
 
-export default CommunityAnalysis
+export default UserMeterLife

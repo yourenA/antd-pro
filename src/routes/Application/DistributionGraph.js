@@ -15,12 +15,12 @@ export default class EndpointsList extends PureComponent {
 
    constructor(props) {
     super(props);
-    this.BMap = window.BMap;
+    // this.BMap = window.BMap;
     this.state = {
     }
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     console.log(this.BMap)
     console.log(window.BMap)
     var map = new this.BMap.Map("hot-map");          // 创建地图实例
@@ -40,7 +40,7 @@ export default class EndpointsList extends PureComponent {
     heatmapOverlay.setDataSet({data:points,max:60});
     //是否显示热力图
     heatmapOverlay.show();
-  }
+  }*/
 
 
 

@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,Col,Input,Button} from 'antd';
+import {Form,DatePicker,Row,Col,Input,Button,Switch} from 'antd';
 import moment from 'moment'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -16,9 +16,10 @@ class SearchForm extends Component {
     const {dispatch, form} = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
+      console.log(fieldsValue)
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
-        query: fieldsValue.query,
+        query: fielgitgitdsValue.query,
         started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
@@ -34,16 +35,23 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <Col md={8} sm={24}>
-            <FormItem label={this.props.inputText?this.props.inputText:"名称"}>
-              {getFieldDecorator('query')(
+        <Row gutter={16}>
+          <Col md={6} sm={24}>
+            <FormItem label="台区">
+              {getFieldDecorator('water_num')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label={this.props.dateText?this.props.dateText:'创建时间'}>
+          <Col md={6} sm={24}>
+            <FormItem label="表册">
+              {getFieldDecorator('username')(
+                <Input placeholder="请输入"/>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={6}sm={24}>
+            <FormItem label="创建时间">
               {getFieldDecorator('range-time-picker',{
                 initialValue:this.props.initRange?this.props.initRange: '',
               })(
@@ -51,12 +59,11 @@ class SearchForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col md={6} sm={24}>
             <FormItem >
               <Button type="primary" htmlType="submit">查询</Button>
               <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             </FormItem>
-
           </Col>
         </Row>
       </Form>

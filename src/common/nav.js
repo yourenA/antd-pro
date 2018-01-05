@@ -2,39 +2,8 @@ import BasicLayout from '../layouts/BasicLayout';
 import UserLayout from '../layouts/UserLayout';
 import BlankLayout from '../layouts/BlankLayout';
 import HeaderBodyLayout from '../layouts/HeaderBodyLayout';
-// import Analysis from '../routes/Dashboard/Analysis';
-// import Monitor from '../routes/Dashboard/Monitor';
-// import Workplace from '../routes/Dashboard/Workplace';
-//
-// import TableList from '../routes/List/TableList';
-// import CoverCardList from '../routes/List/CoverCardList';
-// import CardList from '../routes/List/CardList';
-// import FilterCardList from '../routes/List/FilterCardList';
-// import SearchList from '../routes/List/SearchList';
-// import BasicList from '../routes/List/BasicList';
-//
-// import BasicProfile from '../routes/Profile/BasicProfile';
-// import AdvancedProfile from '../routes/Profile/AdvancedProfile';
-//
-// import BasicForm from '../routes/Forms/BasicForm';
-// import AdvancedForm from '../routes/Forms/AdvancedForm';
-// import StepForm from '../routes/Forms/StepForm';
-// import Step2 from '../routes/Forms/StepForm/Step2';
-// import Step3 from '../routes/Forms/StepForm/Step3';
-//
-// import Exception403 from '../routes/Exception/403';
-// import Exception404 from '../routes/Exception/404';
-// import Exception500 from '../routes/Exception/500';
-//
-// import Success from '../routes/Result/Success';
-// import Error from '../routes/Result/Error';
-// import NewPage from '../routes/NewPage';
 
 import Login from '../routes/User/Login';
-// import Register from '../routes/User/Register';
-// import RegisterResult from '../routes/User/RegisterResult';
-
-// import Endpoints from '../routes/AccessManagement/Endpoints';
 import asyncComponent from './../AsyncComponent'
 const Endpoints = asyncComponent(() =>
 import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
@@ -61,6 +30,31 @@ import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/Dist
 const CommunityAnalysis = asyncComponent(() =>
 import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
 )
+
+const UserMeterAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
+)
+
+const UserMeterLife = asyncComponent(() =>
+import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/UserMeterLife/Index")
+)
+
+const ImportConcentrator = asyncComponent(() =>
+import(/* webpackChunkName: "ImportConcentrator" */ "./../routes/HeaderBody/ImportConcentrator/Index")
+)
+
+const ConcentratorManage = asyncComponent(() =>
+import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
+)
+
+const StatusCheck = asyncComponent(() =>
+import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
+)
+
+const UserArchives = asyncComponent(() =>
+import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
+)
+
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -192,12 +186,12 @@ const data = [{
       },{
         name: '户表水量分析',
         path: 'user_meter_analysis',
-        component: NewPage,
+        component: UserMeterAnalysis,
         permissions:['iot_hub_management'],
       },{
         name: '户表使用年限',
         path: 'user_meter_life',
-        component: NewPage,
+        component: UserMeterLife,
         permissions:['iot_hub_management'],
       }],
     },  {
@@ -208,22 +202,22 @@ const data = [{
       children: [{
         name: '导入集中器',
         path: 'import_concentrator',
-        component: NewPage,
+        component: ImportConcentrator,
         permissions:['iot_hub_management'],
       },{
         name: '集中器管理',
         path: 'concentrator_manage',
-        component: NewPage,
+        component: ConcentratorManage,
         permissions:['iot_hub_management'],
       },{
         name: '指令和状态查看',
         path: 'status_check',
-        component: NewPage,
+        component: StatusCheck,
         permissions:['iot_hub_management'],
       },{
         name: '用户档案',
         path: 'user_archives',
-        component: NewPage,
+        component: UserArchives,
         permissions:['iot_hub_management'],
       }],
     },{

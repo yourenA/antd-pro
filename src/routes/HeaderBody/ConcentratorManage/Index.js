@@ -1,24 +1,29 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Button, Layout, message} from 'antd';
+import {Pagination , Table , Card, Button, Layout,message,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../../../components/DefaultSearch/index'
+import Search from '../../../components/DefaultSearch/index'
+import AddConcentrator from './AddConcentrator'
 import Sider from './../Sider'
 import {connect} from 'dva';
+import Detail from './Detail'
 import moment from 'moment'
-const {Content} = Layout;
+import './index.less'
+const { Content} = Layout;
 @connect(state => ({
   endpoints: state.endpoints,
 }))
-class CommunityAnalysis extends PureComponent {
+class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      tableY: 0,
+      tableY:0,
       query: '',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
-      started_at: '',
-      ended_at: '',
+      initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      started_at:'',
+      ended_at:'',
+      editModal:false,
+      addModal:false,
       area: '',
     }
   }
@@ -91,8 +96,10 @@ class CommunityAnalysis extends PureComponent {
     })
   }
 
-  operate = (id)=> {
+  operate=(id)=>{
+    console.log(id)
     message.success(id)
+    this.setState({editModal:true})
   }
 
   render() {
@@ -113,49 +120,53 @@ class CommunityAnalysis extends PureComponent {
           )
         }
       },
-      {title: '水表编号', width: 120, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '水表类型', width: 120, dataIndex: 'age', key: 'age', fixed: 'left'},
-      {title: '集中器编号', dataIndex: 'address', key: '1', width: 120,},
-      {title: '安装地址', dataIndex: 'address', key: '2', width: 150,},
-      {title: '上次抄见', dataIndex: 'address', key: '3', width: 120,},
-      {title: '上次抄见时间', dataIndex: 'address', key: '4', width: 200,},
-      {title: '本次抄见', dataIndex: 'set', key: '5', width: 120,},
-      {title: '本次抄见时间', dataIndex: 'address', key: '6', width: 200},
-      {title: '应收水量', dataIndex: 'address', key: '7'},
+      { title: '集中器编号', width: 180, dataIndex: 'name', key: 'name',    fixed: 'left', },
+      { title: '集中器类型', width: 140, dataIndex: 'age', key: 'age'},
+      { title: '硬件编号', dataIndex: 'address', key: '1' ,width: 180, },
+      { title: '地址', dataIndex: 'address', key: '2' ,width: 240,},
+      { title: '在线状态', dataIndex: 'address', key: '3' ,width: 120,},
+      { title: '本轮登录时间', dataIndex: 'address', key: '4' ,width: 180,},
+      { title: '最后访问时间', dataIndex: 'set', key: '5',width: 180,},
+      { title: '水表总数', dataIndex: 'address', key: '6',width: 120},
+      { title: '上行报文（指令）', dataIndex: 'set', key: '51',width: 180,},
+      { title: '下行报文（指令）', dataIndex: 'address', key: '614',width: 180},
+      { title: '是否做统计日报', dataIndex: 'address', key: '615'},
       {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 283,
+        width: 180,
         render: (val, record, index) => {
-          return (
+          return(
             <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record.id)}>点抄 901F</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>点抄 90EF</Button>
-              <Button type="danger" size='small' onClick={()=>this.operate(record.id)}>停用</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>关阀</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record.id)}>编辑</Button>
+              <Button type="danger" size='small' onClick={()=>this.operate(record.id)}>删除</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record.id)}>指令</Button>
             </div>
-          )
+            )
         }
       },
     ];
+    console.log('tabY',this.state.tableY)
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea}  siderLoadedCallback={this.siderLoadedCallback}/>
-        <Content style={{background: '#fff'}}>
+        <Sider changeArea={this.changeArea}   siderLoadedCallback={this.siderLoadedCallback}/>
+        <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '小区水量分析'}]}>
-              <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '集中器管理'}]}>
+              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch   wrappedComponentRef={(inst) => this.formRef = inst}
-                                     handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                                   initRange={this.state.initRange}/>
+                    <Search wrappedComponentRef={(inst) => this.formRef = inst}
+                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
+                  </div>
+                  <div className='tableListOperator'>
+                    <Button icon="plus" type="primary" onClick={() => this.setState({addModal:true})}>添加</Button>
                   </div>
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if(record.description===''){
                       return 'error'
                     }
                   }}
@@ -164,7 +175,7 @@ class CommunityAnalysis extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1600, y: this.state.tableY}}
+                  scroll={{ x: 2050, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />
@@ -172,12 +183,30 @@ class CommunityAnalysis extends PureComponent {
                             current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
                             style={{marginTop: '10px'}} onChange={this.handPageChange}/>
               </Card>
-            </PageHeaderLayout>
+          </PageHeaderLayout>
           </div>
         </Content>
+        <Modal
+          title="添加集中器"
+          visible={this.state.addModal}
+          onOk={this.handleEdit}
+          onCancel={() => this.setState({addModal:false})}
+        >
+          <AddConcentrator />
+        </Modal>
+        <Modal
+          key={ Date.parse(new Date())}
+          title="集中器指令:集中器编号"
+          visible={this.state.editModal}
+          onOk={this.handleEdit}
+          onCancel={() => this.setState({editModal:false})}
+        >
+          <Detail />
+        </Modal>
+
       </Layout>
     );
   }
 }
 
-export default CommunityAnalysis
+export default UserMeterAnalysis

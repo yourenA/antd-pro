@@ -2,10 +2,10 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import { Layout, Menu, Breadcrumb, Icon, Avatar, Dropdown, Spin ,BackTop } from 'antd';
+import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop } from 'antd';
 import styles from './HeaderBodyLayout.less';
 import { connect } from 'dva';
-import { Link, Route, Redirect, Switch,routerRedux } from 'dva/router';
+import { Link, Route, Redirect, Switch } from 'dva/router';
 import { getNavData } from '../common/nav';
 import { getRouteData } from '../utils/utils';
 import DocumentTitle from 'react-document-title';
@@ -13,8 +13,10 @@ import { ContainerQuery } from 'react-container-query';
 import intersection from 'lodash/intersection';
 import Main from './../routes/HeaderBody/NewPage';
 import classNames from 'classnames';
+import EditPassword from './../routes/HeaderBody/EditPassword'
+import request from './../utils/request'
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 const query = {
   'screen-xs': {
     maxWidth: 575,
@@ -47,6 +49,7 @@ class HeaderBodyLayout extends React.PureComponent {
     }, []);
     this.state = {
       current: '',
+      editModal:false
     };
   }
   componentDidMount() {
@@ -74,9 +77,19 @@ class HeaderBodyLayout extends React.PureComponent {
   }
   handleClick = (e) => {
     console.log('click ', e);
-    this.setState({
-      current: e.key,
-    });
+    if(e.key==='logout'){
+      this.props.dispatch({
+        type: 'login/logout',
+      });
+    }else if(e.key==='password'){
+      this.setState({editModal:true})
+    }else{
+      this.setState({
+        current: e.key,
+      });
+    }
+
+
   }
   getNavMenuItems(menusData, parentPath = '/main/') {
     let permissions=(localStorage.getItem('permissions')?JSON.parse(localStorage.getItem('permissions'))
@@ -128,6 +141,26 @@ class HeaderBodyLayout extends React.PureComponent {
 
     });
   }
+
+  handleEditPassword = ()=> {
+    const that=this;
+    const formValues = this.editFormRef.props.form.getFieldsValue();
+    console.log(formValues)
+    request(`/password`, {
+      method: 'PUT',
+      data:formValues
+    }).then((response)=> {
+      console.log(response)
+      if(response.status===200){
+        message.success('修改密码成功');
+        that.setState({
+          editModal: false
+        })
+      }
+    }).catch((err)=> {
+      console.log(err)
+    });
+  }
   render() {
     const {   login } = this.props;
     const layout= (
@@ -148,7 +181,7 @@ class HeaderBodyLayout extends React.PureComponent {
                      <Avatar  icon="user" className={styles.avatar}/>
               {login.username}
                   </span>}>
-              <Menu.Item key="userInfo"><Icon type="user" />个人中心</Menu.Item>
+              <Menu.Item key="password"><Icon type="user" />修改密码</Menu.Item>
               <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
             </SubMenu>
           </Menu>
@@ -176,7 +209,18 @@ class HeaderBodyLayout extends React.PureComponent {
                 />
               </Switch>
             </Content>
+          <Modal
+            title="修改密码"
+            visible={this.state.editModal}
+            onOk={this.handleEditPassword}
+            onCancel={() => this.setState({
+              editModal:false
+            })}
+          >
+            <EditPassword  wrappedComponentRef={(inst) => this.editFormRef = inst} />
+          </Modal>
         </Layout>
+
       </Layout>
     )
     return (

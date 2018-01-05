@@ -35,18 +35,18 @@ export default class EndpointsList extends PureComponent {
         }
       },
       legend: {
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        data: ['在线', '休眠', '不稳', '失联']
       },
       yAxis: {
         type: 'value'
       },
       xAxis : {
         type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
       },
       series: [
         {
-          name: '直接访问',
+          name: '在线',
           type: 'bar',
           stack: '总量',
           label: {
@@ -55,10 +55,15 @@ export default class EndpointsList extends PureComponent {
               position: 'insideRight'
             }
           },
-          data: [320, 302, 301, 334, 390, 330, 320]
+          itemStyle:{
+            normal: {
+              color: '#40c4ff',
+            }
+          },
+          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
         },
         {
-          name: '邮件营销',
+          name:  '休眠',
           type: 'bar',
           stack: '总量',
           label: {
@@ -67,10 +72,15 @@ export default class EndpointsList extends PureComponent {
               position: 'insideRight'
             }
           },
-          data: [120, 132, 101, 134, 90, 230, 210]
+          itemStyle:{
+            normal: {
+              color: 'rgb(97,160,168)',
+            }
+          },
+          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23].reverse()
         },
         {
-          name: '联盟广告',
+          name:  '不稳',
           type: 'bar',
           stack: '总量',
           label: {
@@ -79,10 +89,15 @@ export default class EndpointsList extends PureComponent {
               position: 'insideRight'
             }
           },
-          data: [220, 182, 191, 234, 290, 330, 310]
+          itemStyle:{
+            normal: {
+              color: 'rgb(47,69,84)',
+            }
+          },
+          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
         },
         {
-          name: '视频广告',
+          name: '失联',
           type: 'bar',
           stack: '总量',
           label: {
@@ -91,19 +106,12 @@ export default class EndpointsList extends PureComponent {
               position: 'insideRight'
             }
           },
-          data: [150, 212, 201, 154, 190, 330, 410]
-        },
-        {
-          name: '搜索引擎',
-          type: 'bar',
-          stack: '总量',
-          label: {
+          itemStyle:{
             normal: {
-              show: true,
-              position: 'insideRight'
+              color: 'rgb(213,58,53)',
             }
           },
-          data: [820, 832, 901, 934, 1290, 1330, 1320]
+          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23].reverse()
         }
       ]
     };

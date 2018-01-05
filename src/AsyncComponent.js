@@ -29,7 +29,7 @@ const asyncComponent = loadComponent => (
 
         render() {
             const { Component } = this.state;
-            return (Component) ? <Component {...this.props} /> : <Spin size="large"  style={{width: '100%',margin:'40px 0 !important'}} />;
+            return (Component) ? <Component {...this.props} /> : <Spin size="large" className='AsyncSpin' />;
         }
     }
 );
