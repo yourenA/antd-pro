@@ -164,8 +164,8 @@ class HeaderBodyLayout extends React.PureComponent {
   render() {
     const {   login } = this.props;
     const layout= (
-      <Layout  style={{ display:'flex',minHeight:'100vh' }}>
-        <Header className={styles.header}>
+      <Layout  style={{minHeight:'100vh' }}>
+        <div className={styles.header}>
           <div className="logo" >
             <Link to="/main">珠华远传水表监控系统</Link>
           </div>
@@ -185,8 +185,8 @@ class HeaderBodyLayout extends React.PureComponent {
               <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
             </SubMenu>
           </Menu>
-        </Header>
-        <Layout className={styles.layoutContainer} style={{ flex:1 }}>
+        </div>
+        <Layout className={styles.layoutContainer} >
             <Content style={{ background: '#f0f2f5'}}>
               <BackTop />
               <Switch>
