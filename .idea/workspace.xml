@@ -7,8 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="HeaderBodyLayout.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HeaderBodyLayout.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="190" column="25" selection-start-line="190" selection-start-column="25" selection-end-line="190" selection-end-column="25" />
+            <state relative-caret-position="405">
+              <caret line="167" column="35" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="35" />
               <folding>
                 <element signature="e#49#75#0" expanded="true" />
               </folding>
@@ -46,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeaderBodyLayout.less" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HeaderBodyLayout.less" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+            <state relative-caret-position="432">
+              <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -92,7 +91,6 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
         <option value="$PROJECT_DIR$/src/AsyncComponent.js" />
-        <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/index.less" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/addConcentrator.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ImportConcentrator/Index.js" />
@@ -123,6 +121,7 @@
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
+        <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" />
       </list>
     </option>
   </component>
@@ -369,12 +368,12 @@
       <workItem from="1515052096135" duration="9002000" />
       <workItem from="1515117376705" duration="21022000" />
       <workItem from="1515379910096" duration="187000" />
-      <workItem from="1515380800773" duration="2517000" />
+      <workItem from="1515380800773" duration="2822000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="390343000" />
+    <option name="totallyTimeSpent" value="390648000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -761,21 +760,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="190" column="25" selection-start-line="190" selection-start-column="25" selection-end-line="190" selection-end-column="25" />
+        <state relative-caret-position="405">
+          <caret line="167" column="35" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="35" />
           <folding>
             <element signature="e#49#75#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
