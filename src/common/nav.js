@@ -54,7 +54,9 @@ import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck
 const UserArchives = asyncComponent(() =>
 import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
 )
-
+const VendorMange = asyncComponent(() =>
+import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
+)
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -227,8 +229,8 @@ const data = [{
       permissions:['iot_hub_management'],
       children: [{
         name: '厂商管理',
-        path: 'company_manage',
-        component: NewPage,
+        path: 'vendor_manage',
+        component: VendorMange,
         permissions:['iot_hub_management'],
       },{
         name: '水表类型查询',
