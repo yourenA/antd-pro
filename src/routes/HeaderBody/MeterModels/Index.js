@@ -6,9 +6,9 @@ import {connect} from 'dva';
 import Sider from './Sider'
 const { Content} = Layout;
 @connect(state => ({
-  manufacturers: state.manufacturers,
+  meter_models: state.meter_models,
 }))
-class FunctionContent extends PureComponent {
+class Meter_models extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class FunctionContent extends PureComponent {
     })
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'meter_models/fetch',
       payload: {
         page: 1,
       }
@@ -36,7 +36,7 @@ class FunctionContent extends PureComponent {
   handleFormReset = () => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'meter_models/fetch',
       payload: {
       },
     });
@@ -50,7 +50,7 @@ class FunctionContent extends PureComponent {
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'meter_models/fetch',
       payload: {
         ...values,
       },
@@ -73,7 +73,7 @@ class FunctionContent extends PureComponent {
   }
 
   render() {
-    const {manufacturers: {data, meta, loading}} = this.props;
+    const {meter_models: {data, meta, loading}} = this.props;
     const columns = [
       {
         title: '序号',
@@ -81,6 +81,7 @@ class FunctionContent extends PureComponent {
         key: 'id',
         width: 45,
         className: 'table-index',
+        fixed: 'left',
         render: (text, record, index) => {
           return (
             <span>
@@ -89,13 +90,16 @@ class FunctionContent extends PureComponent {
           )
         }
       },
-      {title: '厂商编号', width: '15%', dataIndex: 'code', key: 'code'},
-      {title: '厂商名称', width: '15%', dataIndex: 'name', key: 'name'},
-      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count', width: '15%'},
-      {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: '15%'},
-      {title: '厂商电话', dataIndex: 'phone', key: 'phone', width: '15%'},
+      {title: '水表类型', width: '13%', dataIndex: 'type', key: 'type'},
+      {title: '口径mm', width:  '13%', dataIndex: 'bore', key: 'bore'},
+      {title: '是否支持阀控', dataIndex: 'is_control_explain', key: 'is_control_explain', width:  '13%'},
+      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width:  '13%'},
+      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width:  '13%'},
       {
-        title: '联系人', dataIndex: 'contact', key: 'contact',
+        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width:  '13%'
+      },
+      {
+        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
     ];
     return (
@@ -103,12 +107,12 @@ class FunctionContent extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '厂商查询'}]} >
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '水表类型查询'}]} >
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch inputText="厂商名称" dateText="发送时间" handleSearch={this.handleSearch}
-                                   handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
+                    <DefaultSearch inputText="水表类型" handleSearch={this.handleSearch}
+                                   handleFormReset={this.handleFormReset} />
                   </div>
                 </div>
                 <Table
@@ -122,7 +126,7 @@ class FunctionContent extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ y: this.state.tableY}}
+                  scroll={{x: 1000, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -138,4 +142,4 @@ class FunctionContent extends PureComponent {
   }
 }
 
-export default FunctionContent
+export default Meter_models

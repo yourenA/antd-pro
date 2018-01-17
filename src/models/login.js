@@ -18,6 +18,7 @@ export default {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       const role_display_name = localStorage.getItem('role_display_name') || sessionStorage.getItem('role_display_name');
       const permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse( sessionStorage.getItem('permissions'));
+      // console.log(permissions)
       if (username&&token) {
         yield put({
           type: 'changeLoginStatus',

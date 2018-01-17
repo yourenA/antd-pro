@@ -57,6 +57,14 @@ import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchiv
 const VendorMange = asyncComponent(() =>
 import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
 )
+
+const MeterModels = asyncComponent(() =>
+import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
+)
+
+const ConcentratorModels = asyncComponent(() =>
+import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
+)
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -66,48 +74,6 @@ const data = [{
   name: '首页', // for breadcrumb
   path: '',
   children: [
-  //   {
-  //   name: 'Dashboard',
-  //   icon: 'dashboard',
-  //   path: 'dashboard',
-  //   children: [{
-  //     name: '分析页',
-  //     path: 'analysis',
-  //     component: Analysis,
-  //   }, {
-  //     name: '监控页',
-  //     path: 'monitor',
-  //     component: Monitor,
-  //   }, {
-  //     name: '工作台',
-  //     path: 'workplace',
-  //     component: Workplace,
-  //   }],
-  // }, {
-  //   name: '表单页',
-  //   path: 'form',
-  //   icon: 'form',
-  //   children: [{
-  //     name: '基础表单',
-  //     path: 'basic-form',
-  //     component: BasicForm,
-  //   }, {
-  //     name: '分步表单',
-  //     path: 'step-form',
-  //     component: StepForm,
-  //     children: [{
-  //       path: 'confirm',
-  //       component: Step2,
-  //     }, {
-  //       path: 'result',
-  //       component: Step3,
-  //     }],
-  //   }, {
-  //     name: '高级表单',
-  //     path: 'advanced-form',
-  //     component: AdvancedForm,
-  //   }],
-  // },
     {
     name: '接入管理',            // 页面名称，会展示在菜单栏中
     path: 'access-management',   // 匹配的路由
@@ -226,22 +192,22 @@ const data = [{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['iot_hub_management'],
+      permissions:['concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [{
-        name: '厂商管理',
+        name: '厂商查询',
         path: 'vendor_manage',
         component: VendorMange,
-        permissions:['iot_hub_management'],
+        permissions:['manufacturer_delete','manufacturer_add_and_edit'],
       },{
         name: '水表类型查询',
         path: 'water_meter_search',
-        component: NewPage,
-        permissions:['iot_hub_management'],
+        component: MeterModels,
+        permissions:['meter_model_delete','meter_model_add_and_edit'],
       },{
         name: '集中器类型查询',
         path: 'concentrator_type_search',
-        component: NewPage,
-        permissions:['iot_hub_management'],
+        component: ConcentratorModels,
+        permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
       },{
         name: '交换数据库设置',
         path: 'change_dbase_setting',
@@ -286,12 +252,17 @@ const data = [{
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',
-  children: {
+  children: [{
+    name: '珠华远传',
+    path: '/main',
+    target: '_self',
+    icon: 'table',
+  },{
     name: 'API使用文档',
     path: 'http://api.water.test.com/doc/',
     target: '_blank',
     icon: 'book',
-  },
+  }],
 }];
 
 export function getNavData() {

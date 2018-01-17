@@ -2,6 +2,9 @@
 @import "./utils/utils.less";
 
 :global {
+  body{
+    min-width: 900px;
+  }
   .AsyncSpin{
     width: 100%;
     margin: 150px 0;
@@ -16,7 +19,6 @@
     }
   }
   .tableListForm {
-
     .ant-form-item {
       margin-bottom: 24px;
       margin-right: 0;
@@ -244,7 +246,7 @@
     padding: 0 !important;
   }
   .ant-table-small .ant-table-thead > tr > th, .ant-table-header {
-    background: #fafafa !important;
+    background: #F0F0F0 !important;
   }
 
   .ant-menu-vertical .ant-menu-item {
@@ -258,11 +260,16 @@
     margin-right: 5px;
     &:last-child {
       margin-right: 0;
-
     }
   }
   .ant-table-small .error {
     color: #f5222d;
+  }
+  .ant-table-small {
+    .ant-table-tbody{
+      tr:nth-child(odd){background-color:#FFFFFF;}
+      tr:nth-child(even){background-color:#f9f9f9;}
+    }
   }
 }
 
