@@ -46,7 +46,6 @@ export default {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
           localStorage.setItem('role_display_name', response.data.role_display_name);
-
         }
         yield put({
           type: 'changeLoginStatus',

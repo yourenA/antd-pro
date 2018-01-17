@@ -1,4 +1,4 @@
-import { query } from '../services/meter_models';
+import { query,add,remove,edit } from '../services/meter_models';
 
 export default {
   namespace: 'meter_models',
@@ -25,6 +25,26 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
+    },
+    *add({ payload, callback }, { call, put }) {
+      const response = yield call(add, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *edit({ payload, callback }, { call, put }) {
+      const response = yield call(edit, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *remove({ payload, callback }, { call, put }) {
+      const response = yield call(remove, payload);
+      if(response.status===200){
+        if (callback) callback();
+      }
     },
   },
 

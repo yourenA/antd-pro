@@ -2,14 +2,11 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,Col,Input,Button} from 'antd';
-import moment from 'moment'
-const RangePicker = DatePicker.RangePicker;
+import {Form,Row,Input,Button} from 'antd';
 const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -32,20 +29,17 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <Col md={8} sm={24}>
-            <FormItem label={this.props.inputText?this.props.inputText:"名称"}>
+            <FormItem  label={this.props.inputText?this.props.inputText:"名称"}>
               {getFieldDecorator('query')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem >
+            <FormItem   >
               <Button type="primary" htmlType="submit">查询</Button>
               <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+              {this.props.showAddBtn&&<Button  type="primary"  style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}
             </FormItem>
 
-          </Col>
         </Row>
       </Form>
     )

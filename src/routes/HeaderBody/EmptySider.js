@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
 const { Sider} = Layout;
-class SiderNav extends PureComponent {
+class SiderEmpty extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,4 +27,4 @@ class SiderNav extends PureComponent {
   }
 }
 
-export default SiderNav
+export default SiderEmpty

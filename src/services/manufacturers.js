@@ -9,3 +9,26 @@ export async function query(params) {
     }
   });
 }
+export async function remove({id}) {
+  return request(`/manufacturers/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function add({...restParams}) {
+  return request(`/manufacturers`, {
+    method: 'POST',
+    data: {
+      ...restParams,
+    },
+  });
+}
+
+export async function edit({id,...restParams}) {
+  return request(`/manufacturers/${id}`, {
+    method: 'PUT',
+    data: {
+      ...restParams,
+    },
+  });
+}

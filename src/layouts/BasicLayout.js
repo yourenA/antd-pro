@@ -314,7 +314,7 @@ class BasicLayout extends React.PureComponent {
               {
                 (localStorage.getItem('role_display_name')==='系统管理员'|| sessionStorage.getItem('role_display_name')==='系统管理员')?
                   <Redirect exact from="/" to="/access-management/endpoints" />
-                  : <Redirect exact from="/" to="/system-management/user" />
+                  : <Redirect exact from="/" to="/main" />
               }
 
               <Route component={NotFound} />

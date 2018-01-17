@@ -2,10 +2,12 @@
 @import "./utils/utils.less";
 
 :global {
-  body{
+  body {
     min-width: 900px;
   }
-  .AsyncSpin{
+  .inline-block {
+  }
+  .AsyncSpin {
     width: 100%;
     margin: 150px 0;
   }
@@ -22,7 +24,7 @@
     .ant-form-item {
       margin-bottom: 24px;
       margin-right: 0;
-      display: flex;
+      display: inline-block !important;
       > .ant-form-item-label {
         width: auto;
         line-height: 38px;
@@ -207,7 +209,7 @@
       }
     }
   }
-  .ant-modal .ant-form-item{
+  .ant-modal .ant-form-item {
     margin-bottom: 12px !important;
   }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
@@ -266,9 +268,13 @@
     color: #f5222d;
   }
   .ant-table-small {
-    .ant-table-tbody{
-      tr:nth-child(odd){background-color:#FFFFFF;}
-      tr:nth-child(even){background-color:#f9f9f9;}
+    .ant-table-tbody {
+      tr:nth-child(odd) {
+        background-color: #FFFFFF;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
     }
   }
 }

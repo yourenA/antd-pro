@@ -18,14 +18,6 @@ class Main extends PureComponent {
   }
   componentDidMount() {
     setInterval(this.setTime,1000)
-    setTimeout(function () {
-      const args = {
-        message: '检测到异常水表数据',
-        description: '显示告警水表信息. 显示告警水表信息. 显示告警水表信息.',
-        duration: 0,
-      };
-      notification.error(args);
-    },500)
   }
   componentWillUnmount(){
     clearInterval(this.setTime)

@@ -83,7 +83,6 @@ class AddPoliciesForm extends Component {
                 that.setState({
                   userIndeterminate: !!this.state.userManageCheckedList.length && (this.state.userManageCheckedList.length < this.state.userManage.length),
                   checkAll: this.state.userManageCheckedList.length === this.state.userManage.length,
-
                   otherIndeterminate: !!this.state.otherCheckedList.length && (this.state.otherCheckedList.length < this.state.other.length),
                   otherCheckAll: this.state.otherCheckedList.length === this.state.other.length,
                 })
@@ -94,10 +93,6 @@ class AddPoliciesForm extends Component {
 
         }
       })
-
-
-
-
     })
   }
 

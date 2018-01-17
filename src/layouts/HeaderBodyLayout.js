@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop } from 'antd';
+import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop,notification } from 'antd';
 import styles from './HeaderBodyLayout.less';
 import { connect } from 'dva';
 import { Link, Route, Redirect, Switch } from 'dva/router';
@@ -63,6 +63,15 @@ class HeaderBodyLayout extends React.PureComponent {
     this.props.dispatch({
       type: 'login/checkLoginState',
     });
+    setTimeout(function () {
+      const args = {
+        placement: 'bottomRight',
+        message: '检测到异常水表数据',
+        description: '显示告警水表信息. 显示告警水表信息. 显示告警水表信息.',
+        duration: 0,
+      };
+      notification.error(args);
+    },500)
   }
   getPageTitle() {
     const { location } = this.props;
