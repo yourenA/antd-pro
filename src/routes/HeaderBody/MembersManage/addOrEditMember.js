@@ -34,7 +34,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              厂商编号
+              账号
             </span>
           )}
         >
@@ -49,7 +49,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              厂商名称
+              名字
             </span>
           )}
         >
@@ -65,7 +65,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              联系人
+              手机
             </span>
           )}
         >
@@ -79,7 +79,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              电话
+              邮箱
             </span>
           )}
         >
@@ -87,6 +87,40 @@ class AddPoliciesForm extends Component {
             initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
           })(
             <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              密码
+            </span>
+          )}
+        >
+          {getFieldDecorator('phone', {
+            initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              权限
+            </span>
+          )}>
+          {getFieldDecorator('manufacturer_id', {
+            initialValue: this.props.editRecord?{key:this.props.editRecord.manufacturer_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
+            rules: [{required: true, message: '生产厂家不能为空'}],
+          })(
+            <Select labelInValue={true} >
+              { this.props.manufacturers.map((item, key) => {
+                return (
+                  <Option key={item.id} value={item.id.toString()}>{item.name}</Option>
+                )
+              }) }
+            </Select>
           )}
         </FormItem>
       </Form>

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm, Modal} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -178,7 +178,13 @@ class MeterModel extends PureComponent {
       },
       {title: '水表类型', width: '13%', dataIndex: 'type', key: 'type'},
       {title: '口径mm', width: '13%', dataIndex: 'bore', key: 'bore'},
-      {title: '是否支持阀控', dataIndex: 'is_control_explain', key: 'is_control_explain', width: '13%'},
+      {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: '13%',
+      render:(val, record, index) => (
+        <p>
+          <Badge status={val===1?"success":"error"} />{record.is_control_explain}
+
+        </p>
+      )},
       {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: '13%'},
       {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width: '13%'},
       {
@@ -222,7 +228,7 @@ class MeterModel extends PureComponent {
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
-        <Content style={{background: '#fff'}}>
+        <Content >
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '水表类型查询'}]}>
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
@@ -254,7 +260,6 @@ class MeterModel extends PureComponent {
               </Card>
             </PageHeaderLayout>
           </div>
-
           <Modal
             title="添加水表类型"
             visible={this.state.addModal}

@@ -36,21 +36,16 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <Col md={7} lg={5}  sm={24}>
             <FormItem label="水表编号">
               {getFieldDecorator('water_num')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-          </Col>
-          <Col md={7} lg={5} sm={24}>
             <FormItem label="用户名称">
               {getFieldDecorator('username')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-          </Col>
-          <Col md={8} lg={8} sm={24}>
             <FormItem label="创建时间">
               {getFieldDecorator('range-time-picker',{
                 initialValue:this.props.initRange?this.props.initRange: '',
@@ -58,7 +53,6 @@ class SearchForm extends Component {
                 <RangePicker  allowClear={this.props.initRange?false:true}/>
               )}
             </FormItem>
-          </Col>
         </Row>
         <Row gutter={16}>
           <FormItem label="只显示异常">

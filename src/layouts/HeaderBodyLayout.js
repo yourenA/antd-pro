@@ -81,6 +81,9 @@ class HeaderBodyLayout extends React.PureComponent {
       if (`/main${item.path}` === pathname) {
         title = `${item.name} - 珠华远传水表监控系统`;
       }
+      if(pathname.indexOf(`system_setup`)>0){
+        title = `系统设置 - 珠华远传水表监控系统`;
+      }
     });
     return title;
   }

@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
 import DynamicData from './DynamicData'
 import Proportion from './Proportion'
 import ConcentratorOnlife from './ConcentratorOnlife'
 import Guage from './Guage'
-import { Row, Col, Card, Table, Icon, notification } from 'antd';
+import { Row, Col, Card,  Icon } from 'antd';
 import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';

@@ -16,8 +16,8 @@ class ConcentratorModels extends PureComponent {
     super(props);
     this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'concentrator_models_add_and_edit'}),
-      showdelBtn: find(this.permissions, {name: 'concentrator_models_delete'}),
+      showAddBtn: find(this.permissions, {name: 'concentrator_model_add_and_edit'}),
+      showdelBtn: find(this.permissions, {name: 'concentrator_model_delete'}),
       tableY: 0,
       query: '',
       page: 1,
@@ -29,6 +29,7 @@ class ConcentratorModels extends PureComponent {
   }
 
   componentDidMount() {
+    console.log(this.permissions)
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
@@ -213,7 +214,7 @@ class ConcentratorModels extends PureComponent {
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
-        <Content style={{background: '#fff'}}>
+        <Content >
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '集中器类型查询'}]}>
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>

@@ -41,10 +41,12 @@ class Timing extends PureComponent {
       that.setState({
         data,
       })
+      that.setState({
+        tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      })
     },500)
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
+    console.log('offsetTop',document.querySelector('.meter-table').offsetTop)
+
     console.log(moment(this.state.initRange[0]).format('YYYY-MM-DD'))
     const {dispatch} = this.props;
     dispatch({
@@ -105,7 +107,7 @@ class Timing extends PureComponent {
 
   render() {
     const {endpoints: {meta, loading}} = this.props;
-
+    console.log(this.state.tableY)
     const columns = [
       {
         title: '序号',

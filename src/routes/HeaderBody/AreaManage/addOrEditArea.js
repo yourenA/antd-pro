@@ -34,7 +34,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              厂商编号
+              地址名称
             </span>
           )}
         >
@@ -45,50 +45,29 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              厂商名称
+        {!this.props.editRecord?
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              上级名称
             </span>
-          )}
-        >
-          {getFieldDecorator('name', {
-            initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
-          })(
-            <Input />
-          )}
-        </FormItem>
+            )}>
+            {getFieldDecorator('manufacturer_id', {
+              initialValue: this.props.editRecord?{key:this.props.editRecord.manufacturer_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
+              rules: [{required: true, message: '生产厂家不能为空'}],
+            })(
+              <Select labelInValue={true} >
+                { this.props.manufacturers.map((item, key) => {
+                  return (
+                    <Option key={item.id} value={item.id.toString()}>{item.name}</Option>
+                  )
+                }) }
+              </Select>
+            )}
+          </FormItem>:
+        null}
 
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              联系人
-            </span>
-          )}
-        >
-          {getFieldDecorator('contact', {
-            initialValue: this.props.editRecord ? this.props.editRecord.contact : '',
-          })(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              电话
-            </span>
-          )}
-        >
-          {getFieldDecorator('phone', {
-            initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
-          })(
-            <Input />
-          )}
-        </FormItem>
       </Form>
     </div>
     );

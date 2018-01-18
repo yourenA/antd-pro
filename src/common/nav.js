@@ -65,6 +65,18 @@ import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels
 const ConcentratorModels = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
 )
+
+const MembersManage = asyncComponent(() =>
+import(/* webpackChunkName: "MembersManage" */ "./../routes/HeaderBody/MembersManage/Index")
+)
+
+const AreaManage = asyncComponent(() =>
+import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
+)
+
+const SystemSetup = asyncComponent(() =>
+import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
+)
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -193,7 +205,13 @@ const data = [{
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
       permissions:['concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
-      children: [{
+      children: [
+        {
+          name: '用户管理',
+          path: 'member_manage',
+          component: MembersManage,
+          permissions:['member_add_and_edit','member_delete'],
+        },{
         name: '厂商查询',
         path: 'vendor_manage',
         component: VendorMange,
@@ -209,6 +227,16 @@ const data = [{
         component: ConcentratorModels,
         permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
       },{
+          name: '区域管理',
+          path: 'area_manage',
+          component: AreaManage,
+          permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+        },{
+          name: '系统设置',
+          path: 'system_setup',
+          component: SystemSetup,
+          permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+        },{
         name: '交换数据库设置',
         path: 'change_dbase_setting',
         component: NewPage,

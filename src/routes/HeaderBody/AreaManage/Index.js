@@ -1,13 +1,14 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
-import AddOrEditVendor from './addOrEditVendor'
+import AddOrEditForm from './addOrEditArea'
 const {Content} = Layout;
 @connect(state => ({
+  area: state.area,
   manufacturers: state.manufacturers,
 }))
 class Vendor extends PureComponent {
@@ -33,9 +34,15 @@ class Vendor extends PureComponent {
     })
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'area/fetch',
       payload: {
         page: 1,
+      }
+    });
+    dispatch({
+      type: 'manufacturers/fetch',
+      payload: {
+        return: 'all'
       }
     });
   }
@@ -43,9 +50,10 @@ class Vendor extends PureComponent {
   handleFormReset = () => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'area/fetch',
       payload: {},
     });
+
     this.setState({
       page: 1,
       query: '',
@@ -56,7 +64,7 @@ class Vendor extends PureComponent {
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'area/fetch',
       payload: {
         ...values,
       },
@@ -82,17 +90,17 @@ class Vendor extends PureComponent {
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'manufacturers/add',
+      type: 'area/add',
       payload: {
         ...formValues
       },
       callback: function () {
-        message.success('添加厂商成功')
+        message.success('添加区域成功')
         that.setState({
           addModal: false,
         });
         that.props.dispatch({
-          type: 'manufacturers/fetch',
+          type: 'area/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -107,18 +115,18 @@ class Vendor extends PureComponent {
     console.log('formValues',formValues)
     const that = this;
     this.props.dispatch({
-      type: 'manufacturers/edit',
+      type: 'area/edit',
       payload: {
         ...formValues,
         id:this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改厂商成功')
+        message.success('修改区域成功')
         that.setState({
           editModal: false,
         });
         that.props.dispatch({
-          type: 'manufacturers/fetch',
+          type: 'area/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -130,14 +138,14 @@ class Vendor extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'manufacturers/remove',
+      type: 'area/remove',
       payload: {
         id:id,
       },
       callback: function () {
-        message.success('删除厂商成功')
+        message.success('删除区域成功')
         that.props.dispatch({
-          type: 'manufacturers/fetch',
+          type: 'area/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -146,8 +154,11 @@ class Vendor extends PureComponent {
       }
     });
   }
+  handleChangePhoneCall=(id)=>{
+    console.log(id)
+  }
   render() {
-    const {manufacturers: {data, meta, loading}} = this.props;
+    const {area: {data, meta, loading},manufacturers} = this.props;
     const columns = [
       {
         title: '序号',
@@ -163,17 +174,9 @@ class Vendor extends PureComponent {
           )
         }
       },
-      {title: '厂商编号', width: '15%', dataIndex: 'code', key: 'code'},
-      {title: '厂商名称', width: '15%', dataIndex: 'name', key: 'name'},
-      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count', width: '12%'},
-      {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: '12%'},
-      {title: '厂商电话', dataIndex: 'phone', key: 'phone', width: '15%'},
-      {
-        title: '联系人', dataIndex: 'contact', key: 'contact',
-      },
+      {title: '区域名称', dataIndex: 'code', key: 'code'},
       {
         title: '操作',
-        width: 100,
         render: (val, record, index) => (
           <p>
             {
@@ -207,11 +210,11 @@ class Vendor extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '厂商查询'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '区域管理'}]}>
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch inputText="厂商名称" dateText="发送时间" handleSearch={this.handleSearch}
+                    <DefaultSearch inputText="名字" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
@@ -227,7 +230,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{y: this.state.tableY}}
+                  scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -239,21 +242,21 @@ class Vendor extends PureComponent {
           </div>
 
           <Modal
-            title="添加厂商"
+            title="添加区域"
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
           >
-            <AddOrEditVendor   wrappedComponentRef={(inst) => this.formRef = inst}/>
+            <AddOrEditForm   manufacturers={manufacturers.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
-            title="修改厂商"
+            title="修改区域"
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
           >
-            <AddOrEditVendor editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+            <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
         </Content>
       </Layout>

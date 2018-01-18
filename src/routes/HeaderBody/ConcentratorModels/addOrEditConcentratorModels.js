@@ -34,22 +34,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              名称
-            </span>
-          )}
-        >
-          {getFieldDecorator('name', {
-            initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
-          })(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              编号
+              集中器编号
             </span>
           )}
         >
@@ -60,6 +45,22 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              集中器名称
+            </span>
+          )}
+        >
+          {getFieldDecorator('name', {
+            initialValue: this.props.editRecord ? this.props.editRecord.name : '',
+            rules: [{required: true, message: '名称不能为空'}],
+          })(
+            <Input />
+          )}
+        </FormItem>
+
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
