@@ -6,36 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/area.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/members.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MembersManage/Index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MembersManage/Search.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MembersManage/addOrEditMember.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/EmailNotice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExchangeDatabase.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Sider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/SmsNotice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/SystemName.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/index.less" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/area.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/members.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Endpoints.less" afterPath="$PROJECT_DIR$/src/Endpoints.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/nav.js" afterPath="$PROJECT_DIR$/src/common/nav.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DefaultSearch/index.js" afterPath="$PROJECT_DIR$/src/components/DefaultSearch/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/polyfill.js" afterPath="$PROJECT_DIR$/src/polyfill.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/addOrEditConcentratorModels.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/addOrEditConcentratorModels.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ImportConcentrator/Sider.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ImportConcentrator/Sider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Timing.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Timing.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/addOrEditVendor.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/addOrEditVendor.js" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -64,7 +36,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Timing.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Timing.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Timing.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="595">
@@ -84,6 +56,16 @@
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Endpoints.less" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="648">
+              <caret line="246" column="26" selection-start-line="246" selection-start-column="26" selection-end-line="246" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -129,7 +111,6 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Index.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/polyfill.js" />
-        <option value="$PROJECT_DIR$/src/Endpoints.less" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/addOrEditVendor.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/addOrEditConcentratorModels.js" />
         <option value="$PROJECT_DIR$/src/models/member.js" />
@@ -155,6 +136,7 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Timing.js" />
         <option value="$PROJECT_DIR$/src/components/DefaultSearch/index.js" />
+        <option value="$PROJECT_DIR$/src/Endpoints.less" />
       </list>
     </option>
   </component>
@@ -542,16 +524,16 @@
       <workItem from="1516067937275" duration="706000" />
       <workItem from="1516083148894" duration="10139000" />
       <workItem from="1516154969984" duration="19029000" />
-      <workItem from="1516241619536" duration="10423000" />
+      <workItem from="1516241619536" duration="11089000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="450463000" />
+    <option name="totallyTimeSpent" value="451129000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14899258" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -714,14 +696,6 @@
           <folding>
             <element signature="e#195#217#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="179" column="25" selection-start-line="179" selection-start-column="25" selection-end-line="179" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1041,6 +1015,14 @@
           <folding>
             <element signature="e#0#43#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="246" column="26" selection-start-line="246" selection-start-column="26" selection-end-line="246" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
