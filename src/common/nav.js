@@ -62,6 +62,10 @@ const MeterModels = asyncComponent(() =>
 import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
 )
 
+const Meters = asyncComponent(() =>
+import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
+)
+
 const ConcentratorModels = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
 )
@@ -209,7 +213,7 @@ const data = [{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
+      permissions:['meter_delete','meter_add_and_edit','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
           name: '用户管理',
@@ -227,6 +231,11 @@ const data = [{
         component: MeterModels,
         permissions:['meter_model_delete','meter_model_add_and_edit'],
       },{
+          name: '水表管理',
+          path: 'water_meter_manage',
+          component: Meters,
+          permissions:['meter_add_and_edit','meter_delete'],
+        },{
         name: '集中器类型查询',
         path: 'concentrator_type_search',
         component: ConcentratorModels,
