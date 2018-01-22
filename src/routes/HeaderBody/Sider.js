@@ -1,40 +1,45 @@
 import React, {PureComponent} from 'react';
 import {Icon, Tree, Layout} from 'antd';
 import siderJson from './sider.json'
+import {connect} from 'dva';
 const TreeNode = Tree.TreeNode;
 const {Sider} = Layout;
+
+@connect(state => ({
+  sider_regions: state.sider_regions,
+}))
 class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      treeData: [],
       collapsed: false,
     }
   }
 
   componentDidMount() {
-    const that = this;
-    setTimeout(function () {
-      that.setState({
-        treeData: siderJson.REGION,
-      }, function () {
-        if (that.state.treeData.length > 0) {
-          that.props.siderLoadedCallback(that.state.treeData[0].id[0])
+    const {dispatch}=this.props;
+    const that=this;
+    dispatch({
+      type: 'sider_regions/fetch',
+      callback: function () {
+        const {sider_regions:{data}}=that.props;
+        if(data.length>0){
+          that.props.siderLoadedCallback(data[0].id)
         }
-      })
-    }, 1000)
+      }
+    });
   }
 
   renderTreeNodes = (data) => {
     return data.map((item) => {
-      if (item.nodes) {
+      if (item.children) {
         return (
-          <TreeNode title={item.text} key={item.id[0]} dataRef={item} className="treeItem">
-            {this.renderTreeNodes(item.nodes)}
+          <TreeNode title={item.name} key={item.id} dataRef={item} className="treeItem">
+            {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.text} key={item.id[0]} dataRef={item}/>;
+      return <TreeNode title={item.name} key={item.id} dataRef={item}/>;
     });
   }
   onCollapse = () => {
@@ -48,20 +53,26 @@ class SiderTree extends PureComponent {
   }
 
   render() {
+    const {sider_regions:{data}}=this.props;
     return (
       <Sider collapsed={this.state.collapsed} className="sider" width="250">
         <div className="sider-title">
           区域信息
         </div>
-        {this.state.treeData.length
-          ?
-          <Tree showLine onSelect={this.onSelect}
-                defaultExpandedKeys={[this.state.treeData[0].id[0]]}
-                defaultSelectedKeys={[this.state.treeData[0].id[0]]}
-          >
-            {this.renderTreeNodes(this.state.treeData)}
-          </Tree>
-          : 'loading tree'}
+        <div className="sider-content">
+          {(data.length)
+            ?
+            <Tree showLine onSelect={this.onSelect}
+                  defaultExpandedKeys={[data[0].id]}
+                  defaultSelectedKeys={[data[0].id]}
+            >
+              {this.renderTreeNodes(data)}
+            </Tree>
+            : null}
+          {
+            this.props.showArea===false?<div className="hideSider"></div>:null
+          }
+        </div>
 
         <div className="toggle" onClick={this.onCollapse}>
           <Icon type={this.state.collapsed ? "right" : "left"}/>

@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select} from 'antd';
+import {Form, Input,  Radio, Select,InputNumber } from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -91,7 +91,7 @@ class AddPoliciesForm extends Component {
           {getFieldDecorator('bore', {
             initialValue: this.props.editRecord ? this.props.editRecord.bore : '',
           })(
-            <Input />
+            <InputNumber  />
           )}
         </FormItem>
         <FormItem
@@ -124,7 +124,7 @@ class AddPoliciesForm extends Component {
           {getFieldDecorator('service_life', {
             initialValue: this.props.editRecord ? this.props.editRecord.service_life : '',
           })(
-            <Input />
+            <InputNumber  />
           )}
         </FormItem>
         <FormItem

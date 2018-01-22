@@ -20,7 +20,7 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
-        query: fielgitgitdsValue.query,
+        ...fieldsValue,
         started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
@@ -38,13 +38,18 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <FormItem label="台区">
+          <FormItem label="水表编号">
             {getFieldDecorator('water_num')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
+          <FormItem label="台区">
+            {getFieldDecorator('taiqu')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
           <FormItem label="表册">
-            {getFieldDecorator('username')(
+            {getFieldDecorator('biaoce')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>

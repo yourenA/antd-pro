@@ -8,16 +8,16 @@ import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMember'
 const {Content} = Layout;
 @connect(state => ({
-  members: state.members,
-  manufacturers: state.manufacturers,
+  user: state.user,
+  usergroup: state.usergroup,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'manufacturer_add_and_edit'}),
-      showdelBtn: find(this.permissions, {name: 'manufacturer_delete'}),
+      showAddBtn: find(this.permissions, {name: 'user_add_and_edit'}),
+      showdelBtn: find(this.permissions, {name: 'user_delete'}),
       tableY: 0,
       query: '',
       page: 1,
@@ -34,13 +34,13 @@ class Vendor extends PureComponent {
     })
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'user/fetch',
       payload: {
         page: 1,
       }
     });
     dispatch({
-      type: 'manufacturers/fetch',
+      type: 'usergroup/fetch',
       payload: {
         return: 'all'
       }
@@ -50,7 +50,7 @@ class Vendor extends PureComponent {
   handleFormReset = () => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'user/fetch',
       payload: {},
     });
 
@@ -64,7 +64,7 @@ class Vendor extends PureComponent {
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'user/fetch',
       payload: {
         ...values,
       },
@@ -90,9 +90,14 @@ class Vendor extends PureComponent {
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/add',
+      type: 'user/add',
       payload: {
-        ...formValues
+        data: {
+          ...formValues,
+          is_email_notify: formValues.is_email_notify?1:-1,
+          is_sms_notify: formValues.is_sms_notify?1:-1,
+          role_id: formValues.role_id.key,
+        },
       },
       callback: function () {
         message.success('添加用户成功')
@@ -100,7 +105,7 @@ class Vendor extends PureComponent {
           addModal: false,
         });
         that.props.dispatch({
-          type: 'members/fetch',
+          type: 'user/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -115,10 +120,15 @@ class Vendor extends PureComponent {
     console.log('formValues',formValues)
     const that = this;
     this.props.dispatch({
-      type: 'members/edit',
+      type: 'user/edit',
       payload: {
-        ...formValues,
-        id:this.state.editRecord.id,
+        data: {
+          ...formValues,
+          is_email_notify: formValues.is_email_notify?1:-1,
+          is_sms_notify: formValues.is_sms_notify?1:-1,
+          role_id: formValues.role_id.key,
+          id:this.state.editRecord.id
+        },
       },
       callback: function () {
         message.success('修改用户成功')
@@ -126,7 +136,7 @@ class Vendor extends PureComponent {
           editModal: false,
         });
         that.props.dispatch({
-          type: 'members/fetch',
+          type: 'user/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -138,14 +148,14 @@ class Vendor extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'members/remove',
+      type: 'user/remove',
       payload: {
         id:id,
       },
       callback: function () {
         message.success('删除用户成功')
         that.props.dispatch({
-          type: 'members/fetch',
+          type: 'user/fetch',
           payload: {
             query:that.state.query,
             page:that.state.page
@@ -158,7 +168,7 @@ class Vendor extends PureComponent {
     console.log(id)
   }
   render() {
-    const {members: {data, meta, loading},manufacturers} = this.props;
+    const {user: {data, meta, loading},usergroup} = this.props;
     const columns = [
       {
         title: '序号',
@@ -174,22 +184,22 @@ class Vendor extends PureComponent {
           )
         }
       },
-      {title: '账号', width: '10%', dataIndex: 'code', key: 'code'},
+      {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
       {title: '名字', width: '10%', dataIndex: 'real_name', key: 'real_name'},
-      {title: '电话', dataIndex: 'phone', key: 'phone', width: '15%'},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: '15%'},
-      {title: '电话通知', dataIndex: 'phonecall', key: 'phonecall', width: '10%',
+      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '15%'},
+      {title: '邮箱', dataIndex: 'email', key: 'email', width: '17%'},
+      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '10%',
         render: (val, record, index) => (
-          <Switch checked={record.idEmailCall?true:false} onChange={()=>this.handleChangePhoneCall(record.id)} />
+          <Switch checked={record.is_sms_notify===1?true:false}  />
         )},
 
       {
-        title: '电邮通知', dataIndex: 'contact', key: 'contact', width: '10%',
+        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: '10%',
         render: (val, record, index) => (
-            <Switch checked={record.idEmailCall?true:false} onChange={()=>this.handleChangePhoneCall(record.id)} />
+            <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '权限', dataIndex: 'meter_count', key: 'meter_count'},
+      {title: '权限', dataIndex: 'role_display_name', key: 'role_display_name'},
       {
         title: '操作',
         width: 100,
@@ -264,7 +274,7 @@ class Vendor extends PureComponent {
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
           >
-            <AddOrEditForm   manufacturers={manufacturers.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
+            <AddOrEditForm   usergroup={usergroup.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
@@ -273,7 +283,7 @@ class Vendor extends PureComponent {
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
           >
-            <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+            <AddOrEditForm usergroup={usergroup.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
         </Content>
       </Layout>

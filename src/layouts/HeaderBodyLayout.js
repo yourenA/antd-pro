@@ -37,6 +37,7 @@ const query = {
     minWidth: 1200,
   },
 };
+
 class HeaderBodyLayout extends React.PureComponent {
   constructor(props) {
     super(props);

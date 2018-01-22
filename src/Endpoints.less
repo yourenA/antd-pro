@@ -169,6 +169,7 @@
       background: #ffffff !important;
       height: 100%;
       border-right: 2px solid #ccc;
+
       .sider-title {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.65);
@@ -201,6 +202,19 @@
         color: white;
         font-size: 20px;
         line-height: 45px;
+      }
+      .sider-content{
+        position: relative;
+        width: 100%;
+      }
+      .hideSider{
+        position: absolute;
+        left: 0;
+        right: 0;
+        border: 0;
+        top: 0;
+        height: 100%;
+        background: #FFFFFF;
       }
     }
     .ant-layout-content{
@@ -238,7 +252,11 @@
   .ant-card-hoverable {
     cursor: auto !important;
   }
-
+  .ant-modal{
+    .ant-input-number{
+      width: 100%;
+    }
+  }
   .ant-list-item-content {
     width: 100%;
     overflow: hidden;

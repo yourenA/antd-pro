@@ -87,13 +87,13 @@ class MeterModel extends PureComponent {
   handleAdd = () => {
     const that = this;
     const formValues = this.formRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
+    console.log('formValues', formValues);
     this.props.dispatch({
       type: 'meter_models/add',
       payload: {
         ...formValues,
         manufacturer_id: formValues.manufacturer_id.key,
-        is_control: formValues.is_control.key
+        is_control:formValues.is_control.key?parseInt(formValues.is_control.key):-1
       },
       callback: function () {
         message.success('添加水表类型成功')

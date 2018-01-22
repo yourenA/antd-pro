@@ -10,7 +10,7 @@ import moment from 'moment'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
-  endpoints: state.endpoints,
+  members: state.members,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -69,9 +69,10 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   handleSearch = (values) => {
+    console.log('values',values)
     const {dispatch} = this.props;
     dispatch({
-      type: 'endpoints/fetch',
+      type: 'members/fetch',
       payload: {
         area: values.area? values.area:this.state.area,
         ...values,
@@ -102,7 +103,7 @@ class UserMeterAnalysis extends PureComponent {
     console.log(formValues)
   }
   render() {
-    const {endpoints: {data, meta, loading}} = this.props;
+    const {members: {data, meta, loading}} = this.props;
     const columns = [
       {
         title: '序号',

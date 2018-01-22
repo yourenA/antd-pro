@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select} from 'antd';
+import {Form, Input,  Radio, Select,Switch } from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -38,8 +38,8 @@ class AddPoliciesForm extends Component {
             </span>
           )}
         >
-          {getFieldDecorator('code', {
-            initialValue: this.props.editRecord ? this.props.editRecord.code : '',
+          {getFieldDecorator('username', {
+            initialValue: this.props.editRecord ? this.props.editRecord.username : '',
             rules: [{required: true, message: '编号不能为空'}],
           })(
             <Input />
@@ -53,9 +53,8 @@ class AddPoliciesForm extends Component {
             </span>
           )}
         >
-          {getFieldDecorator('name', {
-            initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
+          {getFieldDecorator('real_name', {
+            initialValue: this.props.editRecord ? this.props.editRecord.real_name : '',
           })(
             <Input />
           )}
@@ -65,12 +64,12 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              手机
+              电话
             </span>
           )}
         >
-          {getFieldDecorator('contact', {
-            initialValue: this.props.editRecord ? this.props.editRecord.contact : '',
+          {getFieldDecorator('mobile', {
+            initialValue: this.props.editRecord ? this.props.editRecord.mobile : '',
           })(
             <Input />
           )}
@@ -83,8 +82,8 @@ class AddPoliciesForm extends Component {
             </span>
           )}
         >
-          {getFieldDecorator('phone', {
-            initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
+          {getFieldDecorator('email', {
+            initialValue: this.props.editRecord ? this.props.editRecord.email : '',
           })(
             <Input />
           )}
@@ -97,8 +96,8 @@ class AddPoliciesForm extends Component {
             </span>
           )}
         >
-          {getFieldDecorator('phone', {
-            initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
+          {getFieldDecorator('password', {
+            initialValue: this.props.editRecord ? this.props.editRecord.password : '',
           })(
             <Input />
           )}
@@ -110,19 +109,40 @@ class AddPoliciesForm extends Component {
               权限
             </span>
           )}>
-          {getFieldDecorator('manufacturer_id', {
-            initialValue: this.props.editRecord?{key:this.props.editRecord.manufacturer_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
-            rules: [{required: true, message: '生产厂家不能为空'}],
+          {getFieldDecorator('role_id', {
+            initialValue: this.props.editRecord?{key:this.props.editRecord.role_id,label:this.props.editRecord.role_display_name}:{key:'',label:''},
+            rules: [{required: true, message: '权限不能为空'}],
           })(
             <Select labelInValue={true} >
-              { this.props.manufacturers.map((item, key) => {
+              { this.props.usergroup.map((item, key) => {
                 return (
-                  <Option key={item.id} value={item.id.toString()}>{item.name}</Option>
+                  <Option key={item.id} value={item.id.toString()}>{item.display_name}</Option>
                 )
               }) }
             </Select>
           )}
         </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label="电话通知"
+        >
+          {getFieldDecorator('is_sms_notify', {
+            initialValue: this.props.editRecord ? (this.props.editRecord.is_sms_notify===1?true:false) : false,
+            valuePropName: 'checked' })(
+            <Switch />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label="电邮通知"
+        >
+          {getFieldDecorator('is_email_notify',
+            { initialValue: this.props.editRecord ? (this.props.editRecord.is_email_notify===1?true:false) : false
+              ,valuePropName: 'checked' })(
+            <Switch />
+          )}
+        </FormItem>
+
       </Form>
     </div>
     );

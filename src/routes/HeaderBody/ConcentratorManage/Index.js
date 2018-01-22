@@ -1,13 +1,15 @@
 import React, {PureComponent} from 'react';
 import {Pagination , Table , Card, Button, Layout,message,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import Search from '../../../components/DefaultSearch/index'
+import Search from './Search'
+import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddConcentrator'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import Detail from './Detail'
 import moment from 'moment'
 import './index.less'
+import ConcentratorDetail from './ConcentratorDetail'
 const { Content} = Layout;
 @connect(state => ({
   endpoints: state.endpoints,
@@ -25,6 +27,7 @@ class UserMeterAnalysis extends PureComponent {
       editModal:false,
       addModal:false,
       area: '',
+      showArea:true
     }
   }
 
@@ -101,7 +104,17 @@ class UserMeterAnalysis extends PureComponent {
     message.success(id)
     this.setState({editModal:true})
   }
-
+  showConcentrator=(id)=>{
+    console.log(id);
+    this.setState({
+      showArea:false
+    })
+  }
+  handleBack=()=>{
+    this.setState({
+      showArea:true
+    })
+  }
   render() {
     const {endpoints: {data, meta, loading}} = this.props;
     const columns = [
@@ -120,7 +133,15 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      { title: '集中器编号', width: 180, dataIndex: 'name', key: 'name',    fixed: 'left', },
+      { title: '集中器编号', width: 180, dataIndex: 'name', key: 'name',    fixed: 'left',
+        render: (text, record, index) => {
+          return (
+            <p style={{cursor:'pointer'}} onClick={()=>this.showConcentrator(record.id)}>
+              {text}
+            </p>
+          )
+        }
+      },
       { title: '集中器类型', width: 140, dataIndex: 'age', key: 'age'},
       { title: '硬件编号', dataIndex: 'address', key: '1' ,width: 180, },
       { title: '地址', dataIndex: 'address', key: '2' ,width: 240,},
@@ -147,41 +168,48 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
     ];
-    console.log('tabY',this.state.tableY)
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea}   siderLoadedCallback={this.siderLoadedCallback}/>
+        <Sider changeArea={this.changeArea}  showArea={this.state.showArea} siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '集中器管理'}]}>
               <Card bordered={false} style={{margin:'-24px -24px 0'}}>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.formRef = inst}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
+              {
+                this.state.showArea
+                  ?
+                  <div>
+                    <div className='tableList'>
+                      <div className='tableListForm'>
+                        <Search wrappedComponentRef={(inst) => this.formRef = inst}
+                                handleSearch={this.handleSearch} handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
+                      </div>
+                      <div className='tableListOperator'>
+                        <Button icon="plus" type="primary" onClick={() => this.setState({addModal:true})}>添加</Button>
+                      </div>
+                    </div>
+                    <Table
+                      rowClassName={function (record, index) {
+                        if(record.description===''){
+                          return 'error'
+                        }
+                      }}
+                      className='meter-table'
+                      loading={loading}
+                      rowKey={record => record.id}
+                      dataSource={data}
+                      columns={columns}
+                      scroll={{ x: 2050,y: this.state.tableY }}
+                      pagination={false}
+                      size="small"
+                    />
+                    <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
+                                current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
+                                style={{marginTop: '10px'}} onChange={this.handPageChange}/>
                   </div>
-                  <div className='tableListOperator'>
-                    <Button icon="plus" type="primary" onClick={() => this.setState({addModal:true})}>添加</Button>
-                  </div>
-                </div>
-                <Table
-                  rowClassName={function (record, index) {
-                    if(record.description===''){
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{ x: 2050, y: this.state.tableY }}
-                  pagination={false}
-                  size="small"
-                />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                  :
+                  <ConcentratorDetail handleBack={this.handleBack}/>
+              }
               </Card>
           </PageHeaderLayout>
           </div>

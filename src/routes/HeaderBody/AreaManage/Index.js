@@ -9,20 +9,17 @@ import AddOrEditForm from './addOrEditArea'
 const {Content} = Layout;
 @connect(state => ({
   area: state.area,
-  manufacturers: state.manufacturers,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'manufacturer_add_and_edit'}),
-      showdelBtn: find(this.permissions, {name: 'manufacturer_delete'}),
+      showAddBtn: find(this.permissions, {name: 'village_add_and_edit'}),
+      showdelBtn: find(this.permissions, {name: 'village_delete'}),
       tableY: 0,
       query: '',
       page: 1,
-      started_at: '',
-      ended_at: '',
       editModal: false,
       addModal: false,
     }
@@ -39,12 +36,6 @@ class Vendor extends PureComponent {
         page: 1,
       }
     });
-    dispatch({
-      type: 'manufacturers/fetch',
-      payload: {
-        return: 'all'
-      }
-    });
   }
 
   handleFormReset = () => {
@@ -57,8 +48,6 @@ class Vendor extends PureComponent {
     this.setState({
       page: 1,
       query: '',
-      started_at: '',
-      ended_at: '',
     })
   }
   handleSearch = (values) => {
@@ -72,8 +61,6 @@ class Vendor extends PureComponent {
 
     this.setState({
       query: values.query,
-      started_at: values.started_at,
-      ended_at: values.ended_at,
       page: values.page
     })
   }
@@ -81,8 +68,6 @@ class Vendor extends PureComponent {
     this.handleSearch({
       page: page,
       query: this.state.query,
-      ended_at: this.state.ended_at,
-      started_at: this.state.started_at
     })
   }
   handleAdd = () => {
@@ -160,21 +145,8 @@ class Vendor extends PureComponent {
   render() {
     const {area: {data, meta, loading},manufacturers} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 45,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
-        }
-      },
-      {title: '区域名称', dataIndex: 'code', key: 'code'},
+      {title: '区域名称', dataIndex: 'name', key: 'name',width:'30%'},
+      {title: '备注', dataIndex: 'remark', key: 'remark',width:'30%'},
       {
         title: '操作',
         render: (val, record, index) => (
@@ -242,12 +214,13 @@ class Vendor extends PureComponent {
           </div>
 
           <Modal
+            key={ Date.parse(new Date())+1}
             title="添加区域"
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
           >
-            <AddOrEditForm   manufacturers={manufacturers.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
+            <AddOrEditForm    wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
@@ -256,7 +229,7 @@ class Vendor extends PureComponent {
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
           >
-            <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+            <AddOrEditForm  editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
         </Content>
       </Layout>

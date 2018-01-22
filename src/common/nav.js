@@ -66,8 +66,8 @@ const ConcentratorModels = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
 )
 
-const MembersManage = asyncComponent(() =>
-import(/* webpackChunkName: "MembersManage" */ "./../routes/HeaderBody/MembersManage/Index")
+const UsersManage = asyncComponent(() =>
+import(/* webpackChunkName: "UsersManage" */ "./../routes/HeaderBody/UsersManage/Index")
 )
 
 const AreaManage = asyncComponent(() =>
@@ -77,6 +77,11 @@ import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/I
 const SystemSetup = asyncComponent(() =>
 import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
 )
+
+const ConcentratorErrorAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
+)
+
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -178,7 +183,7 @@ const data = [{
       name: '运行管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions:['iot_hub_management'],
+      permissions:['member_add_and_edit','member_delete'],
       children: [{
         name: '导入集中器',
         path: 'import_concentrator',
@@ -198,19 +203,19 @@ const data = [{
         name: '用户档案',
         path: 'user_archives',
         component: UserArchives,
-        permissions:['iot_hub_management'],
+        permissions:['member_add_and_edit','member_delete'],
       }],
     },{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
+      permissions:['user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
           name: '用户管理',
           path: 'member_manage',
-          component: MembersManage,
-          permissions:['member_add_and_edit','member_delete'],
+          component: UsersManage,
+          permissions:['user_add_and_edit','user_delete'],
         },{
         name: '厂商查询',
         path: 'vendor_manage',
@@ -230,7 +235,7 @@ const data = [{
           name: '区域管理',
           path: 'area_manage',
           component: AreaManage,
-          permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+          permissions:['village_add_and_edit','village_delete'],
         },{
           name: '系统设置',
           path: 'system_setup',
@@ -249,8 +254,8 @@ const data = [{
       permissions:['iot_hub_management'],
       children: [{
         name: '集中器异常分析',
-        path: 'concentrator_unusual_analysis',
-        component: NewPage,
+        path: 'concentrator_error_analysis',
+        component: ConcentratorErrorAnalysis,
         permissions:['iot_hub_management'],
       },{
         name: '水表异常分析',
