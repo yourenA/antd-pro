@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {Pagination, Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './Search'
+import DefaultSearch from './../OnlyAdd'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'

@@ -88,20 +88,25 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
+        {
+          this.props.editRecord?
+          null
+          :  <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
               密码
             </span>
-          )}
-        >
-          {getFieldDecorator('password', {
-            initialValue: this.props.editRecord ? this.props.editRecord.password : '',
-          })(
-            <Input />
-          )}
-        </FormItem>
+              )}
+            >
+              {getFieldDecorator('password', {
+                initialValue: '',
+              })(
+                <Input />
+              )}
+            </FormItem>
+
+        }
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

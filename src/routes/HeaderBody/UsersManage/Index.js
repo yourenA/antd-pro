@@ -29,6 +29,7 @@ class Vendor extends PureComponent {
   }
 
   componentDidMount() {
+    console.log(find(this.permissions, {name: 'user_add_and_edit'}))
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
@@ -241,7 +242,7 @@ class Vendor extends PureComponent {
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch inputText="名字" dateText="发送时间" handleSearch={this.handleSearch}
+                    <DefaultSearch inputText="账号" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>

@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/area';
+import { query,add,remove,edit } from '../services/concentrators';
 
 export default {
-  namespace: 'area',
+  namespace: 'concentrators',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -39,7 +39,6 @@ export default {
           payload: false,
         });
       }
-
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);

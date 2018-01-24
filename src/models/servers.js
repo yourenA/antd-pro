@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/area';
+import { query,add,remove,edit,editStatus } from '../services/servers';
 
 export default {
-  namespace: 'area',
+  namespace: 'servers',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -17,7 +17,7 @@ export default {
       });
       const response = yield call(query, payload);
       console.log(response)
-      if(response.data.meta){
+      if(response.status===200){
         yield put({
           type: 'save',
           payload:  response.data
@@ -26,20 +26,7 @@ export default {
           type: 'changeLoading',
           payload: false,
         });
-      }else{
-        yield put({
-          type: 'save',
-          payload:  {
-            data:response.data.data,
-            meta: {pagination: {total: 0, per_page: 0}},
-          }
-        });
-        yield put({
-          type: 'changeLoading',
-          payload: false,
-        });
       }
-
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);
@@ -50,6 +37,14 @@ export default {
     },
     *edit({ payload, callback }, { call, put }) {
       const response = yield call(edit, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *editStatus({ payload, callback }, { call, put }) {
+      console.log(payload)
+      const response = yield call(editStatus, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();

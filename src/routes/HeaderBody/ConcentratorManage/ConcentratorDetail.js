@@ -3,7 +3,7 @@ import {Pagination, Table, Card, Button, Layout, message, Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import DetailSearch from './DetailSearch'
-import AddConcentrator from './AddConcentrator'
+import AddConcentrator from './AddOrEditConcentrator'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import Detail from './Detail'

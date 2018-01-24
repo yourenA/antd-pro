@@ -20,8 +20,8 @@ class SearchForm extends Component {
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
         query: fieldsValue.query,
-        started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
-        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
+        /*started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
+        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',*/
       };
       this.props.handleSearch({...values,page:1})
     });
@@ -37,20 +37,21 @@ class SearchForm extends Component {
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
             <FormItem label="集中器编号">
-              {getFieldDecorator('username')(
+              {getFieldDecorator('query')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-            <FormItem label="创建时间">
+            {/*<FormItem label="创建时间">
               {getFieldDecorator('range-time-picker',{
                 initialValue:this.props.initRange?this.props.initRange: '',
               })(
                 <RangePicker  allowClear={this.props.initRange?false:true}/>
               )}
-            </FormItem>
+            </FormItem>*/}
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            {(this.props.showAddBtn && this.props.village_id)?<Button  type="primary"  style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
           </FormItem>
         </Row>
       </Form>

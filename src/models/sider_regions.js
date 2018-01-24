@@ -7,17 +7,17 @@ export default {
     data:[],
   },
   effects: {
-    *fetch({ payload,callback }, { call, put }) {
+    *fetch({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
       const response = yield call(query, payload);
       console.log(response)
-      if(response.status===200){
+      if (response.status === 200) {
         yield put({
           type: 'save',
-          payload:  response.data.data
+          payload: response.data.data
         });
         yield put({
           type: 'changeLoading',
@@ -26,10 +26,21 @@ export default {
         if (callback) callback();
       }
     },
+    *concat({payload, callback}, {call, put}) {
+      yield put({
+        type: 'concat',
+        payload: payload
+      });
+    },
   },
-
   reducers: {
     save(state, action) {
+      return {
+        ...state,
+        data: action.payload,
+      };
+    },
+    concat(state, action) {
       return {
         ...state,
         data: action.payload,

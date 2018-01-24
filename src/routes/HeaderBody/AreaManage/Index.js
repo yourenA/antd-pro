@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './Search'
+import DefaultSearch from './../OnlyAdd'
+
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
@@ -186,7 +187,7 @@ class Vendor extends PureComponent {
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch inputText="名字" dateText="发送时间" handleSearch={this.handleSearch}
+                    <DefaultSearch inputText="区域名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>

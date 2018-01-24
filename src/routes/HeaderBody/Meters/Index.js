@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {Pagination, Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './Search'
+import DefaultSearch from './../OnlyAdd'
 import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../EmptySider'

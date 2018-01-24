@@ -47,6 +47,10 @@ const ConcentratorManage = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
 )
 
+const Servers = asyncComponent(() =>
+import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
+)
+
 const StatusCheck = asyncComponent(() =>
 import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
 )
@@ -187,8 +191,14 @@ const data = [{
       name: '运行管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions:['member_add_and_edit','member_delete'],
-      children: [{
+      permissions:['server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
+      children: [
+        {
+          name: '服务器地址',
+          path: 'servers_manage',
+          component: Servers,
+          permissions:['server_add_and_edit','server_status_edit','server_delete'],
+        },{
         name: '导入集中器',
         path: 'import_concentrator',
         component: ImportConcentrator,
@@ -197,7 +207,7 @@ const data = [{
         name: '集中器管理',
         path: 'concentrator_manage',
         component: ConcentratorManage,
-        permissions:['iot_hub_management'],
+        permissions:['concentrator_add_and_edit','concentrator_delete'],
       },{
         name: '指令和状态查看',
         path: 'status_check',
