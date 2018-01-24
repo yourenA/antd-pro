@@ -36,7 +36,7 @@ import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserM
 )
 
 const UserMeterLife = asyncComponent(() =>
-import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/UserMeterLife/Index")
+import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
 )
 
 const ImportConcentrator = asyncComponent(() =>
@@ -170,7 +170,7 @@ const data = [{
       name: '实时数据分析',            // 页面名称，会展示在菜单栏中
       path: 'real_time_data',   // 匹配的路由
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['iot_hub_management'],
+      permissions:['meter_status'],
       children: [{
         name: '小区水量分析',
         path: 'community_analysis',
@@ -185,7 +185,7 @@ const data = [{
         name: '户表使用年限',
         path: 'user_meter_life',
         component: UserMeterLife,
-        permissions:['iot_hub_management'],
+        permissions:['meter_status'],
       }],
     },  {
       name: '运行管理',            // 页面名称，会展示在菜单栏中

@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/members';
+import { query } from '../services/concentrator_water';
 
 export default {
-  namespace: 'members',
+  namespace: 'concentrator_water',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -10,7 +10,7 @@ export default {
 
   },
   effects: {
-    *fetch({ payload,callback }, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -26,28 +26,6 @@ export default {
           type: 'changeLoading',
           payload: false,
         });
-          if (callback) callback();
-      }
-
-    },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(add, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *edit({ payload, callback }, { call, put }) {
-      const response = yield call(edit, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(remove, payload);
-      if(response.status===200){
-        if (callback) callback();
       }
     },
   },

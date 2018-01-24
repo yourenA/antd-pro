@@ -31,25 +31,25 @@ class SiderTree extends PureComponent {
     }).then((response)=>{
        console.log('response',response)
        that.setState({
-         treeData:response.data.data
+         treeData:that.transilate(response.data.data)
        })
        if(response.data.data.length>0){
          that.props.changeArea(response.data.data[0].id)
        }
      })
 
-   /* dispatch({
-      type: 'sider_regions/fetch',
-      payload: {
-        return: 'all'
-      },
-      callback: function () {
-        const {sider_regions:{data}}=that.props;
-        if(data.length>0){
-          that.props.changeArea(data[0].id)
+  }
+  transilate=(data)=>{
+    return data.map((item) => {
+      if (item.concentrators) {
+        if(item.concentrators.length>0){
+          let concatR=item.children?item.children.concat(item.concentrators):item.concentrators
+          item.children=concatR
         }
+        this.transilate(item.children)
       }
-    });*/
+      return item
+    });
   }
   onExpandNode=(expandedKeys,expanded)=>{
   }
@@ -127,10 +127,17 @@ class SiderTree extends PureComponent {
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
-      }else if(!item.has_concentrators){
-        // console.log('是集中器')
-        return <TreeNode title={item.name} key={item.id} dataRef={item} isLeaf={true}/>;
       }
+      if(item.number){
+        return  <TreeNode title={item.number} key={item.id} dataRef={item} />;
+      }
+      // if(item.concentrators.length>0){
+      //   let concentrators=[];
+      //   for(let i=0;i<item.concentrators.length;i++){
+      //     concentrators.push(<TreeNode title={item.concentrators[i].number} key={item.concentrators[i].id} dataRef={item.concentrators[i]} />)
+      //   }
+      //   return concentrators
+      // }
       return <TreeNode title={item.name} key={item.id} dataRef={item} />;
     });
   }
@@ -141,9 +148,9 @@ class SiderTree extends PureComponent {
   }
   onSelect = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
-    if(info.node.props.dataRef.concentrator_model_id){
+    if(info.node.props.dataRef.number){
       console.log('集中器')
-      this.props.changeConcentrator(info.node.props.dataRef.number)
+      this.props.changeConcentrator(info.node.props.dataRef.number,info.node.props.dataRef.village_id)
     }else{
       console.log('地区')
       this.props.changeArea(selectedKeys[0])
@@ -161,7 +168,7 @@ class SiderTree extends PureComponent {
           {(this.state.treeData.length)
             ?
             <Tree
-              loadData={this.onLoadData}
+              //loadData={this.onLoadData}
               onExpand={this.onExpandNode}
                   showLine onSelect={this.onSelect}
                   //defaultExpandedKeys={[data[0].id]}

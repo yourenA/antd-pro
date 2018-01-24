@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/members';
+import { query,add,remove,edit } from '../services/meter_status';
 
 export default {
-  namespace: 'members',
+  namespace: 'meter_status',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},

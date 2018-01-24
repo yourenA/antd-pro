@@ -80,22 +80,30 @@ class ConcentratorManage extends PureComponent {
 
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields()
-    this.handleSearch({
-      page: 1,
-      query: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
+    this.setState({
+      showAddBtnByCon:false,
+      concentrator_number:null
+    },function () {
+      this.handleSearch({
+        page: 1,
+        query: '',
+        // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        village_id: village_id
+      })
     })
   }
-  changeConcentrator = (concentrator_number)=> {
+  changeConcentrator = (concentrator_number,village_id)=> {
     this.searchFormRef.props.form.resetFields()
+    this.setState({
+      concentrator_number:concentrator_number,
+    })
     this.handleSearch({
       page: 1,
       query: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: '',
+      village_id:village_id,
       concentrator_number:concentrator_number
     })
   }
@@ -113,6 +121,7 @@ class ConcentratorManage extends PureComponent {
     dispatch({
       type: 'concentrators/fetch',
       payload: {
+        concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
       },
@@ -206,15 +215,21 @@ class ConcentratorManage extends PureComponent {
       }
     });
   }
-  showConcentrator=(id)=>{
-    console.log(id);
+  showConcentrator=(record)=>{
+    console.log(record.id);
     this.setState({
-      showArea:false
+      concentratorId:record.id,
+      concentratorNumber:record.number,
+    },function () {
+      this.setState({
+        showArea:false
+      })
     })
   }
   handleBack=()=>{
     this.setState({
-      showArea:true
+      showArea:true,
+      concentratorNumber:null,
     })
   }
   render() {
@@ -238,7 +253,7 @@ class ConcentratorManage extends PureComponent {
       { title: '集中器编号', width: 120, dataIndex: 'number', key: 'number',    fixed: 'left',
         render: (text, record, index) => {
           return (
-            <p style={{cursor:'pointer'}} onClick={()=>this.showConcentrator(record.id)}>
+            <p style={{cursor:'pointer'}} onClick={()=>this.showConcentrator(record)}>
               {text}
             </p>
           )
@@ -306,12 +321,13 @@ class ConcentratorManage extends PureComponent {
         }
       },
     ];
+    let breadcrumb=this.state.concentratorNumber?[{name: '运行管理'}, {name: '集中器管理'},{name:this.state.concentratorNumber}]:[{name: '运行管理'}, {name: '集中器管理'}]
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator} showArea={this.state.showArea} siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '集中器管理'}]}>
+            <PageHeaderLayout title="运行管理" breadcrumb={breadcrumb}>
               <Card bordered={false} style={{margin:'-24px -24px 0'}}>
               {
                 this.state.showArea
@@ -345,7 +361,7 @@ class ConcentratorManage extends PureComponent {
                                 style={{marginTop: '10px'}} onChange={this.handPageChange}/>
                   </div>
                   :
-                  <ConcentratorDetail handleBack={this.handleBack}/>
+                  <ConcentratorDetail concentratorId={this.state.concentratorId}  handleBack={this.handleBack}/>
               }
               </Card>
           </PageHeaderLayout>

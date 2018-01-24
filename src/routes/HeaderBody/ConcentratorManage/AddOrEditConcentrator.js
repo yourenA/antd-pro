@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Input,TreeSelect} from 'antd';
+import {Form,  Select,Input,TreeSelect,Cascader} from 'antd';
 import {connect} from 'dva';
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
@@ -12,6 +12,16 @@ class AddConcentrator extends Component {
     super(props);
     this.state = {
     };
+  }
+  renderTreeSelect=(data)=>{
+    return data.map((item)=>{
+      if(item.children){
+        this.renderTreeSelect(item.children)
+      }
+      item.value=item.id;
+      item.label=item.name
+      return item
+    })
   }
   renderTreeNodes=(data)=>{
     return data.map((item) => {
@@ -40,6 +50,32 @@ class AddConcentrator extends Component {
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
+        <FormItem
+          label="服务器地址"
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('server_id', {
+            initialValue: this.props.editRecord?{key:this.props.editRecord.server_id,label:this.props.editRecord.server_ip}:{key:'',label:''},
+            rules: [{required: true, message: '服务器地址为空'}],
+          })(
+            <Select labelInValue={true}>
+              { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip}</Option>) }
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          label="集中器类型"
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('concentrator_model_id', {
+            initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
+            rules: [{required: true, message: '集中器类型不能为空'}],
+          })(
+            <Select labelInValue={true}  disabled={this.props.editRecord ?true:false}>
+              { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+            </Select>
+          )}
+        </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
@@ -70,33 +106,8 @@ class AddConcentrator extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
-        <FormItem
-          label="服务器地址"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('server_id', {
-            initialValue: this.props.editRecord?{key:this.props.editRecord.server_id,label:this.props.editRecord.server_ip}:{key:'',label:''},
-            rules: [{required: true, message: '服务器地址为空'}],
-          })(
-            <Select labelInValue={true}>
-              { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip}</Option>) }
-            </Select>
-          )}
-        </FormItem>
-        <FormItem
-          label="集中器类型"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('concentrator_model_id', {
-            initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
-            rules: [{required: true, message: '集中器类型不能为空'}],
-          })(
-            <Select labelInValue={true}  disabled={this.props.editRecord ?true:false}>
-              { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
-            </Select>
-          )}
-        </FormItem>
-      {/*  <FormItem
+
+       <FormItem
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -107,14 +118,9 @@ class AddConcentrator extends Component {
             rules: [{required: true, message: '安装小区不能为空'}],
             initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
           })(
-            <TreeSelect
-              disabled={this.props.editRecord ?true:false}
-              treeDefaultExpandAll={true}
-            >
-              {this.renderTreeNodes(this.props.area)}
-            </TreeSelect>
+            <Cascader options={this.renderTreeSelect(this.props.area)} />
           )}
-        </FormItem>*/}
+        </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

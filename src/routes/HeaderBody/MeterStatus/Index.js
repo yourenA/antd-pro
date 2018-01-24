@@ -11,9 +11,7 @@ import find from 'lodash/find'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
-  members: state.members,
-  concentrators: state.concentrators,
-  meters: state.meters,
+  meter_status: state.meter_status,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -37,13 +35,6 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        return: 'all'
-      }
-    });
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
@@ -77,13 +68,6 @@ class UserMeterAnalysis extends PureComponent {
         village_id: village_id
       })
     })
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
 
   }
   changeConcentrator = (concentrator_number,village_id)=> {
@@ -92,13 +76,6 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number:concentrator_number,
       showAddBtnByCon:true,
     })
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
     this.handleSearch({
       page: 1,
       query: '',
@@ -124,7 +101,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'meter_status/fetch',
       payload: {
         concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
@@ -155,7 +132,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/add',
+      type: 'meter_status/add',
       payload: {
         ...formValues,
         is_change:formValues.is_change.key,
@@ -180,7 +157,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.editFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/edit',
+      type: 'meter_status/edit',
       payload: {
         ...formValues,
         village_id: this.state.village_id,
@@ -201,7 +178,7 @@ class UserMeterAnalysis extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'members/remove',
+      type: 'meter_status/remove',
       payload: {
         id:id,
       },
@@ -219,7 +196,7 @@ class UserMeterAnalysis extends PureComponent {
     console.log(formValues)
   }
   render() {
-    const {members: {data, meta, loading},concentrators,meters} = this.props;
+    const {meter_status: {data, meta, loading},concentrators,meters} = this.props;
     const columns = [
       {
         title: '序号',
@@ -227,7 +204,6 @@ class UserMeterAnalysis extends PureComponent {
         key: 'id',
         width: 45,
         className: 'table-index',
-        fixed: 'left',
         render: (text, record, index) => {
           return (
             <span>
@@ -236,63 +212,18 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',  fixed: 'left', },
-      { title: '户号', width: 150, dataIndex: 'number', key: 'number' },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 150, },
-      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 180,},
-      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 150,},
-      { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,},
-      { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 100},
-      { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 100,},
-      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at'},
-      {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 130,
-        render: (val, record, index) => {
-          return(
-            <p>
-              {
-                this.state.showAddBtn &&
-                <span>
-                      <a href="javascript:;" onClick={()=> {
-                        this.setState(
-                          {
-                            editRecord: record,
-                            editModal: true
-                          }
-                        )
-                      }}>编辑</a>
-            <span className="ant-divider"/>
-                </span>
-              }
-              {
-                this.state.showdelBtn &&
-                <span>
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                              onConfirm={()=>this.handleRemove(record.id)}>
-                  <a href="">删除</a>
-                </Popconfirm>
-                    <span className="ant-divider"/>
-                </span>
-              }
-              <a href="javascript:;"  onClick={()=>this.setState({
-                editRecord:record,
-                changeModal:true
-              })}>换表</a>
-            </p>
-          )
-        }
-      },
+      { title: '水表编号', width: '20%', dataIndex: 'meter_number', key: 'meter_number', },
+      { title: '用户名称', width: '20%', dataIndex: 'real_name', key: 'real_name' },
+      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: '20%', },
+      { title: '安装时间', dataIndex: 'installed_at', key: 'installed_at' ,width: '20%',},
+      { title: '年限', dataIndex: 'service_life', key: 'service_life' },
     ];
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '用户管理'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表使用年限'}]}>
               <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -313,7 +244,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1550, y: this.state.tableY }}
+                  scroll={{y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />
@@ -331,7 +262,6 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal:false})}
         >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
         </Modal>
         <Modal
           key={ Date.parse(new Date())+1}
@@ -340,7 +270,6 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal:false})}
         >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
         <Modal
           key={ Date.parse(new Date())+2}
