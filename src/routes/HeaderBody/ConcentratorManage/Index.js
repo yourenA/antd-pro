@@ -22,6 +22,7 @@ class ConcentratorManage extends PureComponent {
     super(props);
     this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
+      showAddBtnByCon:true,
       showAddBtn: find(this.permissions, {name: 'concentrator_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'concentrator_delete'}),
       tableY:0,
@@ -37,6 +38,7 @@ class ConcentratorManage extends PureComponent {
       showArea:true,
       editRecord:null
     }
+
   }
 
   componentDidMount() {
@@ -81,7 +83,7 @@ class ConcentratorManage extends PureComponent {
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields()
     this.setState({
-      showAddBtnByCon:false,
+      showAddBtnByCon:true,
       concentrator_number:null
     },function () {
       this.handleSearch({
@@ -96,6 +98,7 @@ class ConcentratorManage extends PureComponent {
   changeConcentrator = (concentrator_number,village_id)=> {
     this.searchFormRef.props.form.resetFields()
     this.setState({
+      showAddBtnByCon:false,
       concentrator_number:concentrator_number,
     })
     this.handleSearch({
@@ -149,21 +152,26 @@ class ConcentratorManage extends PureComponent {
     })
 
   }
+  refreshSider=()=>{
+    this.setState({
+      refreshSider:true
+    })
+  }
   handleAdd = () => {
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
     this.props.dispatch({
       type: 'concentrators/add',
       payload: {
         ...formValues,
-        village_id: this.state.village_id,
+        village_id: formValues.village_id[formValues.village_id.length-1],
         server_id: formValues.server_id.key,
         concentrator_model_id: formValues.concentrator_model_id.key,
         is_count: formValues.is_count.key,
       },
       callback: function () {
         message.success('添加集中器成功')
+        that.reload();
         that.setState({
           addModal: false,
         });
@@ -171,8 +179,12 @@ class ConcentratorManage extends PureComponent {
           page: that.state.page,
           query: that.state.query,
         })
+
       }
     });
+  }
+  setReload=(reload)=> {
+    this.reload = reload;
   }
   handleEdit = () => {
     const that = this;
@@ -324,7 +336,7 @@ class ConcentratorManage extends PureComponent {
     let breadcrumb=this.state.concentratorNumber?[{name: '运行管理'}, {name: '集中器管理'},{name:this.state.concentratorNumber}]:[{name: '运行管理'}, {name: '集中器管理'}]
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator} showArea={this.state.showArea} siderLoadedCallback={this.siderLoadedCallback}/>
+        <Sider setReload={this.setReload} ref={(inst) => this.siderWrapped = inst} changeArea={this.changeArea} changeConcentrator={this.changeConcentrator} showArea={this.state.showArea} siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="运行管理" breadcrumb={breadcrumb}>
@@ -338,7 +350,7 @@ class ConcentratorManage extends PureComponent {
                         <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                                 village_id={this.state.village_id}
                                 handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                                showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}/>
                       </div>
                     </div>
                     <Table

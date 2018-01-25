@@ -7,6 +7,7 @@ import {connect} from 'dva';
 import {Link, routerRedux} from 'dva/router';
 import request from './../../utils/request'
 import groupBy from 'lodash/groupBy'
+import forEach from 'lodash/forEach'
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 @connect(state => ({
@@ -19,14 +20,19 @@ class AddPoliciesForm extends Component {
     this.isNew = this.props.match.params.id === 'add' ? true : false;
     this.state = {
       userManageCheckedList: [],
+      villageCheckedList: [],
       otherCheckedList: [],
       other:[],
       userManage:[],
+      village:[],
       userIndeterminate: false,
       otherIndeterminate: false,
+      villageIndeterminate: false,
       checkAll: false,
       otherCheckAll: false,
-      editRecord: {}
+      villageCheckAll: false,
+      editRecord: {},
+      你好评:'234'
     }
   }
 
@@ -44,7 +50,13 @@ class AddPoliciesForm extends Component {
     }).then((response)=>{
       console.log('response',response)
       const group=groupBy(response.data.data,'group')
-      console.log('group',group)
+      console.log('group',group);
+      forEach(group, function(value, key) {
+        console.log(key);
+        that.setState({
+          key:value
+        })
+      });
       that.setState({
         other:group['其他'].reduce((result,item)=>{
           result.push({label:item.display_name,value:item.name})
@@ -54,8 +66,11 @@ class AddPoliciesForm extends Component {
           result.push({label:item.display_name,value:item.name})
           return result
         },[]),
+        village:group['安装小区管理'].reduce((result,item)=>{
+          result.push({label:item.display_name,value:item.name})
+          return result
+        },[]),
       },function () {
-
         if (this.isNew) {
           console.log('新建用户组')
         } else {
@@ -78,6 +93,10 @@ class AddPoliciesForm extends Component {
                   result.push(item.name)
                   return result
                 },[]):[],
+                villageCheckedList:selectGroup['安装小区管理']?selectGroup['安装小区管理'].reduce((result,item)=>{
+                  result.push(item.name)
+                  return result
+                },[]):[],
               },function () {
 
                 that.setState({
@@ -85,6 +104,8 @@ class AddPoliciesForm extends Component {
                   checkAll: this.state.userManageCheckedList.length === this.state.userManage.length,
                   otherIndeterminate: !!this.state.otherCheckedList.length && (this.state.otherCheckedList.length < this.state.other.length),
                   otherCheckAll: this.state.otherCheckedList.length === this.state.other.length,
+                  villageIndeterminate: !!this.state.villageCheckedList.length && (this.state.villageCheckedList.length < this.state.village.length),
+                  villageCheckAll: this.state.villageCheckedList.length === this.state.village.length,
                 })
 
               })
@@ -224,7 +245,6 @@ class AddPoliciesForm extends Component {
             </FormItem>
             <FormItem
               {...formItemLayoutWithOutLabel}
-
             >
               <div className="checkgroup-title" >
                 <Checkbox

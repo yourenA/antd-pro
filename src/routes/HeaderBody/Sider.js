@@ -22,22 +22,29 @@ class SiderTree extends PureComponent {
 
   componentDidMount() {
     const {dispatch}=this.props;
+    this.queryVillages(true);
+    if(this.props.setReload){
+      this.props.setReload(this.queryVillages);
+    }
+  }
+  queryVillages=(initial)=>{
     const that=this;
-     request(`/villages`,{
+    request(`/villages`,{
       method:'GET',
       params:{
         return: 'all'
       }
     }).then((response)=>{
-       console.log('response',response)
-       that.setState({
-         treeData:that.transilate(response.data.data)
-       })
-       if(response.data.data.length>0){
-         that.props.changeArea(response.data.data[0].id)
-       }
-     })
-
+      console.log('response',response)
+      that.setState({
+        treeData:that.transilate(response.data.data)
+      })
+      if(initial){
+        if(response.data.data.length>0){
+          that.props.changeArea(response.data.data[0].id)
+        }
+      }
+    })
   }
   transilate=(data)=>{
     return data.map((item) => {

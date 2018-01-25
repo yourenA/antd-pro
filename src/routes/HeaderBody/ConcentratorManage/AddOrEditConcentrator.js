@@ -106,21 +106,39 @@ class AddConcentrator extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
-
-       <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
+        {
+          this.props.editRecord?
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               安装小区
             </span>
-          )}>
-          {getFieldDecorator('village_id', {
-            rules: [{required: true, message: '安装小区不能为空'}],
-            initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
-          })(
-            <Cascader options={this.renderTreeSelect(this.props.area)} />
-          )}
-        </FormItem>
+            )}>
+            {getFieldDecorator('village_id', {
+              initialValue: this.props.editRecord.village_name,
+            })(
+              <Input disabled={true}/>
+            )}
+          </FormItem>:
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
+              安装小区
+            </span>
+              )}>
+              {getFieldDecorator('village_id', {
+                rules: [{required: true, message: '安装小区不能为空'}],
+                initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
+              })(
+                <Cascader options={this.renderTreeSelect(this.props.area)} placeholder="请选择"/>
+              )}
+            </FormItem>
+
+
+        }
+
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
