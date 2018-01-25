@@ -43,17 +43,17 @@ class AddPoliciesForm extends Component {
         >
           {getFieldDecorator('username', {
             initialValue: this.props.editRecord ? this.props.editRecord.username : '',
-            rules: [{required: true, message: '姓名不能为空'}],
+            rules: [{required: true, message: '账号不能为空'}],
           })(
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
         <FormItem
-          label="部门"
+          label="用户组"
           {...formItemLayoutWithLabel}>
           {getFieldDecorator('role_id', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.role_id.toString(),label:this.props.editRecord.role_display_name}:{key:'',label:''},
-            rules: [{required: true, message: '请选择策略'}],
+            rules: [{required: true, message: '请选择用户组'}],
           })(
             <Select labelInValue={true} >
               { this.props.usergroup.data.map((item, key) => {

@@ -23,9 +23,6 @@ class SiderTree extends PureComponent {
   componentDidMount() {
     const {dispatch}=this.props;
     this.queryVillages(true);
-    if(this.props.setReload){
-      this.props.setReload(this.queryVillages);
-    }
   }
   queryVillages=(initial)=>{
     const that=this;
@@ -37,7 +34,7 @@ class SiderTree extends PureComponent {
     }).then((response)=>{
       console.log('response',response)
       that.setState({
-        treeData:that.transilate(response.data.data)
+        treeData:this.props.showSiderCon===false?response.data.data:that.transilate(response.data.data)
       })
       if(initial){
         if(response.data.data.length>0){
@@ -136,16 +133,9 @@ class SiderTree extends PureComponent {
         );
       }
       if(item.number){
-        return  <TreeNode title={item.number} key={item.id} dataRef={item} />;
+        return  <TreeNode title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
       }
-      // if(item.concentrators.length>0){
-      //   let concentrators=[];
-      //   for(let i=0;i<item.concentrators.length;i++){
-      //     concentrators.push(<TreeNode title={item.concentrators[i].number} key={item.concentrators[i].id} dataRef={item.concentrators[i]} />)
-      //   }
-      //   return concentrators
-      // }
-      return <TreeNode title={item.name} key={item.id} dataRef={item} />;
+      return <TreeNode title={item.name} key={item.id} dataRef={item} className="village"/>;
     });
   }
   onCollapse = () => {
@@ -154,7 +144,6 @@ class SiderTree extends PureComponent {
     });
   }
   onSelect = (selectedKeys, info) => {
-    console.log('selected', selectedKeys, info);
     if(info.node.props.dataRef.number){
       console.log('集中器')
       this.props.changeConcentrator(info.node.props.dataRef.number,info.node.props.dataRef.village_id)
