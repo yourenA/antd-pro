@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -18,6 +18,7 @@ class Vendor extends PureComponent {
     this.state = {
       showAddBtn: find(this.permissions, {name: 'user_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'user_delete'}),
+      showStatusBtn: find(this.permissions, {name: 'user_status_edit'}),
       tableY: 0,
       query: '',
       page: 1,
@@ -165,6 +166,35 @@ class Vendor extends PureComponent {
       }
     });
   }
+
+  handleEditStatus=(id,status)=>{
+    let sendStatus=0;
+    if(status===1){
+      sendStatus=-1;
+    }else{
+      sendStatus=1;
+    }
+    const that=this;
+    this.props.dispatch({
+      type: 'user/editStatus',
+      payload: {
+        data: {
+          id,
+          status:sendStatus
+        }
+      },
+      callback: function () {
+        message.success('修改状态成功')
+        that.props.dispatch({
+          type: 'user/fetch',
+          payload: {
+            query:that.state.query,
+            page:that.state.page
+          }
+        });
+      }
+    });
+  }
   handleChangePhoneCall=(id)=>{
     console.log(id)
   }
@@ -187,29 +217,63 @@ class Vendor extends PureComponent {
       },
       {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
       {title: '名字', width: '10%', dataIndex: 'real_name', key: 'real_name'},
-      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '15%'},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: '17%'},
-      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '10%',
+      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '13%'},
+      {title: '邮箱', dataIndex: 'email', key: 'email', width: '18%'},
+      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '8%',
         render: (val, record, index) => (
           <Switch checked={record.is_sms_notify===1?true:false}  />
         )},
 
       {
-        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: '10%',
+        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: '8%',
         render: (val, record, index) => (
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '权限', dataIndex: 'role_display_name', key: 'role_display_name'},
+      {title: '权限', dataIndex: 'role_display_name', key: 'role_display_name',  width: '10%',},
+      {
+        title: '状态',
+        dataIndex: 'status',
+
+        render:(val,record,index)=>{
+          return(
+            <span>
+                 <Badge status={`${val===-1?"error":"success"}`} />{record.status_explain}
+              </span>
+          )
+        }
+      },
       {
         title: '操作',
-        width: 100,
-        fixed: 'right',
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showAddBtn &&
-              <span>
+        width: 130,
+        render: (val, record, index) =>{
+          if(record.lock===1){
+            return null
+          }else if(record.lock===2){
+            return (
+              <p>
+                {
+                  this.state.showAddBtn &&
+                  <span>
+                      <a href="javascript:;" onClick={()=> {
+                        this.setState(
+                          {
+                            editRecord: record,
+                            editModal: true
+                          }
+                        )
+                      }}>编辑</a>
+                </span>
+                }
+
+              </p>
+            )
+          }else{
+            return (
+              <p>
+                {
+                  this.state.showAddBtn &&
+                  <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -220,17 +284,29 @@ class Vendor extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+                }
+                {
+                  this.state.showStatusBtn &&
+                  <span>
+                     <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+                                 onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
+              <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
+            </Popconfirm>
+            <span className="ant-divider"/>
+                </span>
+                }
+                {
+                  this.state.showdelBtn &&
+                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                              onConfirm={()=>this.handleRemove(record.id)}>
+                    <a href="">删除</a>
+                  </Popconfirm>
+                }
 
-          </p>
-        ),
+              </p>
+            )
+          }
+        }
       },
     ];
     return (
@@ -258,7 +334,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 900, y: this.state.tableY}}
+                  scroll={{x: 1100, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

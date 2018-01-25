@@ -170,7 +170,7 @@ const data = [{
       name: '实时数据分析',            // 页面名称，会展示在菜单栏中
       path: 'real_time_data',   // 匹配的路由
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['meter_status'],
+      permissions:['company_visit','meter_status'],
       children: [{
         name: '小区水量分析',
         path: 'community_analysis',
@@ -185,107 +185,107 @@ const data = [{
         name: '户表使用年限',
         path: 'user_meter_life',
         component: UserMeterLife,
-        permissions:['meter_status'],
+        permissions:['company_visit','meter_status'],
       }],
     },  {
       name: '运行管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions:['server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
+      permissions:['company_visit','server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
       children: [
         {
           name: '服务器地址',
           path: 'servers_manage',
           component: Servers,
-          permissions:['server_add_and_edit','server_status_edit','server_delete'],
+          permissions:['company_visit','server_add_and_edit','server_status_edit','server_delete'],
         },{
         name: '导入集中器',
         path: 'import_concentrator',
         component: ImportConcentrator,
-        permissions:['iot_hub_management'],
+        permissions:[,'iot_hub_management'],
       },{
         name: '集中器管理',
         path: 'concentrator_manage',
         component: ConcentratorManage,
-        permissions:['concentrator_add_and_edit','concentrator_delete'],
+        permissions:['company_visit','concentrator_add_and_edit','concentrator_delete'],
       },{
         name: '指令和状态查看',
         path: 'status_check',
         component: StatusCheck,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit','iot_hub_management'],
       },{
         name: '用户档案',
         path: 'user_archives',
         component: UserArchives,
-        permissions:['member_add_and_edit','member_delete'],
+        permissions:['company_visit','member_add_and_edit','member_delete'],
       }],
     },{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['meter_delete','meter_add_and_edit','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
+      permissions:['company_visit','meter_delete','meter_add_and_edit','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
           name: '用户管理',
           path: 'member_manage',
           component: UsersManage,
-          permissions:['user_add_and_edit','user_delete'],
+          permissions:['company_visit','user_add_and_edit','user_delete'],
         },{
         name: '厂商查询',
         path: 'vendor_manage',
         component: VendorMange,
-        permissions:['manufacturer_delete','manufacturer_add_and_edit'],
+        permissions:['company_visit','manufacturer_delete','manufacturer_add_and_edit'],
       },{
         name: '水表类型查询',
         path: 'water_meter_search',
         component: MeterModels,
-        permissions:['meter_model_delete','meter_model_add_and_edit'],
+        permissions:['company_visit','meter_model_delete','meter_model_add_and_edit'],
       },{
           name: '水表管理',
           path: 'water_meter_manage',
           component: Meters,
-          permissions:['meter_add_and_edit','meter_delete'],
+          permissions:['company_visit','meter_add_and_edit','meter_delete'],
         },{
         name: '集中器类型查询',
         path: 'concentrator_type_search',
         component: ConcentratorModels,
-        permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+        permissions:['company_visit','concentrator_model_delete','concentrator_model_add_and_edit'],
       },{
           name: '区域管理',
           path: 'area_manage',
           component: AreaManage,
-          permissions:['village_add_and_edit','village_delete'],
+          permissions:['company_visit','village_add_and_edit','village_delete'],
         },{
           name: '系统设置',
           path: 'system_setup',
           component: SystemSetup,
-          permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+          permissions:['company_visit','concentrator_model_delete','concentrator_model_add_and_edit'],
         },{
         name: '交换数据库设置',
         path: 'change_dbase_setting',
         component: NewPage,
-        permissions:['iot_hub_management'],
+        permissions:[,'iot_hub_management'],
       }],
     },{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['iot_hub_management'],
+      permissions:[,'iot_hub_management'],
       children: [{
         name: '集中器异常分析',
         path: 'concentrator_error_analysis',
         component: ConcentratorErrorAnalysis,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit','iot_hub_management'],
       },{
         name: '水表异常分析',
         path: 'meter_unusual_analysis',
         component: NewPage,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit','iot_hub_management'],
       },{
         name: '统计日报',
         path: 'statistics_daily',
         component: NewPage,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit','iot_hub_management'],
       }],
     }],
 }, {

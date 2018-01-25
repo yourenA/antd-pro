@@ -40,9 +40,9 @@ class AddPoliciesForm extends Component {
         >
           {getFieldDecorator('username', {
             initialValue: this.props.editRecord ? this.props.editRecord.username : '',
-            rules: [{required: true, message: '编号不能为空'}],
+            rules: [{required: true, message: '账号不能为空'}],
           })(
-            <Input />
+            <Input disabled={ this.props.editRecord ?true:false}/>
           )}
         </FormItem>
         <FormItem

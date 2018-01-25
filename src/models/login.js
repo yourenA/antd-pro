@@ -37,6 +37,10 @@ export default {
       const response = yield call(fakeAccountLogin, payload);
       console.log(response)
       if(response.status===200){
+        response.data.permissions.data.push({
+          "name": "company_visit",
+          "display_name": "机构内容查看",
+        })
         sessionStorage.setItem('username', response.data.username);
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
