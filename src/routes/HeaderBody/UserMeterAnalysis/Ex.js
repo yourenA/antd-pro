@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
-import {Pagination , Table , Card, Popconfirm , Layout,message,Modal} from 'antd';
+import {Pagination , Table , Card, Popconfirm , Layout,message,Modal,Button } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import AddOREditUserArchives from './addOREditUserArchives'
 import Sider from './../Sider'
+import Detail from './Detail'
 import {connect} from 'dva';
-import ChangeTable from './ChangeTable'
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
@@ -24,7 +23,9 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon:false,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY:0,
-      query: '',
+      meter_number: '',
+      only_show_unusual:-1,
+      real_name:'',
       page: 1,
       initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
@@ -37,13 +38,6 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        return: 'all'
-      }
-    });
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
@@ -56,7 +50,9 @@ class UserMeterAnalysis extends PureComponent {
     })
     this.handleSearch({
       page: 1,
-      query: '',
+      meter_number: '',
+      only_show_unusual:-1,
+      real_name:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
@@ -71,19 +67,14 @@ class UserMeterAnalysis extends PureComponent {
     },function () {
       this.handleSearch({
         page: 1,
-        query: '',
-        // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        meter_number: '',
+        only_show_unusual:-1,
+        real_name:'',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id
       })
     })
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
 
   }
   changeConcentrator = (concentrator_number,village_id)=> {
@@ -92,18 +83,13 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number:concentrator_number,
       showAddBtnByCon:true,
     })
-    const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
     this.handleSearch({
       page: 1,
-      query: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      meter_number: '',
+      only_show_unusual:-1,
+      real_name:'',
+      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id:village_id,
       concentrator_number:concentrator_number
     })
@@ -111,12 +97,11 @@ class UserMeterAnalysis extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
-      query: '',
-      meter_number:'',
-      distribution_area:'',
-      statistical_forms:''
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      meter_number: '',
+      only_show_unusual:-1,
+      real_name:'',
+      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
 
@@ -134,6 +119,8 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
           village_id: values.village_id? values.village_id:that.state.village_id,
+          started_at: values.started_at,
+          ended_at: values.ended_at,
         })
       }
     });
@@ -143,9 +130,11 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      query: this.state.query,
-      // ended_at: this.state.ended_at,
-      // started_at: this.state.started_at,
+      meter_number: this.state.meter_number,
+      only_show_unusual:this.state.only_show_unusual,
+      real_name:this.state.real_name,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
       // area: this.state.area
     })
   }
@@ -170,7 +159,11 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          meter_number: that.state.meter_number,
+          only_show_unusual:that.state.only_show_unusual,
+          real_name:that.state.real_name,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
         })
       }
     });
@@ -193,7 +186,11 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          meter_number: that.state.meter_number,
+          only_show_unusual:that.state.only_show_unusual,
+          real_name:that.state.real_name,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
         })
       }
     });
@@ -209,7 +206,11 @@ class UserMeterAnalysis extends PureComponent {
         message.success('删除用户成功')
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          meter_number: that.state.meter_number,
+          only_show_unusual:that.state.only_show_unusual,
+          real_name:that.state.real_name,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
         })
       }
     });
@@ -236,53 +237,31 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',  fixed: 'left', },
-      { title: '户号', width: 150, dataIndex: 'number', key: 'number' },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 150, },
-      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 180,},
-      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 150,},
-      { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,},
-      { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 100},
-      { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 100,},
-      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at'},
+      { title: '户号', width: 150, dataIndex: 'name', key: 'name',    fixed: 'left', },
+      { title: '用户名称', width: 150, dataIndex: 'age', key: 'age' },
+      { title: '用户地址', dataIndex: 'address', key: '1' ,width: 180, },
+      { title: '集中器编号', dataIndex: 'address', key: '2' ,width: 140,},
+      { title: '水表编号', dataIndex: 'address', key: '3' ,width: 140,},
+      { title: '水表厂商', dataIndex: 'address', key: '4' ,width: 120,},
+      { title: '上次读数(T)', dataIndex: 'set', key: '5',width: 100,},
+      { title: '上次读数时间', dataIndex: 'address', key: '6',width: 180},
+      { title: '本次读数(T)', dataIndex: 'set', key: '51',width: 100,},
+      { title: '本次读数时间', dataIndex: 'address', key: '614',width: 180},
+      { title: '用水量(T)', dataIndex: 'address', key: '615',width: 100},
+      { title: '状态', dataIndex: 'address', key: '616',width: 100},
+      { title: '抄表员', dataIndex: 'address', key: '617',width: 120},
+      { title: '台区', dataIndex: 'address', key: '618',width: 100},
+      { title: '表册', dataIndex: 'address', key: '619'},
       {
-        title: '操作',
+        title: '查询历史状况',
         key: 'operation',
         fixed: 'right',
-        width: 130,
+        width: 110,
         render: (val, record, index) => {
           return(
-            <p>
-              {
-                this.state.showAddBtn &&
-                <span>
-                      <a href="javascript:;" onClick={()=> {
-                        this.setState(
-                          {
-                            editRecord: record,
-                            editModal: true
-                          }
-                        )
-                      }}>编辑</a>
-            <span className="ant-divider"/>
-                </span>
-              }
-              {
-                this.state.showdelBtn &&
-                <span>
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                              onConfirm={()=>this.handleRemove(record.id)}>
-                  <a href="">删除</a>
-                </Popconfirm>
-                    <span className="ant-divider"/>
-                </span>
-              }
-              <a href="javascript:;"  onClick={()=>this.setState({
-                editRecord:record,
-                changeModal:true
-              })}>换表</a>
-            </p>
+            <div>
+              <Button type="primary" size='small' onClick={()=>message.info('暂未开通该功能')}>详细信息</Button>
+            </div>
           )
         }
       },
@@ -292,11 +271,12 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '用户档案'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表水量分析'}]}>
               <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                            initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}/>
@@ -313,7 +293,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1550, y: this.state.tableY }}
+                  scroll={{ x: 2150, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />
@@ -324,33 +304,15 @@ class UserMeterAnalysis extends PureComponent {
           </PageHeaderLayout>
           </div>
         </Content>
-        <Modal
-          key={ Date.parse(new Date())}
-          title="添加用户档案"
-          visible={this.state.addModal}
-          onOk={this.handleAdd}
-          onCancel={() => this.setState({addModal:false})}
-        >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
-        </Modal>
-        <Modal
-          key={ Date.parse(new Date())+1}
-          title="编辑用户档案"
-          visible={this.state.editModal}
-          onOk={this.handleEdit}
-          onCancel={() => this.setState({editModal:false})}
-        >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
-        </Modal>
-        <Modal
-          key={ Date.parse(new Date())+2}
-          title="换表"
-          visible={this.state.changeModal}
-          onOk={this.handleChangeTable}
-          onCancel={() => this.setState({changeModal:false})}
-        >
-          <ChangeTable  wrappedComponentRef={(inst) => this.ChangeTableformRef = inst}/>
-        </Modal>
+      {/*   <Modal
+       key={ Date.parse(new Date())}
+       title="详细信息"
+       visible={this.state.editModal}
+       onOk={this.handleEdit}
+       onCancel={() => this.setState({editModal:false})}
+       >
+       <Detail />
+       </Modal>*/}
 
       </Layout>
     );

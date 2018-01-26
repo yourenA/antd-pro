@@ -1,24 +1,35 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Button, Layout, message} from 'antd';
+import {Pagination , Table , Card, Popconfirm , Layout,message,Modal,Button } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../../../components/DefaultSearch/index'
+import Search from './Search'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
-const {Content} = Layout;
+import find from 'lodash/find'
+import './index.less'
+const { Content} = Layout;
 @connect(state => ({
-  endpoints: state.endpoints,
+  members: state.members,
+  concentrators: state.concentrators,
+  meters: state.meters,
 }))
-class CommunityAnalysis extends PureComponent {
+class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
+    this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
-      tableY: 0,
+      showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
+      showAddBtnByCon:false,
+      showdelBtn: find(this.permissions, {name: 'member_delete'}),
+      tableY:0,
       query: '',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
-      started_at: '',
-      ended_at: '',
+      initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      started_at:'',
+      ended_at:'',
+      village_id: '',
+      editModal:false,
+      changeModal:false,
       area: '',
     }
   }
@@ -29,28 +40,49 @@ class CommunityAnalysis extends PureComponent {
     })
   }
 
-  siderLoadedCallback = (area)=> {
-    console.log('加载区域', area)
+  siderLoadedCallback = (village_id)=> {
+    console.log('加载区域', village_id)
     this.setState({
-      area
+      village_id
     })
     this.handleSearch({
       page: 1,
       query: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      area: area
+      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      village_id: village_id
     })
   }
 
-  changeArea = (area)=> {
-    this.formRef.props.form.resetFields()
+  changeArea = (village_id)=> {
+    this.searchFormRef.props.form.resetFields();
+    this.setState({
+      showAddBtnByCon:false,
+      concentrator_number:null
+    },function () {
+      this.handleSearch({
+        page: 1,
+        query: '',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        village_id: village_id
+      })
+    })
+
+  }
+  changeConcentrator = (concentrator_number,village_id)=> {
+    this.searchFormRef.props.form.resetFields()
+    this.setState({
+      concentrator_number:concentrator_number,
+      showAddBtnByCon:true,
+    })
     this.handleSearch({
       page: 1,
       query: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      area: area
+      village_id:village_id,
+      concentrator_number:concentrator_number
     })
   }
   handleFormReset = () => {
@@ -59,27 +91,30 @@ class CommunityAnalysis extends PureComponent {
       query: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      area: this.state.area
     })
   }
 
   handleSearch = (values) => {
+    const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'endpoints/fetch',
+      type: 'members/fetch',
       payload: {
-        area: values.area? values.area:this.state.area,
+        concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
+        village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
       },
+      callback:function () {
+        that.setState({
+          ...values,
+          village_id: values.village_id? values.village_id:that.state.village_id,
+          started_at: values.started_at,
+          ended_at: values.ended_at,
+        })
+      }
     });
 
-    this.setState({
-      query: values.query,
-      started_at: values.started_at,
-      ended_at: values.ended_at,
-      page: values.page,
-      area:values.area? values.area:this.state.area,
-    })
+
   }
   handPageChange = (page)=> {
     this.handleSearch({
@@ -87,16 +122,86 @@ class CommunityAnalysis extends PureComponent {
       query: this.state.query,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      area: this.state.area
+      // area: this.state.area
     })
   }
 
-  operate = (id)=> {
-    message.success(id)
+  handleAdd = () => {
+    const that = this;
+    const formValues =this.formRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    this.props.dispatch({
+      type: 'members/add',
+      payload: {
+        ...formValues,
+        is_change:formValues.is_change.key,
+        installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
+        village_id: this.state.village_id,
+        concentrator_number:this.state.concentrator_number
+      },
+      callback: function () {
+        message.success('添加用户成功')
+        that.setState({
+          addModal: false,
+        });
+        that.handleSearch({
+          page: that.state.page,
+          query: that.state.query,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
+        })
+      }
+    });
   }
-
+  handleEdit = () => {
+    const that = this;
+    const formValues =this.editFormRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    this.props.dispatch({
+      type: 'members/edit',
+      payload: {
+        ...formValues,
+        village_id: this.state.village_id,
+        id:this.state.editRecord.id
+      },
+      callback: function () {
+        message.success('修改用户成功')
+        that.setState({
+          editModal: false,
+        });
+        that.handleSearch({
+          page: that.state.page,
+          query: that.state.query,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
+        })
+      }
+    });
+  }
+  handleRemove = (id)=> {
+    const that = this;
+    this.props.dispatch({
+      type: 'members/remove',
+      payload: {
+        id:id,
+      },
+      callback: function () {
+        message.success('删除用户成功')
+        that.handleSearch({
+          page: that.state.page,
+          query: that.state.query,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
+        })
+      }
+    });
+  }
+  handleChangeTable=()=>{
+    const formValues =this.ChangeTableformRef.props.form.getFieldsValue();
+    console.log(formValues)
+  }
   render() {
-    const {endpoints: {data, meta, loading}} = this.props;
+    const {members: {data, meta, loading},concentrators,meters} = this.props;
     const columns = [
       {
         title: '序号',
@@ -114,7 +219,7 @@ class CommunityAnalysis extends PureComponent {
         }
       },
       {title: '水表编号', width: 120, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '水表类型', width: 120, dataIndex: 'age', key: 'age', fixed: 'left'},
+      {title: '水表类型', width: 120, dataIndex: 'age', key: 'age',},
       {title: '集中器编号', dataIndex: 'address', key: '1', width: 120,},
       {title: '安装地址', dataIndex: 'address', key: '2', width: 150,},
       {title: '上次抄见', dataIndex: 'address', key: '3', width: 120,},
@@ -130,10 +235,10 @@ class CommunityAnalysis extends PureComponent {
         render: (val, record, index) => {
           return (
             <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record.id)}>点抄 901F</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>点抄 90EF</Button>
-              <Button type="danger" size='small' onClick={()=>this.operate(record.id)}>停用</Button>
-              <Button type="primary" disabled size='small' onClick={()=>this.operate(record.id)}>关阀</Button>
+              <Button type="primary" size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 901F</Button>
+              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 90EF</Button>
+              <Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>
+              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>关阀</Button>
             </div>
           )
         }
@@ -141,21 +246,23 @@ class CommunityAnalysis extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea}  siderLoadedCallback={this.siderLoadedCallback}/>
-        <Content style={{background: '#fff'}}>
+        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
+        <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '小区水量分析'}]}>
-              <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch   wrappedComponentRef={(inst) => this.formRef = inst}
-                                     handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                                   initRange={this.state.initRange}/>
+                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                            initRange={this.state.initRange}
+                            village_id={this.state.village_id}
+                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
+                            showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if(record.description===''){
                       return 'error'
                     }
                   }}
@@ -164,7 +271,7 @@ class CommunityAnalysis extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1600, y: this.state.tableY}}
+                  scroll={{ x: 1600, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />
@@ -172,12 +279,31 @@ class CommunityAnalysis extends PureComponent {
                             current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
                             style={{marginTop: '10px'}} onChange={this.handPageChange}/>
               </Card>
-            </PageHeaderLayout>
+          </PageHeaderLayout>
           </div>
         </Content>
+      {/*  <Modal
+          key={ Date.parse(new Date())}
+          title="添加用户档案"
+          visible={this.state.addModal}
+          onOk={this.handleAdd}
+          onCancel={() => this.setState({addModal:false})}
+        >
+          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
+        </Modal>
+        <Modal
+          key={ Date.parse(new Date())+1}
+          title="编辑用户档案"
+          visible={this.state.editModal}
+          onOk={this.handleEdit}
+          onCancel={() => this.setState({editModal:false})}
+        >
+          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+        </Modal>*/}
+
       </Layout>
     );
   }
 }
 
-export default CommunityAnalysis
+export default UserMeterAnalysis

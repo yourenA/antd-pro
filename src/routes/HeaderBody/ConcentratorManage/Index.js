@@ -325,7 +325,7 @@ class ConcentratorManage extends PureComponent {
                     <span className="ant-divider"/>
                 </span>
               }
-              <a href="javascript:;" onClick={()=>this.operate(record)}>指令</a>
+              <a href="javascript:;" onClick={()=>message.info('该功能暂未开通')}>指令</a>
             </p>
             )
         }

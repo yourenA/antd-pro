@@ -32,7 +32,7 @@ import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/Commu
 )
 
 const UserMeterAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
+import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Ex")
 )
 
 const UserMeterLife = asyncComponent(() =>
@@ -175,12 +175,12 @@ const data = [{
         name: '小区水量分析',
         path: 'community_analysis',
         component: CommunityAnalysis,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit',],
       },{
         name: '户表水量分析',
         path: 'user_meter_analysis',
         component: UserMeterAnalysis,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit'],
       },{
         name: '户表使用年限',
         path: 'user_meter_life',

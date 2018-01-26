@@ -48,18 +48,18 @@ class Main extends PureComponent {
               <div className={styles.explain}>昨日总上报率</div>
             </div>
           </Col>
-          <Col  xl={6} lg={6} md={12} sm={24} >
+          {/*<Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem4}`}>
               <div className={styles.count}>25%</div>
               <div className={styles.explain}>昨天总漏损率</div>
             </div>
-          </Col>
-          {/*<Col  xl={6} lg={6} md={12} sm={24} >
-            <div  className={`${styles.topItem} ${styles.topItem2}`}>
+          </Col>*/}
+          <Col  xl={6} lg={6} md={12} sm={24} >
+            <div  className={`${styles.topItem} ${styles.topItem4}`}>
               <div className={styles.count}>{this.state.time}</div>
               <div className={styles.explain}>{moment().format('ll')}</div>
             </div>
-          </Col>*/}
+          </Col>
         </Row>
         <Row gutter={24}>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>

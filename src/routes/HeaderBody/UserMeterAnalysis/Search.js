@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,Col,Input,Button,Switch} from 'antd';
+import {Form,DatePicker,Row,message,Input,Button,Switch} from 'antd';
 import moment from 'moment'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -19,7 +19,9 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
-        query: fieldsValue.query,
+        meter_number: fieldsValue.meter_number,
+        real_name: fieldsValue.real_name,
+        only_show_unusual:fieldsValue.only_show_unusual?1:-1,
         started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
@@ -37,12 +39,12 @@ class SearchForm extends Component {
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
             <FormItem label="水表编号">
-              {getFieldDecorator('water_num')(
+              {getFieldDecorator('meter_number')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
             <FormItem label="用户名称">
-              {getFieldDecorator('username')(
+              {getFieldDecorator('real_name')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
@@ -56,15 +58,15 @@ class SearchForm extends Component {
         </Row>
         <Row gutter={16}>
           <FormItem label="只显示异常">
-            {getFieldDecorator('check',{ valuePropName: 'checked' })(
+            {getFieldDecorator('only_show_unusual',{ valuePropName: 'checked' })(
                 <Switch  />
             )}
           </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}}>导出到CSV</Button>
-            <Button  type="primary" style={{marginLeft: 8}} onClick={this.handleFormReset}>导出到Oracle</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={()=>message.info('暂未开通该功能')}>导出到CSV</Button>
+            <Button  type="primary" style={{marginLeft: 8}} onClick={()=>message.info('暂未开通该功能')}>导出到Oracle</Button>
           </FormItem>
         </Row>
       </Form>
