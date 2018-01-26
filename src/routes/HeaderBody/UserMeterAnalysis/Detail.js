@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Tabs} from 'antd';
+import {connect} from 'dva';
+import forEach from 'lodash/forEach'
 const TabPane = Tabs.TabPane;
-
+@connect(state => ({
+  member_meter_data: state.member_meter_data,
+}))
 class Detail extends PureComponent {
   constructor(props) {
     super(props);
@@ -9,6 +13,8 @@ class Detail extends PureComponent {
     this.myChart=null;
     this.myChart2=null;
     this.state = {
+      monthData:[],
+      dayData:[]
     }
   }
   componentDidMount() {
@@ -16,8 +22,16 @@ class Detail extends PureComponent {
     setTimeout(function () {
       that.dynamic();
     },0);
+
   }
   dynamic=()=>{
+    const {member_meter_data:{monthData}}=this.props
+    let Date=[];
+    let Data=[];
+    forEach(monthData,(value)=>{
+      Date.push(value.date);
+      Data.push(value.value)
+    })
     this.myChart = this.echarts.init(document.querySelector('.month-analysis'));
     let option = {
       tooltip: {
@@ -33,10 +47,21 @@ class Detail extends PureComponent {
           saveAsImage: {}
         }
       },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+        },
+      ],
       xAxis:  {
         type: 'category',
         boundaryGap: false,//坐标轴两边留白策略.默认为 true，这时候刻度只是作为分隔线
-        data: ['周一','周二','周三','周四','周五','周六','周日']
+        data:Date
       },
       yAxis: {
         type: 'value',
@@ -48,7 +73,7 @@ class Detail extends PureComponent {
         {   //第一条数据
           name:'用水量',
           type:'line',
-          data:[11, 11, 15, 13, 12, 13, 10],
+          data:Data,
           markPoint: { //在该数据线上描点
             data: [
               {type: 'max', name: '最大值'},
@@ -70,6 +95,13 @@ class Detail extends PureComponent {
     that.myChart.setOption(option);
   }
   dynamic2=()=>{
+    const {member_meter_data:{dayData}}=this.props
+    let Date=[];
+    let Data=[];
+    forEach(dayData,(value)=>{
+      Date.push(value.date);
+      Data.push(value.value)
+    })
     this.myChart2 = this.echarts.init(document.querySelector('.day-analysis'));
     let option = {
       tooltip: {
@@ -88,7 +120,7 @@ class Detail extends PureComponent {
       xAxis:  {
         type: 'category',
         boundaryGap: false,//坐标轴两边留白策略.默认为 true，这时候刻度只是作为分隔线
-        data: ['周一','周二','周三','周四','周五','周六','周日']
+        data: Date
       },
       yAxis: {
         type: 'value',
@@ -96,11 +128,22 @@ class Detail extends PureComponent {
           formatter: '{value} T'
         }
       },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+        },
+      ],
       series: [
         {   //第一条数据
           name:'用水量',
           type:'line',
-          data:[11, 11, 15, 13, 12, 13, 10],
+          data:Data,
           markPoint: { //在该数据线上描点
             data: [
               {type: 'max', name: '最大值'},
@@ -123,7 +166,9 @@ class Detail extends PureComponent {
   }
   changeTab=(key)=>{
     if(key==='day-analysis'){
-      this.dynamic2()
+      const {dispatch} = this.props;
+      const that=this;
+      that.dynamic2()
     }
   }
   render() {

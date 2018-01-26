@@ -10,9 +10,7 @@ import find from 'lodash/find'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
-  members: state.members,
-  concentrators: state.concentrators,
-  meters: state.meters,
+  member_meter_data: state.member_meter_data,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -33,7 +31,7 @@ class UserMeterAnalysis extends PureComponent {
       village_id: '',
       editModal:false,
       changeModal:false,
-      area: '',
+      member_number:''
     }
   }
 
@@ -109,7 +107,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'member_meter_data/fetch',
       payload: {
         concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
@@ -144,7 +142,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/add',
+      type: 'member_meter_data/add',
       payload: {
         ...formValues,
         is_change:formValues.is_change.key,
@@ -173,7 +171,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.editFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/edit',
+      type: 'member_meter_data/edit',
       payload: {
         ...formValues,
         village_id: this.state.village_id,
@@ -198,7 +196,7 @@ class UserMeterAnalysis extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'members/remove',
+      type: 'member_meter_data/remove',
       payload: {
         id:id,
       },
@@ -219,8 +217,41 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.ChangeTableformRef.props.form.getFieldsValue();
     console.log(formValues)
   }
+  operate = (member_number)=> {
+    message.success(member_number)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'member_meter_data/fetchOne',
+      payload: {
+        member_number:member_number,
+        sampling_type:'month',
+        return:'all',
+        started_at:'2017-10-01',
+        ended_at:'2018-10-01'
+      },
+      callback:function () {
+        dispatch({
+          type: 'member_meter_data/fetchOne',
+          payload: {
+            member_number:member_number,
+            sampling_type:'day',
+            return:'all',
+            started_at:'2017-10-01',
+            ended_at:'2018-10-01'
+          },
+          callback:function () {
+            that.setState({editModal:true,member_number:member_number})
+          }
+        });
+      }
+    });
+
+
+
+  }
   render() {
-    const {members: {data, meta, loading},concentrators,meters} = this.props;
+    const {member_meter_data: {data, meta, loading}} = this.props;
     const columns = [
       {
         title: '序号',
@@ -237,21 +268,21 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      { title: '户号', width: 150, dataIndex: 'name', key: 'name',    fixed: 'left', },
-      { title: '用户名称', width: 150, dataIndex: 'age', key: 'age' },
-      { title: '用户地址', dataIndex: 'address', key: '1' ,width: 180, },
-      { title: '集中器编号', dataIndex: 'address', key: '2' ,width: 140,},
-      { title: '水表编号', dataIndex: 'address', key: '3' ,width: 140,},
-      { title: '水表厂商', dataIndex: 'address', key: '4' ,width: 120,},
-      { title: '上次读数(T)', dataIndex: 'set', key: '5',width: 100,},
-      { title: '上次读数时间', dataIndex: 'address', key: '6',width: 180},
-      { title: '本次读数(T)', dataIndex: 'set', key: '51',width: 100,},
-      { title: '本次读数时间', dataIndex: 'address', key: '614',width: 180},
-      { title: '用水量(T)', dataIndex: 'address', key: '615',width: 100},
-      { title: '状态', dataIndex: 'address', key: '616',width: 100},
-      { title: '抄表员', dataIndex: 'address', key: '617',width: 120},
-      { title: '台区', dataIndex: 'address', key: '618',width: 100},
-      { title: '表册', dataIndex: 'address', key: '619'},
+      { title: '户号', width: 150, dataIndex: 'member_number', key: 'member_number',    fixed: 'left', },
+      { title: '用户名称', width: 150, dataIndex: 'real_name', key: 'real_name' },
+      { title: '用户地址', dataIndex: 'install_address', key: 'install_address' ,width: 180, },
+      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 140,},
+      { title: '水表编号', dataIndex: 'meter_number', key: 'meter_number' ,width: 140,},
+      { title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name' ,width: 120,},
+      { title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value',width: 100,},
+      { title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at',width: 180},
+      { title: '本次读数(T)', dataIndex: 'latest_value', key: 'latest_value',width: 100,},
+      { title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at',width: 180},
+      { title: '用水量(T)', dataIndex: 'difference_value', key: 'difference_value',width: 100},
+      { title: '状态', dataIndex: 'status_explain', key: 'status_explain',width: 100},
+      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120},
+      { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 100},
+      { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms'},
       {
         title: '查询历史状况',
         key: 'operation',
@@ -260,7 +291,7 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           return(
             <div>
-              <Button type="primary" size='small' onClick={()=>message.info('暂未开通该功能')}>详细信息</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record.member_number)}>详细信息</Button>
             </div>
           )
         }
@@ -290,7 +321,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.id}
+                  rowKey={record => record.member_number}
                   dataSource={data}
                   columns={columns}
                   scroll={{ x: 2150, y: this.state.tableY }}
@@ -304,15 +335,15 @@ class UserMeterAnalysis extends PureComponent {
           </PageHeaderLayout>
           </div>
         </Content>
-      {/*   <Modal
+      <Modal
        key={ Date.parse(new Date())}
        title="详细信息"
        visible={this.state.editModal}
        onOk={this.handleEdit}
        onCancel={() => this.setState({editModal:false})}
        >
-       <Detail />
-       </Modal>*/}
+       <Detail member_number={this.state.member_number}/>
+       </Modal>
 
       </Layout>
     );

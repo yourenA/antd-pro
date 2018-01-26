@@ -9,9 +9,7 @@ import find from 'lodash/find'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
-  members: state.members,
-  concentrators: state.concentrators,
-  meters: state.meters,
+  village_meter_data: state.village_meter_data,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -98,7 +96,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: 'village_meter_data/fetch',
       payload: {
         concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
@@ -131,7 +129,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/add',
+      type: 'village_meter_data/add',
       payload: {
         ...formValues,
         is_change:formValues.is_change.key,
@@ -158,7 +156,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.editFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     this.props.dispatch({
-      type: 'members/edit',
+      type: 'village_meter_data/edit',
       payload: {
         ...formValues,
         village_id: this.state.village_id,
@@ -181,7 +179,7 @@ class UserMeterAnalysis extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'members/remove',
+      type: 'village_meter_data/remove',
       payload: {
         id:id,
       },
@@ -201,7 +199,7 @@ class UserMeterAnalysis extends PureComponent {
     console.log(formValues)
   }
   render() {
-    const {members: {data, meta, loading},concentrators,meters} = this.props;
+    const {village_meter_data: {data, meta, loading},concentrators,meters} = this.props;
     const columns = [
       {
         title: '序号',
@@ -218,15 +216,15 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '水表编号', width: 120, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '水表类型', width: 120, dataIndex: 'age', key: 'age',},
-      {title: '集中器编号', dataIndex: 'address', key: '1', width: 120,},
-      {title: '安装地址', dataIndex: 'address', key: '2', width: 150,},
-      {title: '上次抄见', dataIndex: 'address', key: '3', width: 120,},
-      {title: '上次抄见时间', dataIndex: 'address', key: '4', width: 200,},
-      {title: '本次抄见', dataIndex: 'set', key: '5', width: 120,},
-      {title: '本次抄见时间', dataIndex: 'address', key: '6', width: 200},
-      {title: '应收水量', dataIndex: 'address', key: '7'},
+      {title: '水表编号', width: 150, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
+      {title: '水表类型', width: 150, dataIndex: 'meter_model_name', key: 'meter_model_name',},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 150,},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 150,},
+      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150,},
+      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 120,},
+      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
+      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 120,},
+      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value'},
       {
         title: '操作',
         key: 'operation',
@@ -268,7 +266,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.id}
+                  rowKey={record => record.meter_number}
                   dataSource={data}
                   columns={columns}
                   scroll={{ x: 1600, y: this.state.tableY }}

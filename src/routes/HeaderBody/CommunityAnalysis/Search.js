@@ -38,11 +38,11 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <FormItem label={this.props.inputText ? this.props.inputText : "名称"}>
+        {/*  <FormItem label={this.props.inputText ? this.props.inputText : "名称"}>
             {getFieldDecorator('query')(
               <Input placeholder="请输入"/>
             )}
-          </FormItem>
+          </FormItem>*/}
           <FormItem label={this.props.dateText ? this.props.dateText : '创建时间'}>
             {getFieldDecorator('range-time-picker', {
               initialValue: this.props.initRange ? this.props.initRange : '',
