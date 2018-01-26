@@ -88,7 +88,7 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-        {
+       {/* {
           this.props.editRecord?
           null
           :  <FormItem
@@ -106,27 +106,32 @@ class AddPoliciesForm extends Component {
               )}
             </FormItem>
 
-        }
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
+        }*/}
+        {
+          (this.props.editRecord&&this.props.editRecord.lock===2)?null
+            :
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
               权限
             </span>
-          )}>
-          {getFieldDecorator('role_id', {
-            initialValue: this.props.editRecord?{key:this.props.editRecord.role_id,label:this.props.editRecord.role_display_name}:{key:'',label:''},
-            rules: [{required: true, message: '权限不能为空'}],
-          })(
-            <Select labelInValue={true} >
-              { this.props.usergroup.map((item, key) => {
-                return (
-                  <Option key={item.id} value={item.id.toString()}>{item.display_name}</Option>
-                )
-              }) }
-            </Select>
-          )}
-        </FormItem>
+              )}>
+              {getFieldDecorator('role_id', {
+                initialValue: this.props.editRecord?{key:this.props.editRecord.role_id,label:this.props.editRecord.role_display_name}:{key:'',label:''},
+                rules: [{required: true, message: '权限不能为空'}],
+              })(
+                <Select labelInValue={true} >
+                  { this.props.usergroup.map((item, key) => {
+                    return (
+                      <Option key={item.id} value={item.id.toString()}>{item.display_name}</Option>
+                    )
+                  }) }
+                </Select>
+              )}
+            </FormItem>
+        }
+
         <FormItem
           {...formItemLayoutWithLabel}
           label="电话通知"

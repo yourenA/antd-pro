@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge,  Dropdown,
+  Menu,
+  Icon,} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -19,6 +21,7 @@ class Vendor extends PureComponent {
       showAddBtn: find(this.permissions, {name: 'user_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'user_delete'}),
       showStatusBtn: find(this.permissions, {name: 'user_status_edit'}),
+      showPasswordBtn: find(this.permissions, {name: 'user_default_password_edit'}),
       tableY: 0,
       query: '',
       page: 1,
@@ -128,7 +131,7 @@ class Vendor extends PureComponent {
           ...formValues,
           is_email_notify: formValues.is_email_notify?1:-1,
           is_sms_notify: formValues.is_sms_notify?1:-1,
-          role_id: formValues.role_id.key,
+          role_id: formValues.role_id?formValues.role_id.key:'',
           id:this.state.editRecord.id
         },
       },
@@ -195,11 +198,44 @@ class Vendor extends PureComponent {
       }
     });
   }
+  handleResetPassword = (id)=> {
+    const that = this;
+    this.props.dispatch({
+      type: 'user/resetPassword',
+      payload: {
+        id: id,
+      },
+      callback: function () {
+        message.success('重置密码成功')
+        that.props.dispatch({
+          type: 'user/fetch',
+          payload: {
+            query: that.state.query,
+            page: that.state.page
+          }
+        });
+      }
+    });
+  }
   handleChangePhoneCall=(id)=>{
     console.log(id)
   }
   render() {
     const {user: {data, meta, loading},usergroup} = this.props;
+    const itemMenu = (
+      <Menu>
+        {
+          this.state.showPasswordBtn&& <Menu.Item>
+            <a onClick={()=>{this.handleResetPassword(this.state.editRecord.id)}}>重置密码</a>
+          </Menu.Item>
+        }
+
+        {this.state.showdelBtn&&<Menu.Item>
+          <a onClick={()=>{this.handleRemove(this.state.editRecord.id)}}>删除</a>
+        </Menu.Item>}
+
+      </Menu>
+    );
     const columns = [
       {
         title: '序号',
@@ -216,7 +252,7 @@ class Vendor extends PureComponent {
         }
       },
       {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
-      {title: '名字', width: '10%', dataIndex: 'real_name', key: 'real_name'},
+      {title: '名字', width: '8%', dataIndex: 'real_name', key: 'real_name'},
       {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '13%'},
       {title: '邮箱', dataIndex: 'email', key: 'email', width: '18%'},
       {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '8%',
@@ -245,7 +281,7 @@ class Vendor extends PureComponent {
       },
       {
         title: '操作',
-        width: 130,
+        width: 150,
         render: (val, record, index) =>{
           if(record.lock===1){
             return null
@@ -296,11 +332,20 @@ class Vendor extends PureComponent {
                 </span>
                 }
                 {
-                  this.state.showdelBtn &&
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                              onConfirm={()=>this.handleRemove(record.id)}>
-                    <a href="">删除</a>
-                  </Popconfirm>
+                  (this.state.showdelBtn || this.state.showPasswordBtn)?
+                  <Dropdown onVisibleChange={(visible)=>{
+                    if(visible){
+                      this.setState({
+                        editRecord:record,
+                      })
+                    }else{
+                      this.setState({
+                        editRecord:{},
+                      })
+                    }
+
+                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
+                    :null
                 }
 
               </p>
@@ -334,7 +379,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1100, y: this.state.tableY}}
+                  scroll={{x: 1150, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

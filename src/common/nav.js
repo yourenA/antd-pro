@@ -185,7 +185,7 @@ const data = [{
         name: '户表使用年限',
         path: 'user_meter_life',
         component: UserMeterLife,
-        permissions:['company_visit','meter_status'],
+        permissions:['meter_status'],
       }],
     },  {
       name: '运行管理',            // 页面名称，会展示在菜单栏中
