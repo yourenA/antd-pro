@@ -4,6 +4,7 @@ import Sider from './Sider'
 import {connect} from 'dva';
 import { Link, Route, Redirect, Switch,} from 'dva/router';
 import './index.less'
+import Working from '../../Exception/working';
 import ExchangeDatabase from './ExchangeDatabase'
 import SystemName from './SystemName'
 import SmsNotice from './SmsNotice'
@@ -31,19 +32,19 @@ class UserMeterLife extends PureComponent {
             <Switch>
               <Route
                 path='/main/system_manage/system_setup/exchange_database'
-                component={ExchangeDatabase}
+                component={Working}
               />
               <Route
                 path='/main/system_manage/system_setup/system_name'
-                component={SystemName}
+                component={Working}
               />
               <Route
                 path='/main/system_manage/system_setup/sms_notice'
-                component={SmsNotice}
+                component={Working}
               />
               <Route
                 path='/main/system_manage/system_setup/email_notice'
-                component={EmailNotice}
+                component={Working}
               />
               <Redirect  from="/main/system_manage/system_setup" to="/main/system_manage/system_setup/exchange_database" />
             </Switch>

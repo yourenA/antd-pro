@@ -101,6 +101,8 @@ import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/Statist
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
+
+import Working from '../routes/Exception/working';
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -178,17 +180,17 @@ const data = [{
       name: '实时数据分析',            // 页面名称，会展示在菜单栏中
       path: 'real_time_data',   // 匹配的路由
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['company_visit','meter_status'],
+      permissions:['meter_status','village_meter_data','member_meter_data'],
       children: [{
         name: '小区水量分析',
         path: 'community_analysis',
         component: CommunityAnalysis,
-        permissions:['company_visit',],
+        permissions:['village_meter_data',],
       },{
         name: '户表水量分析',
         path: 'user_meter_analysis',
         component: UserMeterAnalysis,
-        permissions:['company_visit'],
+        permissions:['member_meter_data'],
       },{
         name: '户表使用年限',
         path: 'user_meter_life',
@@ -210,7 +212,7 @@ const data = [{
         name: '导入集中器',
         path: 'import_concentrator',
         component: ImportConcentrator,
-        permissions:[,'iot_hub_management'],
+        permissions:['company_visit','iot_hub_management'],
       },{
         name: '集中器管理',
         path: 'concentrator_manage',
@@ -282,17 +284,17 @@ const data = [{
       children: [{
         name: '集中器异常分析',
         path: 'concentrator_unusual_analysis',
-        component: ConcentratorErrorAnalysis,
+        component: Working,
         permissions:['company_visit','iot_hub_management'],
       },{
         name: '水表异常分析',
         path: 'meter_unusual_analysis',
-        component: MeterErrorAnalysis,
+        component: Working,
         permissions:['company_visit','iot_hub_management'],
       },{
         name: '统计日报',
         path: 'statistics_daily',
-        component: StatisticsDaily,
+        component: Working,
         permissions:['company_visit','iot_hub_management'],
       }],
     }],

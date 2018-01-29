@@ -7,6 +7,7 @@ import Timing from './Timing'
 import {connect} from 'dva';
 import moment from 'moment'
 import { Link, Route, Redirect, Switch,} from 'dva/router';
+import Working from '../../Exception/working';
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
@@ -31,15 +32,15 @@ class UserMeterLife extends PureComponent {
             <Switch>
               <Route
                 path='/main/run_manage/status_check/heartbeat'
-                component={Heartbeat}
+                component={ Working}
               />
               <Route
                 path='/main/run_manage/status_check/function'
-                component={FunctionContent}
+                component={Working}
               />
               <Route
                 path='/main/run_manage/status_check/timing'
-                component={Timing}
+                component={  Working}
               />
               <Redirect  from="/main/run_manage/status_check" to="/main/run_manage/status_check/heartbeat" />
             </Switch>

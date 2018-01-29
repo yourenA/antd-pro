@@ -6,6 +6,7 @@ import {Form,  Select,Layout,Card,Button } from 'antd';
 import {connect} from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Sider from './Sider'
+import Working from '../../Exception/working';
 const { Content} = Layout;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -35,7 +36,8 @@ class EditPassword extends Component {
         <Layout className="layout">
           <Sider/>
           <Content style={{background:'#fff'}}>
-            <div className="content">
+            <Working/>
+           {/* <div className="content">
               <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '导入集中器'}]}>
                 <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                   <Form style={{maxWidth:'500px' ,margin:'0 auto'}} onSubmit={this.handleSubmit}>
@@ -80,7 +82,7 @@ class EditPassword extends Component {
                   </Form>
                 </Card>
               </PageHeaderLayout>
-            </div>
+            </div>*/}
           </Content>
         </Layout>
 
