@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Layout,Card,Button,Input } from 'antd';
+import {Form,  Select,Layout,Card,Button,Input,message } from 'antd';
 import {connect} from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 const { Content} = Layout;
@@ -41,7 +41,7 @@ class EditPassword extends Component {
                       {...formItemLayoutWithLabel}
                       label="现时系统名称"
                     >
-                      {getFieldDecorator('old_password', {
+                      {getFieldDecorator('old_password1', {
                       })(
                         <p>衡阳水务远传水表监控系统</p>
                       )}
@@ -50,7 +50,7 @@ class EditPassword extends Component {
                       label="集中器"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password2', {
                       })(
                         <Input />
                       )}
@@ -60,7 +60,7 @@ class EditPassword extends Component {
                         offset: 7,
                       }}>
                       <Button onClick={this.handleFormReset}>重置</Button>
-                      <Button style={{marginLeft: 8}}  type="primary" htmlType="submit">确定</Button>
+                      <Button style={{marginLeft: 8}}  type="primary" onClick={()=>message.info('暂未开通该功能')}>确定</Button>
                     </FormItem>
                   </Form>
                 </Card>

@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Layout,Card,Button,Input } from 'antd';
+import {Form,  Select,Layout,Card,Button,Input,message } from 'antd';
 import {connect} from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 const { Content} = Layout;
@@ -50,7 +50,7 @@ class EditPassword extends Component {
                       label="IP地址"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password1', {
                       })(
                         <Input />
                       )}
@@ -59,7 +59,7 @@ class EditPassword extends Component {
                       label="端口"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password_confirmation', {
+                      {getFieldDecorator('new_password_confirmation2', {
                       })(
                         <Input />
                       )}
@@ -68,7 +68,7 @@ class EditPassword extends Component {
                       label="数据库名称"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password_confirmation', {
+                      {getFieldDecorator('new_password_confirmation3', {
                       })(
                         <Input />
                       )}
@@ -77,7 +77,7 @@ class EditPassword extends Component {
                       label="登入ID"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password_confirmation', {
+                      {getFieldDecorator('new_password_confirmation4', {
                       })(
                         <Input />
                       )}
@@ -86,7 +86,7 @@ class EditPassword extends Component {
                       label="密码"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password_confirmation', {
+                      {getFieldDecorator('new_password_confirmation5', {
                       })(
                         <Input />
                       )}
@@ -96,7 +96,7 @@ class EditPassword extends Component {
                         offset: 7,
                       }}>
                       <Button onClick={this.handleFormReset}>重置</Button>
-                      <Button style={{marginLeft: 8}}  type="primary" htmlType="submit">确定</Button>
+                      <Button style={{marginLeft: 8}}  type="primary" onClick={()=>message.info('暂未开通该功能')}>确定</Button>
                     </FormItem>
                   </Form>
                 </Card>

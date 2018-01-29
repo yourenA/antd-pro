@@ -90,6 +90,14 @@ const ConcentratorErrorAnalysis = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
 )
 
+const MeterErrorAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "MeterErrorAnalysis" */ "./../routes/HeaderBody/MeterErrorAnalysis/Index")
+)
+
+const StatisticsDaily = asyncComponent(() =>
+import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
+)
+
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
 )
@@ -270,21 +278,21 @@ const data = [{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions:[,'iot_hub_management'],
+      permissions:['company_visit'],
       children: [{
         name: '集中器异常分析',
-        path: 'concentrator_error_analysis',
+        path: 'concentrator_unusual_analysis',
         component: ConcentratorErrorAnalysis,
         permissions:['company_visit','iot_hub_management'],
       },{
         name: '水表异常分析',
         path: 'meter_unusual_analysis',
-        component: NewPage,
+        component: MeterErrorAnalysis,
         permissions:['company_visit','iot_hub_management'],
       },{
         name: '统计日报',
         path: 'statistics_daily',
-        component: NewPage,
+        component: StatisticsDaily,
         permissions:['company_visit','iot_hub_management'],
       }],
     }],

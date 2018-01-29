@@ -192,3 +192,20 @@ export function convertPoliciesTopic  (form)  {
 
   return addPoliciesDate;
 };
+
+export function getBetweemDay(begin, end) {
+  var ab = begin.split("-");
+  var ae = end.split("-");
+  var db = new Date();
+  db.setUTCFullYear(ab[0], ab[1] - 1, ab[2]);
+  var de = new Date();
+  de.setUTCFullYear(ae[0], ae[1] - 1, ae[2]);
+  var unixDb = db.getTime();
+  var unixDe = de.getTime();
+  var result=[];
+  for (var k = unixDb; k <= unixDe;) {
+    result.push(moment(parseInt(k)).format("YYYY-MM-DD"));
+    k = k + 24 * 60 * 60 * 1000;
+  }
+  return result
+}

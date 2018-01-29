@@ -143,138 +143,21 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {title: '集中器编号', width: 150, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '生产厂商', width: 150, dataIndex: 'age', key: 'age'},
-      {title: '安装位置', dataIndex: 'address', key: '1123', width: 150,},
+      {title: '水表编号', width: 150, dataIndex: 'name', key: 'name2',},
+      {title: '用户名称', width: 150, dataIndex: 'age', key: 'ag1e'},
+      {title: '异常类型', width: 150, dataIndex: 'age', key: 'ag23e'},
+      {title: '用水量', width: 150, dataIndex: 'age', key: 'ag32e'},
       {title: '日期', dataIndex: 'address', key: '2123',},
-      {title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
-        return (
-          <span  title="成功">
-             <Badge status="success"/>
-          </span>
-        )
-      }},
-      {title: '1', dataIndex: 'address', key: '1', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '2', dataIndex: 'address', key: '2', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '3', dataIndex: 'address', key: '3', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '4', dataIndex: 'address', key: '4', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '5', dataIndex: 'address', key: '5', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '6', dataIndex: 'address', key: '6', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '7', dataIndex: 'address', key: '7', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '8', dataIndex: 'address', key: '8', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '9', dataIndex: 'address', key: '9', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '10', dataIndex: 'address', key: '10', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '11', dataIndex: 'address', key: '11', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '12', dataIndex: 'address', key: '12', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '13', dataIndex: 'address', key: '13', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '14', dataIndex: 'address', key: '14', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '15', dataIndex: 'address', key: '15', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '16', dataIndex: 'address', key: '16', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '17', dataIndex: 'address', key: '17', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '18', dataIndex: 'address', key: '18', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '19', dataIndex: 'address', key: '19', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '20', dataIndex: 'address', key: '20', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '21', dataIndex: 'address', key: '21', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '22', dataIndex: 'address', key: '22', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
-      {title: '23', dataIndex: 'address', key: '23', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
-      }},
+      {title: '当日阀值', width: 150, dataIndex: 'age', key: 'a12ge'},
+      {title: '超出阀值', width: 150, dataIndex: 'age', key: 'ag3e'},
+
     ];
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '集中器异常分析'}]}>
+            <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '水表异常分析'}]}>
               <Card bordered={false} style={{margin:'-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -296,7 +179,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.member_number}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1600, y: this.state.tableY }}
+                  scroll={{ x: 1250, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

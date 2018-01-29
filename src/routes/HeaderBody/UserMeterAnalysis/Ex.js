@@ -217,36 +217,11 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.ChangeTableformRef.props.form.getFieldsValue();
     console.log(formValues)
   }
-  operate = (member_number)=> {
-    message.success(member_number)
-    const {dispatch} = this.props;
-    const that=this;
-    dispatch({
-      type: 'member_meter_data/fetchOne',
-      payload: {
-        member_number:member_number,
-        sampling_type:'month',
-        return:'all',
-        started_at:'2017-10-01',
-        ended_at:'2018-10-01'
-      },
-      callback:function () {
-        dispatch({
-          type: 'member_meter_data/fetchOne',
-          payload: {
-            member_number:member_number,
-            sampling_type:'day',
-            return:'all',
-            started_at:'2017-10-01',
-            ended_at:'2018-10-01'
-          },
-          callback:function () {
-            that.setState({editModal:true,member_number:member_number})
-          }
-        });
-      }
-    });
-
+  operate = (record)=> {
+    this.setState({
+      member_number:record.member_number,
+      editModal:true
+    })
 
 
   }
@@ -291,7 +266,7 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           return(
             <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record.member_number)}>详细信息</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
             </div>
           )
         }
@@ -336,8 +311,9 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </Content>
       <Modal
+        width="750px"
        key={ Date.parse(new Date())}
-       title="详细信息"
+       title={`${this.state.member_number} 详细信息`}
        visible={this.state.editModal}
        onOk={this.handleEdit}
        onCancel={() => this.setState({editModal:false})}

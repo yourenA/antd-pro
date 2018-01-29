@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Layout,Card,Button,Input } from 'antd';
+import {Form,  Select,Layout,Card,Button,Input,message } from 'antd';
 import {connect} from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 const { Content} = Layout;
@@ -50,7 +50,7 @@ class EditPassword extends Component {
                       label="端口"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password2', {
                       })(
                         <Input />
                       )}
@@ -59,7 +59,7 @@ class EditPassword extends Component {
                       label="SSL 认证"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password3', {
                       })(
                         <Select labelInValue={true}>
                           { [{id:1,name:'是'},{id:112,name:'否'}].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
@@ -70,7 +70,7 @@ class EditPassword extends Component {
                       label="账号名称"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password4', {
                       })(
                         <Input />
                       )}
@@ -79,7 +79,7 @@ class EditPassword extends Component {
                       label="密码"
                       {...formItemLayoutWithLabel}
                     >
-                      {getFieldDecorator('new_password', {
+                      {getFieldDecorator('new_password5', {
                       })(
                         <Input />
                       )}
@@ -89,7 +89,7 @@ class EditPassword extends Component {
                         offset: 7,
                       }}>
                       <Button onClick={this.handleFormReset}>重置</Button>
-                      <Button style={{marginLeft: 8}}  type="primary" htmlType="submit">确定</Button>
+                      <Button style={{marginLeft: 8}}  type="primary"  onClick={()=>message.info('暂未开通该功能')}>确定</Button>
                     </FormItem>
                   </Form>
                 </Card>

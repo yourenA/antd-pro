@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {Pagination, Table, Card, Layout, message} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../../../components/DefaultSearch/index'
+import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
 @connect(state => ({
@@ -26,25 +26,25 @@ class FunctionContent extends PureComponent {
     })
     console.log(moment(this.state.initRange[0]).format('YYYY-MM-DD'))
     const {dispatch} = this.props;
-    dispatch({
-      type: 'endpoints/fetch',
-      payload: {
-        page: 1,
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      }
-    });
+    // dispatch({
+    //   type: 'endpoints/fetch',
+    //   payload: {
+    //     page: 1,
+    //     started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+    //     ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+    //   }
+    // });
   }
 
   handleFormReset = () => {
     const {dispatch} = this.props;
-    dispatch({
-      type: 'endpoints/fetch',
-      payload: {
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      },
-    });
+    // dispatch({
+    //   type: 'endpoints/fetch',
+    //   payload: {
+    //     started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+    //     ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+    //   },
+    // });
     this.setState({
       page: 1,
       query: '',
@@ -54,12 +54,12 @@ class FunctionContent extends PureComponent {
   }
   handleSearch = (values) => {
     const {dispatch} = this.props;
-    dispatch({
-      type: 'endpoints/fetch',
-      payload: {
-        ...values,
-      },
-    });
+    // dispatch({
+    //   type: 'endpoints/fetch',
+    //   payload: {
+    //     ...values,
+    //   },
+    // });
 
     this.setState({
       query: values.query,
@@ -128,9 +128,9 @@ class FunctionContent extends PureComponent {
               }
             }}
             className='meter-table'
-            loading={loading}
+            loading={false}
             rowKey={record => record.id}
-            dataSource={data}
+            dataSource={[]}
             columns={columns}
             scroll={{x: 1600, y: this.state.tableY}}
             pagination={false}

@@ -7,7 +7,7 @@ import moment from 'moment'
 @connect(state => ({
   endpoints: state.endpoints,
 }))
-class Timing extends PureComponent {
+class FunctionContent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,30 +17,23 @@ class Timing extends PureComponent {
       initRange: [moment(new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
-      data:[],
     }
   }
 
   componentDidMount() {
-    const data = [];
-    const that=this;
-    setTimeout(function () {
-      that.setState({
-        data,
-      })
-      that.setState({
-        tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-      })
-    },500)
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    })
+    console.log(moment(this.state.initRange[0]).format('YYYY-MM-DD'))
     const {dispatch} = this.props;
-   /* dispatch({
-      type: 'endpoints/fetch',
-      payload: {
-        page: 1,
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      }
-    });*/
+    // dispatch({
+    //   type: 'endpoints/fetch',
+    //   payload: {
+    //     page: 1,
+    //     started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+    //     ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+    //   }
+    // });
   }
 
   handleFormReset = () => {
@@ -90,8 +83,7 @@ class Timing extends PureComponent {
   }
 
   render() {
-    const {endpoints: {meta, loading}} = this.props;
-    console.log(this.state.tableY)
+    const {endpoints: {data, meta, loading}} = this.props;
     const columns = [
       {
         title: '序号',
@@ -108,19 +100,13 @@ class Timing extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: 150, dataIndex: 'name', key: 'name'},
-      {title: '操作', width: 150, dataIndex: 'age', key: 'age'},
-      {title: '状态', dataIndex: 'address', key: '2', width: 150},
-      {title: '发送时间', dataIndex: 'address', key: '2dqwd', width: 150},
-      {title: '参数', dataIndex: 'address2', key: '4',
-        render: (val, record, index) => (
-          <p className='text-ellipsis'>
-            {val}
-          </p>
-        ),},
+      {title: '集中器编号', width: '25%', dataIndex: 'name', key: 'name1'},
+      {title: '离线时间', width:  '25%', dataIndex: 'name', key: 'na1me'},
+      {title: '安装地址', width:  '25%', dataIndex: 'name', key: 'nam2e'},
+      {title: '错误类型', dataIndex: 'name', key: 'na3me'},
     ];
     return (
-      <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: '指令和状态查看'}, {name: '定时上传'}]}>
+      <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '集中器错误'}]}>
         <Card bordered={false} style={{margin: '-24px -24px 0'}}>
           <div className='tableList'>
             <div className='tableListForm'>
@@ -137,9 +123,9 @@ class Timing extends PureComponent {
             className='meter-table'
             loading={false}
             rowKey={record => record.id}
-            dataSource={this.state.data}
+            dataSource={[]}
             columns={columns}
-            scroll={{x: 1450, y: this.state.tableY}}
+            scroll={{y: this.state.tableY}}
             pagination={false}
             size="small"
           />
@@ -152,4 +138,4 @@ class Timing extends PureComponent {
   }
 }
 
-export default Timing
+export default FunctionContent
