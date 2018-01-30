@@ -49,19 +49,17 @@ export default class Proportion extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['正确','停报','错报','漏报']
+        data: ['株洲珠华','衡阳']
       },
       series : [
         {
-          name: '访问来源',
+          name: '优良率',
           type: 'pie',
           radius: ['40%', '60%'],
           center: ['50%', '60%'],
           data:[
-            {value:335, name:'正确'},
-            {value:1, name:'停报'},
-            {value:1, name:'错报'},
-            {value:0, name:'漏报'},
+            {value:335, name:'株洲珠华'},
+            {value:400, name:'衡阳'},
           ],
           itemStyle: {
             emphasis: {
@@ -75,7 +73,7 @@ export default class Proportion extends PureComponent {
     };
     let option2 ={
       title: {
-        text: '昨天水表上报率',
+        text: '水表上报率',
         bottom:0,
         left:'center'
       },
@@ -94,20 +92,18 @@ export default class Proportion extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['正确','停报','错报','漏报']
+        data: ['株洲珠华','衡阳']
       },
       series : [
         {
 
-          name: '访问来源',
+          name: '上报率',
           type: 'pie',
           radius: ['40%', '60%'],
           center: ['50%', '60%'],
           data:[
-            {value:335, name:'正确'},
-            {value:1, name:'停报'},
-            {value:1, name:'错报'},
-            {value:0, name:'漏报'},
+            {value:80, name:'株洲珠华'},
+            {value:130, name:'衡阳'},
           ],
           itemStyle: {
             emphasis: {

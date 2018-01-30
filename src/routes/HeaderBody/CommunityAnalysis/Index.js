@@ -229,7 +229,7 @@ class UserMeterAnalysis extends PureComponent {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 283,
+        width: 300,
         render: (val, record, index) => {
           return (
             <div>
@@ -269,7 +269,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.meter_number}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1600, y: this.state.tableY }}
+                  scroll={{ x: 1650, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

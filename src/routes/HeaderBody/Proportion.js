@@ -58,9 +58,9 @@ export default class Proportion extends PureComponent {
                   color: '#40c4ff',
                 }
               },},
-            {value:1, name:'停报'},
-            {value:1, name:'错报'},
-            {value:0, name:'漏报'},
+            {value:123, name:'停报'},
+            {value:50, name:'错报'},
+            {value:100, name:'漏报'},
           ],
           itemStyle: {
             emphasis: {

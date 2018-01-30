@@ -43,7 +43,7 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-          <FormItem label={this.props.dateText ? this.props.dateText : '创建时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : '日期区间'}>
             {getFieldDecorator('range-time-picker', {
               initialValue: this.props.initRange ? this.props.initRange : '',
             })(

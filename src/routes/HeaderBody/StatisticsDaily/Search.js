@@ -37,7 +37,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <FormItem label={ '日期'}>
+          <FormItem label={ '日期区间'}>
             {getFieldDecorator('range-time-picker', {
               initialValue: this.props.initRange ? this.props.initRange : '',
             })(
