@@ -230,7 +230,7 @@ const data = [{
         name: '指令和状态查看',
         path: 'status_check',
         component: StatusCheck,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit'],
       },{
         name: '用户档案',
         path: 'user_archives',
@@ -277,7 +277,7 @@ const data = [{
           name: '系统设置',
           path: 'system_setup',
           component: SystemSetup,
-          permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+          permissions:['company_visit'],
         },{
         name: '交换数据库设置',
         path: 'change_dbase_setting',
@@ -288,22 +288,22 @@ const data = [{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions:[],
+      permissions:['company_visit'],
       children: [{
         name: '集中器异常分析',
         path: 'concentrator_unusual_analysis',
         component: Working,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit'],
       },{
         name: '水表异常分析',
         path: 'meter_unusual_analysis',
         component: Working,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit'],
       },{
         name: '统计日报',
         path: 'statistics_daily',
         component: Working,
-        permissions:['iot_hub_management'],
+        permissions:['company_visit'],
       }],
     }],
 }, {
