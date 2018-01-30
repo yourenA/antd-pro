@@ -7,16 +7,35 @@ import { Row, Col, Card,  Icon } from 'antd';
 import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
-
+import request from './../../utils/request'
 class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      time:moment().format('HH:mm:ss')
+      time:moment().format('HH:mm:ss'),
+      concentrator:0,
+      meter:0
     }
   }
   componentDidMount() {
     setInterval(this.setTime,1000)
+    const that=this;
+    request(`/concentrators`,{
+      method:'GET',
+    }).then((response)=>{
+      console.log(response);
+      that.setState({
+        concentrator:response.data.meta.pagination.total
+      })
+    })
+    request(`/meters`,{
+      method:'GET',
+    }).then((response)=>{
+      console.log(response);
+      that.setState({
+        meter:response.data.meta.pagination.total
+      })
+    })
   }
   componentWillUnmount(){
     clearInterval(this.setTime)
@@ -32,13 +51,13 @@ class Main extends PureComponent {
         <Row gutter={24}>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem1}`}>
-              <div className={styles.count}>20</div>
+              <div className={styles.count}>{this.state.concentrator}</div>
               <div className={styles.explain}>集中器总数量</div>
             </div>
           </Col>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem2}`}>
-              <div className={styles.count}>3248</div>
+              <div className={styles.count}>{this.state.meter}</div>
               <div className={styles.explain}>水表总数量</div>
             </div>
           </Col>
