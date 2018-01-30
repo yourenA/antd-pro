@@ -15,6 +15,7 @@ import Main from './../routes/HeaderBody/NewPage';
 import classNames from 'classnames';
 import EditPassword from './../routes/HeaderBody/EditPassword'
 import request from './../utils/request'
+import NotFound from './../routes/Exception/404';
 const { SubMenu } = Menu;
 const { Header, Content } = Layout;
 const query = {
@@ -217,10 +218,13 @@ class HeaderBodyLayout extends React.PureComponent {
                   )
                 }
                 <Route
+                  exact
                   path={`/main`}
                   component={Main}
                 />
+                <Route component={NotFound} />
               </Switch>
+
             </Content>
           <Modal
             title="修改密码"

@@ -86,6 +86,7 @@ export default {
       console.log(response);
       removeLoginStorage()
       yield put(routerRedux.push('/login'));
+      location.reload();
     },
   },
 
