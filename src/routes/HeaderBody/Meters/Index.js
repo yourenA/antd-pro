@@ -100,7 +100,7 @@ class MeterModel extends PureComponent {
         valve_status:formValues.valve_status?1:-1
       },
       callback: function () {
-        message.success('添加水表类型成功')
+        message.success('添加水表成功')
         that.setState({
           addModal: false,
         });
@@ -131,7 +131,7 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改水表类型成功')
+        message.success('修改水表成功')
         that.setState({
           editModal: false,
         });
@@ -153,7 +153,7 @@ class MeterModel extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除水表类型成功')
+        message.success('删除水表成功')
         that.props.dispatch({
           type: 'meters/fetch',
           payload: {
