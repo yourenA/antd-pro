@@ -9,12 +9,13 @@ export default class EndpointsList extends PureComponent {
 
   componentDidMount() {
     const that = this;
-    setTimeout(function () {
-      that.dynamic();
-    }, 0)
     window.addEventListener('resize', this.resizeChart)
   }
-
+  componentWillReceiveProps(nextProps){
+    if((nextProps.concentrator.total_count !== this.props.concentrator.total_count) && nextProps.concentrator.total_count){
+      this.dynamic(nextProps.concentrator);
+    }
+  }
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeChart)
   }
@@ -24,9 +25,10 @@ export default class EndpointsList extends PureComponent {
       this.myChart.resize();
     }
   }
-  dynamic = ()=> {
+  dynamic = (concentrator)=> {
     console.log('online')
     this.myChart = this.echarts.init(document.querySelector('.concentratorOnline'));
+    console.log(concentrator)
     let option = {
       tooltip: {
         trigger: 'axis',
@@ -35,7 +37,7 @@ export default class EndpointsList extends PureComponent {
         }
       },
       legend: {
-        data: ['在线', '休眠', '不稳', '失联']
+        data: ['在线', '睡眠', '离线']
       },
       yAxis: {
         type: 'value'
@@ -57,13 +59,13 @@ export default class EndpointsList extends PureComponent {
           },
           itemStyle:{
             normal: {
-              color: '#40c4ff',
+              color: '#61a0a8',
             }
           },
-          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+          data: concentrator.yesterday_online_status
         },
         {
-          name:  '休眠',
+          name:  '睡眠',
           type: 'bar',
           stack: '总量',
           label: {
@@ -74,13 +76,14 @@ export default class EndpointsList extends PureComponent {
           },
           itemStyle:{
             normal: {
-              color: 'rgb(97,160,168)',
+              color: '#d48265',
             }
           },
-          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23].reverse()
+          data: concentrator.yesterday_offline_status
+
         },
         {
-          name:  '不稳',
+          name:  '离线',
           type: 'bar',
           stack: '总量',
           label: {
@@ -91,28 +94,11 @@ export default class EndpointsList extends PureComponent {
           },
           itemStyle:{
             normal: {
-              color: 'rgb(47,69,84)',
+              color: '#c23531',
             }
           },
-          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+          data:concentrator.yesterday_sleep_status
         },
-        {
-          name: '失联',
-          type: 'bar',
-          stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
-          },
-          itemStyle:{
-            normal: {
-              color: 'rgb(213,58,53)',
-            }
-          },
-          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23].reverse()
-        }
       ]
     };
 

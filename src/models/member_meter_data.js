@@ -1,4 +1,4 @@
-import { query,add,remove,edit ,queryOne} from '../services/member_meter_data';
+import { query,add,remove,edit ,queryOne,exportCSV,downloadCSV} from '../services/member_meter_data';
 
 export default {
   namespace: 'member_meter_data',
@@ -62,6 +62,13 @@ export default {
       const response = yield call(remove, payload);
       if(response.status===200){
         if (callback) callback();
+      }
+    },
+    *exportCSV({ payload, callback }, { call, put }) {
+      const response = yield call(exportCSV, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback(response.data.download_key);
       }
     },
   },

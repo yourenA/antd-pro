@@ -24,7 +24,7 @@ class UserMeterAnalysis extends PureComponent {
       tableY:0,
       query: '',
       page: 1,
-      initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
       ended_at:'',
       village_id: '',

@@ -17,26 +17,14 @@ export async function queryOne({member_number,...restParams}) {
     }
   });
 }
-export async function remove({id}) {
-  return request(`/member_meter_data/${id}`, {
-    method: 'DELETE',
+
+export async function exportCSV(params) {
+  return request(`/member_meter_data`,{
+    method:'POST',
+    params:{
+      ...params
+    }
   });
 }
 
-export async function add({...restParams}) {
-  return request(`/member_meter_data`, {
-    method: 'POST',
-    data: {
-      ...restParams,
-    },
-  });
-}
 
-export async function edit({id,...restParams}) {
-  return request(`/member_meter_data/${id}`, {
-    method: 'PUT',
-    data: {
-      ...restParams,
-    },
-  });
-}

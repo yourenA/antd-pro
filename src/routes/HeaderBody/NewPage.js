@@ -13,27 +13,20 @@ class Main extends PureComponent {
     super(props);
     this.state = {
       time:moment().format('HH:mm:ss'),
-      concentrator:0,
-      meter:0
+      concentrator:{},
+      meter:{},
     }
   }
   componentDidMount() {
     setInterval(this.setTime,1000)
     const that=this;
-    request(`/concentrators`,{
+    request(`/homepage`,{
       method:'GET',
     }).then((response)=>{
       console.log(response);
       that.setState({
-        concentrator:response.data.meta.pagination.total
-      })
-    })
-    request(`/meters`,{
-      method:'GET',
-    }).then((response)=>{
-      console.log(response);
-      that.setState({
-        meter:response.data.meta.pagination.total
+        concentrator:response.data.concentrator,
+        meter:response.data.meter,
       })
     })
   }
@@ -51,20 +44,20 @@ class Main extends PureComponent {
         <Row gutter={24}>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem1}`}>
-              <div className={styles.count}>{this.state.concentrator}</div>
+              <div className={styles.count}>{this.state.concentrator.total_count}</div>
               <div className={styles.explain}>集中器总数量</div>
             </div>
           </Col>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem2}`}>
-              <div className={styles.count}>{this.state.meter}</div>
+              <div className={styles.count}>{this.state.meter.total_count}</div>
               <div className={styles.explain}>水表总数量</div>
             </div>
           </Col>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem3}`}>
-              <div className={styles.count}>100%</div>
-              <div className={styles.explain}>昨日总上报率</div>
+              <div className={styles.count}>{this.state.meter.yesterday_upload_rate}</div>
+              <div className={styles.explain}>昨天水表上传率</div>
             </div>
           </Col>
           {/*<Col  xl={6} lg={6} md={12} sm={24} >
@@ -88,7 +81,7 @@ class Main extends PureComponent {
               bodyStyle={{ padding: 24 }}
               style={{ marginBottom: 24, minHeight: 509 }}
             >
-              <ConcentratorOnlife />
+              <ConcentratorOnlife concentrator={this.state.concentrator}/>
             </Card>
           </Col>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
@@ -98,7 +91,7 @@ class Main extends PureComponent {
               bodyStyle={{ padding: 24 }}
               style={{ marginBottom: 24, minHeight: 509 }}
             >
-              <Proportion />
+              <Proportion meter={this.state.meter}/>
             </Card>
           </Col>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>

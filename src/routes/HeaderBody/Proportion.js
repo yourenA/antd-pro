@@ -10,10 +10,12 @@ export default class Proportion extends PureComponent {
 
   componentDidMount() {
     const that=this;
-    setTimeout(function () {
-      that.dynamic();
-    },0);
     window.addEventListener('resize',this.resizeChart)
+  }
+  componentWillReceiveProps(nextProps){
+    if((nextProps.meter.total_count !== this.props.meter.total_count) && nextProps.meter.total_count){
+      this.dynamic(nextProps.meter);
+    }
   }
   componentWillUnmount(){
     window.removeEventListener('resize',this.resizeChart)
@@ -23,9 +25,8 @@ export default class Proportion extends PureComponent {
       this.myChart.resize();
     }
   }
-  dynamic=()=>{
+  dynamic=(meter)=>{
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
-    console.log(document.querySelector('.proportion-data').offsetWidth)
     let option = {
       title :'',
       tooltip : {
@@ -43,7 +44,7 @@ export default class Proportion extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['正确','停报','错报','漏报']
+        data: ['水表上传数量','水表没有上传数量','水表错误上传数量','水表停止上传数量']
       },
       series : [
         {
@@ -52,15 +53,30 @@ export default class Proportion extends PureComponent {
           radius : '55%',
           center: ['50%', '60%'],
           data:[
-            {value:335, name:'正确',
+            {value:meter.yesterday_upload_count, name:'水表上传数量',
               itemStyle:{
                 normal: {
-                  color: '#40c4ff',
+                  color: '#61a0a8',
                 }
               },},
-            {value:123, name:'停报'},
-            {value:50, name:'错报'},
-            {value:100, name:'漏报'},
+            {value:meter.yesterday_missing_upload_count, name:'水表没有上传数量',
+              itemStyle:{
+                normal: {
+                  color: '#d48265',
+                }
+              },},
+            {value:meter.yesterday_error_upload_count, name:'水表错误上传数量',
+              itemStyle:{
+                normal: {
+                  color: '#c23531',
+                }
+              },},
+            {value:meter.yesterday_stop_upload_count, name:'水表停止上传数量',
+              itemStyle:{
+                normal: {
+                  color: '#2f4554',
+                }
+              },},
           ],
           itemStyle: {
             emphasis: {
