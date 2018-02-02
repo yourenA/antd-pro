@@ -7,10 +7,10 @@ import {connect} from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Sider from './Sider'
 const TreeNode = TreeSelect.TreeNode;
-import Working from '../../Exception/working';
 import './index.less'
 import request from './../../../utils/request'
 import moment from 'moment'
+import {disabledDate} from './../../../utils/utils'
 const {Content} = Layout;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -116,7 +116,7 @@ class EditPassword extends Component {
                       {getFieldDecorator('range-time-picker', {
                         rules: [{required: true, message: '日期不能为空'}],
                       })(
-                        <RangePicker />
+                        <RangePicker  disabledDate={disabledDate} />
                       )}
                     </FormItem>
                     <FormItem

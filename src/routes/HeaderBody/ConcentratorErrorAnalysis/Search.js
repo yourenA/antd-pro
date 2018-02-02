@@ -4,8 +4,10 @@
 import React, {Component} from 'react';
 import {Form,DatePicker,Row,message,Input,Button,Switch} from 'antd';
 import moment from 'moment'
+import {disabledDate} from './../../../utils/utils'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +47,7 @@ class SearchForm extends Component {
               {getFieldDecorator('range-time-picker',{
                 initialValue:this.props.initRange?this.props.initRange: '',
               })(
-                <RangePicker  allowClear={this.props.initRange?false:true}/>
+                <RangePicker   disabledDate={disabledDate}  allowClear={this.props.initRange?false:true}/>
               )}
             </FormItem>
           <FormItem>

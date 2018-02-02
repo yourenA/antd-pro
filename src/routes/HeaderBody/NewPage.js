@@ -15,10 +15,11 @@ class Main extends PureComponent {
       time:moment().format('HH:mm:ss'),
       concentrator:{},
       meter:{},
+      server:{}
     }
   }
   componentDidMount() {
-    setInterval(this.setTime,1000)
+    // setInterval(this.setTime,1000)
     const that=this;
     request(`/homepage`,{
       method:'GET',
@@ -27,11 +28,12 @@ class Main extends PureComponent {
       that.setState({
         concentrator:response.data.concentrator,
         meter:response.data.meter,
+        server:response.data.server
       })
     })
   }
   componentWillUnmount(){
-    clearInterval(this.setTime)
+    // clearInterval(this.setTime)
   }
   setTime=()=>{
     this.setState({
@@ -68,8 +70,8 @@ class Main extends PureComponent {
           </Col>*/}
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem4}`}>
-              <div className={styles.count}>{this.state.time}</div>
-              <div className={styles.explain}>{moment().format('ll')}</div>
+              <div className={styles.count}>{this.state.server.current_time}</div>
+              <div className={styles.explain}>当前获取数据时间</div>
             </div>
           </Col>
         </Row>
