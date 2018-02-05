@@ -4,8 +4,9 @@ import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
 const ButtonGroup = Button.Group;
-import {getTimeDistance,getBetweemDay} from './../../../utils/utils';
+import {getTimeDistance,disabledDate} from './../../../utils/utils';
 import request from './../../../utils/request'
+import moment from 'moment'
 const TabPane = Tabs.TabPane;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -18,13 +19,12 @@ class Detail extends PureComponent {
     this.myChart2=null;
     this.state = {
       Data:[],
-      rangePickerValue: [],
+      rangePickerValue: [moment(this.props.started_at , 'YYYY-MM-DD'), moment(this.props.ended_at, 'YYYY-MM-DD')],
     }
   }
   componentDidMount() {
     const that=this;
     this.setState({
-      rangePickerValue: getTimeDistance('month'),
     },function () {
       that.fetch()
     });
@@ -145,12 +145,13 @@ class Detail extends PureComponent {
     return (
       <div>
         <div >
-          <ButtonGroup>
+         <ButtonGroup>
             <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>本周</Button>
             <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>本月</Button>
             <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>本年</Button>
           </ButtonGroup>
           <RangePicker
+            disabledDate={disabledDate}
             value={this.state.rangePickerValue}
             onChange={this.handleRangePickerChange}
             style={{width: 256}}

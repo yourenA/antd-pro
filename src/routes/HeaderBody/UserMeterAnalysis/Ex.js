@@ -337,7 +337,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <Detail member_number={this.state.member_number}/>
+          <Detail member_number={this.state.member_number} ended_at={this.state.ended_at} started_at={this.state.started_at}/>
         </Modal>
 
       </Layout>

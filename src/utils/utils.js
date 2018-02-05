@@ -32,23 +32,21 @@ export function getTimeDistance(type) {
 
     const beginTime = now.getTime() - (day * oneDay);
 
-    return [moment(beginTime), moment(beginTime + ((7 * oneDay) - 1000))];
+    return [moment(beginTime), moment( now.getTime())];
   }
 
   if (type === 'month') {
     const year = now.getFullYear();
     const month = now.getMonth();
-    const nextDate = moment(now).add(1, 'months');
-    const nextYear = nextDate.year();
-    const nextMonth = nextDate.month();
-
-    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`).valueOf() - 1000)];
+    const day = now.getDate();
+    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${year}-${parseInt(month+1)}-${day} 00:00:00`).valueOf())];
   }
 
   if (type === 'year') {
     const year = now.getFullYear();
-
-    return [moment(`${year}-01-01 00:00:00`), moment(`${year}-12-31 23:59:59`)];
+    const month = now.getMonth();
+    const day = now.getDate();
+    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${parseInt(month+1)}-${day} 23:59:59`).valueOf())];
   }
 }
 
