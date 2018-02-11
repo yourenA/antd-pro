@@ -22,7 +22,7 @@ class SearchForm extends Component {
       const values = {
         meter_number: fieldsValue.meter_number,
         real_name: fieldsValue.real_name,
-        only_show_unusual:fieldsValue.only_show_unusual?1:-1,
+        display_type:fieldsValue.display_type?'only_error':'all',
         started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
@@ -59,7 +59,7 @@ class SearchForm extends Component {
         </Row>
         <Row gutter={16}>
           <FormItem label="只显示异常">
-            {getFieldDecorator('only_show_unusual',{ valuePropName: 'checked' })(
+            {getFieldDecorator('display_type',{ valuePropName: 'checked' })(
                 <Switch  />
             )}
           </FormItem>

@@ -9,7 +9,8 @@ import find from 'lodash/find'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
-  member_meter_data: state.member_meter_data,
+  concentrator_errors: state.concentrator_errors,
+  manufacturers: state.manufacturers,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -20,7 +21,7 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon:false,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY:0,
-      manufacturers: '',
+      manufacturer_id: '',
       page: 1,
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
@@ -36,16 +37,24 @@ class UserMeterAnalysis extends PureComponent {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'manufacturers/fetch',
+      payload: {
+        return:'all'
+      }
+    });
   }
 
   siderLoadedCallback = (village_id)=> {
     console.log('加载区域', village_id)
     this.setState({
-      village_id
+      village_id,
+      concentrator_number:null
     })
     this.handleSearch({
       page: 1,
-      manufacturers: '',
+      manufacturer_id: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
@@ -55,12 +64,11 @@ class UserMeterAnalysis extends PureComponent {
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      showAddBtnByCon:false,
+      manufacturer_id:'',
       concentrator_number:null
     },function () {
       this.handleSearch({
         page: 1,
-        manufacturers: '',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id
@@ -72,11 +80,10 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields()
     this.setState({
       concentrator_number:concentrator_number,
-      showAddBtnByCon:true,
+      manufacturer_id:'',
     })
     this.handleSearch({
       page: 1,
-      manufacturers: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id:village_id,
@@ -86,7 +93,7 @@ class UserMeterAnalysis extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
-      manufacturers: '',
+      manufacturer_id: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -96,7 +103,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'member_meter_data/fetch',
+      type: 'concentrator_errors/fetch',
       payload: {
         concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
@@ -117,15 +124,31 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      manufacturers: this.state.manufacturers,
+      manufacturer_id: this.state.manufacturer_id,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       // area: this.state.area
     })
   }
-
+  renderStatus=(code)=>{
+    if(code===1){
+      return(
+        <Badge status="success"/>
+      )
+    }else if(code===-1){
+      return(
+        <Badge status="error"/>
+      )
+    }else if(code===-2){
+      return(
+        <Badge status="warning"/>
+      )
+    }else{
+      return null
+    }
+  }
   render() {
-    const {member_meter_data: {data, meta, loading}} = this.props;
+    const {concentrator_errors: {data, meta, loading},manufacturers} = this.props;
     const columns = [
       {
         title: '序号',
@@ -142,131 +165,81 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: 150, dataIndex: 'name', key: 'name', fixed: 'left',},
-      {title: '生产厂商', width: 150, dataIndex: 'age', key: 'age'},
-      {title: '安装位置', dataIndex: 'address', key: '1123', width: 150,},
-      {title: '日期', dataIndex: 'address', key: '2123',},
+      {title: '集中器编号', width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '生产厂商', width: 150, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
+      {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 150,},
+      {title: '日期', dataIndex: 'date', key: 'date',},
       {title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
-        return (
-          <span  title="成功">
-             <Badge status="success"/>
-          </span>
-        )
+        return this.renderStatus(record.is_onlines[0])
       }},
       {title: '1', dataIndex: 'address', key: '1', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[1])
       }},
       {title: '2', dataIndex: 'address', key: '2', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[2])
       }},
       {title: '3', dataIndex: 'address', key: '3', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[3])
       }},
       {title: '4', dataIndex: 'address', key: '4', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[4])
       }},
       {title: '5', dataIndex: 'address', key: '5', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[5])
       }},
       {title: '6', dataIndex: 'address', key: '6', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[6])
       }},
       {title: '7', dataIndex: 'address', key: '7', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[7])
       }},
       {title: '8', dataIndex: 'address', key: '8', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[8])
       }},
       {title: '9', dataIndex: 'address', key: '9', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[9])
       }},
       {title: '10', dataIndex: 'address', key: '10', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[10])
       }},
       {title: '11', dataIndex: 'address', key: '11', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[11])
       }},
       {title: '12', dataIndex: 'address', key: '12', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[12])
       }},
       {title: '13', dataIndex: 'address', key: '13', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[13])
       }},
       {title: '14', dataIndex: 'address', key: '14', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[14])
       }},
       {title: '15', dataIndex: 'address', key: '15', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[15])
       }},
       {title: '16', dataIndex: 'address', key: '16', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[16])
       }},
       {title: '17', dataIndex: 'address', key: '17', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[17])
       }},
       {title: '18', dataIndex: 'address', key: '18', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[18])
       }},
       {title: '19', dataIndex: 'address', key: '19', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[19])
       }},
       {title: '20', dataIndex: 'address', key: '20', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[20])
       }},
       {title: '21', dataIndex: 'address', key: '21', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[21])
       }},
       {title: '22', dataIndex: 'address', key: '22', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[22])
       }},
       {title: '23', dataIndex: 'address', key: '23', width: 40, render: (val, record, index) => {
-        return (
-          <Badge status="success" />
-        )
+        return this.renderStatus(record.is_onlines[23])
       }},
     ];
     return (
@@ -281,6 +254,7 @@ class UserMeterAnalysis extends PureComponent {
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
+                            manufacturers={manufacturers.data}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
@@ -291,9 +265,9 @@ class UserMeterAnalysis extends PureComponent {
                       return 'error'
                     }
                   }}
-                  className='meter-table'
+                  className='meter-table error-analysis'
                   loading={loading}
-                  rowKey={record => record.member_number}
+                  rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
                   scroll={{ x: 1600, y: this.state.tableY }}

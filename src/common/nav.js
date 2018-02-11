@@ -32,7 +32,7 @@ import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/Commu
 )
 
 const UserMeterAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Ex")
+import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 )
 
 const UserMeterLife = asyncComponent(() =>
@@ -288,22 +288,22 @@ const data = [{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['company_visit'],
+      permissions:['concentrator_error_analysis','meter_error_analysis','daily_error'],
       children: [{
         name: '集中器异常分析',
         path: 'concentrator_unusual_analysis',
-        component: Working,
-        permissions:['company_visit'],
+        component: ConcentratorErrorAnalysis,
+        permissions:['concentrator_error_analysis'],
       },{
         name: '水表异常分析',
         path: 'meter_unusual_analysis',
-        component: Working,
-        permissions:['company_visit'],
+        component: MeterErrorAnalysis,
+        permissions:['meter_error_analysis'],
       },{
         name: '统计日报',
         path: 'statistics_daily',
-        component: Working,
-        permissions:['company_visit'],
+        component: StatisticsDaily,
+        permissions:['daily_error'],
       }],
     }],
 }, {

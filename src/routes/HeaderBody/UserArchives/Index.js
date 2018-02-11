@@ -243,14 +243,14 @@ class UserMeterAnalysis extends PureComponent {
       { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 150,},
       { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,},
       { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,},
-      { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 100},
-      { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 100,},
+      { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 90},
+      { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
       { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at'},
       {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 130,
+        width: 140,
         render: (val, record, index) => {
           return(
             <p>

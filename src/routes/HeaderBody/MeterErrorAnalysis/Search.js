@@ -2,11 +2,12 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch} from 'antd';
+import {Form,DatePicker,Row,message,Input,Button,Switch,Select} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+const Option = Select.Option;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
-        manufacturers: fieldsValue.manufacturers,
+        manufacturers: fieldsValue.manufacturers?fieldsValue.manufacturers.key:'',
         started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
@@ -37,11 +38,16 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-            <FormItem label="厂商名称">
-              {getFieldDecorator('manufacturers')(
-                <Input placeholder="请输入"/>
-              )}
-            </FormItem>
+          <FormItem
+            label="厂商名称"
+          >
+            {getFieldDecorator('manufacturers', {
+            })(
+              <Select labelInValue={true} style={{width:120}}>
+                { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+              </Select>
+            )}
+          </FormItem>
             <FormItem label="日期区间">
               {getFieldDecorator('range-time-picker',{
                 initialValue:this.props.initRange?this.props.initRange: '',

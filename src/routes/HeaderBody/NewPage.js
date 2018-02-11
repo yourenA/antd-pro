@@ -79,7 +79,7 @@ class Main extends PureComponent {
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="集中器在线情况统计"
+              title="昨日集中器在线情况统计"
               bodyStyle={{ padding: 24 }}
               style={{ marginBottom: 24, minHeight: 509 }}
             >

@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop,notification } from 'antd';
+import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop,notification} from 'antd';
 import styles from './HeaderBodyLayout.less';
 import { connect } from 'dva';
 import { Link, Route, Redirect, Switch } from 'dva/router';
@@ -74,6 +74,10 @@ class HeaderBodyLayout extends React.PureComponent {
       };
       notification.error(args);
     },500)
+  }
+  componentWillUnmount=()=>{
+    console.log('c p w u')
+    notification.destroy()
   }
   getPageTitle() {
     const { location } = this.props;
