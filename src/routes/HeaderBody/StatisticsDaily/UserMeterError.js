@@ -81,7 +81,7 @@ class FunctionContent extends PureComponent {
       },
       {title: '集中器编号', width: '25%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '户表号', width:  '25%', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '弧标索引', width:  '25%', dataIndex: 'meter_index', key: 'meter_index'},
+      {title: '户表索引', width:  '25%', dataIndex: 'meter_index', key: 'meter_index'},
       {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
