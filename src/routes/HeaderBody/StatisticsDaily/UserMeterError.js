@@ -59,8 +59,6 @@ class FunctionContent extends PureComponent {
       date: this.state.date,
     })
   }
-
-
   render() {
     const {meter_daily_errors: {data, meta, loading}} = this.props;
     const columns = [
@@ -85,7 +83,6 @@ class FunctionContent extends PureComponent {
       {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
-
         </p>
       )},
     ];
