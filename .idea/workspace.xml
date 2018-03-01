@@ -6,16 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/DataRangePickers/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/UserLayout.js" afterPath="$PROJECT_DIR$/src/layouts/UserLayout.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ProductionMarketingAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ProductionMarketingAnalysis/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,8 +38,8 @@
       <file leaf-file-name="Search.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="25" selection-end-column="105" />
+            <state relative-caret-position="82">
+              <caret line="47" column="42" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="42" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#51#90#0" expanded="true" />
@@ -57,42 +48,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Search.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js">
+      <file leaf-file-name="Detail.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="784">
-              <caret line="71" column="21" selection-start-line="50" selection-start-column="10" selection-end-line="71" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Search.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="49" column="9" selection-start-line="49" selection-start-column="9" selection-end-line="70" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Search.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="24" column="105" selection-start-line="23" selection-start-column="7" selection-end-line="24" selection-end-column="105" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Search.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
-              <folding />
+            <state relative-caret-position="1549">
+              <caret line="176" column="24" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
+              <folding>
+                <element signature="e#1334#2749#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,7 +97,6 @@
         <option value="$PROJECT_DIR$/src/models/member_meter_data.js" />
         <option value="$PROJECT_DIR$/src/services/member_meter_data.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/index.less" />
@@ -164,6 +126,7 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
       </list>
     </option>
   </component>
@@ -306,32 +269,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="UserMeterAnalysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HeaderBody" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StatisticsDaily" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -612,12 +549,12 @@
       <workItem from="1519696941714" duration="2467000" />
       <workItem from="1519718861196" duration="852000" />
       <workItem from="1519783251114" duration="5299000" />
-      <workItem from="1519870668268" duration="5295000" />
+      <workItem from="1519870668268" duration="7097000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="709652000" />
+    <option name="totallyTimeSpent" value="711454000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1056" extended-state="0" />
@@ -892,16 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1377">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#45#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/member_meter_data.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1890">
@@ -1005,18 +932,7 @@
         <state relative-caret-position="378">
           <caret line="53" column="6" selection-start-line="53" selection-start-column="6" selection-end-line="57" selection-end-column="10" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="25" selection-end-column="105" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#51#90#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1026,7 +942,7 @@
         <state relative-caret-position="406">
           <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1065,9 +981,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
+        <state relative-caret-position="216">
+          <caret line="31" column="3" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="82">
+          <caret line="47" column="42" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="42" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#51#90#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1549">
+          <caret line="176" column="24" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
+          <folding>
+            <element signature="e#1334#2749#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -123,14 +123,21 @@ class Detail extends PureComponent {
       return true;
     }
   }
-  handleRangePickerChange = (rangePickerValue) => {
+  handleRangePickerChange = (datePickerValue,type) => {
     const that=this;
-    this.setState({
-      rangePickerValue,
-    },function () {
-      that.fetch()
-    });
-
+    if(type==='start'){
+      this.setState({
+        rangePickerValue:[datePickerValue,this.state.rangePickerValue[1]],
+      },function () {
+        that.fetch()
+      });
+    }else{
+      this.setState({
+        rangePickerValue:[this.state.rangePickerValue[0],datePickerValue],
+      },function () {
+        that.fetch()
+      });
+    }
   }
   selectDate = (type) => {
     const that=this;
@@ -150,12 +157,31 @@ class Detail extends PureComponent {
             <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>本月</Button>
             <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>本年</Button>
           </ButtonGroup>
-          <RangePicker
+
+          <DatePicker
+            value={this.state.rangePickerValue[0]}
+            allowClear={false}
+            disabledDate={disabledDate}
+            format="YYYY-MM-DD"
+            style={{width: 150}}
+            placeholder="开始日期"
+            onChange={(e)=>this.handleRangePickerChange(e,'start')}
+          />
+          <DatePicker
+            allowClear={false}
+            value={this.state.rangePickerValue[1]}
+            disabledDate={disabledDate}
+            format="YYYY-MM-DD"
+            style={{width: 150}}
+            placeholder="结束日期"
+            onChange={(e)=>this.handleRangePickerChange(e,'end')}
+          />
+          {/*<RangePicker
             disabledDate={disabledDate}
             value={this.state.rangePickerValue}
             onChange={this.handleRangePickerChange}
             style={{width: 256}}
-          />
+          />*/}
         </div>
         <div className="month-analysis"></div>
       </div>
