@@ -19,11 +19,10 @@ class SearchForm extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       console.log(fieldsValue)
-      const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
         manufacturer_id: fieldsValue.manufacturer_id?fieldsValue.manufacturer_id.key:'',
-        started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
-        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
+        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values,page:1})
     });
@@ -48,13 +47,28 @@ class SearchForm extends Component {
               </Select>
             )}
           </FormItem>
-            <FormItem label="日期区间">
-              {getFieldDecorator('range-time-picker',{
-                initialValue:this.props.initRange?this.props.initRange: '',
-              })(
-                <RangePicker   disabledDate={disabledDate}  allowClear={this.props.initRange?false:true}/>
-              )}
-            </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+            {getFieldDecorator('started_at', {
+              initialValue: this.props.initRange ? this.props.initRange[0] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+            {getFieldDecorator('ended_at', {
+              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>

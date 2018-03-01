@@ -185,7 +185,7 @@ class HeaderBodyLayout extends React.PureComponent {
       <Layout  style={{minHeight:'100vh' }}>
         <div className={styles.header}>
           <div className="logo" >
-            <Link to="/main">珠华远传水表监控系统</Link>
+            <Link to="/main">珠华智慧水务系统</Link>
           </div>
           <Menu
             onClick={this.handleClick}

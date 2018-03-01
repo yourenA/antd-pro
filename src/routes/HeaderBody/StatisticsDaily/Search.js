@@ -36,7 +36,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <FormItem label={ '日期区间'}>
+          <FormItem label={ '日期'}>
             {getFieldDecorator('date', {
               initialValue: this.props.initDate ? this.props.initDate : '',
             })(

@@ -18,13 +18,12 @@ class SearchForm extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       console.log(fieldsValue)
-      const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
         meter_number: fieldsValue.meter_number,
         real_name: fieldsValue.real_name,
         display_type:fieldsValue.display_type?'only_error':'all',
-        started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
-        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
+        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values,page:1})
     });
@@ -49,15 +48,28 @@ class SearchForm extends Component {
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-            <FormItem label="日期区间">
-              {getFieldDecorator('range-time-picker',{
-                initialValue:this.props.initRange?this.props.initRange: '',
-              })(
-                <RangePicker  disabledDate={disabledDate}  allowClear={this.props.initRange?false:true}/>
-              )}
-            </FormItem>
-        </Row>
-        <Row gutter={16}>
+          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+            {getFieldDecorator('started_at', {
+              initialValue: this.props.initRange ? this.props.initRange[0] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+            {getFieldDecorator('ended_at', {
+              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
           <FormItem label="只显示异常">
             {getFieldDecorator('display_type',{ valuePropName: 'checked' })(
                 <Switch  />

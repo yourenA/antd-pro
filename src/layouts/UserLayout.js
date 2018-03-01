@@ -30,7 +30,7 @@ class UserLayout extends React.PureComponent {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="" className={styles.logo} src={waterLogo} />
-                <span className={styles.title}>辂轺科技水务系统IOT</span>
+                <span className={styles.title}>珠华智慧水务系统</span>
               </Link>
             </div>
             <p className={styles.desc}></p>

@@ -48,12 +48,12 @@ class EditPassword extends Component {
     const that=this;
     this.props.form.validateFields({ force: true },
       (err, fieldsValue) => {
-        const rangeTimeValue = fieldsValue['range-time-picker'];
         if (!err) {
           const values = {
-            started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
-            ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
-            ...fieldsValue
+            ...fieldsValue,
+            started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+            ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
+
           };
           console.log(values)
           request(`/village_difference_consumption`,{
@@ -112,11 +112,28 @@ class EditPassword extends Component {
                   <Form style={{maxWidth: '500px', margin: '0 auto'}} >
                     <FormItem
                       {...formItemLayoutWithLabel}
-                      label={ '日期'}>
-                      {getFieldDecorator('range-time-picker', {
-                        rules: [{required: true, message: '日期不能为空'}],
+                      label={ '开始时间'}>
+                      {getFieldDecorator('started_at', {
+                        rules: [{required: true, message: '开始时间不能为空'}],
                       })(
-                        <RangePicker  disabledDate={disabledDate} />
+                        <DatePicker
+                          allowClear={false}
+                          disabledDate={disabledDate}
+                          format="YYYY-MM-DD"
+                        />
+                      )}
+                    </FormItem>
+                    <FormItem
+                      {...formItemLayoutWithLabel}
+                      label={'结束时间'}>
+                      {getFieldDecorator('ended_at', {
+                        rules: [{required: true, message: '结束时间不能为空'}],
+                      })(
+                        <DatePicker
+                          allowClear={false}
+                          disabledDate={disabledDate}
+                          format="YYYY-MM-DD"
+                        />
                       )}
                     </FormItem>
                     <FormItem

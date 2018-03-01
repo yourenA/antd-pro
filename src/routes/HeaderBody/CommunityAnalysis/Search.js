@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {Form, DatePicker, Row, Col, Input, Button} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
+import DataRangePickers from './../../../components/DataRangePickers/Index'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 class SearchForm extends Component {
@@ -19,11 +20,10 @@ class SearchForm extends Component {
     const {dispatch, form} = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
         query: fieldsValue.query,
-        started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
-        ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
+        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values, page: 1})
     });
@@ -44,11 +44,26 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-          <FormItem label={this.props.dateText ? this.props.dateText : '日期区间'}>
-            {getFieldDecorator('range-time-picker', {
-              initialValue: this.props.initRange ? this.props.initRange : '',
+          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+            {getFieldDecorator('started_at', {
+              initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
-              <RangePicker   disabledDate={disabledDate} allowClear={this.props.initRange ? false : true}/>
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+            {getFieldDecorator('ended_at', {
+              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
             )}
           </FormItem>
           <FormItem >
