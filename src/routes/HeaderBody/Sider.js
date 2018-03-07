@@ -17,6 +17,7 @@ class SiderTree extends PureComponent {
       collapsed: false,
       treeData: [
       ],
+      selectedKeys: []
     }
   }
 
@@ -38,13 +39,15 @@ class SiderTree extends PureComponent {
       })
       if(initial){
         if(response.data.data.length>0){
+          that.setState({
+            selectedKeys:[response.data.data[0].id]
+        })
           that.props.changeArea(response.data.data[0].id)
         }
       }
     })
   }
   transilate=(data)=>{
-    console.log("data",data)
     if(!data) return null;
     return data.map((item) => {
       if (item.concentrators) {
@@ -146,6 +149,12 @@ class SiderTree extends PureComponent {
     });
   }
   onSelect = (selectedKeys, info) => {
+
+    console.log('onSelect', info);
+    if(info.selected===false){
+      return false
+    }
+    this.setState({ selectedKeys });
     if(info.node.props.dataRef.number){
       console.log('集中器')
       this.props.changeConcentrator(info.node.props.dataRef.number,info.node.props.dataRef.village_id)
@@ -169,8 +178,9 @@ class SiderTree extends PureComponent {
               //loadData={this.onLoadData}
               onExpand={this.onExpandNode}
                   showLine onSelect={this.onSelect}
+              selectedKeys={this.state.selectedKeys}
                   //defaultExpandedKeys={[data[0].id]}
-                  defaultSelectedKeys={[this.state.treeData[0].id]}
+                  //defaultSelectedKeys={[this.state.treeData[0].id]}
             >
               {this.renderTreeNodes(this.state.treeData)}
             </Tree>
