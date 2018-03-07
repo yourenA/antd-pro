@@ -32,7 +32,7 @@ class SiderTree extends PureComponent {
         return: 'all'
       }
     }).then((response)=>{
-      console.log('response',response)
+      console.log('response',response.data.data)
       that.setState({
         treeData:this.props.showSiderCon===false?response.data.data:that.transilate(response.data.data)
       })
@@ -44,6 +44,8 @@ class SiderTree extends PureComponent {
     })
   }
   transilate=(data)=>{
+    console.log("data",data)
+    if(!data) return null;
     return data.map((item) => {
       if (item.concentrators) {
         if(item.concentrators.length>0){
