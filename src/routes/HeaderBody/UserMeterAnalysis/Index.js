@@ -11,6 +11,7 @@ import './index.less'
 import axios from 'axios'
 import config from '../../../common/config'
 import {download} from '../../../utils/utils'
+import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -243,6 +244,9 @@ class UserMeterAnalysis extends PureComponent {
 
   render() {
     const {member_meter_data: {data, meta, loading}} = this.props;
+    for(let i=0;i<data.length;i++){
+      data[i].uuidkey=uuid()
+    }
     const columns = [
       {
         title: '序号',
@@ -315,7 +319,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.member_number}
+                  rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
                   scroll={{x: 2150, y: this.state.tableY}}

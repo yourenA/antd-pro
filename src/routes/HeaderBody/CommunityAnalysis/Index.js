@@ -6,6 +6,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
+import uuid from 'uuid/v4'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
@@ -200,6 +201,9 @@ class UserMeterAnalysis extends PureComponent {
   }
   render() {
     const {village_meter_data: {data, meta, loading},concentrators,meters} = this.props;
+    for(let i=0;i<data.length;i++){
+      data[i].uuidkey=uuid()
+    }
     const columns = [
       {
         title: '序号',
@@ -266,7 +270,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.meter_number}
+                  rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
                   scroll={{ x: 1650, y: this.state.tableY }}

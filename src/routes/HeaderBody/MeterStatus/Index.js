@@ -9,6 +9,7 @@ import ChangeTable from './ChangeTable'
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
+import uuid from 'uuid/v4'
 const { Content} = Layout;
 @connect(state => ({
   meter_status: state.meter_status,
@@ -197,6 +198,9 @@ class UserMeterAnalysis extends PureComponent {
   }
   render() {
     const {meter_status: {data, meta, loading},concentrators,meters} = this.props;
+    for(let i=0;i<data.length;i++){
+      data[i].uuidkey=uuid()
+    }
     const columns = [
       {
         title: '序号',
@@ -241,7 +245,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.meter_number}
+                  rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
                   scroll={{y: this.state.tableY }}

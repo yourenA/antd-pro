@@ -7,6 +7,7 @@ import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
+import uuid from 'uuid/v4'
 const { Content} = Layout;
 @connect(state => ({
   concentrator_errors: state.concentrator_errors,
@@ -149,6 +150,9 @@ class UserMeterAnalysis extends PureComponent {
   }
   render() {
     const {concentrator_errors: {data, meta, loading},manufacturers} = this.props;
+    for(let i=0;i<data.length;i++){
+      data[i].uuidkey=uuid()
+    }
     const columns = [
       {
         title: '序号',
@@ -267,7 +271,7 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table error-analysis'
                   loading={loading}
-                  rowKey={record => record.id}
+                  rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
                   scroll={{ x: 1600, y: this.state.tableY }}

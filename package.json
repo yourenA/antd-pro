@@ -48,7 +48,8 @@
     "react-dom": "^16.0.0",
     "react-fittext": "^1.0.0",
     "react-treebeard": "^2.1.0",
-    "roadhog-api-doc": "^0.2.5"
+    "roadhog-api-doc": "^0.2.5",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
