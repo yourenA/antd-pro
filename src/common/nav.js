@@ -80,7 +80,9 @@ import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/Conc
 const UsersManage = asyncComponent(() =>
 import(/* webpackChunkName: "UsersManage" */ "./../routes/HeaderBody/UsersManage/Index")
 )
-
+const AccountManage = asyncComponent(() =>
+import(/* webpackChunkName: "AccountManage" */ "./../routes/HeaderBody/AccountManage/Index")
+)
 const AreaManage = asyncComponent(() =>
 import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
 )
@@ -232,7 +234,7 @@ const data = [{
         component: StatusCheck,
         permissions:['company_visit'],
       },{
-        name: '用户档案',
+        name: '会员档案',
         path: 'user_archives',
         component: UserArchives,
         permissions:['member_add_and_edit','member_delete'],
@@ -241,13 +243,13 @@ const data = [{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['meter_delete','meter_add_and_edit','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
+      permissions:['meter_delete','meter_add_and_edit','role_add_and_edit','role_status_edit','role_delete','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
           name: '用户管理',
-          path: 'member_manage',
-          component: UsersManage,
-          permissions:['user_add_and_edit','user_delete'],
+          path: 'account_manage',
+          component: AccountManage,
+          permissions:['user_add_and_edit','user_delete','role_add_and_edit','role_status_edit','role_delete'],
         },{
         name: '厂商查询',
         path: 'vendor_manage',

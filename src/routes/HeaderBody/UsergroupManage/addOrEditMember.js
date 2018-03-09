@@ -83,10 +83,6 @@ class AddPoliciesForm extends Component {
           )}
         >
           {getFieldDecorator('email', {
-            rules: [{
-              type: 'email', message: '邮箱地址错误',
-            }, {
-            }],
             initialValue: this.props.editRecord ? this.props.editRecord.email : '',
           })(
             <Input />
@@ -118,17 +114,17 @@ class AddPoliciesForm extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              角色
+              权限
             </span>
               )}>
               {getFieldDecorator('role_id', {
                 initialValue: this.props.editRecord?{key:this.props.editRecord.role_id,label:this.props.editRecord.role_display_name}:{key:'',label:''},
-                rules: [{required: true, message: '角色不能为空'}],
+                rules: [{required: true, message: '权限不能为空'}],
               })(
                 <Select labelInValue={true} >
                   { this.props.usergroup.map((item, key) => {
                     return (
-                      <Option key={item.id} disabled={item.status===-1?true:false} value={item.id.toString()}>{item.display_name}</Option>
+                      <Option key={item.id} value={item.id.toString()}>{item.display_name}</Option>
                     )
                   }) }
                 </Select>

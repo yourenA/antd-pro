@@ -51,7 +51,13 @@ class Vendor extends PureComponent {
       }
     });
   }
-
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    console.log('unmount11111111111111')
+    dispatch({
+      type: 'usergroup/reset',
+    });
+  }
   handleFormReset = () => {
     const {dispatch} = this.props;
     dispatch({
@@ -93,31 +99,37 @@ class Vendor extends PureComponent {
   handleAdd = () => {
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
-    this.props.dispatch({
-      type: 'user/add',
-      payload: {
-        data: {
-          ...formValues,
-          is_email_notify: formValues.is_email_notify?1:-1,
-          is_sms_notify: formValues.is_sms_notify?1:-1,
-          role_id: formValues.role_id.key,
-        },
-      },
-      callback: function () {
-        message.success('添加用户成功')
-        that.setState({
-          addModal: false,
-        });
-        that.props.dispatch({
-          type: 'user/fetch',
-          payload: {
-            query:that.state.query,
-            page:that.state.page
-          }
-        });
-      }
-    });
+    this.formRef.props.form.validateFields({force: true},
+      (err, values) => {
+        if (!err) {
+          this.props.dispatch({
+            type: 'user/add',
+            payload: {
+              data: {
+                ...formValues,
+                is_email_notify: formValues.is_email_notify?1:-1,
+                is_sms_notify: formValues.is_sms_notify?1:-1,
+                role_id: formValues.role_id.key,
+              },
+            },
+            callback: function () {
+              message.success('添加用户成功')
+              that.setState({
+                addModal: false,
+              });
+              that.props.dispatch({
+                type: 'user/fetch',
+                payload: {
+                  query:that.state.query,
+                  page:that.state.page
+                }
+              });
+            }
+          });
+        }else{
+        }
+      })
+
 
   }
   handleEdit=()=>{
@@ -356,10 +368,10 @@ class Vendor extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} location={this.props.history.location}/>
+        {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '用户管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '},{name: '账号管理'}, {name: '用户管理'}]}>
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
