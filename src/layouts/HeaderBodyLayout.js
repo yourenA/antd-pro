@@ -65,7 +65,7 @@ class HeaderBodyLayout extends React.PureComponent {
     this.props.dispatch({
       type: 'login/checkLoginState',
     });
-    setTimeout(function () {
+   /* setTimeout(function () {
       const args = {
         placement: 'bottomRight',
         message: '检测到异常水表数据',
@@ -73,7 +73,7 @@ class HeaderBodyLayout extends React.PureComponent {
         duration: 0,
       };
       notification.error(args);
-    },500)
+    },500)*/
   }
   componentWillUnmount=()=>{
     console.log('c p w u')

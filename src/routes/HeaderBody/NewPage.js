@@ -96,7 +96,7 @@ class Main extends PureComponent {
               <Proportion meter={this.state.meter}/>
             </Card>
           </Col>
-          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          {/*<Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
               title="平台统计"
@@ -115,7 +115,7 @@ class Main extends PureComponent {
             >
               <Guage />
             </Card>
-          </Col>
+          </Col>*/}
         </Row>
         <GlobalFooter
           copyright={
