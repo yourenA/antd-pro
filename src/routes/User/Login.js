@@ -20,7 +20,7 @@ export default class Login extends Component {
 
   componentDidMount() {
     const that=this;
-    request(`/available_companies`,{
+   /* request(`/available_companies`,{
       method:'GET',
       params:{
         return:'all'
@@ -30,7 +30,7 @@ export default class Login extends Component {
       that.setState({
         companiesList:response.data.data
       })
-    })
+    })*/
   }
 
   componentWillUnmount() {
@@ -68,7 +68,7 @@ export default class Login extends Component {
             type: `login/${type}Submit`,
             payload: {
               ...values,
-              company_id:values.company_id.key,
+              // company_id:values.company_id.key,
             },
           });
         }
@@ -93,6 +93,7 @@ export default class Login extends Component {
     const { form, login } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
+    const company_name=localStorage.getItem('company_name')||sessionStorage.getItem('company_name');
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
@@ -104,7 +105,7 @@ export default class Login extends Component {
                 login.submitting === false &&
                 this.renderMessage('账户或密码错误')
               }
-              <FormItem
+              {/*<FormItem
               >
                 {getFieldDecorator('company_id', {
                   onChange: this.handleChange,
@@ -116,6 +117,19 @@ export default class Login extends Component {
                   <Select labelInValue={true}  size="large">
                     { this.state.companiesList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
                   </Select>
+                )}
+              </FormItem>*/}
+              <FormItem>
+                {getFieldDecorator('company_name', {
+                  initialValue:company_name,
+                  rules: [{
+                    required: type === 'account', message: '请输入机构名称！',
+                  }],
+                })(
+                  <Input
+                    size="large"
+                    prefix={<Icon type="home" className={styles.prefixIcon} />}
+                  />
                 )}
               </FormItem>
               <FormItem>

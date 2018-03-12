@@ -18,7 +18,6 @@ class SiderNav extends PureComponent {
         activeNav:nextProps.location.pathname.split('/')[nextProps.location.pathname.split('/').length-1]
       })
     }
-
   }
   onCollapse = () => {
     this.setState({

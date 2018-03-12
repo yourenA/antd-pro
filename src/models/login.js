@@ -8,6 +8,7 @@ export default {
     username:'',
     token:'',
     role_display_name:'',
+    company_name:'',
     permissions:[],
     status: undefined,
   },
@@ -18,6 +19,7 @@ export default {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       const role_display_name = localStorage.getItem('role_display_name') || sessionStorage.getItem('role_display_name');
       const permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse( sessionStorage.getItem('permissions'));
+      const company_name = localStorage.getItem('company_name') || sessionStorage.getItem('company_name');
       // console.log(permissions)
       if (username&&token) {
         yield put({
@@ -26,7 +28,8 @@ export default {
             username,
             token,
             role_display_name,
-            permissions
+            permissions,
+            company_name
           },
         });
       }else{
@@ -45,11 +48,13 @@ export default {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
         sessionStorage.setItem('role_display_name', response.data.role_display_name);
+        sessionStorage.setItem('company_name', response.data.company_name);
         if (payload.remember) {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
           localStorage.setItem('role_display_name', response.data.role_display_name);
+          localStorage.setItem('company_name', response.data.company_name);
         }
         yield put({
           type: 'changeLoginStatus',
@@ -58,6 +63,7 @@ export default {
             token:response.data.token,
             permissions:response.data.permissions.data,
             role_display_name:response.data.role_display_name,
+            company_name:response.data.company_name,
             status:true
           },
         });
@@ -98,7 +104,8 @@ export default {
         token: payload.token,
         permissions:payload.permissions,
         status: payload.status,
-        role_display_name:payload.role_display_name
+        role_display_name:payload.role_display_name,
+        company_name:payload.company_name
       };
     },
     changeSubmitting(state, { payload }) {

@@ -186,7 +186,7 @@ class HeaderBodyLayout extends React.PureComponent {
         <div className={styles.header}>
           <div className="logo" >
             <Link to="/main" className="logo-up">珠华智慧水务系统</Link>
-            <Link to="/main" className="logo-down">井冈山项目</Link>
+            <Link to="/main" className="logo-down">{login.company_name}</Link>
           </div>
           <Menu
             onClick={this.handleClick}

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Icon, Tree, Layout} from 'antd';
+import {Icon, Tree, Layout,message} from 'antd';
 import siderJson from './sider.json'
 import {connect} from 'dva';
 import request from '../../utils/request';
@@ -43,6 +43,8 @@ class SiderTree extends PureComponent {
             selectedKeys:[response.data.data[0].id]
         })
           that.props.changeArea(response.data.data[0].id)
+        }else{
+          message.info('没有数据')
         }
       }
     })
