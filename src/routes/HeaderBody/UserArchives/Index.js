@@ -278,10 +278,9 @@ class UserMeterAnalysis extends PureComponent {
                     <span className="ant-divider"/>
                 </span>
               }
-              <a href="javascript:;"  onClick={()=>this.setState({
-                editRecord:record,
-                changeModal:true
-              })}>换表</a>
+              <a href="javascript:;"  onClick={()=>
+                message.info('该功能暂未开通')
+              }>换表</a>
             </p>
           )
         }
