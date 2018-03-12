@@ -6,7 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/addOREditUserArchives.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/addOREditUserArchives.js" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,12 +47,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="488">
               <caret line="281" column="37" selection-start-line="281" selection-start-column="37" selection-end-line="281" selection-end-column="37" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="addOREditUserArchives.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/addOREditUserArchives.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1269">
+              <caret line="190" column="13" selection-start-line="190" selection-start-column="13" selection-end-line="190" selection-end-column="13" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -113,7 +125,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorOnlife.js" />
         <option value="$PROJECT_DIR$/src/models/member_meter_data.js" />
         <option value="$PROJECT_DIR$/src/services/member_meter_data.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
@@ -164,6 +175,7 @@
         <option value="$PROJECT_DIR$/src/routes/User/Login.js" />
         <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/addOREditUserArchives.js" />
       </list>
     </option>
   </component>
@@ -566,12 +578,12 @@
       <workItem from="1520414413154" duration="3770000" />
       <workItem from="1520477642834" duration="8347000" />
       <workItem from="1520561213826" duration="5202000" />
-      <workItem from="1520820561585" duration="8650000" />
+      <workItem from="1520820561585" duration="9276000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="740881000" />
+    <option name="totallyTimeSpent" value="741507000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
@@ -621,13 +633,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pm2.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="756">
@@ -1055,6 +1060,16 @@
         <state relative-caret-position="488">
           <caret line="281" column="37" selection-start-line="281" selection-start-column="37" selection-end-line="281" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/addOREditUserArchives.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1269">
+          <caret line="190" column="13" selection-start-line="190" selection-start-column="13" selection-end-line="190" selection-end-column="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

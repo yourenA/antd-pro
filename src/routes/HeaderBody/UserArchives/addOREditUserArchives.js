@@ -116,7 +116,6 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('real_name', {
             initialValue: this.props.editRecord ? this.props.editRecord.real_name : '',
-            rules: [{required: true, message: '真实姓名不能为空'}],
           })(
             <Input />
           )}
@@ -141,7 +140,6 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('email', {
             initialValue: this.props.editRecord ? this.props.editRecord.email : '',
-            rules: [{required: true, message: '邮箱地址不能为空'}],
           })(
             <Input />
           )}
@@ -152,7 +150,6 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('phone', {
             initialValue: this.props.editRecord ? this.props.editRecord.phone : '',
-            rules: [{required: true, message: '电话不能为空'}],
           })(
             <Input />
           )}
@@ -181,7 +178,6 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('id_card', {
             initialValue: this.props.editRecord ? this.props.editRecord.id_card : '',
-            rules: [{required: true, message: '身份证号码不能为空'}],
           })(
             <Input />
           )}
@@ -192,7 +188,6 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('sex', {
             initialValue: this.props.editRecord ? this.props.editRecord.sex : '保密',
-            rules: [{required: true, message: '性别不能为空'}],
           })(
             <RadioGroup>
               <Radio value="男">男</Radio>
