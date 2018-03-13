@@ -31,7 +31,7 @@ class EditPassword extends Component {
           label="用户名"
           {...formItemLayout}>
           {getFieldDecorator('username', {
-            initialValue: localStorage.getItem('username') || sessionStorage.getItem('username')
+            initialValue: sessionStorage.getItem('username')
           })(
             <Input disabled={true}/>
           )}

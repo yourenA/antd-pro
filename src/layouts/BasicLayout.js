@@ -124,8 +124,7 @@ class BasicLayout extends React.PureComponent {
     return keys;
   }
   getNavMenuItems(menusData, parentPath = '') {
-    let permissions=(localStorage.getItem('permissions')?JSON.parse(localStorage.getItem('permissions'))
-      :sessionStorage.getItem('permissions')?JSON.parse(sessionStorage.getItem('permissions')):[]).map((item,index)=>{
+    let permissions=(sessionStorage.getItem('permissions')?JSON.parse(sessionStorage.getItem('permissions')):[]).map((item,index)=>{
       return item.name
     })
     if (!menusData) {
@@ -312,7 +311,7 @@ class BasicLayout extends React.PureComponent {
                 component={UserInfo}
               />
               {
-                (localStorage.getItem('role_display_name')==='系统管理员'|| sessionStorage.getItem('role_display_name')==='系统管理员')?
+                (sessionStorage.getItem('role_display_name')==='系统管理员')?
                   <Redirect exact from="/" to="/access-management/endpoints" />
                   : <Redirect exact from="/" to="/main" />
               }

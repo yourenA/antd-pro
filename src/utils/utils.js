@@ -109,9 +109,9 @@ const removeLoginStorage = () => {
   sessionStorage.removeItem('username');
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('permissions');
-  localStorage.removeItem('username');
-  localStorage.removeItem('token');
-  localStorage.removeItem('permissions');
+  // localStorage.removeItem('username');
+  // localStorage.removeItem('token');
+  // localStorage.removeItem('permissions');
 };
 exports.removeLoginStorage = removeLoginStorage;
 

@@ -25,7 +25,7 @@ export default function request(url, options) {
   };
   const newOptions = { ...defaultOptions, ...options };
   if (url!=='/login') {
-    newOptions.headers = {Authorization: `Bearer ${sessionStorage.getItem('token') || localStorage.getItem('token')}`}
+    newOptions.headers = {Authorization: `Bearer ${sessionStorage.getItem('token')}`}
   }
 
   return axios(`${config.prefix}${url}`, newOptions)
