@@ -96,7 +96,7 @@ export default class Login extends Component {
     const { form, login } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
-    const company_name=localStorage.getItem('company_name')||sessionStorage.getItem('company_name');
+    const company_name=sessionStorage.getItem('company_name');
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
@@ -184,20 +184,22 @@ export default class Login extends Component {
             })(
               <Input
                 size="large"
-                prefix={<Icon type="home" className={styles.prefixIcon} />}
+                prefix={<Icon type="home" className={styles.prefixIcon}
+                             />}
+                placeholder="机构名称"
               />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{
-                required: type === 'account', message: '请输入账户名！',
+                required: type === 'account', message: '请输入用户名！',
               }],
             })(
               <Input
                 size="large"
                 prefix={<Icon type="user" className={styles.prefixIcon} />}
-                placeholder="system"
+                placeholder="用户名"
               />
             )}
           </FormItem>
@@ -211,7 +213,7 @@ export default class Login extends Component {
                 size="large"
                 prefix={<Icon type="lock" className={styles.prefixIcon} />}
                 type="password"
-                placeholder="123456"
+                placeholder="密码"
               />
             )}
           </FormItem>
