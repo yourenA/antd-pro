@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert ,Select} from 'antd';
+import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert ,Select,message} from 'antd';
 import styles from './Login.less';
 import request from './../../utils/request'
 const FormItem = Form.Item;
@@ -38,12 +38,15 @@ export default class Login extends Component {
   }
 
   onSwitch = (key) => {
+
     this.setState({
       type: key,
     });
   }
 
   onGetCaptcha = () => {
+    message.info('该功能暂未开通！')
+    return false
     let count = 59;
     this.setState({ count });
     this.interval = setInterval(() => {
@@ -97,7 +100,7 @@ export default class Login extends Component {
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
-          <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
+     {/*     <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
             <TabPane tab="账户密码登录" key="account">
               {
                 login.status === 'error' &&
@@ -105,7 +108,7 @@ export default class Login extends Component {
                 login.submitting === false &&
                 this.renderMessage('账户或密码错误')
               }
-              {/*<FormItem
+              /!*<FormItem
               >
                 {getFieldDecorator('company_id', {
                   onChange: this.handleChange,
@@ -118,47 +121,8 @@ export default class Login extends Component {
                     { this.state.companiesList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
                   </Select>
                 )}
-              </FormItem>*/}
-              <FormItem>
-                {getFieldDecorator('company_name', {
-                  initialValue:company_name,
-                  rules: [{
-                    required: type === 'account', message: '请输入机构名称！',
-                  }],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="home" className={styles.prefixIcon} />}
-                  />
-                )}
-              </FormItem>
-              <FormItem>
-                {getFieldDecorator('username', {
-                  rules: [{
-                    required: type === 'account', message: '请输入账户名！',
-                  }],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="user" className={styles.prefixIcon} />}
-                    placeholder="system"
-                  />
-                )}
-              </FormItem>
-              <FormItem>
-                {getFieldDecorator('password', {
-                  rules: [{
-                    required: type === 'account', message: '请输入密码！',
-                  }],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="lock" className={styles.prefixIcon} />}
-                    type="password"
-                    placeholder="123456"
-                  />
-                )}
-              </FormItem>
+              </FormItem>*!/
+
             </TabPane>
             <TabPane tab="手机号登录" key="mobile">
               {
@@ -210,15 +174,55 @@ export default class Login extends Component {
                 </Row>
               </FormItem>
             </TabPane>
-          </Tabs>
+          </Tabs>*/}
+          <FormItem>
+            {getFieldDecorator('company_name', {
+              initialValue:company_name,
+              rules: [{
+                required: type === 'account', message: '请输入机构名称！',
+              }],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="home" className={styles.prefixIcon} />}
+              />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('username', {
+              rules: [{
+                required: type === 'account', message: '请输入账户名！',
+              }],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="user" className={styles.prefixIcon} />}
+                placeholder="system"
+              />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [{
+                required: type === 'account', message: '请输入密码！',
+              }],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="lock" className={styles.prefixIcon} />}
+                type="password"
+                placeholder="123456"
+              />
+            )}
+          </FormItem>
           <FormItem className={styles.additional}>
-            {getFieldDecorator('remember', {
+           {/* {getFieldDecorator('remember', {
               valuePropName: 'checked',
               initialValue: true,
             })(
               <Checkbox className={styles.autoLogin}>自动登录</Checkbox>
             )}
-            <a className={styles.forgot} href="">忘记密码</a>
+            <a className={styles.forgot} href="">忘记密码</a>*/}
             <Button size="large"  className={styles.submit} type="primary" htmlType="submit">
               登录
             </Button>
@@ -230,7 +234,7 @@ export default class Login extends Component {
          {/* <span className={styles.iconAlipay} />
           <span className={styles.iconTaobao} />
           <span className={styles.iconWeibo} />*/}
-          <Link className={styles.register} to="/user/register">注册账户</Link>
+          {/*<Link className={styles.register} to="/user/register">注册账户</Link>*/}
         </div>
       </div>
     );

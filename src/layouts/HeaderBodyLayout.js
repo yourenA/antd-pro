@@ -82,13 +82,13 @@ class HeaderBodyLayout extends React.PureComponent {
   getPageTitle() {
     const { location } = this.props;
     let { pathname } = location;
-    let title = '珠华远传水表监控系统';
+    let title = '珠华智慧水务系统';
     getRouteData('HeaderBodyLayout').forEach((item) => {
       if (`/main${item.path}` === pathname) {
-        title = `${item.name} - 珠华远传水表监控系统`;
+        title = `${item.name} - 珠华智慧水务系统`;
       }
       if(pathname.indexOf(`system_setup`)>0){
-        title = `系统设置 - 珠华远传水表监控系统`;
+        title = `系统设置 - 珠华智慧水务系统`;
       }
     });
     return title;

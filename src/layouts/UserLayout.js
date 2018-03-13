@@ -9,7 +9,7 @@ import Login from '../routes/User/Login';
 import waterLogo from '../images/water.png'
 const links = [];
 
-const copyright = <div>Copyright <Icon type="copyright" /> 2017 辂轺科技</div>;
+const copyright = <div>Copyright <Icon type="copyright" /> 珠华智慧水务系统</div>;
 
 class UserLayout extends React.PureComponent {
   static childContextTypes = {
@@ -20,7 +20,7 @@ class UserLayout extends React.PureComponent {
     return { location };
   }
   getPageTitle() {
-    return '登陆';
+    return '登录';
   }
   render() {
     return (

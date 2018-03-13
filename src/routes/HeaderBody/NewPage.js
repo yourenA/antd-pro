@@ -120,7 +120,7 @@ class Main extends PureComponent {
         <GlobalFooter
           copyright={
             <div>
-              Copyright <Icon type="copyright" /> 2018珠华远传水表监控系统
+              Copyright <Icon type="copyright" /> 珠华智慧水务系统
             </div>
           }
         />

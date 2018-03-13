@@ -49,13 +49,13 @@ export default {
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
         sessionStorage.setItem('role_display_name', response.data.role_display_name);
         sessionStorage.setItem('company_name', response.data.company_name);
-        if (payload.remember) {
+        /*if (payload.remember) {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
           localStorage.setItem('role_display_name', response.data.role_display_name);
           localStorage.setItem('company_name', response.data.company_name);
-        }
+        }*/
         yield put({
           type: 'changeLoginStatus',
           payload: {
