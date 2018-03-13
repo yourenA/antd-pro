@@ -14,7 +14,7 @@ const {Content} = Layout;
 class ConcentratorModels extends PureComponent {
   constructor(props) {
     super(props);
-    this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
+    this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'concentrator_model_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'concentrator_model_delete'}),

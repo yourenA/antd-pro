@@ -17,7 +17,7 @@ const {Content} = Layout;
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
-    this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
+    this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'user_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'user_delete'}),

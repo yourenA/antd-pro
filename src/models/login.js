@@ -15,11 +15,11 @@ export default {
 
   effects: {
     *checkLoginState({payload},{call,put}){
-      const username = localStorage.getItem('username') || sessionStorage.getItem('username');
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const role_display_name = localStorage.getItem('role_display_name') || sessionStorage.getItem('role_display_name');
-      const permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse( sessionStorage.getItem('permissions'));
-      const company_name = localStorage.getItem('company_name') || sessionStorage.getItem('company_name');
+      const username = sessionStorage.getItem('username');
+      const token = sessionStorage.getItem('token');
+      const role_display_name = sessionStorage.getItem('role_display_name');
+      const permissions = JSON.parse( sessionStorage.getItem('permissions'));
+      const company_name = sessionStorage.getItem('company_name');
       // console.log(permissions)
       if (username&&token) {
         yield put({

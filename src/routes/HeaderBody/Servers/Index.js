@@ -14,7 +14,7 @@ const {Content} = Layout;
 class MeterModel extends PureComponent {
   constructor(props) {
     super(props);
-    this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
+    this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'server_add_and_edit'}),
       showStatusBtn: find(this.permissions, {name: 'server_status_edit'}),

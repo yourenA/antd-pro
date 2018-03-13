@@ -19,7 +19,7 @@ const {Content} = Layout;
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
-    this.permissions = JSON.parse(localStorage.getItem('permissions')) || JSON.parse(sessionStorage.getItem('permissions'));
+    this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon: false,
