@@ -260,7 +260,7 @@ class ConcentratorManage extends PureComponent {
           )
         }
       },
-      { title: '集中器编号', width: 120, dataIndex: 'number', key: 'number',    fixed: 'left',
+      { title: '集中器编号', width: 100, dataIndex: 'number', key: 'number',    fixed: 'left',
         render: (text, record, index) => {
           return (
             <p style={{cursor:'pointer'}} onClick={()=>this.showConcentrator(record)}>
@@ -269,11 +269,11 @@ class ConcentratorManage extends PureComponent {
           )
         }
       },
-      { title: '集中器类型', width: 140, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name'},
-      { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 180, },
-      { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 180,},
-      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 180,},
-      { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 120,
+      { title: '集中器类型', width: 120, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name'},
+      { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 100, },
+      { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,},
+      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,},
+      { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 100,
         render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{val===1?"是":"否"}
@@ -362,7 +362,7 @@ class ConcentratorManage extends PureComponent {
                       rowKey={record => record.id}
                       dataSource={data}
                       columns={columns}
-                      scroll={{ x: 2200,y: this.state.tableY }}
+                      scroll={{ x: 2000,y: this.state.tableY }}
                       pagination={false}
                       size="small"
                     />

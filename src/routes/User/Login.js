@@ -96,7 +96,7 @@ export default class Login extends Component {
     const { form, login } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
-    const company_name=sessionStorage.getItem('company_name');
+    const company_name=sessionStorage.getItem('company_name')||localStorage.getItem('company_name');
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>

@@ -19,7 +19,7 @@ export default {
       const token = sessionStorage.getItem('token');
       const role_display_name = sessionStorage.getItem('role_display_name');
       const permissions = JSON.parse( sessionStorage.getItem('permissions'));
-      const company_name = sessionStorage.getItem('company_name');
+      const company_name = sessionStorage.getItem('company_name')|| localStorage.getItem('company_name');
       // console.log(permissions)
       if (username&&token) {
         yield put({
@@ -49,6 +49,7 @@ export default {
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
         sessionStorage.setItem('role_display_name', response.data.role_display_name);
         sessionStorage.setItem('company_name', response.data.company_name);
+        localStorage.setItem('company_name', response.data.company_name);
         /*if (payload.remember) {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('token', response.data.token);

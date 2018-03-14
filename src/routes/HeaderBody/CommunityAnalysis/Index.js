@@ -220,9 +220,9 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '水表编号', width: 150, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
-      {title: '水表类型', width: 150, dataIndex: 'meter_model_name', key: 'meter_model_name',},
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 150,},
+      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
+      {title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name',},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 150,},
       {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 160,},
       {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 120,},
@@ -239,7 +239,7 @@ class UserMeterAnalysis extends PureComponent {
             <div>
               <Button type="primary" size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 901F</Button>
               <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 90EF</Button>
-              <Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>
+              {/*<Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>*/}
               <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>关阀</Button>
             </div>
           )
@@ -273,7 +273,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1650, y: this.state.tableY }}
+                  scroll={{ x: 1480, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

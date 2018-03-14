@@ -265,8 +265,8 @@ class Vendor extends PureComponent {
       },
       {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
       {title: '名字', width: '8%', dataIndex: 'real_name', key: 'real_name'},
-      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '13%'},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: '18%'},
+      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '11%'},
+      {title: '邮箱', dataIndex: 'email', key: 'email', width: '15%'},
       {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '8%',
         render: (val, record, index) => (
           <Switch checked={record.is_sms_notify===1?true:false}  />
@@ -278,7 +278,7 @@ class Vendor extends PureComponent {
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '权限', dataIndex: 'role_display_name', key: 'role_display_name',  width: '10%',},
+      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: '12%',},
       {
         title: '状态',
         dataIndex: 'status',
@@ -391,7 +391,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1150, y: this.state.tableY}}
+                  scroll={{x: 1000, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

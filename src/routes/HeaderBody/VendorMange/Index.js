@@ -163,7 +163,7 @@ class Vendor extends PureComponent {
           )
         }
       },
-      {title: '厂商编号', width: '15%', dataIndex: 'code', key: 'code'},
+      {title: '厂商编号', width: '10%', dataIndex: 'code', key: 'code'},
       {title: '厂商名称', width: '15%', dataIndex: 'name', key: 'name'},
       {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count', width: '12%'},
       {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: '12%'},

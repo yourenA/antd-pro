@@ -183,19 +183,19 @@ class MeterModel extends PureComponent {
           )
         }
       },
-      {title: '水表号', width: 150, dataIndex: 'number', key: 'number', fixed: 'left',},
-      {title: '初始水量', width: 100, dataIndex: 'initial_water', key: 'initial_water'},
+      {title: '水表号', width: 100, dataIndex: 'number', key: 'number', fixed: 'left',},
+      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
       {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at'},
       {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at'},
-      {title: '水表类型名称', width: 150, dataIndex: 'meter_model_name', key: 'meter_model_name'},
-      {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 100,
+      {title: '水表类型名称', width: 110, dataIndex: 'meter_model_name', key: 'meter_model_name'},
+      {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
       render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.is_valve_explain}
 
         </p>
       )},
-      {title: '阀门状态', dataIndex: 'valve_status', key: 'valve_status', width: 100,
+      {title: '阀门状态', dataIndex: 'valve_status', key: 'valve_status', width: 80,
         render:(val, record, index) => (
           <p>
             <Badge status={val===1?"success":"error"} />{record.valve_status_explain}
@@ -204,11 +204,12 @@ class MeterModel extends PureComponent {
       {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100},
       {title: '条码', dataIndex: 'barcode', key: 'barcode', width: 100},
       {
-        title: '备注', dataIndex: 'remark', key: 'remark',
+        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',width: 100
       },
       {
-        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',width: 150
+        title: '备注', dataIndex: 'remark', key: 'remark',
       },
+
       {
         title: '操作',
         width: 100,
@@ -266,7 +267,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1500, y: this.state.tableY}}
+                  scroll={{x: 1250, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

@@ -111,7 +111,6 @@ const removeLoginStorage = () => {
   sessionStorage.removeItem('permissions');
   // localStorage.removeItem('username');
   // localStorage.removeItem('token');
-  // localStorage.removeItem('permissions');
 };
 exports.removeLoginStorage = removeLoginStorage;
 

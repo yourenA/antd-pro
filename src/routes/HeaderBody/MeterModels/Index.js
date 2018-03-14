@@ -176,19 +176,19 @@ class MeterModel extends PureComponent {
           )
         }
       },
-      {title: '水表类型', width: '13%', dataIndex: 'type', key: 'type'},
-      {title: '口径mm', width: '13%', dataIndex: 'bore', key: 'bore'},
-      {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: '13%',
+      {title: '水表类型', width: 80, dataIndex: 'type', key: 'type'},
+      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore'},
+      {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.is_control_explain}
 
         </p>
       )},
-      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: '13%'},
-      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width: '13%'},
+      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: 100},
+      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width:80},
       {
-        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width: '13%'
+        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width: 100
       },
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
@@ -250,7 +250,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1050, y: this.state.tableY}}
+                  scroll={{x: 800, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

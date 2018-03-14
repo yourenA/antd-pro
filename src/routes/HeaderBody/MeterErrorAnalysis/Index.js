@@ -156,8 +156,8 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
-      {title: '水表编号', width: 150, dataIndex: 'meter_number', key: 'meter_number',},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '用户名称', width: 150, dataIndex: 'real_name', key: 'real_name'},
       {
         title: '异常类型', width: 150, dataIndex: 'status', key: 'status'
@@ -168,9 +168,9 @@ class UserMeterAnalysis extends PureComponent {
       )
       },
       {title: '用水量', width: 150, dataIndex: 'consumption', key: 'consumption'},
-      {title: '日期', dataIndex: 'date', key: 'date',},
+      {title: '日期', dataIndex: 'date', width: 150,  key: 'date',},
       {title: '当日阀值', width: 150, dataIndex: 'threshold', key: 'threshold'},
-      {title: '超出阀值', width: 150, dataIndex: 'beyond_threshold', key: 'beyond_threshold'},
+      {title: '超出阀值',dataIndex: 'beyond_threshold', key: 'beyond_threshold'},
 
     ];
     return (

@@ -193,15 +193,15 @@ class MeterModel extends PureComponent {
         }
       },
       {title: '服务器地址', width: '20%', dataIndex: 'ip', key: 'ip', },
-      {title: '服务器端口', width: '20%', dataIndex: 'port', key: 'port'},
-      {title: '状态', dataIndex: 'status', key: 'status', width: '15%',
+      {title: '服务器端口',  dataIndex: 'port', key: 'port',width: '15%',},
+      {title: '状态', dataIndex: 'status', key: 'status',
         render:(val, record, index) => (
           <p>
             <Badge status={val===1?"success":"error"} />{record.status_explain}
 
           </p>
         )},
-      {title: '创建时间', dataIndex: 'created_at', key: 'created_at'},
+      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',width: '20%',},
       {
         title: '操作',
         width: 170,

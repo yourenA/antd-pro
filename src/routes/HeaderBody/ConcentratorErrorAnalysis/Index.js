@@ -169,8 +169,8 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
-      {title: '生产厂商', width: 150, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
       {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 150,},
       {title: '日期', dataIndex: 'date', key: 'date',},
       {title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
@@ -274,7 +274,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1600, y: this.state.tableY }}
+                  scroll={{ x: 1480, y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

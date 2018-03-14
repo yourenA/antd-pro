@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
+import {Pagination, Table, Card, Popconfirm, Layout, message, Modal, Button,Badge} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -263,18 +263,24 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '户号', width: 150, dataIndex: 'member_number', key: 'member_number', fixed: 'left',},
-      {title: '用户名称', width: 150, dataIndex: 'real_name', key: 'real_name'},
-      {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 180,},
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 140,},
-      {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', width: 140,},
-      {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 120,},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
+      {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', width: 100,},
+      {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,},
       {title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
-      {title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 180},
+      {title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
       {title: '本次读数(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
-      {title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 180},
+      {title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
       {title: '用水量(T)', dataIndex: 'difference_value', key: 'difference_value', width: 100},
-      {title: '状态', dataIndex: 'status_explain', key: 'status_explain', width: 100},
+      {title: '状态', dataIndex: 'status', key: 'status', width: 70,
+        render:(val, record, index) => (
+          <p>
+            <Badge status={val===1?"success":"error"} />{record.status_explain}
+
+          </p>
+        )},
       {title: '抄表员', dataIndex: 'reader', key: 'reader', width: 120},
       {title: '台区', dataIndex: 'distribution_area', key: 'distribution_area', width: 100},
       {title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms'},
@@ -322,7 +328,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 2150, y: this.state.tableY}}
+                  scroll={{x: 1760, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
