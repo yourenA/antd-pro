@@ -263,7 +263,7 @@ class ConcentratorManage extends PureComponent {
       { title: '集中器编号', width: 100, dataIndex: 'number', key: 'number',    fixed: 'left',
         render: (text, record, index) => {
           return (
-            <p style={{cursor:'pointer'}} onClick={()=>this.showConcentrator(record)}>
+            <p style={{cursor:'pointer' ,color:'#1890ff'}}  onClick={()=>this.showConcentrator(record)}>
               {text}
             </p>
           )
@@ -271,6 +271,7 @@ class ConcentratorManage extends PureComponent {
       },
       { title: '集中器类型', width: 120, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name'},
       { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 100, },
+      { title: '水表总数', dataIndex: 'meter_count', key: 'meter_count',width: 100},
       { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,},
       { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,},
       { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 100,
@@ -281,7 +282,6 @@ class ConcentratorManage extends PureComponent {
       )},
       { title: '本轮登录时间', dataIndex: 'address', key: '4' ,width: 150,},
       { title: '最后访问时间', dataIndex: 'set', key: '5',width: 150,},
-      { title: '水表总数', dataIndex: 'meter_count', key: 'meter_count',width: 100},
       { title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message',width: 150,},
       { title: '下行报文（指令）', dataIndex: 'downlink_message', key: 'downlink_message',width: 150},
       { title: '是否做统计日报', dataIndex: 'is_count', key: 'is_count'  ,width: 150,
