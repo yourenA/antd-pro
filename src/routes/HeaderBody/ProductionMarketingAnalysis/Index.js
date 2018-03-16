@@ -107,7 +107,7 @@ class EditPassword extends Component {
           {/*<Working/>*/}
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '产销差分析'}]}>
-              <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+              <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Card className="analysis-card" title="输入参数" style={{width: 564, margin: '0 auto'}}>
                   <Form style={{maxWidth: '500px', margin: '0 auto'}} >
                     <FormItem

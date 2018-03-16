@@ -114,7 +114,7 @@ class FunctionContent extends PureComponent {
     ];
     return (
       <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: '指令和状态查看'}, {name: '功能函数'}]}>
-        <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+        <Card bordered={false} style={{margin: '-16px -16px 0'}}>
           <div className='tableList'>
             <div className='tableListForm'>
               <DefaultSearch inputText="集中器编号" dateText="发送时间" handleSearch={this.handleSearch}

@@ -338,7 +338,7 @@ class ConcentratorManage extends PureComponent {
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="运行管理" breadcrumb={breadcrumb}>
-              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
+              <Card bordered={false} style={{margin:'-16px -16px 0'}}>
               {
                 this.state.showArea
                   ?

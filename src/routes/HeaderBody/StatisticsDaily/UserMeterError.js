@@ -88,7 +88,7 @@ class FunctionContent extends PureComponent {
     ];
     return (
       <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '户表错误'}]}>
-        <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+        <Card bordered={false} style={{margin: '-16px -16px 0'}}>
           <div className='tableList'>
             <div className='tableListForm'>
               <DefaultSearch inputText="集中器编号" dateText="发送时间" handleSearch={this.handleSearch}

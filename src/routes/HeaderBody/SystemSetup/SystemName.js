@@ -35,7 +35,7 @@ class EditPassword extends Component {
           <Content style={{background:'#fff'}}>
             <div className="content">
               <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '系统名称设置'}]}>
-                <Card bordered={false} style={{margin:'-24px -24px 0'}}>
+                <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                   <Form style={{maxWidth:'500px' ,margin:'0 auto'}} onSubmit={this.handleSubmit}>
                     <FormItem
                       {...formItemLayoutWithLabel}

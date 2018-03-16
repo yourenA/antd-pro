@@ -15,7 +15,7 @@ class SiderEmpty extends PureComponent {
   }
   render() {
     return (
-      <Sider collapsed={this.state.collapsed} className="sider" width="250">
+      <Sider collapsed={this.state.collapsed} className="sider" width="210">
         <div className="sider-title">
           选项
         </div>

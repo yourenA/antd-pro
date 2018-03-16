@@ -231,7 +231,7 @@ class MeterModel extends PureComponent {
         <Content >
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '水表类型查询'}]}>
-              <Card bordered={false} style={{margin: '-24px -24px 0'}}>
+              <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch inputText="水表类型" dateText="发送时间" handleSearch={this.handleSearch}

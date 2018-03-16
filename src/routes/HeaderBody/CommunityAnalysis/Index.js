@@ -221,6 +221,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
+      {title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number'},
       {title: '应收水量', width: 100, dataIndex: 'difference_value', key: 'difference_value'},
       {title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name',},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
@@ -252,7 +253,7 @@ class UserMeterAnalysis extends PureComponent {
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '小区水量分析'}]}>
-              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
+              <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}

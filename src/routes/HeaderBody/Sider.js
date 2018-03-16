@@ -169,7 +169,7 @@ class SiderTree extends PureComponent {
   render() {
     const {sider_regions:{data}}=this.props;
     return (
-      <Sider collapsed={this.state.collapsed} className="sider" width="250">
+      <Sider collapsed={this.state.collapsed} className="sider" width="210">
         <div className="sider-title">
           区域信息
         </div>
@@ -177,6 +177,7 @@ class SiderTree extends PureComponent {
           {(this.state.treeData.length)
             ?
             <Tree
+              defaultExpandAll={true}
               //loadData={this.onLoadData}
               onExpand={this.onExpandNode}
                   showLine onSelect={this.onSelect}

@@ -1,7 +1,13 @@
 @import "~antd/lib/style/themes/default.less";
 
 .content {
-  margin: 24px 24px 0;
+  margin: 16px 16px 0;
+  :global{
+    .ant-card-wider-padding .ant-card-body, .ant-card-body{
+      padding: 16px;
+    }
+  }
+
 }
 
 @media screen and (max-width: @screen-sm) {

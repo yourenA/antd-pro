@@ -252,7 +252,7 @@ class UserMeterAnalysis extends PureComponent {
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '集中器异常分析'}]}>
-              <Card bordered={false} style={{margin:'-24px -24px 0'}}>
+              <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
