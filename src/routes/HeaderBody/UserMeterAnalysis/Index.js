@@ -27,6 +27,7 @@ class UserMeterAnalysis extends PureComponent {
       tableY: 0,
       meter_number: '',
       real_name: '',
+      install_address:'',
       page: 1,
       initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
@@ -54,6 +55,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
+      install_address:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id,
@@ -71,6 +73,7 @@ class UserMeterAnalysis extends PureComponent {
         page: 1,
         meter_number: '',
         real_name: '',
+        install_address:'',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id,
@@ -89,6 +92,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
+      install_address:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id,
@@ -101,6 +105,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
+      install_address:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       display_type:'all'
@@ -132,6 +137,7 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
+      install_address:this.state.install_address,
       meter_number: this.state.meter_number,
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
@@ -162,6 +168,7 @@ class UserMeterAnalysis extends PureComponent {
         that.handleSearch({
           page: that.state.page,
           meter_number: that.state.meter_number,
+          install_address: that.state.install_address,
           only_show_unusual: that.state.only_show_unusual,
           real_name: that.state.real_name,
           ended_at: that.state.ended_at,
@@ -189,6 +196,7 @@ class UserMeterAnalysis extends PureComponent {
         that.handleSearch({
           page: that.state.page,
           meter_number: that.state.meter_number,
+          install_address: that.state.install_address,
           only_show_unusual: that.state.only_show_unusual,
           real_name: that.state.real_name,
           ended_at: that.state.ended_at,
@@ -211,6 +219,7 @@ class UserMeterAnalysis extends PureComponent {
           meter_number: that.state.meter_number,
           only_show_unusual: that.state.only_show_unusual,
           real_name: that.state.real_name,
+          install_address: that.state.install_address,
           ended_at: that.state.ended_at,
           started_at: that.state.started_at,
         })

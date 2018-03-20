@@ -271,15 +271,16 @@ class ConcentratorManage extends PureComponent {
       },
       { title: '集中器类型', width: 120, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name'},
       { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 100, },
-      { title: '水表总数', dataIndex: 'meter_count', key: 'meter_count',width: 100},
+      { title: '水表总数', dataIndex: 'meter_count', key: 'meter_count',width: 80},
+      { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 80,
+        render:(val, record, index) => (
+          <p>
+            <Badge status={val===1?"success":"error"} />{val===1?"是":"否"}
+          </p>
+        )},
       { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,},
       { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,},
-      { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 100,
-        render:(val, record, index) => (
-        <p>
-          <Badge status={val===1?"success":"error"} />{val===1?"是":"否"}
-        </p>
-      )},
+
       { title: '本轮登录时间', dataIndex: 'address', key: '4' ,width: 150,},
       { title: '最后访问时间', dataIndex: 'set', key: '5',width: 150,},
       { title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message',width: 150,},
@@ -362,7 +363,7 @@ class ConcentratorManage extends PureComponent {
                       rowKey={record => record.id}
                       dataSource={data}
                       columns={columns}
-                      scroll={{ x: 2000,y: this.state.tableY }}
+                      scroll={{ x: 1950,y: this.state.tableY }}
                       pagination={false}
                       size="small"
                     />

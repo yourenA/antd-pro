@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react';
-import {Icon, Tree, Layout,message} from 'antd';
+import {Icon, Tree, Layout,message,Input} from 'antd';
 import siderJson from './sider.json'
 import {connect} from 'dva';
 import request from '../../utils/request';
 import forEach from 'lodash/forEach'
+const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
 const {Sider} = Layout;
 
@@ -13,11 +14,15 @@ const {Sider} = Layout;
 class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
+    this.dataList=[];
     this.state = {
       collapsed: false,
       treeData: [
       ],
-      selectedKeys: []
+      selectedKeys: [],
+      expandedKeys: [],
+      autoExpandParent:true,
+      searchValue: '',
     }
   }
 
@@ -35,7 +40,10 @@ class SiderTree extends PureComponent {
     }).then((response)=>{
       console.log('response',response.data.data)
       that.setState({
-        treeData:this.props.showSiderCon===false?response.data.data:that.transilate(response.data.data)
+        treeData:this.props.showSiderCon===false?response.data.data:response.data.data
+      },function () {
+        that.generateList(that.state.treeData);
+        // console.log(that.dataList)
       })
       if(initial){
         if(response.data.data.length>0){
@@ -49,22 +57,37 @@ class SiderTree extends PureComponent {
       }
     })
   }
-  transilate=(data)=>{
+  generateList = (data) => {
+    for (let i = 0; i < data.length; i++) {
+      const node = data[i];
+      const key = node.id;
+      this.dataList.push({ id:key, name: node.name });
+      if (node.children) {
+        this.generateList(node.children, node.id);
+      }
+    }
+  };
+  /*transilate=(data)=>{
     if(!data) return null;
     return data.map((item) => {
       if (item.concentrators) {
-        if(item.concentrators.length>0){
-          let concatR=item.children?item.children.concat(item.concentrators):item.concentrators
-          item.children=concatR
-        }
+        // if(item.concentrators.length>0){
+        //   let concatR=item.children?item.children.concat(item.concentrators):item.concentrators
+        //   item.children=concatR
+        // }
         this.transilate(item.children)
       }
       return item
     });
-  }
+  }*/
   onExpandNode=(expandedKeys,expanded)=>{
+    console.log(expandedKeys)
+    this.setState({
+      expandedKeys,
+      autoExpandParent: false,
+    });
   }
-  onLoadData = (treeNode) => {
+ /* onLoadData = (treeNode) => {
     const that=this;
     console.log(treeNode)
     return new Promise((resolve,reject) => {
@@ -128,21 +151,31 @@ class SiderTree extends PureComponent {
         resolve();
       }
     });
-  }
+  }*/
   renderTreeNodes = (data) => {
     // console.log(data)
     return data.map((item) => {
+      const index = item.name.indexOf(this.state.searchValue);
+      const beforeStr = item.name.substr(0, index);
+      const afterStr = item.name.substr(index + this.state.searchValue.length);
+      const title = index > -1 ? (
+        <span>
+          {beforeStr}
+          <span style={{ color: '#f50' }}>{this.state.searchValue}</span>
+          {afterStr}
+        </span>
+      ) : <span>{item.name}</span>;
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.id} dataRef={item} className="treeItem">
+          <TreeNode title={title} key={item.id} dataRef={item} className="treeItem">
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      if(item.number){
-        return  <TreeNode title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
-      }
-      return <TreeNode title={item.name} key={item.id} dataRef={item} className="village"/>;
+      // if(item.number){
+      //   return  <TreeNode title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
+      // }
+      return <TreeNode title={title} key={item.id} dataRef={item} className="village"/>;
     });
   }
   onCollapse = () => {
@@ -151,7 +184,6 @@ class SiderTree extends PureComponent {
     });
   }
   onSelect = (selectedKeys, info) => {
-
     console.log('onSelect', info);
     if(info.selected===false){
       return false
@@ -165,7 +197,35 @@ class SiderTree extends PureComponent {
       this.props.changeArea(selectedKeys[0])
     }
   }
-
+  onChange = (e) => {
+    const value = e.target.value;
+    const expandedKeys = this.dataList.map((item) => {
+      // console.log(item.name)
+      if (item.name.indexOf(value) > -1) {
+        return this.getParentKey(item.id, this.state.treeData);
+      }
+      return null;
+    });
+    this.setState({
+      expandedKeys,
+      searchValue: value,
+      autoExpandParent: true,
+    });
+  }
+  getParentKey = (key, tree) => {
+    let parentKey;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.children) {
+        if (node.children.some(item => item.id === key)) {
+          parentKey = node.id;
+        } else if (this.getParentKey(key, node.children)) {
+          parentKey = this.getParentKey(key, node.children);
+        }
+      }
+    }
+    return parentKey;
+  };
   render() {
     const {sider_regions:{data}}=this.props;
     return (
@@ -173,15 +233,18 @@ class SiderTree extends PureComponent {
         <div className="sider-title">
           区域信息
         </div>
+        <Search style={{ marginTop:'20px',marginLeft:'12px',marginBottom:'8px',width:'88%' }} placeholder="Search" onChange={this.onChange} />
         <div className="sider-content">
           {(this.state.treeData.length)
             ?
             <Tree
-              defaultExpandAll={true}
+               //defaultExpandAll={true}
               //loadData={this.onLoadData}
-              onExpand={this.onExpandNode}
+                 onExpand={this.onExpandNode}
+                  expandedKeys={this.state.expandedKeys}
                   showLine onSelect={this.onSelect}
-              selectedKeys={this.state.selectedKeys}
+                  selectedKeys={this.state.selectedKeys}
+                 autoExpandParent={this.state.autoExpandParent}
                   //defaultExpandedKeys={[data[0].id]}
                   //defaultSelectedKeys={[this.state.treeData[0].id]}
             >

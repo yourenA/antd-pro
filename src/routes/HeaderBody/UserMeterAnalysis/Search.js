@@ -20,6 +20,7 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const values = {
         meter_number: fieldsValue.meter_number,
+        install_address: fieldsValue.install_address,
         real_name: fieldsValue.real_name,
         display_type:fieldsValue.display_type?'only_error':'all',
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
@@ -48,6 +49,11 @@ class SearchForm extends Component {
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
+          <FormItem label="安装地址">
+            {getFieldDecorator('install_address')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',

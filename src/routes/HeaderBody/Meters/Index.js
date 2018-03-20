@@ -187,11 +187,11 @@ class MeterModel extends PureComponent {
       {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
       {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at'},
       {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at'},
-      {title: '水表类型名称', width: 110, dataIndex: 'meter_model_name', key: 'meter_model_name'},
+      {title: '水表类型名称', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name'},
       {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
       render:(val, record, index) => (
         <p>
-          <Badge status={val===1?"success":"error"} />{record.is_valve_explain}
+          <Badge status={val===1?"success":"error"} />{val===1?'是':'否'}
 
         </p>
       )},
@@ -267,7 +267,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1250, y: this.state.tableY}}
+                  scroll={{x: 1270, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

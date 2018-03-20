@@ -237,8 +237,8 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',  fixed: 'left', },
-      { title: '户号', width: 100, dataIndex: 'number', key: 'number' },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 120, },
+      { title: '户号', width: 80, dataIndex: 'number', key: 'number' },
+      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80, },
       { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 140,},
       { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 100,},
       { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,},

@@ -216,10 +216,11 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      { title: '水表编号', width: '20%', dataIndex: 'meter_number', key: 'meter_number', },
+      { title: '户号', width: '13%', dataIndex: 'member_number', key: 'member_number', },
+      { title: '水表编号', width: '13%', dataIndex: 'meter_number', key: 'meter_number', },
       { title: '用户名称', width: '20%', dataIndex: 'real_name', key: 'real_name' },
       { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: '20%', },
-      { title: '安装时间', dataIndex: 'installed_at', key: 'installed_at' ,width: '20%',},
+      { title: '安装时间', dataIndex: 'installed_at', key: 'installed_at' ,width: '15%',},
       { title: '年限', dataIndex: 'service_life', key: 'service_life' },
     ];
     return (
