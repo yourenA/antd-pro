@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
-import DynamicData from './DynamicData'
-import Proportion from './Proportion'
-import ConcentratorOnlife from './ConcentratorOnlife'
-import Guage from './Guage'
+import DynamicData from './HomePage/DynamicData'
+import MapData from './HomePage/MapData'
+import Proportion from './HomePage/Proportion'
+import ConcentratorOnlife from './HomePage/ConcentratorOnlife'
+import AreaSupplyList from './HomePage/AreaSupplyList'
+import DMArate from './HomePage/DMArate'
+import Guage from './HomePage/Guage'
 import { Row, Col, Card,  Icon } from 'antd';
 import styles from './main.less'
 import moment from 'moment'
@@ -62,6 +65,7 @@ class Main extends PureComponent {
               <div className={styles.explain}>昨天水表上传率</div>
             </div>
           </Col>
+
           {/*<Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem4}`}>
               <div className={styles.count}>25%</div>
@@ -76,7 +80,17 @@ class Main extends PureComponent {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col xl={18} lg={18} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="地图数据"
+              bodyStyle={{ padding: 24 }}
+              style={{ marginBottom: 24, minHeight: 609 }}
+            >
+              <MapData/>
+            </Card>
+          </Col>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
               title="昨日集中器在线情况统计"
@@ -86,7 +100,7 @@ class Main extends PureComponent {
               <ConcentratorOnlife concentrator={this.state.concentrator}/>
             </Card>
           </Col>
-          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
               title="昨日水表状态统计"
@@ -94,6 +108,26 @@ class Main extends PureComponent {
               style={{ marginBottom: 24, minHeight: 509 }}
             >
               <Proportion meter={this.state.meter}/>
+            </Card>
+          </Col>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="片区供水一览"
+              bodyStyle={{ padding: 24 }}
+              style={{ marginBottom: 24, minHeight: 509 }}
+            >
+              <AreaSupplyList/>
+            </Card>
+          </Col>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="DMA损漏率"
+              bodyStyle={{ padding: 24 }}
+              style={{ marginBottom: 24, minHeight: 509 }}
+            >
+              <DMArate/>
             </Card>
           </Col>
           {/*<Col xl={12} lg={24} md={24} sm={24} xs={24}>

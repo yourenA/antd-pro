@@ -28,19 +28,20 @@ export default class Proportion extends PureComponent {
   dynamic=(meter)=>{
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
     let option = {
+      backgroundColor: '#eee',
       title :'',
       tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
-      toolbox: {
-        show: true,
-        feature: {
-          dataView: {readOnly: false},
-          restore: {},
-          saveAsImage: {}
-        }
-      },
+      // toolbox: {
+      //   show: true,
+      //   feature: {
+      //     dataView: {readOnly: false},
+      //     restore: {},
+      //     saveAsImage: {}
+      //   }
+      // },
       legend: {
         orient: 'vertical',
         left: 'left',
@@ -51,7 +52,7 @@ export default class Proportion extends PureComponent {
           name: '昨日水表状态统计',
           type: 'pie',
           radius : '55%',
-          center: ['50%', '60%'],
+          center: ['50%', '50%'],
           data:[
             {value:meter.yesterday_upload_count, name:'水表上传数量',
               itemStyle:{

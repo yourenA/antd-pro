@@ -13,7 +13,7 @@ import { ContainerQuery } from 'react-container-query';
 import intersection from 'lodash/intersection';
 import Main from './../routes/HeaderBody/NewPage';
 import classNames from 'classnames';
-import EditPassword from './../routes/HeaderBody/EditPassword'
+import EditPassword from '../routes/HeaderBody/HomePage/EditPassword'
 import request from './../utils/request'
 import NotFound from './../routes/Exception/404';
 const { SubMenu } = Menu;
