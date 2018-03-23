@@ -35,9 +35,6 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
     const {dispatch} = this.props;
     dispatch({
       type: 'manufacturers/fetch',
@@ -47,8 +44,12 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
 
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    })
+  }
   siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
     this.setState({
       village_id
     })
@@ -69,6 +70,7 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon: false,
       concentrator_number: null
     }, function () {
+      this.changeTableY();
       this.handleSearch({
         page: 1,
         manufacturer_id: '',
@@ -171,7 +173,6 @@ class UserMeterAnalysis extends PureComponent {
       {title: '日期', dataIndex: 'date', width: 150,  key: 'date',},
       {title: '当日阀值', width: 150, dataIndex: 'threshold', key: 'threshold'},
       {title: '超出阀值',dataIndex: 'beyond_threshold', key: 'beyond_threshold'},
-
     ];
     return (
       <Layout className="layout">

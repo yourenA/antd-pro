@@ -41,11 +41,12 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
+  }
+  changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
   }
-
   siderLoadedCallback = (village_id)=> {
     console.log('加载区域', village_id)
     this.setState({
@@ -69,6 +70,7 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon: false,
       concentrator_number: null
     }, function () {
+      this.changeTableY();
       this.handleSearch({
         page: 1,
         meter_number: '',

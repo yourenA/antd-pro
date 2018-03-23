@@ -14,6 +14,8 @@ const { Content} = Layout;
   members: state.members,
   concentrators: state.concentrators,
   meters: state.meters,
+  sider_regions: state.sider_regions,
+
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -21,7 +23,7 @@ class UserMeterAnalysis extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
-      showAddBtnByCon:false,
+      showAddBtnByCon:true,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY:0,
       query: '',
@@ -33,20 +35,26 @@ class UserMeterAnalysis extends PureComponent {
       editModal:false,
       changeModal:false,
       area: '',
+      distribution_area:'',
+      statistical_forms:'',
+      meter_number:''
     }
   }
 
   componentDidMount() {
     const {dispatch}=this.props
     dispatch({
+      type: 'sider_regions/fetch',
+      payload: {
+        return: 'all'
+      }
+    });
+    dispatch({
       type: 'concentrators/fetch',
       payload: {
         return: 'all'
       }
     });
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
   }
 
   siderLoadedCallback = (village_id)=> {
@@ -56,22 +64,31 @@ class UserMeterAnalysis extends PureComponent {
     })
     this.handleSearch({
       page: 1,
-      query: '',
+      distribution_area:'',
+      statistical_forms:'',
+      meter_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
     })
   }
-
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    })
+  }
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      showAddBtnByCon:false,
       concentrator_number:null
     },function () {
+
+      this.changeTableY();
       this.handleSearch({
         page: 1,
-        query: '',
+        distribution_area:'',
+        statistical_forms:'',
+        meter_number:'',
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id
@@ -90,7 +107,6 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields()
     this.setState({
       concentrator_number:concentrator_number,
-      showAddBtnByCon:true,
     })
     const {dispatch}=this.props
     dispatch({
@@ -101,7 +117,9 @@ class UserMeterAnalysis extends PureComponent {
     });
     this.handleSearch({
       page: 1,
-      query: '',
+      distribution_area:'',
+      statistical_forms:'',
+      meter_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id:village_id,
@@ -143,7 +161,9 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      query: this.state.query,
+      distribution_area:this.state.distribution_area,
+      statistical_forms:this.state.statistical_forms,
+      meter_number:this.state.meter_number,
       // ended_at: this.state.ended_at,
       // started_at: this.state.started_at,
       // area: this.state.area
@@ -161,7 +181,6 @@ class UserMeterAnalysis extends PureComponent {
         is_change:formValues.is_change.key,
         installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
         village_id: this.state.village_id,
-        concentrator_number:this.state.concentrator_number
       },
       callback: function () {
         message.success('添加用户成功')
@@ -193,7 +212,9 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          distribution_area:that.state.distribution_area,
+          statistical_forms:that.state.statistical_forms,
+          meter_number:that.state.meter_number,
         })
       }
     });
@@ -209,7 +230,9 @@ class UserMeterAnalysis extends PureComponent {
         message.success('删除用户成功')
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          distribution_area:that.state.distribution_area,
+          statistical_forms:that.state.statistical_forms,
+          meter_number:that.state.meter_number,
         })
       }
     });
@@ -219,7 +242,7 @@ class UserMeterAnalysis extends PureComponent {
     console.log(formValues)
   }
   render() {
-    const {members: {data, meta, loading},concentrators,meters} = this.props;
+    const {members: {data, meta, loading},concentrators,meters,sider_regions} = this.props;
     const columns = [
       {
         title: '序号',
@@ -324,13 +347,12 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </Content>
         <Modal
-          key={ Date.parse(new Date())}
           title="添加用户档案"
           visible={this.state.addModal}
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal:false})}
         >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
+          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
         </Modal>
         <Modal
           key={ Date.parse(new Date())+1}
@@ -339,7 +361,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal:false})}
         >
-          <AddOREditUserArchives  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
         <Modal
           key={ Date.parse(new Date())+2}

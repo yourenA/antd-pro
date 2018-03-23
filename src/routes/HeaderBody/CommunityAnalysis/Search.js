@@ -21,7 +21,7 @@ class SearchForm extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const values = {
-        query: fieldsValue.query,
+        ...fieldsValue,
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
@@ -44,6 +44,21 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
+          <FormItem label="水表编号">
+            {getFieldDecorator('meter_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="户号">
+            {getFieldDecorator('member_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="安装地址">
+            {getFieldDecorator('install_address')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',

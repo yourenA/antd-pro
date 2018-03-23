@@ -80,7 +80,7 @@ class Main extends PureComponent {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col xl={18} lg={18} md={24} sm={24} xs={24}>
+          {/*<Col xl={18} lg={18} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
               title="地图数据"
@@ -89,7 +89,7 @@ class Main extends PureComponent {
             >
               <MapData/>
             </Card>
-          </Col>
+          </Col>*/}
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
@@ -110,7 +110,7 @@ class Main extends PureComponent {
               <Proportion meter={this.state.meter}/>
             </Card>
           </Col>
-          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+         {/* <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
               title="片区供水一览"
@@ -129,7 +129,7 @@ class Main extends PureComponent {
             >
               <DMArate/>
             </Card>
-          </Col>
+          </Col>*/}
           {/*<Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}

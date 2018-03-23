@@ -29,7 +29,6 @@ export default class DMArate extends PureComponent {
     }
   }
   dynamic = (concentrator)=> {
-    console.log('online')
     this.myChart = this.echarts.init(document.querySelector('.DMArate'));
 
 
@@ -51,7 +50,6 @@ export default class DMArate extends PureComponent {
       let rate=(((-parseInt(data1[i]))/(parseInt(data2[i])+parseInt(data3[i])))*100).toFixed(2)
       data4.push(rate)
     }
-    console.log(data4)
     var itemStyle = {
       normal: {
       },
@@ -70,7 +68,6 @@ export default class DMArate extends PureComponent {
         data: ['漏损量', '住户用水量', '公司用水量'],
         orient: 'vertical',
         left: 'left',
-        // left: 10
       },
       tooltip : {
         trigger: 'axis',
@@ -107,11 +104,6 @@ export default class DMArate extends PureComponent {
           type: 'value',
           name: '漏损率 %',
           position: 'right',
-          // axisLine: {
-          //   lineStyle: {
-          //     color: '#000'
-          //   }
-          // },
         },
       ],
 

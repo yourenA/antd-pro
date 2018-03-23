@@ -21,7 +21,7 @@ class SearchForm extends Component {
       const date = fieldsValue['date'];
       const values = {
         ...fieldsValue,
-        date:  moment(date).format('YYYY-MM-DD'),
+        date: date ? moment(date).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values, page: 1})
     });
@@ -39,11 +39,6 @@ class SearchForm extends Component {
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
           <FormItem label="集中器编号">
             {getFieldDecorator('concentrator_number')(
-              <Input placeholder="请输入"/>
-            )}
-          </FormItem>
-          <FormItem label="水表编号">
-            {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>

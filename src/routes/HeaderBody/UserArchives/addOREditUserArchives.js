@@ -27,6 +27,7 @@ class EditUserArchives extends Component {
       return  <TreeNode value={item.id}  title={item.name} key={item.id} />
     });
   }
+
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -39,6 +40,7 @@ class EditUserArchives extends Component {
       }
     };
     const {getFieldDecorator, getFieldValue} = this.props.form;
+    const {sider_regions:{data}}=this.props;
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -53,7 +55,7 @@ class EditUserArchives extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
-      {/*  {this.props.editRecord ?null: <FormItem
+        {this.props.editRecord ?null: <FormItem
           label="集中器编号"
           {...formItemLayoutWithLabel}
         >
@@ -65,7 +67,7 @@ class EditUserArchives extends Component {
               { this.props.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
             </Select>
           )}
-        </FormItem>}*/}
+        </FormItem>}
         <FormItem
           label="水表号"
           {...formItemLayoutWithLabel}
@@ -77,6 +79,7 @@ class EditUserArchives extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
+
         {this.props.editRecord ?null:  <FormItem
           label="水表序号"
           {...formItemLayoutWithLabel}
@@ -120,6 +123,22 @@ class EditUserArchives extends Component {
             <Input />
           )}
         </FormItem>
+      {/*  <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              安装小区
+            </span>
+          )}>
+          {getFieldDecorator('village_id', {
+          })(
+            <TreeSelect
+              treeDefaultExpandAll={true}
+            >
+              {this.renderTreeNodes(data)}
+            </TreeSelect>
+          )}
+        </FormItem>*/}
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
@@ -134,6 +153,7 @@ class EditUserArchives extends Component {
             <Input />
           )}
         </FormItem>
+
         <FormItem
           label="邮箱地址"
           {...formItemLayoutWithLabel}

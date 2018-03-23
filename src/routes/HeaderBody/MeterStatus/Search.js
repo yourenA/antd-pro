@@ -43,6 +43,21 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>
+          <FormItem label="户号">
+            {getFieldDecorator('member_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="用户名称">
+            {getFieldDecorator('real_name')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="安装地址">
+            {getFieldDecorator('install_address')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
          {/* <FormItem label="创建时间">
             {getFieldDecorator('range-time-picker', {
               initialValue: this.props.initRange ? this.props.initRange : '',

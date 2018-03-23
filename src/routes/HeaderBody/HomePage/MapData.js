@@ -53,7 +53,7 @@ export default class MapData extends PureComponent {
           lng: 112.159141 + parseFloat(Math.random().toFixed(2)),
           lat: 26.269442 + parseFloat(Math.random().toFixed(2)),
           name: "集中器" + id,
-          address: '衡阳市' + id + '号楼',
+          address: '衡阳市' + id + '号',
           info: '这是集中器的相关信息',
           detail: {
             SupplierPartNumber1: "supplier_part_number_1" + id,
@@ -98,7 +98,7 @@ export default class MapData extends PureComponent {
       var infoWindow = new BMap.InfoWindow(content);  // 创建信息窗口对象
       map.openInfoWindow(infoWindow, dot); //开启信息窗口
     }
-//最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+    //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
     var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
   }
 
@@ -109,4 +109,4 @@ export default class MapData extends PureComponent {
           <div id="mapData" className="mapData"></div>
     );
   }
-  }
+}

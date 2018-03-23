@@ -15,6 +15,8 @@ class FunctionContent extends PureComponent {
       page: 1,
       initDate:moment(new Date(), 'YYYY-MM-DD'),
       date: '',
+      concentrator_number:'',
+      meter_number:''
     }
   }
 
@@ -24,6 +26,8 @@ class FunctionContent extends PureComponent {
     })
     this.handleSearch({
       page: 1,
+      concentrator_number:'',
+      meter_number:'',
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
@@ -31,10 +35,13 @@ class FunctionContent extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
+      concentrator_number:'',
+      meter_number:'',
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
   handleSearch = (values) => {
+    console.log('values',values)
     const that=this;
     const {dispatch} = this.props;
     dispatch({
@@ -48,13 +55,12 @@ class FunctionContent extends PureComponent {
         })
       }
     });
-    this.setState({
-      date: values.date,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
+    console.log(this.state.date)
     this.handleSearch({
+      concentrator_number:this.state.concentrator_number,
+      meter_number:this.state.meter_number,
       page: page,
       date: this.state.date,
     })
@@ -78,7 +84,7 @@ class FunctionContent extends PureComponent {
         }
       },
       {title: '集中器编号', width: '25%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '户表号', width:  '25%', dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表编号', width:  '25%', dataIndex: 'meter_number', key: 'meter_number'},
       {title: '户表索引', width:  '25%', dataIndex: 'meter_index', key: 'meter_index'},
       {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>

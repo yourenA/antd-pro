@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react';
 import {Pagination, Table, Card, Layout, message,Badge} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './Search'
+import DefaultSearch from './ConcentratorErrorSearch'
 import {connect} from 'dva';
-import moment from 'moment'
+import moment from 'moment';
+import uuid from 'uuid/v4'
 @connect(state => ({
   concentrator_daily_errors: state.concentrator_daily_errors,
 }))
@@ -15,6 +16,7 @@ class FunctionContent extends PureComponent {
       page: 1,
       initDate:moment(new Date(), 'YYYY-MM-DD'),
       date: '',
+      concentrator_number:''
     }
   }
 
@@ -23,13 +25,14 @@ class FunctionContent extends PureComponent {
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
     this.handleSearch({
+      concentrator_number:'',
       page: 1,
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
-
   handleFormReset = () => {
     this.handleSearch({
+      concentrator_number:'',
       page: 1,
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
@@ -48,21 +51,22 @@ class FunctionContent extends PureComponent {
         })
       }
     });
-    this.setState({
-      date: values.date,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
+      concentrator_number:this.state.concentrator_number,
       page: page,
       date: this.state.date,
+
     })
   }
 
 
   render() {
     const {concentrator_daily_errors: {data, meta, loading}} = this.props;
+    for (let i = 0; i < data.length; i++) {
+      data[i].uuidkey = uuid()
+    }
     const columns = [
       {
         title: '序号',
@@ -99,14 +103,9 @@ class FunctionContent extends PureComponent {
             </div>
           </div>
           <Table
-            rowClassName={function (record, index) {
-              if (record.description === '') {
-                return 'error'
-              }
-            }}
             className='meter-table'
             loading={false}
-            rowKey={record => record.concentrator_number}
+            rowKey={record => record.uuidkey}
             dataSource={data}
             columns={columns}
             scroll={{y: this.state.tableY}}
