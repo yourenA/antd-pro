@@ -113,7 +113,7 @@ class UserMeterAnalysis extends PureComponent {
           }}
           className='meter-table'
           loading={loading}
-          rowKey={record => record.id}
+          rowKey={record => record.meter_number}
           dataSource={data}
           columns={columns}
           scroll={{ y: this.state.tableY}}

@@ -2,6 +2,7 @@ import BasicLayout from '../layouts/BasicLayout';
 import UserLayout from '../layouts/UserLayout';
 import BlankLayout from '../layouts/BlankLayout';
 import HeaderBodyLayout from '../layouts/HeaderBodyLayout';
+import TestLayout from '../layouts/TestLayout';
 
 import Login from '../routes/User/Login';
 import asyncComponent from './../AsyncComponent'
@@ -105,6 +106,10 @@ import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/Statist
 
 const NewPage = asyncComponent(() =>
 import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
+)
+
+const  Test1= asyncComponent(() =>
+import(/* webpackChunkName: "NewPage" */ "./../routes/Test/Test1/Index")
 )
 
 import Working from '../routes/Exception/working';
@@ -308,7 +313,20 @@ const data = [{
         permissions:['daily_error'],
       }],
     }],
-}, {
+},
+  {
+    component: TestLayout,
+    layout: 'TestLayout',
+    name: '测试', // for breadcrumb
+    path: 'test',
+    children: [
+      {
+          name: '测试1',
+          path: '1',
+          component: Test1,
+      }
+  ]
+},{
   component: UserLayout,
   layout: 'UserLayout',
   children: [{

@@ -11,6 +11,7 @@ import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
+import {prefix} from './../../common/config'
 class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -80,16 +81,46 @@ class Main extends PureComponent {
           </Col>
         </Row>
         <Row gutter={24}>
-          {/*<Col xl={18} lg={18} md={24} sm={24} xs={24}>
-            <Card
-              bordered={false}
-              title="地图数据"
-              bodyStyle={{ padding: 24 }}
-              style={{ marginBottom: 24, minHeight: 609 }}
-            >
-              <MapData/>
-            </Card>
-          </Col>*/}
+          {
+            prefix==='http://api.water.test.com'&&
+            <Col xl={18} lg={18} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title="地图数据"
+                bodyStyle={{ padding: 24 }}
+                style={{ marginBottom: 24, minHeight: 609 }}
+              >
+                <MapData/>
+              </Card>
+            </Col>
+          }
+          {
+            prefix==='http://api.water.test.com'&&
+            <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title="片区供水一览"
+                bodyStyle={{ padding: 24 }}
+                style={{ marginBottom: 24, minHeight: 509 }}
+              >
+                <AreaSupplyList/>
+              </Card>
+            </Col>
+
+          }
+          {
+            prefix==='http://api.water.test.com' &&
+            <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title="DMA损漏率"
+                bodyStyle={{ padding: 24 }}
+                style={{ marginBottom: 24, minHeight: 509 }}
+              >
+                <DMArate/>
+              </Card>
+            </Col>
+          }
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
@@ -110,26 +141,7 @@ class Main extends PureComponent {
               <Proportion meter={this.state.meter}/>
             </Card>
           </Col>
-         {/* <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-            <Card
-              bordered={false}
-              title="片区供水一览"
-              bodyStyle={{ padding: 24 }}
-              style={{ marginBottom: 24, minHeight: 509 }}
-            >
-              <AreaSupplyList/>
-            </Card>
-          </Col>
-          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-            <Card
-              bordered={false}
-              title="DMA损漏率"
-              bodyStyle={{ padding: 24 }}
-              style={{ marginBottom: 24, minHeight: 509 }}
-            >
-              <DMArate/>
-            </Card>
-          </Col>*/}
+
           {/*<Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}

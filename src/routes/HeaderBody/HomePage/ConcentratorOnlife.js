@@ -37,14 +37,20 @@ export default class EndpointsList extends PureComponent {
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
       },
+      grid: {
+        top: 110
+      },
       legend: {
+        orient: 'vertical',
+        left: 'left',
         data: ['在线', '睡眠', '离线']
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        name: '集中器个数',
       },
       xAxis : {
-        name: '时',
+        name: '时间',
         type: 'category',
         data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
       },

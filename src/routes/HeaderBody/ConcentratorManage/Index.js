@@ -281,8 +281,8 @@ class ConcentratorManage extends PureComponent {
       { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,},
       { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,},
 
-      { title: '本轮登录时间', dataIndex: 'address', key: '4' ,width: 150,},
-      { title: '最后访问时间', dataIndex: 'set', key: '5',width: 150,},
+      { title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at' ,width: 150,},
+      { title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at',width: 150,},
       { title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message',width: 150,},
       { title: '下行报文（指令）', dataIndex: 'downlink_message', key: 'downlink_message',width: 150},
       { title: '是否做统计日报', dataIndex: 'is_count', key: 'is_count'  ,width: 150,

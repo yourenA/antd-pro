@@ -53,7 +53,6 @@ class Vendor extends PureComponent {
   }
   componentWillUnmount(){
     const {dispatch} = this.props;
-    console.log('unmount11111111111111')
     dispatch({
       type: 'usergroup/reset',
     });
