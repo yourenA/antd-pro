@@ -65,6 +65,7 @@ class HeaderBodyLayout extends React.PureComponent {
     })
     this.props.dispatch({
       type: 'login/checkLoginState',
+      payload:pathname
     });
    /* setTimeout(function () {
       const args = {

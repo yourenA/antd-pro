@@ -11,6 +11,7 @@ export default {
     company_name:'',
     permissions:[],
     status: undefined,
+    preUrl:''
   },
 
   effects: {
@@ -29,10 +30,15 @@ export default {
             token,
             role_display_name,
             permissions,
-            // company_name
           },
         });
       }else{
+
+        //存储输入的地址
+        yield put({
+          type: 'changePreUrl',
+          payload:payload,
+        });
         yield put(routerRedux.replace('/login'));
       }
     },
@@ -68,7 +74,13 @@ export default {
             status:true
           },
         });
-        yield put(routerRedux.push('/'));
+        //登陆的时候获取储存的输入地址
+        if(payload.preUrl){
+          yield put(routerRedux.push(payload.preUrl));
+
+        }else{
+          yield put(routerRedux.push('/'));
+        }
       }
 
 
@@ -107,6 +119,12 @@ export default {
         status: payload.status,
         role_display_name:payload.role_display_name,
         // company_name:payload.company_name
+      };
+    },
+    changePreUrl(state, { payload }) {
+      return {
+        ...state,
+        preUrl: payload,
       };
     },
     changeSubmitting(state, { payload }) {

@@ -67,10 +67,12 @@ export default class Login extends Component {
         console.log('values')
         if (!err) {
           console.log('type',type)
+          const {login:{preUrl}}=this.props
           this.props.dispatch({
             type: `login/${type}Submit`,
             payload: {
               ...values,
+              preUrl
               // company_id:values.company_id.key,
             },
           });

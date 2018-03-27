@@ -50,6 +50,7 @@ class TestLayout extends React.PureComponent {
     })
     this.props.dispatch({
       type: 'login/checkLoginState',
+      payload:pathname
     });
   }
   componentWillUnmount=()=>{
