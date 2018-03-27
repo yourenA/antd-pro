@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
 import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert ,Select,message} from 'antd';
 import styles from './Login.less';
-import request from './../../utils/request'
+
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 const Option = Select.Option;
@@ -96,7 +96,6 @@ export default class Login extends Component {
     const { form, login } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
-    const company_name=sessionStorage.getItem('company_name')||localStorage.getItem('company_name');
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
@@ -175,7 +174,7 @@ export default class Login extends Component {
               </FormItem>
             </TabPane>
           </Tabs>*/}
-          <FormItem>
+      {/*    <FormItem>
             {getFieldDecorator('company_name', {
               initialValue:company_name,
               rules: [{
@@ -189,7 +188,7 @@ export default class Login extends Component {
                 placeholder="机构名称"
               />
             )}
-          </FormItem>
+          </FormItem>*/}
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{

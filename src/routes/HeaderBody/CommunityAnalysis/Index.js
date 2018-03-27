@@ -239,13 +239,14 @@ class UserMeterAnalysis extends PureComponent {
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
       {title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number'},
       {title: '应收水量', width: 100, dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 150,},
       {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 160,},
       {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 120,},
-      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at',},
+      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 160,},
       {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 120,},
+      {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',},
+
       {
         title: '操作',
         key: 'operation',
@@ -292,7 +293,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1530, y: this.state.tableY}}
+                  scroll={{x: 1700, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

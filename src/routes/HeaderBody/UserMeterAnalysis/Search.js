@@ -39,21 +39,6 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-            <FormItem label="水表编号">
-              {getFieldDecorator('meter_number')(
-                <Input placeholder="请输入"/>
-              )}
-            </FormItem>
-            <FormItem label="用户名称">
-              {getFieldDecorator('real_name')(
-                <Input placeholder="请输入"/>
-              )}
-            </FormItem>
-          <FormItem label="安装地址">
-            {getFieldDecorator('install_address')(
-              <Input placeholder="请输入"/>
-            )}
-          </FormItem>
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
@@ -76,6 +61,22 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
+            <FormItem label="水表编号">
+              {getFieldDecorator('meter_number')(
+                <Input placeholder="请输入"/>
+              )}
+            </FormItem>
+            <FormItem label="用户名称">
+              {getFieldDecorator('real_name')(
+                <Input placeholder="请输入"/>
+              )}
+            </FormItem>
+          <FormItem label="安装地址">
+            {getFieldDecorator('install_address')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+
           <FormItem label="只显示异常">
             {getFieldDecorator('display_type',{ valuePropName: 'checked' })(
                 <Switch  />

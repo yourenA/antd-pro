@@ -11,7 +11,7 @@ import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
-import {prefix} from './../../common/config'
+import {prefix,projectName,poweredBy} from './../../common/config'
 class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -166,7 +166,7 @@ class Main extends PureComponent {
         <GlobalFooter
           copyright={
             <div>
-              Copyright <Icon type="copyright" /> 珠华智慧水务系统
+               powered by {poweredBy}
             </div>
           }
         />

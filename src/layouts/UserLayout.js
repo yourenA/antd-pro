@@ -7,9 +7,10 @@ import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
 import Login from '../routes/User/Login';
 import waterLogo from '../images/water.png'
+import {projectName,poweredBy} from './../common/config'
 const links = [];
 
-const copyright = <div>Copyright <Icon type="copyright" /> 珠华智慧水务系统</div>;
+const copyright = <div>powered by {poweredBy}</div>;
 
 class UserLayout extends React.PureComponent {
   static childContextTypes = {
@@ -30,7 +31,7 @@ class UserLayout extends React.PureComponent {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="" className={styles.logo} src={waterLogo} />
-                <span className={styles.title}>珠华智慧水务系统</span>
+                <span className={styles.title}>{projectName}</span>
               </Link>
             </div>
             <p className={styles.desc}></p>

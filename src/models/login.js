@@ -19,7 +19,7 @@ export default {
       const token = sessionStorage.getItem('token');
       const role_display_name = sessionStorage.getItem('role_display_name');
       const permissions = JSON.parse( sessionStorage.getItem('permissions'));
-      const company_name = sessionStorage.getItem('company_name')|| localStorage.getItem('company_name');
+      // const company_name = sessionStorage.getItem('company_name')|| localStorage.getItem('company_name');
       // console.log(permissions)
       if (username&&token) {
         yield put({
@@ -29,7 +29,7 @@ export default {
             token,
             role_display_name,
             permissions,
-            company_name
+            // company_name
           },
         });
       }else{
@@ -48,8 +48,8 @@ export default {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
         sessionStorage.setItem('role_display_name', response.data.role_display_name);
-        sessionStorage.setItem('company_name', response.data.company_name);
-        localStorage.setItem('company_name', response.data.company_name);
+        // sessionStorage.setItem('company_name', response.data.company_name);
+        // localStorage.setItem('company_name', response.data.company_name);
         /*if (payload.remember) {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('token', response.data.token);
@@ -64,7 +64,7 @@ export default {
             token:response.data.token,
             permissions:response.data.permissions.data,
             role_display_name:response.data.role_display_name,
-            company_name:response.data.company_name,
+            // company_name:response.data.company_name,
             status:true
           },
         });
@@ -106,7 +106,7 @@ export default {
         permissions:payload.permissions,
         status: payload.status,
         role_display_name:payload.role_display_name,
-        company_name:payload.company_name
+        // company_name:payload.company_name
       };
     },
     changeSubmitting(state, { payload }) {

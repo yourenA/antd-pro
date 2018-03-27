@@ -224,14 +224,15 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number',},
-      {title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number',},
+      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '年限', width: 100,dataIndex: 'service_life', key: 'service_life'},
       {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
       {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 150},
       {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at', width: '15%',},
-      {title: '年限', dataIndex: 'service_life', key: 'service_life'},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', },
+
     ];
     return (
       <Layout className="layout">
@@ -261,7 +262,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 900, y: this.state.tableY}}
+                  scroll={{x: 1000, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

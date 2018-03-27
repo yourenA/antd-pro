@@ -16,6 +16,7 @@ import classNames from 'classnames';
 import EditPassword from '../routes/HeaderBody/HomePage/EditPassword'
 import request from './../utils/request'
 import NotFound from './../routes/Exception/404';
+import {projectName,poweredBy} from './../common/config'
 const { SubMenu } = Menu;
 const { Header, Content } = Layout;
 const query = {
@@ -82,13 +83,13 @@ class HeaderBodyLayout extends React.PureComponent {
   getPageTitle() {
     const { location } = this.props;
     let { pathname } = location;
-    let title = '珠华智慧水务系统';
+    let title = projectName;
     getRouteData('HeaderBodyLayout').forEach((item) => {
       if (`/main${item.path}` === pathname) {
-        title = `${item.name} - 珠华智慧水务系统`;
+        title = `${item.name} - ${projectName}`;
       }
       if(pathname.indexOf(`system_setup`)>0){
-        title = `系统设置 - 珠华智慧水务系统`;
+        title = `系统设置 - ${projectName}`;
       }
     });
     return title;
@@ -185,8 +186,7 @@ class HeaderBodyLayout extends React.PureComponent {
       <Layout  style={{minHeight:'100vh' }}>
         <div className={styles.header}>
           <div className="logo" >
-            <Link to="/main" className="logo-up">珠华智慧水务系统</Link>
-            <Link to="/main" className="logo-down">{login.company_name}</Link>
+            <Link to="/main" className="logo-up">{projectName}</Link>
           </div>
           <Menu
             onClick={this.handleClick}
@@ -209,7 +209,6 @@ class HeaderBodyLayout extends React.PureComponent {
             <Content style={{ background: '#f0f2f5'}}>
               <BackTop />
               <Switch>
-
                 {
                   getRouteData('HeaderBodyLayout').map(item =>{
                       return(
