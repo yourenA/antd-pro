@@ -23,6 +23,7 @@ class UserMeterAnalysis extends PureComponent {
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY:0,
       manufacturer_id: '',
+      concentrator_number: '',
       page: 1,
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
@@ -47,26 +48,11 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
 
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id,
-      concentrator_number:null
-    })
-    this.handleSearch({
-      page: 1,
-      manufacturer_id: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
-    })
-  }
-
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
       manufacturer_id:'',
-      concentrator_number:null
+      concentrator_number:''
     },function () {
       this.handleSearch({
         page: 1,
@@ -77,24 +63,11 @@ class UserMeterAnalysis extends PureComponent {
     })
 
   }
-  changeConcentrator = (concentrator_number,village_id)=> {
-    this.searchFormRef.props.form.resetFields()
-    this.setState({
-      concentrator_number:concentrator_number,
-      manufacturer_id:'',
-    })
-    this.handleSearch({
-      page: 1,
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id:village_id,
-      concentrator_number:concentrator_number
-    })
-  }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
       manufacturer_id: '',
+      concentrator_number: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -106,7 +79,6 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'concentrator_errors/fetch',
       payload: {
-        concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
       },
@@ -114,17 +86,18 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
           village_id: values.village_id? values.village_id:that.state.village_id,
+          concentrator_number: values.concentrator_number,
           started_at: values.started_at,
           ended_at: values.ended_at,
         })
       }
     });
 
-
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
+      concentrator_number: this.state.concentrator_number,
       manufacturer_id: this.state.manufacturer_id,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
@@ -143,6 +116,10 @@ class UserMeterAnalysis extends PureComponent {
     }else if(code===-2){
       return(
         <Badge status="warning"/>
+      )
+    }else if(code===0){
+      return(
+        <Badge status="default"/>
       )
     }else{
       return null
@@ -169,7 +146,7 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '集中器编号', width: 110, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
       {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
       {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 150,},
       {title: '日期', dataIndex: 'date', key: 'date',},
@@ -248,7 +225,7 @@ class UserMeterAnalysis extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
+        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  />
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '集中器异常分析'}]}>

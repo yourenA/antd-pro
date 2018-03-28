@@ -5,6 +5,8 @@ import {connect} from 'dva';
 import { Link, Route, Redirect, Switch,} from 'dva/router';
 import './index.less'
 import Working from '../../Exception/working';
+import NightWarningSetup from './NightWarningSetup'
+import ZeroWarningSetup from './ZeroWarningSetup'
 import ExchangeDatabase from './ExchangeDatabase'
 import SystemName from './SystemName'
 import SmsNotice from './SmsNotice'
@@ -31,6 +33,14 @@ class UserMeterLife extends PureComponent {
           <div className="content">
             <Switch>
               <Route
+                path='/main/system_manage/system_setup/night_warning_setup'
+                component={Working}
+              />
+              <Route
+                path='/main/system_manage/system_setup/zero_warning_setup'
+                component={Working}
+              />
+              <Route
                 path='/main/system_manage/system_setup/exchange_database'
                 component={Working}
               />
@@ -46,7 +56,7 @@ class UserMeterLife extends PureComponent {
                 path='/main/system_manage/system_setup/email_notice'
                 component={Working}
               />
-              <Redirect  from="/main/system_manage/system_setup" to="/main/system_manage/system_setup/exchange_database" />
+              <Redirect  from="/main/system_manage/system_setup" to="/main/system_manage/system_setup/night_warning_setup" />
             </Switch>
           </div>
         </Content>

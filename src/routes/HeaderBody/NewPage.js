@@ -86,7 +86,7 @@ class Main extends PureComponent {
             <Col xl={18} lg={18} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title="地图数据"
+                title="集中器分布"
                 bodyStyle={{ padding: 24 }}
                 style={{ marginBottom: 24, minHeight: 609 }}
               >

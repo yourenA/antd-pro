@@ -7,7 +7,7 @@ class SiderNav extends PureComponent {
     super(props);
     this.state = {
       collapsed: false,
-      siderNav: [{name: '交换数据库设置', url: 'exchange_database'}, {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
+      siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '交换数据库设置', url: 'exchange_database'}, {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
                   {name: '邮件通知设置', url: 'email_notice' }],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }

@@ -51,6 +51,9 @@ const ConcentratorManage = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
 )
 
+const VendorConcentrator = asyncComponent(() =>
+import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
+)
 const Servers = asyncComponent(() =>
 import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
 )
@@ -233,13 +236,20 @@ const data = [{
         path: 'concentrator_manage',
         component: ConcentratorManage,
         permissions:['concentrator_add_and_edit','concentrator_delete'],
-      },{
+      },
+        // {
+        //   name: '厂商-集中器统计',
+        //   path: 'vendor_concentrator',
+        //   component: VendorConcentrator,
+        //   permissions:['concentrator_add_and_edit','concentrator_delete'],
+        // },
+        {
         name: '指令和状态查看',
         path: 'status_check',
         component: StatusCheck,
         permissions:['company_visit'],
       },{
-        name: '会员档案',
+        name: '用户档案',
         path: 'user_archives',
         component: UserArchives,
         permissions:['member_add_and_edit','member_delete'],
@@ -251,7 +261,7 @@ const data = [{
       permissions:['meter_delete','meter_add_and_edit','role_add_and_edit','role_status_edit','role_delete','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
-          name: '用户管理',
+          name: '账号管理',
           path: 'account_manage',
           component: AccountManage,
           permissions:['user_add_and_edit','user_delete','role_add_and_edit','role_status_edit','role_delete'],

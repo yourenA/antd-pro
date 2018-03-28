@@ -38,7 +38,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+         {/* <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -59,21 +59,14 @@ class SearchForm extends Component {
                 format="YYYY-MM-DD"
               />
             )}
-          </FormItem>
+          </FormItem>*/}
           <FormItem
-            label='集中器编号'
-          >
-            {getFieldDecorator('concentrator_number', {
-            })(
-              <Input/>
-            )}
-          </FormItem>
-          <FormItem
+            allowClear={true}
             label="厂商名称"
           >
             {getFieldDecorator('manufacturer_id', {
             })(
-              <Select allowClear={true} labelInValue={true} style={{width:120}}>
+              <Select labelInValue={true} style={{width:120}}>
                 { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
               </Select>
             )}
@@ -82,12 +75,6 @@ class SearchForm extends Component {
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-          </FormItem>
-          <FormItem style={{float:'right'}}>
-            <Badge status="success" />在线 <Divider type="vertical"/>
-            <Badge status="error" />离线 <Divider type="vertical"/>
-            <Badge status="warning" />休眠 <Divider type="vertical"/>
-            <Badge status="default" />无记录
           </FormItem>
         </Row>
       </Form>
