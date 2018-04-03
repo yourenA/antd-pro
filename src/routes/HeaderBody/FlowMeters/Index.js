@@ -250,8 +250,8 @@ class FlowMeter extends PureComponent {
           }</Col>
         </Row>
         <Row className="item">
-          <Col span={8}>创建时间 :</Col>
-          <Col span={16}> {item.created_at}</Col>
+          <Col span={8}>备注 :</Col>
+          <Col span={16}> {item.remark}</Col>
         </Row >
       </div>
     )
