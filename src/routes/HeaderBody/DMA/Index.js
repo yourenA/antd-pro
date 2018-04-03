@@ -29,7 +29,7 @@ class UserMeterLife extends PureComponent {
             <Route
               exact
               path='/main/run_manage/DMA/DMA_manage'
-              component={DMAManage}
+              component={null}
             />
             <Redirect  from="/main/run_manage/DMA" to="/main/run_manage/DMA/DMA_show" />
           </Switch>

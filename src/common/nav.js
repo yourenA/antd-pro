@@ -134,7 +134,7 @@ import AccountManage from './../routes/HeaderBody/AccountManage/Index'
 // const AreaManage = asyncComponent(() =>
 // import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
 // )
-// import AreaManage from './../routes/HeaderBody/AreaManage/Index'
+import AreaManage from './../routes/HeaderBody/AreaManage/Index'
 
 // const SystemSetup = asyncComponent(() =>
 // import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
@@ -350,12 +350,12 @@ const data = [{
         component: ConcentratorModels,
         permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
       },
-        // {
-        //   name: '区域管理',
-        //   path: 'area_manage',
-        //   component: AreaManage,
-        //   permissions:[,'village_add_and_edit','village_delete'],
-        // },
+        {
+          name: '区域管理',
+          path: 'area_manage',
+          component: AreaManage,
+          permissions:[,'village_add_and_edit','village_delete'],
+        },
         {
           name: '系统设置',
           path: 'system_setup',
