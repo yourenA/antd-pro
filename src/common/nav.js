@@ -3,117 +3,168 @@ import UserLayout from '../layouts/UserLayout';
 import BlankLayout from '../layouts/BlankLayout';
 import HeaderBodyLayout from '../layouts/HeaderBodyLayout';
 import TestLayout from '../layouts/TestLayout';
-
+import {prefix} from './config'
 import Login from '../routes/User/Login';
 import asyncComponent from './../AsyncComponent'
-const Endpoints = asyncComponent(() =>
-import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
-)
-const OrganizationManage = asyncComponent(() =>
-import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
-)
-const PlatformSetting = asyncComponent(() =>
-import(/* webpackChunkName: "PlatformSetting" */ "./../routes/PlatformManagement/PlatformSetting")
-)
-const UserManage = asyncComponent(() =>
-import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
-)
-const UsergroupManage = asyncComponent(() =>
-import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupLayout")
-)
-const DataStatistics = asyncComponent(() =>
-import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataStatistics")
-)
-const DistributionGraph = asyncComponent(() =>
-import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/DistributionGraph")
-)
+// const Endpoints = asyncComponent(() =>
+// import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
+// )
+import Endpoints from '../routes/AccessManagement/Endpoints'
 
-const CommunityAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
-)
+// const OrganizationManage = asyncComponent(() =>
+// import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
+// )
+import OrganizationManage from './../routes/PlatformManagement/OrganizationManage'
 
-const UserMeterAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
-)
+// const PlatformSetting = asyncComponent(() =>
+// import(/* webpackChunkName: "PlatformSetting" */ "./../routes/PlatformManagement/PlatformSetting")
+// )
+import PlatformSetting from './../routes/PlatformManagement/PlatformSetting'
 
-const UserMeterLife = asyncComponent(() =>
-import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
-)
+// const UserManage = asyncComponent(() =>
+// import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
+// )
+import UserManage from './../routes/SystemManagement/UserManage'
 
-const ProductionMarketingAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "ProductionMarketingAnalysis" */ "./../routes/HeaderBody/ProductionMarketingAnalysis/Index")
-)
-const ImportConcentrator = asyncComponent(() =>
-import(/* webpackChunkName: "ImportConcentrator" */ "./../routes/HeaderBody/ImportConcentrator/Index")
-)
+// const UsergroupManage = asyncComponent(() =>
+// import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupLayout")
+// )
 
-const ConcentratorManage = asyncComponent(() =>
-import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
-)
+import UsergroupManage from './../routes/SystemManagement/UsergroupLayout'
 
-const VendorConcentrator = asyncComponent(() =>
-import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
-)
-const Servers = asyncComponent(() =>
-import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
-)
+// const DataStatistics = asyncComponent(() =>
+// import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataStatistics")
+// )
+import DataStatistics from './../routes/Application/DataStatistics'
 
-const StatusCheck = asyncComponent(() =>
-import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
-)
+// const DistributionGraph = asyncComponent(() =>
+// import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/DistributionGraph")
+// )
+import DistributionGraph from './../routes/Application/DistributionGraph'
 
-const UserArchives = asyncComponent(() =>
-import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
-)
-const VendorMange = asyncComponent(() =>
-import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
-)
+// const CommunityAnalysis = asyncComponent(() =>
+// import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
+// )
+import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
+// const UserMeterAnalysis = asyncComponent(() =>
+// import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
+// )
+import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
 
-const MeterModels = asyncComponent(() =>
-import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
-)
+// const UserMeterLife = asyncComponent(() =>
+// import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
+// )
+import UserMeterLife from './../routes/HeaderBody/MeterStatus/Index'
 
-const Meters = asyncComponent(() =>
-import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
-)
+// const ProductionMarketingAnalysis = asyncComponent(() =>
+// import(/* webpackChunkName: "ProductionMarketingAnalysis" */ "./../routes/HeaderBody/ProductionMarketingAnalysis/Index")
+// )
+import ProductionMarketingAnalysis from './../routes/HeaderBody/ProductionMarketingAnalysis/Index'
 
-const ConcentratorModels = asyncComponent(() =>
-import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
-)
+// const ImportConcentrator = asyncComponent(() =>
+// import(/* webpackChunkName: "ImportConcentrator" */ "./../routes/HeaderBody/ImportConcentrator/Index")
+// )
+import ImportConcentrator from './../routes/HeaderBody/ImportConcentrator/Index'
 
-const UsersManage = asyncComponent(() =>
-import(/* webpackChunkName: "UsersManage" */ "./../routes/HeaderBody/UsersManage/Index")
-)
-const AccountManage = asyncComponent(() =>
-import(/* webpackChunkName: "AccountManage" */ "./../routes/HeaderBody/AccountManage/Index")
-)
-const AreaManage = asyncComponent(() =>
-import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
-)
+// const ConcentratorManage = asyncComponent(() =>
+// import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
+// )
+import ConcentratorManage from './../routes/HeaderBody/ConcentratorManage/Index'
 
-const SystemSetup = asyncComponent(() =>
-import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
-)
+// const VendorConcentrator = asyncComponent(() =>
+// import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
+// )
+import VendorConcentrator from './../routes/HeaderBody/VendorConcentrator/Index'
 
-const ConcentratorErrorAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
-)
 
-const MeterErrorAnalysis = asyncComponent(() =>
-import(/* webpackChunkName: "MeterErrorAnalysis" */ "./../routes/HeaderBody/MeterErrorAnalysis/Index")
-)
+// const DMAManage = asyncComponent(() =>
+// import(/* webpackChunkName: "DMAManage" */ "./../routes/HeaderBody/DMAManage/Index")
+// )
+import DMA from '../routes/HeaderBody/DMA/Index'
+import FlowMeters from './../routes/HeaderBody/FlowMeters/Index'
 
-const StatisticsDaily = asyncComponent(() =>
-import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
-)
+// const Servers = asyncComponent(() =>
+// import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
+// )
+import Servers from './../routes/HeaderBody/Servers/Index'
 
-const NewPage = asyncComponent(() =>
-import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
-)
+// const StatusCheck = asyncComponent(() =>
+// import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
+// )
+import StatusCheck from './../routes/HeaderBody/StatusCheck/Index'
 
-const  Test1= asyncComponent(() =>
-import(/* webpackChunkName: "NewPage" */ "./../routes/Test/Test1/Index")
-)
+// const UserArchives = asyncComponent(() =>
+// import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
+// )
+import UserArchives from './../routes/HeaderBody/UserArchives/Index'
+
+// const VendorMange = asyncComponent(() =>
+// import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
+// )
+import VendorMange from './../routes/HeaderBody/VendorMange/Index'
+
+// const MeterModels = asyncComponent(() =>
+// import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
+// )
+import MeterModels from './../routes/HeaderBody/MeterModels/Index'
+
+// const Meters = asyncComponent(() =>
+// import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
+// )
+import Meters from './../routes/HeaderBody/Meters/Index'
+
+// const ConcentratorModels = asyncComponent(() =>
+// import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
+// )
+import ConcentratorModels from './../routes/HeaderBody/ConcentratorModels/Index'
+
+// const UsersManage = asyncComponent(() =>
+// import(/* webpackChunkName: "UsersManage" */ "./../routes/HeaderBody/UsersManage/Index")
+// )
+
+
+import UsersManage from './../routes/HeaderBody/UsersManage/Index'
+
+
+// const AccountManage = asyncComponent(() =>
+// import(/* webpackChunkName: "AccountManage" */ "./../routes/HeaderBody/AccountManage/Index")
+// )
+import AccountManage from './../routes/HeaderBody/AccountManage/Index'
+
+// const AreaManage = asyncComponent(() =>
+// import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
+// )
+// import AreaManage from './../routes/HeaderBody/AreaManage/Index'
+
+// const SystemSetup = asyncComponent(() =>
+// import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
+// )
+import SystemSetup from './../routes/HeaderBody/SystemSetup/Index'
+
+// const ConcentratorErrorAnalysis = asyncComponent(() =>
+// import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
+// )
+import ConcentratorErrorAnalysis from './../routes/HeaderBody/ConcentratorErrorAnalysis/Index'
+
+// const MeterErrorAnalysis = asyncComponent(() =>
+// import(/* webpackChunkName: "MeterErrorAnalysis" */ "./../routes/HeaderBody/MeterErrorAnalysis/Index")
+// )
+import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
+
+// const StatisticsDaily = asyncComponent(() =>
+// import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
+// )
+import StatisticsDaily from './../routes/HeaderBody/StatisticsDaily/Index'
+
+// const NewPage = asyncComponent(() =>
+// import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
+// )
+import NewPage from './../routes/NewPage'
+
+// const  Test1= asyncComponent(() =>
+// import(/* webpackChunkName: "NewPage" */ "./../routes/Test/Test1/Index")
+// )
+import Test1 from './../routes/Test/Test1/Index'
 
 import Working from '../routes/Exception/working';
 const data = [{
@@ -221,12 +272,13 @@ const data = [{
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
       permissions:['server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
       children: [
+        // {
+        //   name: '服务器地址',
+        //   path: 'servers_manage',
+        //   component: Servers,
+        //   permissions:['server_add_and_edit','server_status_edit','server_delete'],
+        // },
         {
-          name: '服务器地址',
-          path: 'servers_manage',
-          component: Servers,
-          permissions:['server_add_and_edit','server_status_edit','server_delete'],
-        },{
         name: '导入集中器',
         path: 'import_concentrator',
         component: ImportConcentrator,
@@ -237,12 +289,6 @@ const data = [{
         component: ConcentratorManage,
         permissions:['concentrator_add_and_edit','concentrator_delete'],
       },
-        // {
-        //   name: '厂商-集中器统计',
-        //   path: 'vendor_concentrator',
-        //   component: VendorConcentrator,
-        //   permissions:['concentrator_add_and_edit','concentrator_delete'],
-        // },
         {
         name: '指令和状态查看',
         path: 'status_check',
@@ -253,7 +299,25 @@ const data = [{
         path: 'user_archives',
         component: UserArchives,
         permissions:['member_add_and_edit','member_delete'],
-      }],
+      },
+        prefix==='http://api.water.test.com'?{
+          name: '厂商-集中器统计',
+          path: 'vendor_concentrator',
+          component: VendorConcentrator,
+          permissions:['concentrator_add_and_edit','concentrator_delete'],
+        }:{},
+        prefix==='http://api.water.test.com'?{
+          name: 'DMA分区管理',
+          path: 'DMA',
+          component: DMA,
+          permissions:['concentrator_add_and_edit','concentrator_delete'],
+        }:{},
+        prefix==='http://api.water.test.com'?{
+          name: '流量计管理',
+          path: 'flow_meters',
+          component: FlowMeters,
+          permissions:['flow_meter_add_and_edit','flow_meter_delete'],
+        }:{},],
     },{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
@@ -285,12 +349,14 @@ const data = [{
         path: 'concentrator_type_search',
         component: ConcentratorModels,
         permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
-      },{
-          name: '区域管理',
-          path: 'area_manage',
-          component: AreaManage,
-          permissions:[,'village_add_and_edit','village_delete'],
-        },{
+      },
+        // {
+        //   name: '区域管理',
+        //   path: 'area_manage',
+        //   component: AreaManage,
+        //   permissions:[,'village_add_and_edit','village_delete'],
+        // },
+        {
           name: '系统设置',
           path: 'system_setup',
           component: SystemSetup,

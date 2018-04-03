@@ -1,5 +1,4 @@
 import { query} from '../services/sider_regions';
-import siderJson from './../routes/HeaderBody/sider.json'
 
 export default {
   namespace: 'sider_regions',

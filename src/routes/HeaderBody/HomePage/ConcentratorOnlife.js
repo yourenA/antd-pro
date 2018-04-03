@@ -87,7 +87,7 @@ export default class EndpointsList extends PureComponent {
               color: '#d48265',
             }
           },
-          data: concentrator.yesterday_offline_status
+          data: concentrator.yesterday_sleep_status
 
         },
         {
@@ -105,7 +105,7 @@ export default class EndpointsList extends PureComponent {
               color: '#c23531',
             }
           },
-          data:concentrator.yesterday_sleep_status
+          data:concentrator.yesterday_offline_status
         },
       ]
     };

@@ -184,16 +184,13 @@ class SiderTree extends PureComponent {
     });
   }
   onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
     if(info.selected===false){
       return false
     }
     this.setState({ selectedKeys });
     if(info.node.props.dataRef.number){
-      console.log('集中器')
       this.props.changeConcentrator(info.node.props.dataRef.number,info.node.props.dataRef.village_id)
     }else{
-      console.log('地区')
       this.props.changeArea(selectedKeys[0])
     }
   }

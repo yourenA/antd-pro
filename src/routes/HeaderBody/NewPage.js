@@ -55,6 +55,12 @@ class Main extends PureComponent {
             </div>
           </Col>
           <Col  xl={6} lg={6} md={12} sm={24} >
+            <div  className={`${styles.topItem} ${styles.topItem3}`}>
+              <div className={styles.count}>{this.state.concentrator.yesterday_excellent_rate}</div>
+              <div className={styles.explain}>昨天集中器优良率</div>
+            </div>
+          </Col>
+          <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem2}`}>
               <div className={styles.count}>{this.state.meter.total_count}</div>
               <div className={styles.explain}>水表总数量</div>

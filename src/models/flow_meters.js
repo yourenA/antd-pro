@@ -1,16 +1,17 @@
-import { query,add,remove,edit } from '../services/manufacturers';
+import {query, add, remove, edit} from '../services/flow_meters';
 
 export default {
-  namespace: 'manufacturers',
+  namespace: 'flow_meters',
   state: {
-    data:[],
+    data: [],
+    allData: [],
     meta: {pagination: {total: 0, per_page: 0}},
     loading: true,
-    name:''
+    name: ''
 
   },
   effects: {
-    *fetch({ payload ,callback}, { call, put }) {
+    *fetch({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -19,31 +20,45 @@ export default {
       console.log(response)
       yield put({
         type: 'save',
-        payload:  response.data
+        payload: response.data
       });
       yield put({
         type: 'changeLoading',
         payload: false,
       });
-      if(callback) callback()
+      if (callback)callback()
+
     },
-    *add({ payload, callback }, { call, put }) {
+    *fetchAll({payload, callback}, {call, put}) {
+      const response = yield call(query, payload);
+      console.log(response)
+      if(response.status===200){
+        yield put({
+          type: 'saveAll',
+          payload: response.data
+        });
+        if (callback)callback()
+      }
+
+
+    },
+    *add({payload, callback}, {call, put}) {
       const response = yield call(add, payload);
       console.log(response)
-      if(response.status===200){
+      if (response.status === 200) {
         if (callback) callback();
       }
     },
-    *edit({ payload, callback }, { call, put }) {
+    *edit({payload, callback}, {call, put}) {
       const response = yield call(edit, payload);
       console.log(response)
-      if(response.status===200){
+      if (response.status === 200) {
         if (callback) callback();
       }
     },
-    *remove({ payload, callback }, { call, put }) {
+    *remove({payload, callback}, {call, put}) {
       const response = yield call(remove, payload);
-      if(response.status===200){
+      if (response.status === 200) {
         if (callback) callback();
       }
     },
@@ -54,7 +69,13 @@ export default {
       return {
         ...state,
         data: action.payload.data,
-        meta:action.payload.meta
+        meta: action.payload.meta
+      };
+    },
+    saveAll(state, action) {
+      return {
+        ...state,
+        allData: action.payload.data,
       };
     },
     changeLoading(state, action) {
@@ -63,7 +84,7 @@ export default {
         loading: action.payload,
       };
     },
-    saveName(state,action){
+    saveName(state, action){
       return {
         ...state,
         name: action.payload,

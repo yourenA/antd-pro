@@ -21,7 +21,7 @@ class UserLayout extends React.PureComponent {
     return { location };
   }
   getPageTitle() {
-    return '登录';
+    return `登录-${projectName}`;
   }
   render() {
     return (

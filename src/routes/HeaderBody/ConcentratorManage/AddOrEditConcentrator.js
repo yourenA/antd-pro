@@ -50,7 +50,7 @@ class AddConcentrator extends Component {
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
-        <FormItem
+       {/* <FormItem
           label="服务器地址"
           {...formItemLayoutWithLabel}
         >
@@ -62,7 +62,7 @@ class AddConcentrator extends Component {
               { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip}</Option>) }
             </Select>
           )}
-        </FormItem>
+        </FormItem>*/}
         <FormItem
           label="集中器类型"
           {...formItemLayoutWithLabel}

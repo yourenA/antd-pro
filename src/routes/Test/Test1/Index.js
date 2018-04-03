@@ -131,9 +131,7 @@ class Dashboard extends PureComponent {
                 <FormItem
                   {...formItemLayoutWithLabel}
                   label={(
-                    <span>
-              集中器编号
-            </span>
+                    <span>集中器编号</span>
                   )}>
                   {getFieldDecorator('concentrator_number', {})(
                     <Input placeholder="集中器编号"/>
@@ -186,8 +184,8 @@ class Dashboard extends PureComponent {
             </Card>
 
           </Col>
-          <Col sm={20} md={20} lg={16}>
-            <Card title="测试结果列表">
+          <Col sm={20} md={20} lg={16} >
+            <Card title="测试结果列表"  extra={<a onClick={()=>{this.handleSearch({page:1})}}>刷新 <Icon type="sync" /></a> }>
               <Table
                 rowClassName={function (record, index) {
                   if (record.description === '') {
