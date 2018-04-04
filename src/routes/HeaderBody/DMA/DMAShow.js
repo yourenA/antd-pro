@@ -251,6 +251,7 @@ class Vendor extends PureComponent {
       </div>
     );
     const zoom=parseInt(this.state.zoom)/100;
+
     const iconWidth=64
     return (
       <Layout className="layout">
