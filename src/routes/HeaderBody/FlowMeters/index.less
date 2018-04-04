@@ -28,7 +28,6 @@
     height: 32px;
   }
   .tree li {
-
     list-style-type:none;
     margin:0;
     padding:12px 5px 0 100px;
@@ -54,10 +53,10 @@
   .tree li::after {
     border-top:1px solid #999;
     height:20px;
-    top:25px;
+    top:30px;
     width:75px
   }
-  .tree li span {
+  .tree li .icon-wrap {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     border:1px solid #999;
@@ -66,22 +65,22 @@
     padding:3px 8px;
     text-decoration:none;
   }
-  .tree li span i{
+  .tree li .icon-wrap i{
     vertical-align: middle;
   }
-  .tree li span i:not(:first-child){
+  .tree li .icon-wrap i:not(:first-child){
     margin-left: 15px;
   }
-  .tree li.parent_li>span {
+  .tree li.parent_li>.icon-wrap {
     cursor:pointer
   }
   .no-border>li::before, .no-border>li::after {
     border:0
   }
   .tree li:last-child::before {
-    height:25px
+    height:30px
   }
-  .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+  .tree li.parent_li>.icon-wrap:hover, .tree li.parent_li>.icon-wrap:hover+ul li .icon-wrap {
     background:#eee;
     border:1px solid #94a0b4;
     color:#000

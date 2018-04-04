@@ -50,11 +50,10 @@ class AddPoliciesForm extends Component {
     });
   }
   renderFlowMetersTreeNodes=(data)=>{
-    console.log(data)
     return data.map((item) => {
       if (item.children&&item.children.length>0) {
         return (
-          <TreeNode value={item.id} title={item.number} key={item.id}>
+          <TreeNode value={item.id}  title={item.number} key={item.id}>
             {this.renderFlowMetersTreeNodes(item.children)}
           </TreeNode>
         );

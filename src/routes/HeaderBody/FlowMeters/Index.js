@@ -156,16 +156,13 @@ class FlowMeter extends PureComponent {
     const formValues = this.formRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
     this.props.dispatch({
-      type: 'village_meter_data/add',
+      type: 'flow_meters/add',
       payload: {
         ...formValues,
-        is_change: formValues.is_change.key,
-        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
-        village_id: this.state.village_id,
-        concentrator_number: this.state.concentrator_number
+        manufacturer_id:formValues.manufacturer_id?formValues.manufacturer_id.key:null
       },
       callback: function () {
-        message.success('添加用户成功')
+        message.success('添加流量计成功')
         that.setState({
           addModal: false,
         });
@@ -256,6 +253,31 @@ class FlowMeter extends PureComponent {
       </div>
     )
   }
+  renderItem=(item)=>{
+    const title = item.number;
+    return (
+      <span className="icon-wrap">
+                      <span className="icon-source">
+                      <span><i className="icon"/>来源小区 : </span>
+                        {
+                          item.villages.length > 0 ?
+                            item.villages.map((item2, index)=> {
+                              return (
+                                <span style={{marginRight:'10px'}} key={index}>
+                                {item2.name}
+                              </span>
+                              )
+                            }) : null
+                        }
+                      </span>
+                      <br/>
+                      <span>
+                        <span> <i className="famen"/>流量计编号 : {title}</span>
+
+                      </span>
+                    </span>
+    )
+  }
   renderTreeNodes = (data) => {
     return data.map((item) => {
       const title = item.number;
@@ -266,8 +288,9 @@ class FlowMeter extends PureComponent {
               <ul className="no-border">
                 <li>
                   <Popover content={this.renderPopiver(item)} title={title}>
-                    <span><i className="famen"/> {title}</span>
+                    {this.renderItem(item)}
                   </Popover>
+
                   <ul >
                     {this.renderTreeNodes(item.children)}
                   </ul>
@@ -281,8 +304,9 @@ class FlowMeter extends PureComponent {
         return (
           <li key={item.id}>
             <Popover content={this.renderPopiver(item)} title={title}>
-              <span><i className="famen"/> {title}</span>
+              {this.renderItem(item)}
             </Popover>
+
             <ul >
               {this.renderTreeNodes(item.children)}
             </ul>
@@ -292,8 +316,9 @@ class FlowMeter extends PureComponent {
       }
       return <li key={item.id}>
         <Popover content={this.renderPopiver(item)} title={title}>
-          <span><i className="famen"/> {title}</span>
+          {this.renderItem(item)}
         </Popover>
+
       </li>
 
     });
