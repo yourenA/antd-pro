@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm, Modal, Row, Col, Button, Popover} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm, Modal, Row, Col, Button, Popover,Icon} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -33,6 +33,7 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
+      zoom:'100%'
     }
   }
 
@@ -224,35 +225,33 @@ class Vendor extends PureComponent {
       started_at: this.state.started_at
     })
   }
+  operateDMAImg=(action)=>{
+    let zoom=parseInt(this.state.zoom)
+    if((zoom<=40&&action===-1)){
+      return false
+    }
+    if((zoom>=150&&action===1)){
+      return false
+    }
+    this.setState({
+      zoom:parseInt(this.state.zoom)+(action===1?+10:-10)+'%'
+    },function () {
+      let obj=document.getElementById('DMA-img');
+      obj.style.zoom=this.state.zoom;
+      this.resiz()
+    })
 
+  }
   render() {
     const {vendor_concentrator: {data, meta, loading}, manufacturers} = this.props;
-    const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 45,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
-        }
-      },
-      {title: '厂商名称', dataIndex: 'name', key: 'name'},
-      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count'},
-      {title: '昨天上报率', dataIndex: 'concentrator_count2', key: 'concentrator_count2'},
-      {title: '工况总计', dataIndex: 'concentrator_count3', key: 'concentrator_count3'},
-    ];
     const content = (
       <div>
         <p>Content</p>
         <p>Content</p>
       </div>
     );
+    const zoom=parseInt(this.state.zoom)/100;
+    const iconWidth=64
     return (
       <Layout className="layout">
         <Content >
@@ -277,49 +276,51 @@ class Vendor extends PureComponent {
                       }}>
                         <div className="DMA-img-wrap"
                              style={{width: this.state.imgW + 'px', height: this.state.imgH + 'px'}}>
-                          <img src={imgSrc} alt="" className="DMA-img" style={{minHeight: this.state.tableY + 'px',}}/>
+                          <img id="DMA-img" src={imgSrc} alt="" className="DMA-img" style={{minHeight: this.state.tableY + 'px'}}/>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node1"></div>
+                            <div className="DMA-node DMA-node1" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:627*zoom+'px',top:512*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node2"></div>
+                            <div className="DMA-node DMA-node2" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:783*zoom+'px',top:610*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node3"></div>
+                            <div className="DMA-node DMA-node3" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:498*zoom+'px',top:685*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node4"></div>
+                            <div className="DMA-node DMA-node4" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:619*zoom+'px',top:720*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node5"></div>
+                            <div className="DMA-node DMA-node5" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:419*zoom+'px',top:820*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node6"></div>
+                            <div className="DMA-node DMA-node6" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:638*zoom+'px',top:816*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node7"></div>
+                            <div className="DMA-node DMA-node7" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:582*zoom+'px',top:909*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node8"></div>
+                            <div className="DMA-node DMA-node8" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:659*zoom+'px',top:1020*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node9"></div>
+                            <div className="DMA-node DMA-node9" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:870*zoom+'px',top:1076*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node10"></div>
+                            <div className="DMA-node DMA-node10" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:690*zoom+'px',top:1212*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node11"></div>
+                            <div className="DMA-node DMA-node11" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:772*zoom+'px',top:758*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node12"></div>
+                            <div className="DMA-node DMA-node12" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:840*zoom+'px',top:900*zoom+'px'}}></div>
                           </Popover>
                           <Popover content={content} title="Title">
-                            <div className="DMA-node DMA-node13"></div>
+                            <div className="DMA-node DMA-node13" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:1074*zoom+'px',top:852*zoom+'px'}}></div>
                           </Popover>
 
                         </div>
                       </div>
+                      <div className="DMA-img-operation DMA-img-enlarge" onClick={()=>this.operateDMAImg(1)}><Icon type="plus" style={{fontSize:'25px'}}/></div>
+                      <div className="DMA-img-operation DMA-img-reduce" onClick={()=>this.operateDMAImg(-1)}><Icon type="minus" style={{fontSize:'25px'}}/></div>
                     </Col>
                     <Col xs={8} sm={8} md={8} lg={8} xl={6}>
                       <Button onClick={this.getw}>获取</Button>

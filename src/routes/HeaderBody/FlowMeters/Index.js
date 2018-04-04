@@ -280,7 +280,7 @@ class FlowMeter extends PureComponent {
   }
   renderTreeNodes = (data) => {
     return data.map((item) => {
-      const title = item.number;
+      const title = '流量计编号 : '+item.number;
       if (item.is_root === 1) {
         return (
           <Panel header={title} key={item.id}>
