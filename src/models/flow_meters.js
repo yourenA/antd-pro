@@ -24,6 +24,7 @@ export default {
       yield put({
         type: 'changeLoading',
         payload: false,
+
       });
       if (callback)callback()
 
