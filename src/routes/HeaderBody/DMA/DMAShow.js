@@ -4,7 +4,7 @@ import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
-import imgSrc from './images/area.jpg'
+import imgSrc from './images/area.png'
 import find from 'lodash/find'
 import './index.less'
 const {Content} = Layout;
@@ -85,7 +85,7 @@ class Vendor extends PureComponent {
     })
   }
 
-  renderMap() {
+  /*renderMap() {
     var map = new this.BMap.Map("DMA-map");          // 创建地图实例
     this.map = map;
     map.centerAndZoom(new BMap.Point(112.69113, 26.77524), 11);
@@ -185,7 +185,7 @@ class Vendor extends PureComponent {
         that.showInfo(e)
       });
     }
-  }
+  }*/
 
   showInfo = (e)=> {
     var parsePoint = e.point;
@@ -264,7 +264,9 @@ class Vendor extends PureComponent {
     );
     const zoom=parseInt(this.state.zoom)/100;
 
-    const iconWidth=64
+    const iconWidth=64;
+    const rectWidth=147;
+    const rectHeight=57;
     return (
       <Layout className="layout">
         <Content >
@@ -291,6 +293,21 @@ class Vendor extends PureComponent {
 
                              style={{width: this.state.imgW + 'px', height: this.state.imgH + 'px'}}>
                           <img  id="DMA-img" src={imgSrc} alt="" className="DMA-img" style={{minHeight: this.state.tableY + 'px'}}/>
+                          <Popover content={content} title="Title">
+                            <div className="DMA-rect DMA-rect-node1" style={{width:rectWidth*zoom+'px',height:rectHeight*zoom+'px',left:647*zoom+'px',top:582*zoom+'px'}}></div>
+                          </Popover>
+                          <Popover content={content} title="Title">
+                            <div className="DMA-rect DMA-rect-node1" style={{width:rectWidth*zoom+'px',height:rectHeight*zoom+'px',left:606*zoom+'px',top:769*zoom+'px'}}></div>
+                          </Popover>
+                          <Popover content={content} title="Title">
+                            <div className="DMA-rect DMA-rect-node1" style={{width:rectWidth*zoom+'px',height:rectHeight*zoom+'px',left:375*zoom+'px',top:880*zoom+'px'}}></div>
+                          </Popover>
+                          <Popover content={content} title="Title">
+                            <div className="DMA-rect DMA-rect-node1" style={{width:rectWidth*zoom+'px',height:rectHeight*zoom+'px',left:715*zoom+'px',top:1096*zoom+'px'}}></div>
+                          </Popover>
+                          <Popover content={content} title="Title">
+                            <div className="DMA-rect DMA-rect-node1" style={{width:rectWidth*zoom+'px',height:rectHeight*zoom+'px',left:911*zoom+'px',top:896*zoom+'px'}}></div>
+                          </Popover>
                           <Popover content={content} title="Title">
                             <div className="DMA-node DMA-node1" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:627*zoom+'px',top:512*zoom+'px'}}></div>
                           </Popover>
@@ -337,7 +354,7 @@ class Vendor extends PureComponent {
                       <div className="DMA-img-operation DMA-img-reduce" onClick={()=>this.operateDMAImg(-1)}><Icon type="minus" style={{fontSize:'25px'}}/></div>
                     </Col>
                     <Col xs={8} sm={8} md={8} lg={8} xl={6}>
-                      <Button onClick={this.getw}>获取</Button>
+                      {/*<Button onClick={this.getw}>获取</Button>*/}
                     </Col>
                   </Row>
                 </div>
