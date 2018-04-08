@@ -300,16 +300,16 @@ const data = [{
         component: UserArchives,
         permissions:['member_add_and_edit','member_delete'],
       },
+        {
+          name: 'DMA分区管理',
+          path: 'DMA',
+          component: DMA,
+          permissions:['area_add_and_edit','area_delete'],
+        },
         prefix==='http://api.water.test.com'?{
           name: '厂商-集中器统计',
           path: 'vendor_concentrator',
           component: VendorConcentrator,
-          permissions:['concentrator_add_and_edit','concentrator_delete'],
-        }:{},
-        prefix==='http://api.water.test.com'?{
-          name: 'DMA分区管理',
-          path: 'DMA',
-          component: DMA,
           permissions:['concentrator_add_and_edit','concentrator_delete'],
         }:{},
         prefix==='http://api.water.test.com'?{

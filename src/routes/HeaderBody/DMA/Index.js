@@ -4,7 +4,7 @@ import Sider from './Sider'
 import {connect} from 'dva';
 import { Link, Route, Redirect, Switch,} from 'dva/router';
 import DMAShow from './DMAShow'
-import DMAManage from './../AreaManage/Index'
+import DMAManage from './DMAManage/Index'
 const { Content} = Layout;
 class UserMeterLife extends PureComponent {
   constructor(props) {
@@ -29,7 +29,7 @@ class UserMeterLife extends PureComponent {
             <Route
               exact
               path='/main/run_manage/DMA/DMA_manage'
-              component={null}
+              component={DMAManage}
             />
             <Redirect  from="/main/run_manage/DMA" to="/main/run_manage/DMA/DMA_show" />
           </Switch>
