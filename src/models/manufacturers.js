@@ -17,15 +17,18 @@ export default {
       });
       const response = yield call(query, payload);
       console.log(response)
-      yield put({
-        type: 'save',
-        payload:  response.data
-      });
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
-      if(callback) callback()
+      if(response.status){
+        yield put({
+          type: 'save',
+          payload:  response.data
+        });
+        yield put({
+          type: 'changeLoading',
+          payload: false,
+        });
+        if(callback) callback()
+      }
+
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);

@@ -1,5 +1,19 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Popconfirm, Layout, message, Modal, Button, Icon, Collapse, Popover,Row ,Col} from 'antd';
+import {
+  Pagination,
+  Table,
+  Card,
+  Popconfirm,
+  Layout,
+  message,
+  Modal,
+  Button,
+  Icon,
+  Collapse,
+  Popover,
+  Row,
+  Col
+} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './../OnlyAdd'
 import Sider from './../Sider'
@@ -159,7 +173,7 @@ class FlowMeter extends PureComponent {
       type: 'flow_meters/add',
       payload: {
         ...formValues,
-        manufacturer_id:formValues.manufacturer_id?formValues.manufacturer_id.key:null
+        manufacturer_id: formValues.manufacturer_id ? formValues.manufacturer_id.key : null
       },
       callback: function () {
         message.success('添加流量计成功')
@@ -233,7 +247,7 @@ class FlowMeter extends PureComponent {
           <Col span={8}>创建时间 :</Col>
           <Col span={16}> {item.created_at}</Col>
         </Row >
-        <Row  className="item">
+        <Row className="item">
           <Col span={8}>来源小区 :</Col>
           <Col span={16}>  {
             item.villages.length > 0 ?
@@ -253,24 +267,23 @@ class FlowMeter extends PureComponent {
       </div>
     )
   }
-  renderItem=(item)=>{
+  renderItem = (item)=> {
     const title = item.number;
     return (
       <span className="icon-wrap">
-                      <span className="icon-source">
-                      <span><i className="icon"/>来源小区 : </span>
                         {
                           item.villages.length > 0 ?
                             item.villages.map((item2, index)=> {
                               return (
-                                <span style={{marginRight:'10px'}} key={index}>
-                                {item2.name}
-                              </span>
+                                <span key={index} className="icon-source">
+                                  <span ><i className="icon"/>来源小区 : <span style={{marginRight: '10px'}}>
+                                        {item2.name}
+                                      </span>
+                                    </span>
+                                  </span>
                               )
                             }) : null
                         }
-                      </span>
-                      <br/>
                       <span>
                         <span> <i className="famen"/>流量计编号 : {title}</span>
 
@@ -280,7 +293,7 @@ class FlowMeter extends PureComponent {
   }
   renderTreeNodes = (data) => {
     return data.map((item) => {
-      const title = '流量计编号 : '+item.number;
+      const title = '流量计编号 : ' + item.number;
       if (item.is_root === 1) {
         return (
           <Panel header={title} key={item.id}>
@@ -390,7 +403,7 @@ class FlowMeter extends PureComponent {
                 </div>
                 <div className="DMA-content" style={{height: this.state.tableY + 'px', overflow: 'auto'}}>
                   {
-                    data.length>0&&
+                    data.length > 0 &&
                     <Collapse >
                       {this.renderTreeNodes(data)}
                     </Collapse>

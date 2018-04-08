@@ -16,32 +16,34 @@ export default {
         payload: true,
       });
       const response = yield call(query, payload);
-      console.log(response)
-      if(response.data.meta){
-        yield put({
-          type: 'save',
-          payload:  response.data
-        });
-        yield put({
-          type: 'changeLoading',
-          payload: false,
-        });
-        if(callback)callback()
-      }else{
-        yield put({
-          type: 'save',
-          payload:  {
-            data:response.data.data,
-            meta: {pagination: {total: 0, per_page: 0}},
-          }
-        });
-        yield put({
-          type: 'changeLoading',
-          payload: false,
-        });
-        if(callback)callback()
+      if(response.status===200){
+        if(response.data.meta){
+          yield put({
+            type: 'save',
+            payload:  response.data
+          });
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
+          if(callback)callback()
+        }else{
+          yield put({
+            type: 'save',
+            payload:  {
+              data:response.data.data,
+              meta: {pagination: {total: 0, per_page: 0}},
+            }
+          });
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
+          if(callback)callback()
 
+        }
       }
+
 
     },
     *add({ payload, callback }, { call, put }) {

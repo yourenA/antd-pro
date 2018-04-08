@@ -33,7 +33,8 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
-      zoom:'100%'
+      zoom:'100%',
+      canMove:false
     }
   }
 
@@ -56,6 +57,8 @@ class Vendor extends PureComponent {
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
     window.addEventListener('resize', this.resiz)
+    document.querySelector('#DMA-img').addEventListener('mousedown',this.imgMouseDown)
+    document.querySelector('#DMA-img').addEventListener('mouseup',this.imgMouseUp)
   }
 
   componentWillUnmount() {
@@ -242,6 +245,15 @@ class Vendor extends PureComponent {
     })
 
   }
+  imgMouseDown=(e)=>{
+    console.log('mouseDown',e.clientX)
+    this.setState({
+      canMove:true
+    })
+  }
+  imgMouseUp=(e)=>{
+      console.log('mouseMove',e.clientX)
+  }
   render() {
     const {vendor_concentrator: {data, meta, loading}, manufacturers} = this.props;
     const content = (
@@ -267,7 +279,7 @@ class Vendor extends PureComponent {
                                    clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <div id="DMA-map" className="map-container" style={{height: this.state.tableY + 'px'}}>
+                <div  id="DMA-map" className="map-container" style={{height: this.state.tableY + 'px'}}>
                   <Row gutter={16}>
                     <Col xs={16} sm={16} md={16} lg={16} xl={18}>
                       <div className="DMA-img-container" style={{
@@ -276,8 +288,9 @@ class Vendor extends PureComponent {
                         overflowX: this.state.imgW > this.state.imgCW ? 'scroll' : 'hidden'
                       }}>
                         <div className="DMA-img-wrap"
+
                              style={{width: this.state.imgW + 'px', height: this.state.imgH + 'px'}}>
-                          <img id="DMA-img" src={imgSrc} alt="" className="DMA-img" style={{minHeight: this.state.tableY + 'px'}}/>
+                          <img  id="DMA-img" src={imgSrc} alt="" className="DMA-img" style={{minHeight: this.state.tableY + 'px'}}/>
                           <Popover content={content} title="Title">
                             <div className="DMA-node DMA-node1" style={{width:iconWidth*zoom+'px',height:iconWidth*zoom+'px',left:627*zoom+'px',top:512*zoom+'px'}}></div>
                           </Popover>

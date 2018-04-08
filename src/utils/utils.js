@@ -129,9 +129,9 @@ export function converErrorCodeToMsg (error) {
   if (error.response.status === 401) {
     message.error(messageJson['token fail']);
     removeLoginStorage();
-    setTimeout(function () {
-      window.location.reload()
-    },1000)
+    // setTimeout(function () {
+    //   window.location.reload()
+    // },1000)
   } else if (!error.response.data.errors) {
     message.error(error.response.data.message);
   } else if (error.response.status === 422) {

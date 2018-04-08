@@ -19,19 +19,23 @@ export default {
   effects: {
     *fetch(_, { call, put }) {
       const response = yield call(fakeChartData);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
+      if(response.status===200){
+        yield put({
+          type: 'save',
+          payload: response,
+        });
+      }
     },
     *fetchSalesData(_, { call, put }) {
       const response = yield call(fakeChartData);
-      yield put({
-        type: 'save',
-        payload: {
-          salesData: response.salesData,
-        },
-      });
+      if(response.status===200){
+        yield put({
+          type: 'save',
+          payload: {
+            salesData: response.salesData,
+          },
+        });
+      }
     },
   },
 

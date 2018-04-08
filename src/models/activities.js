@@ -15,14 +15,17 @@ export default {
         payload: true,
       });
       const response = yield call(queryActivities);
-      yield put({
-        type: 'saveList',
-        payload: Array.isArray(response) ? response : [],
-      });
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
+      if(response.status===200){
+        yield put({
+          type: 'saveList',
+          payload: Array.isArray(response) ? response : [],
+        });
+        yield put({
+          type: 'changeLoading',
+          payload: false,
+        });
+      }
+
     },
   },
 

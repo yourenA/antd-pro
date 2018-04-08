@@ -25,14 +25,16 @@ export default {
       });
       const response = yield call(query, payload);
       console.log(response)
-      yield put({
-        type: 'save',
-        payload:  response.data
-      });
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
+      if(response.status){
+        yield put({
+          type: 'save',
+          payload:  response.data
+        });
+        yield put({
+          type: 'changeLoading',
+          payload: false,
+        });
+      }
     },
     *fetchOneusergroup({ payload ,callback}, { call, put }) {
       const response = yield call(queryOneUsergroup, payload);
