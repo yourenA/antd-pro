@@ -198,11 +198,6 @@ class Vendor extends PureComponent {
                   </div>
                 </div>
                 <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
                   className='meter-table'
                   loading={loading}
                   rowKey={record => record.id}

@@ -44,6 +44,7 @@ class SearchForm extends Component {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
               <DatePicker
+                onChange={(date,dateString)=>{this.props.setStart(dateString) }}
                 allowClear={false}
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
@@ -55,6 +56,7 @@ class SearchForm extends Component {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
               <DatePicker
+                onChange={(date,dateString)=>{this.props.setEnd(dateString) }}
                 allowClear={false}
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
@@ -73,10 +75,10 @@ class SearchForm extends Component {
             )}
           </FormItem>*/}
 
-          <FormItem>
+        {/*  <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-          </FormItem>
+          </FormItem>*/}
         </Row>
       </Form>
     )

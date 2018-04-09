@@ -1,6 +1,5 @@
 :global {
   #DMA-map{
-
     .DMA-img-operation{
       position: absolute;
       right: 35px;
@@ -45,5 +44,28 @@
 
     }
 
+  }
+  .DMADetail{
+    table{
+      border: 1px solid #ddd;
+      width: 100%;
+      max-width: 100%;
+      thead{
+        font-weight: bold;
+        background: rgb(240, 240, 240);
+      }
+      tbody{
+        tr{
+          &:nth-of-type(even){
+            background: #f9f9f9;
+          }
+        }
+      }
+      td{
+        padding: 8px;
+        overflow: hidden;
+        border: 1px solid #ddd
+      }
+    }
   }
 }

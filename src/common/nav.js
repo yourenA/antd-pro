@@ -306,18 +306,19 @@ const data = [{
           component: DMA,
           permissions:['area_add_and_edit','area_delete'],
         },
+        {
+          name: '流量计管理',
+          path: 'flow_meters',
+          component: FlowMeters,
+          permissions:['flow_meter_add_and_edit','flow_meter_delete'],
+        },
         prefix==='http://api.water.test.com'?{
           name: '厂商-集中器统计',
           path: 'vendor_concentrator',
           component: VendorConcentrator,
           permissions:['concentrator_add_and_edit','concentrator_delete'],
         }:{},
-        prefix==='http://api.water.test.com'?{
-          name: '流量计管理',
-          path: 'flow_meters',
-          component: FlowMeters,
-          permissions:['flow_meter_add_and_edit','flow_meter_delete'],
-        }:{},],
+        ],
     },{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
