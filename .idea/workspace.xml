@@ -6,14 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/dma_data.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/dma_data.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/nav.js" afterPath="$PROJECT_DIR$/src/common/nav.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/index.less" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/index.less" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,23 +46,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DMAShow.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DMAShow.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="48" column="7" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
+            <state relative-caret-position="243">
+              <caret line="471" column="57" selection-start-line="471" selection-start-column="57" selection-end-line="471" selection-end-column="57" />
               <folding>
                 <element signature="e#0#43#0" expanded="true" />
-                <element signature="e#2833#7303#0" expanded="false" />
-                <element signature="e#11187#18185#0" expanded="false" />
-                <marker date="1523264729419" expanded="false" signature="3130:3185" ph="{...}" />
-                <marker date="1523264729419" expanded="false" signature="6868:7301" ph="{...}" />
+                <element signature="e#2860#7330#0" expanded="false" />
+                <element signature="e#11577#18575#0" expanded="false" />
+                <marker date="1523268839652" expanded="false" signature="3157:3212" ph="{...}" />
+                <marker date="1523268839652" expanded="false" signature="6895:7328" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nav.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="nav.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/common/nav.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="567">
@@ -143,8 +137,8 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/index.less" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" />
         <option value="$PROJECT_DIR$/src/models/dma_data.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js" />
         <option value="$PROJECT_DIR$/src/common/nav.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js" />
       </list>
     </option>
   </component>
@@ -800,7 +794,7 @@
       <workItem from="1522720151872" duration="18707000" />
       <workItem from="1522807036890" duration="13063000" />
       <workItem from="1523152113339" duration="23639000" />
-      <workItem from="1523238251131" duration="21510000" />
+      <workItem from="1523238251131" duration="24178000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -820,11 +814,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="966987000" />
+    <option name="totallyTimeSpent" value="969655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13255568" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1310,6 +1304,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="313" column="10" selection-start-line="313" selection-start-column="10" selection-end-line="313" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/dma_data.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
@@ -1320,23 +1322,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAShow.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="48" column="7" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
+        <state relative-caret-position="243">
+          <caret line="471" column="57" selection-start-line="471" selection-start-column="57" selection-end-line="471" selection-end-column="57" />
           <folding>
             <element signature="e#0#43#0" expanded="true" />
-            <element signature="e#2833#7303#0" expanded="false" />
-            <element signature="e#11187#18185#0" expanded="false" />
-            <marker date="1523264729419" expanded="false" signature="3130:3185" ph="{...}" />
-            <marker date="1523264729419" expanded="false" signature="6868:7301" ph="{...}" />
+            <element signature="e#2860#7330#0" expanded="false" />
+            <element signature="e#11577#18575#0" expanded="false" />
+            <marker date="1523268839652" expanded="false" signature="3157:3212" ph="{...}" />
+            <marker date="1523268839652" expanded="false" signature="6895:7328" ph="{...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/common/nav.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="313" column="10" selection-start-line="313" selection-start-column="10" selection-end-line="313" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>

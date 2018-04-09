@@ -7,6 +7,7 @@ import moment from 'moment'
 import imgSrc from './images/area.png'
 import find from 'lodash/find'
 import './index.less'
+import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -312,8 +313,23 @@ class Vendor extends PureComponent {
       })
     }
   }
+  parseDMAData=(data)=>{
+    const that=this;
+    data.map(function (item,idnex) {
+      item.uuid=uuid()
+      if( item.children && item.children.length>0){
+        return that.parseDMAData(item.children)
+      }else{
+        item.children=null
+      }
+      return item
+    })
+  }
   render() {
     const {dma_data:{allData}} = this.props;
+    if(allData.length>0){
+      this.parseDMAData(allData[0].flow_meters)
+    }
     const zoom=parseInt(this.state.zoom)/100;
     const iconWidth=64;
     const rectWidth=147;
@@ -453,7 +469,7 @@ class Vendor extends PureComponent {
                         <h2 style={{marginBottom:'10px',marginTop:'10px'}}>下属流量计信息</h2>
                           <Table
                             className='meter-table'
-                            rowKey={record => record.id}
+                            rowKey={record => record.uuid}
                             dataSource={allData.length>0?allData[0].flow_meters:[]}
                             columns={columns}
                             pagination={false}
