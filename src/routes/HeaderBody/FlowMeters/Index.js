@@ -16,12 +16,13 @@ import {
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './../OnlyAdd'
-import Sider from './../Sider'
+import Sider from './DMASider'
 import {connect} from 'dva';
 import AddOrEditForm from './addOrEditFlowMeter'
 import moment from 'moment'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
+import request from '../../../utils/request';
 import './index.less'
 const Panel = Collapse.Panel;
 const {Content} = Layout;
@@ -36,7 +37,6 @@ class FlowMeter extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'flow_meter_add_and_edit'}),
-      showAddBtnByCon: false,
       showdelBtn: find(this.permissions, {name: 'flow_meter_delete'}),
       tableY: 0,
       meter_number: '',
@@ -44,12 +44,11 @@ class FlowMeter extends PureComponent {
       install_address: '',
       page: 1,
       initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
-      started_at: '',
-      ended_at: '',
-      village_id: '',
+      area_id: '',
       editModal: false,
       changeModal: false,
-      area: '',
+      nowArea: '',
+
     }
   }
 
@@ -61,63 +60,50 @@ class FlowMeter extends PureComponent {
         return: 'all'
       }
     });
+    window.addEventListener('resize', this.changeTableY)
   }
-
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.changeTableY)
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.DMA-content').offsetTop - (68 + 54 + 17)
     })
   }
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      install_address: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
-    })
-  }
-
-  changeArea = (village_id)=> {
+  changeArea = (area_id)=> {
     this.searchFormRef.props.form.resetFields();
+    if (area_id === 'all') {
+      area_id = null
+    }
     this.setState({
-      showAddBtnByCon: false,
-      concentrator_number: null
+      area_id: area_id
     }, function () {
       this.changeTableY();
+      this.getNowArea(area_id)
       this.handleSearch({
-        page: 1,
-        meter_number: '',
-        member_number: '',
-        install_address: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id
+        return: 'all',
+        // page:1,
+        area_id: area_id
       })
     })
 
+
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
-    this.setState({
-      concentrator_number: concentrator_number,
-      showAddBtnByCon: true,
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id,
-      concentrator_number: concentrator_number
+  getNowArea = (area_id)=> {
+    if (area_id === null) {
+      this.setState({
+        nowArea: '全部DMA区域'
+      })
+      return
+    }
+    const that = this;
+    request(`/areas/${area_id}`, {
+      method: 'GET',
+    }).then((response)=> {
+      console.log('response', response.data.data)
+      that.setState({
+        nowArea: response.data.name
+      })
     })
   }
   handleFormReset = () => {
@@ -126,8 +112,6 @@ class FlowMeter extends PureComponent {
       meter_number: '',
       member_number: '',
       install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
 
@@ -137,16 +121,16 @@ class FlowMeter extends PureComponent {
     dispatch({
       type: 'flow_meters/fetch',
       payload: {
-        page: values.page,
-        village_id: values.village_id ? values.village_id : this.state.village_id,
-        // ...values,
+        ...values,
+        return: 'all',
+        // page: values.page,
+        area_id: values.area_id ? values.area_id : this.state.area_id,
+
       },
       callback: function () {
         that.setState({
           ...values,
-          village_id: values.village_id ? values.village_id : that.state.village_id,
-          started_at: values.started_at,
-          ended_at: values.ended_at,
+          area_id: values.area_id ? values.area_id : that.state.area_id,
         })
       }
     });
@@ -159,8 +143,6 @@ class FlowMeter extends PureComponent {
       meter_number: this.state.meter_number,
       member_number: this.state.member_number,
       install_address: this.state.install_address,
-      ended_at: this.state.ended_at,
-      started_at: this.state.started_at,
       // area: this.state.area
     })
   }
@@ -173,7 +155,7 @@ class FlowMeter extends PureComponent {
       type: 'flow_meters/add',
       payload: {
         ...formValues,
-        manufacturer_id: formValues.manufacturer_id ? formValues.manufacturer_id.key : null
+        manufacturer_id: formValues.manufacturer_id ? formValues.manufacturer_id.key : null,
       },
       callback: function () {
         message.success('添加流量计成功')
@@ -181,10 +163,9 @@ class FlowMeter extends PureComponent {
           addModal: false,
         });
         that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
+          return: 'all',
+          // page:1,
+          area_id: that.state.area_id
         })
       }
     });
@@ -194,22 +175,20 @@ class FlowMeter extends PureComponent {
     const formValues = this.editFormRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
     this.props.dispatch({
-      type: 'village_meter_data/edit',
+      type: 'flow_meters/edit',
       payload: {
         ...formValues,
-        village_id: this.state.village_id,
+        manufacturer_id: formValues.manufacturer_id ? formValues.manufacturer_id.key : null,
         id: this.state.editRecord.id
       },
       callback: function () {
-        message.success('修改用户成功')
+        message.success('修改流量计成功')
         that.setState({
           editModal: false,
         });
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
         })
       }
     });
@@ -217,17 +196,16 @@ class FlowMeter extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'village_meter_data/remove',
+      type: 'flow_meters/remove',
       payload: {
         id: id,
       },
       callback: function () {
-        message.success('删除用户成功')
+        message.success('删除流量计成功')
         that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
+          return: 'all',
+          // page:1,
+          area_id: that.state.area_id
         })
       }
     });
@@ -240,85 +218,95 @@ class FlowMeter extends PureComponent {
     return (
       <div className="popover">
         <Row className="item">
-          <Col span={8}>生产厂家 :</Col>
-          <Col span={16}> {item.manufacturer_name}</Col>
+          <Col span={12} className="popover-item-name">流量计编号 :</Col>
+          <Col span={12}> {item.number}</Col>
         </Row>
         <Row className="item">
-          <Col span={8}>创建时间 :</Col>
-          <Col span={16}> {item.created_at}</Col>
+          <Col span={12} className="popover-item-name">生产厂家 :</Col>
+          <Col span={12}> {item.manufacturer_name}</Col>
+        </Row>
+        <Row className="item">
+          <Col span={12} className="popover-item-name">地理信息编码 :</Col>
+          <Col span={12}> {item.geo_code}</Col>
         </Row >
         <Row className="item">
-          <Col span={8}>来源小区 :</Col>
-          <Col span={16}>  {
-            item.villages.length > 0 ?
-              item.villages.map((item2, index)=> {
-                return (
-                  <p className="source" key={index}>
-                    {item2.name}
-                  </p>
-                )
-              }) : null
-          }</Col>
-        </Row>
+          <Col span={12} className="popover-item-name">是否正向流量 :</Col>
+          <Col span={12}> {item.is_forward_explain}</Col>
+        </Row >
         <Row className="item">
-          <Col span={8}>备注 :</Col>
-          <Col span={16}> {item.remark}</Col>
+          <Col span={12} className="popover-item-name">DMA分区名称 :</Col>
+          <Col span={12}> {item.area_name}</Col>
+        </Row >
+        <Row className="item">
+          <Col span={12} className="popover-item-name">创建时间 :</Col>
+          <Col span={12}> {item.created_at}</Col>
+        </Row >
+        <Row className="item">
+          <Col span={12} className="popover-item-name">地址 :</Col>
+          <Col span={12}> {item.address}</Col>
+        </Row >
+        <Row className="item">
+          <Col span={12} className="popover-item-name">备注 :</Col>
+          <Col span={12}> {item.remark}</Col>
         </Row >
       </div>
     )
   }
   renderItem = (item)=> {
-    const title = item.number;
+    const number = item.number;
+    const name = item.name;
+    const area_name = item.area_name;
     return (
       <span className="icon-wrap">
-                        {
-                          item.villages.length > 0 ?
-                            item.villages.map((item2, index)=> {
-                              return (
-                                <span key={index} className="icon-source">
-                                  <span ><i className="icon"/>来源小区 : <span style={{marginRight: '10px'}}>
-                                        {item2.name}
-                                      </span>
-                                    </span>
-                                  </span>
-                              )
-                            }) : null
-                        }
-                      <span>
-                        <span> <i className="famen"/>流量计编号 : {title}</span>
-
-                      </span>
-                    </span>
+        <span>
+           <span> <i className="fa"/>DMA分区名称 : {area_name}</span>
+           <span> <i className="famen"/>流量计名称 : {name}</span>
+           <span> <i className="name"/>流量计编号 : {number}</span><br/>
+        </span>
+      </span>
     )
   }
   renderTreeNodes = (data) => {
     return data.map((item) => {
-      const title = '流量计编号 : ' + item.number;
-      if (item.is_root === 1) {
-        return (
-          <Panel header={title} key={item.id}>
-            <div className="tree well">
-              <ul className="no-border">
-                <li>
-                  <Popover content={this.renderPopiver(item)} title={title}>
-                    {this.renderItem(item)}
-                  </Popover>
-
-                  <ul >
-                    {this.renderTreeNodes(item.children)}
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </Panel>
-        );
-      }
+      const title = '流量计名称 : ' + item.name;
       if (item.children.length > 0) {
         return (
           <li key={item.id}>
-            <Popover content={this.renderPopiver(item)} title={title}>
+            <Popover className="flow-meter-popover" content={this.renderPopiver(item)} title={title}>
               {this.renderItem(item)}
             </Popover>
+            {
+              this.state.showAddBtn &&
+              <span>
+                      <a href="javascript:;" onClick={()=> {
+                        const {dispatch} = this.props;
+                        dispatch({
+                          type: 'flow_meters/fetchAll',
+                          payload: {
+                            return: 'all',
+                            area_id: item.area_id,
+                          },
+                          callback:()=>{
+                            this.setState(
+                              {
+                                editRecord: item,
+                                editModal: true
+                              }
+                            )
+                          }
+                        });
+
+                      }}>编辑</a>
+                  <span className="ant-divider"/>
+                </span>
+            }
+            {
+              this.state.showdelBtn &&
+              <Popconfirm placement="topRight" title={ `确定要删除${item.name}吗?`}
+                          onConfirm={()=>this.handleRemove(item.id)}>
+                <a href="">删除</a>
+              </Popconfirm>
+            }
 
             <ul >
               {this.renderTreeNodes(item.children)}
@@ -328,10 +316,41 @@ class FlowMeter extends PureComponent {
         );
       }
       return <li key={item.id}>
-        <Popover content={this.renderPopiver(item)} title={title}>
+        <Popover  className="flow-meter-popover"  content={this.renderPopiver(item)} title={title}>
           {this.renderItem(item)}
         </Popover>
+        {
+          this.state.showAddBtn &&
+          <span>
+                      <a href="javascript:;" onClick={()=> {
+                        const {dispatch} = this.props;
+                        dispatch({
+                          type: 'flow_meters/fetchAll',
+                          payload: {
+                            return: 'all',
+                            area_id: item.area_id,
+                          },
+                          callback:()=>{
+                            this.setState(
+                              {
+                                editRecord: item,
+                                editModal: true
+                              }
+                            )
+                          }
+                        });
 
+                      }}>编辑</a>
+                  <span className="ant-divider"/>
+                </span>
+        }
+        {
+          this.state.showdelBtn &&
+          <Popconfirm placement="topRight" title={ `确定要删除${item.name}吗?`}
+                      onConfirm={()=>this.handleRemove(item.id)}>
+            <a href="">删除</a>
+          </Popconfirm>
+        }
       </li>
 
     });
@@ -342,50 +361,6 @@ class FlowMeter extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 45,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
-        }
-      },
-      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
-      {title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number'},
-      {title: '应收水量', width: 100, dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 160,},
-      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 120,},
-      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 160,},
-      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 120,},
-      {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',},
-
-      {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 300,
-        render: (val, record, index) => {
-          return (
-            <div>
-              <Button type="primary" size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 901F</Button>
-              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 90EF</Button>
-              {/*<Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>*/}
-              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>关阀</Button>
-            </div>
-          )
-        }
-      },
-    ];
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -398,20 +373,31 @@ class FlowMeter extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             showAddBtn={this.state.showAddBtn }
-                            clickAdd={()=>this.setState({addModal: true})}/>
+                            clickAdd={()=>{
+                                  this.setState({addModal: true})
+                            }}/>
                   </div>
                 </div>
                 <div className="DMA-content" style={{height: this.state.tableY + 'px', overflow: 'auto'}}>
-                  {
-                    data.length > 0 &&
-                    <Collapse >
-                      {this.renderTreeNodes(data)}
-                    </Collapse>
-                  }
+                  <div className="tree well">
+                    <ul className="no-border">
+                      <li>
+                          <span className="icon-wrap">
+                           <span>
+                              <span> <i className="fa"/>{this.state.nowArea}</span>
+                           </span>
+                         </span>
 
-                  <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                              current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                              style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                        <ul >
+                          {this.renderTreeNodes(data)}
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                  {/*
+                   <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
+                   current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
+                   style={{marginTop: '10px'}} onChange={this.handPageChange}/>*/}
                 </div>
 
               </Card>
@@ -425,6 +411,16 @@ class FlowMeter extends PureComponent {
           onCancel={() => this.setState({addModal: false})}
         >
           <AddOrEditForm manufacturers={manufacturers.data} wrappedComponentRef={(inst) => this.formRef = inst}/>
+        </Modal>
+        <Modal
+          title="修改DMA分区"
+          destroyOnClose={true}
+          visible={this.state.editModal}
+          onOk={this.handleEdit}
+          onCancel={() => this.setState({editModal: false})}
+        >
+          <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+
         </Modal>
       </Layout>
     );

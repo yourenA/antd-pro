@@ -10,30 +10,25 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
 @connect(state => ({
-  sider_regions: state.sider_regions,
   flow_meters: state.flow_meters,
+  dma: state.dma,
 }))
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileList: [],
+      parents:[]
     };
   }
-
   componentDidMount() {
+
     const {dispatch} = this.props;
     dispatch({
-      type: 'sider_regions/fetch',
+      type: 'dma/fetchAll',
       payload: {
         return: 'all'
-      }
-    });
-    dispatch({
-      type: 'flow_meters/fetchAll',
-      payload: {
-        return: 'all'
-      }
+      },
     });
   }
 
@@ -53,13 +48,44 @@ class AddPoliciesForm extends Component {
     return data.map((item) => {
       if (item.children&&item.children.length>0) {
         return (
-          <TreeNode value={item.id}  title={item.number} key={item.id}>
+          <TreeNode value={item.id}  title={item.name} key={item.id}>
             {this.renderFlowMetersTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode value={item.id} title={item.number} key={item.id}/>
+      return <TreeNode value={item.id} title={item.name} key={item.id}/>
     });
+  }
+  renderDMATreeNodes=(data)=>{
+    return data.map((item) => {
+      if (item.children&&item.children.length>0) {
+        return (
+          <TreeNode value={item.id}  title={item.name} key={item.id}>
+            {this.renderDMATreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode value={item.id} title={item.name} key={item.id}/>
+    });
+  }
+  handleChangeDMA=(value)=>{
+    console.log(value);
+    const {dispatch} = this.props;
+    this.props.form.setFieldsValue({
+      parents:[],
+    });
+    dispatch({
+      type: 'flow_meters/fetchAll',
+      payload: {
+        return: 'all',
+        area_id: value,
+      },
+      callback:()=>{
+      }
+    });
+  }
+  onChangeParents=(parents)=>{
+    this.setState({ parents });
   }
   render() {
     const formItemLayoutWithLabel = {
@@ -74,22 +100,26 @@ class AddPoliciesForm extends Component {
     };
 
     const {getFieldDecorator} = this.props.form;
-    const {sider_regions:{data},flow_meters}=this.props;
-    const props = {
-      action: '',
-      name: 'shoce11',
-      beforeUpload: (file) => {
-        this.setState(({fileList}) => ({
-          fileList: [file],
-        }));
-        return false;
-      },
-      showUploadList: {showPreviewIcon: true, showRemoveIcon: false},
-      fileList: this.state.fileList,
-    };
+    const {flow_meters,dma}=this.props;
+    console.log('editRecord',this.props.editRecord)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              名称
+            </span>
+            )}
+          >
+            {getFieldDecorator('name', {
+              initialValue: this.props.editRecord ? this.props.editRecord.name : '',
+              rules: [{required: true, message: '名称不能为空'}],
+            })(
+              <Input />
+            )}
+          </FormItem>
           <FormItem
             {...formItemLayoutWithLabel}
             label={(
@@ -100,7 +130,6 @@ class AddPoliciesForm extends Component {
           >
             {getFieldDecorator('number', {
               initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-              rules: [{required: true, message: '地址名称不能为空'}],
             })(
               <Input />
             )}
@@ -129,28 +158,75 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-                所属安装小区
+              地理信息编码
             </span>
-            )}>
-            {getFieldDecorator('villages', {
-              rules: [{required: true, message: '安装小区不能为空'}],
+            )}
+          >
+            {getFieldDecorator('geo_code', {
+              initialValue: this.props.editRecord ? this.props.editRecord.geo_code : '',
+              rules: [{required: true, message: '地理信息编码不能为空'}],
             })(
-              <TreeSelect
-                allowClear
-                multiple
-              >
-                {this.renderTreeNodes(data)}
-              </TreeSelect>
+              <Input />
             )}
           </FormItem>
           <FormItem
             {...formItemLayoutWithLabel}
             label={(
               <span>
-                所属上级流量计
+                所属DMA分区
+            </span>
+            )}>
+            {getFieldDecorator('area_id', {
+              onChange: this.handleChangeDMA,
+              initialValue: this.props.editRecord?this.props.editRecord.area_id:null,
+              rules: [{required: true, message: '所属DMA分区不能为空'}],
+            })(
+              <TreeSelect
+                allowClear
+              >
+                {this.renderDMATreeNodes(dma.allData)}
+              </TreeSelect>
+            )}
+          </FormItem>
+          <FormItem
+            label="是否正向流量"
+            {...formItemLayoutWithLabel}
+          >
+            {getFieldDecorator('is_forward', {
+              initialValue: this.props.editRecord ? this.props.editRecord.is_forward : 1,
+              rules: [{required: true, message: '是否正向流量不能为空'}],
+            })(
+              <RadioGroup>
+                <Radio value={1}>是</Radio>
+                <Radio value={-1}>否</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              地址
+            </span>
+            )}
+          >
+            {getFieldDecorator('address', {
+              initialValue: this.props.editRecord ? this.props.editRecord.address : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+                上级流量计名称
             </span>
             )}>
             {getFieldDecorator('parents', {
+              value:this.state.parents,
+              initialValue:this.props.editRecord ? this.props.editRecord.parents : [],
+              onChange:this.onChangeParents
             })(
               <TreeSelect
                 allowClear
