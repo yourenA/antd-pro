@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Popconfirm, Layout, message, Modal, Button,Badge} from 'antd';
+import { Table, Card, Popconfirm, Layout, message, Modal, Button,Badge} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -8,7 +9,6 @@ import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
-import axios from 'axios'
 import config from '../../../common/config'
 import {download} from '../../../utils/utils'
 import uuid from 'uuid/v4'
@@ -344,9 +344,8 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+
               </Card>
             </PageHeaderLayout>
           </div>

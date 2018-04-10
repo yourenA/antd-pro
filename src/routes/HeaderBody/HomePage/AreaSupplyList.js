@@ -128,7 +128,7 @@ export default class EndpointsList extends PureComponent {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['东部地区','中部地区','南部地区']
+          data: ['石鼓区','中心区','华新区','雁峰区','珠晖区']
         },
         series : [
           {
@@ -144,9 +144,11 @@ export default class EndpointsList extends PureComponent {
           title: {text: '2018-3-12地区占比'},
           series: [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2002sum']},
-              {name: '中部地区', value: dataMap.dataSI['2002sum']},
-              {name: '南部地区', value: dataMap.dataTI['2002sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2002sum']},
+              {name: '中心区', value: dataMap.dataSI['2002sum']},
+              {name: '华新区', value: dataMap.dataTI['2002sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2002sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2002sum']},
             ]}
           ]
         },
@@ -154,9 +156,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-13地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2003sum']},
-              {name: '中部地区', value: dataMap.dataSI['2003sum']},
-              {name: '南部地区', value: dataMap.dataTI['2003sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2003sum']},
+              {name: '中心区', value: dataMap.dataSI['2003sum']},
+              {name: '华新区', value: dataMap.dataTI['2003sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2003sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2003sum']},
             ]}
           ]
         },
@@ -164,9 +168,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-14地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2004sum']},
-              {name: '中部地区', value: dataMap.dataSI['2004sum']},
-              {name: '南部地区', value: dataMap.dataTI['2004sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2004sum']},
+              {name: '中心区', value: dataMap.dataSI['2004sum']},
+              {name: '华新区', value: dataMap.dataTI['2004sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2004sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2004sum']},
             ]}
           ]
         },
@@ -174,9 +180,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-15地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2005sum']},
-              {name: '中部地区', value: dataMap.dataSI['2005sum']},
-              {name: '南部地区', value: dataMap.dataTI['2005sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2005sum']},
+              {name: '中心区', value: dataMap.dataSI['2005sum']},
+              {name: '华新区', value: dataMap.dataTI['2005sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2005sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2005sum']},
             ]}
           ]
         },
@@ -184,9 +192,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-16地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2006sum']},
-              {name: '中部地区', value: dataMap.dataSI['2006sum']},
-              {name: '南部地区', value: dataMap.dataTI['2006sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2006sum']},
+              {name: '中心区', value: dataMap.dataSI['2006sum']},
+              {name: '华新区', value: dataMap.dataTI['2006sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2006sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2006sum']},
             ]}
           ]
         },
@@ -194,9 +204,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-17地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2007sum']},
-              {name: '中部地区', value: dataMap.dataSI['2007sum']},
-              {name: '南部地区', value: dataMap.dataTI['2007sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2007sum']},
+              {name: '中心区', value: dataMap.dataSI['2007sum']},
+              {name: '华新区', value: dataMap.dataTI['2007sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2007sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2007sum']},
             ]}
           ]
         },
@@ -204,9 +216,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-18地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2008sum']},
-              {name: '中部地区', value: dataMap.dataSI['2008sum']},
-              {name: '南部地区', value: dataMap.dataTI['2008sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2008sum']},
+              {name: '中心区', value: dataMap.dataSI['2008sum']},
+              {name: '华新区', value: dataMap.dataTI['2008sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2008sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2008sum']},
             ]}
           ]
         },
@@ -214,9 +228,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-19地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2009sum']},
-              {name: '中部地区', value: dataMap.dataSI['2009sum']},
-              {name: '南部地区', value: dataMap.dataTI['2009sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2009sum']},
+              {name: '中心区', value: dataMap.dataSI['2009sum']},
+              {name: '华新区', value: dataMap.dataTI['2009sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2009sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2009sum']},
             ]}
           ]
         },
@@ -224,9 +240,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-20地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2010sum']},
-              {name: '中部地区', value: dataMap.dataSI['2010sum']},
-              {name: '南部地区', value: dataMap.dataTI['2010sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2010sum']},
+              {name: '中心区', value: dataMap.dataSI['2010sum']},
+              {name: '华新区', value: dataMap.dataTI['2010sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2010sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2010sum']},
             ]}
           ]
         },
@@ -234,9 +252,11 @@ export default class EndpointsList extends PureComponent {
           title : {text: '2018-3-21地区占比'},
           series : [
             {data: [
-              {name: '东部地区', value: dataMap.dataPI['2011sum']},
-              {name: '中部地区', value: dataMap.dataSI['2011sum']},
-              {name: '南部地区', value: dataMap.dataTI['2011sum']}
+              {name: '石鼓区', value: dataMap.dataPI['2011sum']},
+              {name: '中心区', value: dataMap.dataSI['2011sum']},
+              {name: '华新区', value: dataMap.dataTI['2011sum']},
+              {name: '雁峰区', value: dataMap.dataTI['2011sum']},
+              {name: '珠晖区', value: dataMap.dataTI['2011sum']},
             ]}
           ]
         }

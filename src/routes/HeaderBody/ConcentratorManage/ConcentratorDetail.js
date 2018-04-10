@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Button, Layout, message, Modal} from 'antd';
-import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import Search from './Search'
+import { Table, Card, Button, Layout, message, Modal} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
 import Sider from './../Sider'
@@ -120,9 +119,7 @@ class UserMeterAnalysis extends PureComponent {
           pagination={false}
           size="small"
         />
-        <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                    current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                    style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+        <Pagination meta={meta} handPageChange={this.handPageChange}/>
         <Modal
           title="添加集中器"
           visible={this.state.addModal}

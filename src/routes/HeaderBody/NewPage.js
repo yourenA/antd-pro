@@ -105,7 +105,7 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title="片区供水一览"
+                title="五大区供水一览"
                 bodyStyle={{ padding: 24 }}
                 style={{ marginBottom: 24, minHeight: 509 }}
               >

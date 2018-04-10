@@ -4,7 +4,7 @@ import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
-import Guage from './../HomePage/AreaSupplyList'
+import Guage from './ConcentratorOnlife'
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditVendor from './addOrEditVendor'
@@ -113,13 +113,13 @@ class Vendor extends PureComponent {
           <div className="content">
             <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: '厂商-集中器统计'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <div className='tableList'>
+                {/*<div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch  handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                     manufacturers={manufacturers.data} showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
-                </div>
+                </div>*/}
                 <Row gutter={16}>
                   <Col span={10}>
                     <Guage></Guage>
@@ -140,9 +140,9 @@ class Vendor extends PureComponent {
                       pagination={false}
                       size="small"
                     />
-                    <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
+                    {/*<Pagination showQuickJumper className='pagination' total={meta.pagination.total}
                                 current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                                style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                                style={{marginTop: '10px'}} onChange={this.handPageChange}/>*/}
                   </Col>
                 </Row>
 

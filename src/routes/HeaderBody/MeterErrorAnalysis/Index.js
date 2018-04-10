@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Badge, Layout, message, Modal, Button} from 'antd';
+import { Table, Card, Badge, Layout, message, Modal, Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import Pagination from './../../../components/Pagination/Index'
 import Search from './Search'
 import Sider from './../Sider'
 import {connect} from 'dva';
@@ -40,7 +41,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'manufacturers/fetch',
       payload: {
         return: 'all'
-      }
+      },
     });
   }
 
@@ -208,9 +209,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

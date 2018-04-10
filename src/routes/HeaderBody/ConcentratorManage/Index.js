@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Pagination , Table , Card, Popconfirm, Layout,message,Modal,Badge} from 'antd';
+import { Table , Card, Popconfirm, Layout,message,Modal,Badge} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import AddOrEditConcentrator from './AddOrEditConcentrator'
@@ -50,7 +51,7 @@ class ConcentratorManage extends PureComponent {
       type: 'concentrator_models/fetch',
       payload: {
         return: 'all'
-      }
+      },
     });
     dispatch({
       type: 'servers/fetch',
@@ -65,7 +66,11 @@ class ConcentratorManage extends PureComponent {
       }
     });
   }
-
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    })
+  }
   siderLoadedCallback = (village_id)=> {
     console.log('加载区域', village_id)
     this.setState({
@@ -367,9 +372,7 @@ class ConcentratorManage extends PureComponent {
                       pagination={false}
                       size="small"
                     />
-                    <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                                current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                                style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                    <Pagination meta={meta} handPageChange={this.handPageChange}/>
                   </div>
                   :
                   <ConcentratorDetail concentratorId={this.state.concentratorId}  handleBack={this.handleBack}/>

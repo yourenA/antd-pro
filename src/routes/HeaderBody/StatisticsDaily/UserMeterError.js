@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message,Badge} from 'antd';
+import { Table, Card, Layout, message,Badge} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -21,17 +22,26 @@ class FunctionContent extends PureComponent {
   }
 
   componentDidMount() {
+    const that=this;
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'meter_daily_errors/fetch',
+      payload: {
+        page: 1,
+        concentrator_number:'',
+        meter_number:'',
+        date: moment(this.state.initDate).format('YYYY-MM-DD'),
+      },
+      callback:function () {
+        that.changeTableY()
+      }
+    });
+  }
+  changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
-    this.handleSearch({
-      page: 1,
-      concentrator_number:'',
-      meter_number:'',
-      date: moment(this.state.initDate).format('YYYY-MM-DD'),
-    })
   }
-
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
@@ -116,9 +126,8 @@ class FunctionContent extends PureComponent {
             pagination={false}
             size="small"
           />
-          <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                      current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                      style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+          <Pagination meta={meta} handPageChange={this.handPageChange}/>
+
         </Card>
       </PageHeaderLayout>
     );

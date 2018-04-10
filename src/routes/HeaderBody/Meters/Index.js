@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
+import { Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './../OnlyAdd'
 import {connect} from 'dva';
 import moment from 'moment'
@@ -30,15 +31,16 @@ class MeterModel extends PureComponent {
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
+
     const {dispatch} = this.props;
     dispatch({
       type: 'meters/fetch',
       payload: {
         page: 1,
-      }
+      },
+      callback:()=>{
+      this.changeTableY()
+    }
     });
     dispatch({
       type: 'meter_models/fetch',
@@ -47,7 +49,11 @@ class MeterModel extends PureComponent {
       }
     });
   }
-
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    })
+  }
   handleFormReset = () => {
     const {dispatch} = this.props;
     dispatch({
@@ -271,9 +277,7 @@ class MeterModel extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message,Badge} from 'antd';
+import { Table, Card, Layout, message,Badge} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './ConcentratorErrorSearch'
 import {connect} from 'dva';
@@ -112,9 +113,8 @@ class FunctionContent extends PureComponent {
             pagination={false}
             size="small"
           />
-          <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                      current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                      style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+          <Pagination meta={meta} handPageChange={this.handPageChange}/>
+
         </Card>
       </PageHeaderLayout>
     );

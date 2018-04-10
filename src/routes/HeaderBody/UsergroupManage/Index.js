@@ -1,15 +1,14 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge,  Dropdown,
+import { Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge,  Dropdown,
   Menu,
   Tooltip,
   Icon,} from 'antd';
+import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
-import Sider from './../EmptySider'
 import find from 'lodash/find'
 import {Link, routerRedux} from 'dva/router';
-import AddOrEditForm from './addOrEditMember'
 const {Content} = Layout;
 @connect(state => ({
   usergroup: state.usergroup,
@@ -284,9 +283,8 @@ class Vendor extends PureComponent {
                   size="small"
                 />
                 {
-                  meta && <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                                                current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                                                style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                  meta && <Pagination meta={meta} handPageChange={this.handPageChange}/>
+
                 }
 
               </Card>

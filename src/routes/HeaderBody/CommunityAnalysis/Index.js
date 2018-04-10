@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
+import { Table, Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
+import Pagination from './../../../components/Pagination/Index'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
@@ -297,9 +298,8 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+
               </Card>
             </PageHeaderLayout>
           </div>

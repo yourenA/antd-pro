@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
+import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './../OnlyAdd'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
@@ -231,9 +232,7 @@ class Vendor extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>
