@@ -430,7 +430,7 @@ class Vendor extends PureComponent {
                     <Col xs={10} sm={10} md={10} lg={10} xl={8}  style={{height: this.state.tableY + 'px',overflow:'auto'}}>
                       <div className="DMA-info">
                         <div className="DMADetail">
-                          <h2 style={{marginBottom:'10px'}}>基本信息</h2>
+                          <h2 style={{marginBottom:'10px'}}><span className="info-icon"></span><p>基本信息</p></h2>
                           <table>
                             <thead>
                             <tr>
@@ -466,7 +466,7 @@ class Vendor extends PureComponent {
                             </tbody>
                           </table>
                         </div>
-                        <h2 style={{marginBottom:'10px',marginTop:'10px'}}>下属流量计信息</h2>
+                        <h2 style={{marginBottom:'10px',marginTop:'10px'}}><span className="flowmeter-icon"></span><p>下属流量计信息</p></h2>
                           <Table
                             className='meter-table'
                             rowKey={record => record.uuid}
