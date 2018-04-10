@@ -259,7 +259,7 @@ class FlowMeter extends PureComponent {
     return (
       <span className="icon-wrap">
         <span>
-          {this.state.nowArea==='全部DMA区域'&&<span> <i className="area"/>DMA分区名称 : {area_name}</span>}
+          {this.state.nowArea==='全部DMA区域'&&<span> <i className="fa"/>DMA分区名称 : {area_name}</span>}
            <span> <i className="famen"/>流量计名称 : {name}</span>
            <span> <i className="name"/>流量计编号 : {number}</span><br/>
         </span>
