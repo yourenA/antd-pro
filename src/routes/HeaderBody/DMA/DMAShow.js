@@ -39,7 +39,7 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
-      zoom: '60%',
+      zoom: '80%',
       canMove: false,
       dmaArea: [],
       currentId: ''
@@ -241,7 +241,8 @@ class Vendor extends PureComponent {
       zoom: parseInt(this.state.zoom) + (action === 1 ? +10 : -10) + '%'
     }, function () {
       let obj = document.getElementById('DMA-img');
-      obj.style.zoom = this.state.zoom;
+      // obj.style.zoom = this.state.zoom;
+      obj.style.transform = "scale("+parseInt(this.state.zoom)/100+")";
       this.resiz()
     })
 
@@ -346,6 +347,7 @@ class Vendor extends PureComponent {
       this.parseDMAData(allData[0].flow_meters)
     }
     const zoom = parseInt(this.state.zoom) / 100;
+    console.log(zoom)
     const iconWidth = 64;
     const rectWidth = 147;
     const rectHeight = 57;
@@ -383,7 +385,7 @@ class Vendor extends PureComponent {
 
                                style={{width: this.state.imgW + 'px', height: this.state.imgH + 'px'}}>
                             <img id="DMA-img" src={imgSrc} alt="" className="DMA-img"
-                                 style={{minHeight: this.state.tableY + 'px', zoom: this.state.zoom}}/>
+                                 style={{minHeight: this.state.tableY + 'px',transform:`scale(${zoom})`}}/>
                             <Popover content={this.getPopover('石鼓区')} title="石鼓区">
                               <div className="DMA-rect DMA-rect-node1" onClick={()=>this.clickNode('石鼓区')} style={{
                                 width: rectWidth * zoom + 'px',
