@@ -94,11 +94,11 @@
     margin-top: 10px !important;;
   }
 
-  .dynamic-data, .proportion-data, .concentratorOnline, .guage ,.areasupplylist,.DMArate{
+  .dynamic-data, .proportion-data, .concentratorOnline, .guage, .areasupplylist, .DMArate {
     width: 100%;
     height: 400px;
   }
-  .mapData{
+  .mapData {
     width: 100%;
     height: 500px;
   }
@@ -108,6 +108,27 @@
     height: 400px;
     position: relative;
 
+  }
+  .custom-table {
+    border: 1px solid #ddd;
+    width: 100%;
+    max-width: 100%;
+    thead {
+      font-weight: bold;
+      background: rgb(240, 240, 240);
+    }
+    tbody {
+      tr {
+        &:nth-of-type(even) {
+          background: #f9f9f9;
+        }
+      }
+    }
+    td {
+      padding: 8px;
+      overflow: hidden;
+      border: 1px solid #ddd
+    }
   }
   .concentrator-num:after, .fine-num:after {
     position: absolute;
@@ -206,11 +227,11 @@
         font-size: 20px;
         line-height: 45px;
       }
-      .sider-content{
+      .sider-content {
         position: relative;
         width: 100%;
       }
-      .hideSider{
+      .hideSider {
         position: absolute;
         left: 0;
         right: 0;
@@ -220,7 +241,7 @@
         background: #FFFFFF;
       }
     }
-    .ant-layout-content{
+    .ant-layout-content {
       background: rgb(255, 255, 255);
     }
     .content {
@@ -258,8 +279,8 @@
   .ant-card-hoverable {
     cursor: auto !important;
   }
-  .ant-modal{
-    .ant-input-number,.ant-calendar-picker{
+  .ant-modal {
+    .ant-input-number, .ant-calendar-picker {
       width: 100%;
     }
   }
@@ -267,7 +288,7 @@
     width: 100%;
     overflow: hidden;
   }
-  .ant-table-placeholder{
+  .ant-table-placeholder {
     z-index: 0 !important;
   }
   .ant-steps-label-vertical .ant-steps-item-description {
@@ -306,10 +327,10 @@
       }
     }
   }
-  .ant-popover-inner-content{
+  .ant-popover-inner-content {
     //padding: 0 !important;
   }
-  .popover .item{
+  .popover .item {
     border-bottom: 1px solid #cccccc;
     padding: 5px;
   }

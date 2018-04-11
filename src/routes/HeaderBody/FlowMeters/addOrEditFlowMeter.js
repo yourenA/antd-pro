@@ -189,6 +189,20 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            label="是否虚拟流量计"
+            {...formItemLayoutWithLabel}
+          >
+            {getFieldDecorator('is_virtual', {
+              initialValue: this.props.editRecord ? this.props.editRecord.is_virtual : -1,
+              rules: [{required: true, message: '是否虚拟流量计不能为空'}],
+            })(
+              <RadioGroup>
+                <Radio value={1}>是</Radio>
+                <Radio value={-1}>否</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+          <FormItem
             label="是否正向流量"
             {...formItemLayoutWithLabel}
           >

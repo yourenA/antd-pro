@@ -261,15 +261,24 @@ class Vendor extends PureComponent {
     if (item) {
       return (
         <div>
-          <Row className="item">
-            <Col span={9} style={{textAlign: 'right'}}>创建时间 :</Col>
-            <Col span={15}> {item.created_at}</Col>
-          </Row >
-          <Row className="item">
-            <Col span={9} style={{textAlign: 'right'}}>备注 :</Col>
-            <Col span={15}> {item.remark}</Col>
-          </Row >
-
+          <table className="custom-table">
+            <thead>
+            <tr>
+              <td>名称</td>
+              <td>值</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>创建时间</td>
+              <td>{item.created_at}</td>
+            </tr>
+            <tr>
+              <td>备注</td>
+              <td>{item.remark}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       )
     } else {
@@ -347,12 +356,15 @@ class Vendor extends PureComponent {
       this.parseDMAData(allData[0].flow_meters)
     }
     const zoom = parseInt(this.state.zoom) / 100;
-    console.log(zoom)
     const iconWidth = 64;
     const rectWidth = 147;
     const rectHeight = 57;
     const columns = [
-      {title: '名称', dataIndex: 'name', key: 'name'},
+      {title: '名称', dataIndex: 'name', key: 'name',
+        render: (val, record, index) => (
+          <span style={{color:record.is_virtual===1?'red':''}}>{val}</span>
+        )
+      },
       {title: '读值', dataIndex: 'value', key: 'value'},
       {title: '产销差', dataIndex: 'attrition_value', key: 'attrition_value'},
       {title: '产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate'},
@@ -544,7 +556,7 @@ class Vendor extends PureComponent {
                       <div className="DMA-info">
                         <div className="DMADetail">
                           <h2 style={{marginBottom: '10px'}}><span className="info-icon"></span><p>基本信息</p></h2>
-                          <table>
+                          <table className="custom-table">
                             <thead>
                             <tr>
                               <td>名称</td>
@@ -580,7 +592,7 @@ class Vendor extends PureComponent {
                           </table>
                         </div>
                         <h2 style={{marginBottom: '10px', marginTop: '10px'}}><span className="flowmeter-icon"></span>
-                          <p>下属流量计信息</p></h2>
+                          <p>下属流量计信息</p><span>（虚拟流量计名称为红色）</span></h2>
                         <Table
                           className='meter-table'
                           rowKey={record => record.uuid}

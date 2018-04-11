@@ -12,7 +12,8 @@ import {
   Collapse,
   Popover,
   Row,
-  Col
+  Col,
+  Alert
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './../OnlyAdd'
@@ -62,9 +63,11 @@ class FlowMeter extends PureComponent {
     });
     window.addEventListener('resize', this.changeTableY)
   }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.changeTableY)
   }
+
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.DMA-content').offsetTop - (68 + 54 + 17)
@@ -217,38 +220,53 @@ class FlowMeter extends PureComponent {
   renderPopiver = (item)=> {
     return (
       <div className="popover">
-        <Row className="item">
-          <Col span={12} className="popover-item-name">流量计编号 :</Col>
-          <Col span={12}> {item.number}</Col>
-        </Row>
-        <Row className="item">
-          <Col span={12} className="popover-item-name">生产厂家 :</Col>
-          <Col span={12}> {item.manufacturer_name}</Col>
-        </Row>
-        <Row className="item">
-          <Col span={12} className="popover-item-name">地理信息编码 :</Col>
-          <Col span={12}> {item.geo_code}</Col>
-        </Row >
-        <Row className="item">
-          <Col span={12} className="popover-item-name">是否正向流量 :</Col>
-          <Col span={12}> {item.is_forward_explain}</Col>
-        </Row >
-        <Row className="item">
-          <Col span={12} className="popover-item-name">DMA分区名称 :</Col>
-          <Col span={12}> {item.area_name}</Col>
-        </Row >
-        <Row className="item">
-          <Col span={12} className="popover-item-name">创建时间 :</Col>
-          <Col span={12}> {item.created_at}</Col>
-        </Row >
-        <Row className="item">
-          <Col span={12} className="popover-item-name">地址 :</Col>
-          <Col span={12}> {item.address}</Col>
-        </Row >
-        <Row className="item">
-          <Col span={12} className="popover-item-name">备注 :</Col>
-          <Col span={12}> {item.remark}</Col>
-        </Row >
+        <table className="custom-table">
+          <thead>
+          <tr>
+            <td>名称</td>
+            <td>值</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>流量计编号</td>
+            <td>{item.number}</td>
+          </tr>
+          <tr>
+            <td>DMA分区名称</td>
+            <td>{item.area_name}</td>
+          </tr>
+          <tr>
+            <td>地理信息编码</td>
+            <td>{item.geo_code}</td>
+          </tr>
+          <tr>
+            <td>生产厂家</td>
+            <td>{item.manufacturer_name}</td>
+          </tr>
+          <tr>
+            <td>是否虚拟流量计</td>
+            <td>{item.is_virtual_explain}</td>
+          </tr>
+          <tr>
+            <td>是否正向流量</td>
+            <td>{item.is_forward_explain}<Icon style={{color:item.is_forward===1?'blue':'red'}} type={item.is_forward===1?"double-right":"double-left"} /> </td>
+          </tr>
+          <tr>
+            <td>地址</td>
+            <td>{item.address}</td>
+          </tr>
+          <tr>
+            <td>创建时间</td>
+            <td>{item.created_at}</td>
+          </tr>
+          <tr>
+            <td>备注</td>
+            <td>{item.remark}</td>
+          </tr>
+
+          </tbody>
+        </table>
       </div>
     )
   }
@@ -257,10 +275,10 @@ class FlowMeter extends PureComponent {
     const name = item.name;
     const area_name = item.area_name;
     return (
-      <span className="icon-wrap">
+      <span className="icon-wrap" style={{borderColor:item.is_virtual===1?'red':'#999'}}>
         <span>
-          {this.state.nowArea==='全部DMA区域'&&<span> <i className="fa"/>DMA分区名称 : {area_name}</span>}
-           <span> <i className="famen"/>流量计名称 : {name}</span>
+          {this.state.nowArea === '全部DMA区域' && <span> <i className="fa"/>DMA分区名称 : {area_name}</span>}
+          <span> <i className="famen"/>流量计名称 : {name}</span>
            <span> <i className="name"/>流量计编号 : {number}</span><br/>
         </span>
       </span>
@@ -272,7 +290,8 @@ class FlowMeter extends PureComponent {
       if (item.children.length > 0) {
         return (
           <li key={item.id}>
-            <Popover className="flow-meter-popover" content={this.renderPopiver(item)} title={title}>
+            <Popover className="flow-meter-popover" style={{width: '200px'}} content={this.renderPopiver(item)}
+                     title={title}>
               {this.renderItem(item)}
             </Popover>
             {
@@ -286,7 +305,7 @@ class FlowMeter extends PureComponent {
                             return: 'all',
                             area_id: item.area_id,
                           },
-                          callback:()=>{
+                          callback: ()=> {
                             this.setState(
                               {
                                 editRecord: item,
@@ -316,7 +335,7 @@ class FlowMeter extends PureComponent {
         );
       }
       return <li key={item.id}>
-        <Popover  className="flow-meter-popover"  content={this.renderPopiver(item)} title={title}>
+        <Popover className="flow-meter-popover" content={this.renderPopiver(item)} title={title}>
           {this.renderItem(item)}
         </Popover>
         {
@@ -330,7 +349,7 @@ class FlowMeter extends PureComponent {
                             return: 'all',
                             area_id: item.area_id,
                           },
-                          callback:()=>{
+                          callback: ()=> {
                             this.setState(
                               {
                                 editRecord: item,
@@ -373,13 +392,19 @@ class FlowMeter extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             showAddBtn={this.state.showAddBtn }
-                            clickAdd={()=>{
-                                  this.setState({addModal: true})
+                            clickAdd={()=> {
+                              this.setState({addModal: true})
                             }}/>
                   </div>
                 </div>
                 <div className="DMA-content" style={{height: this.state.tableY + 'px', overflow: 'auto'}}>
                   <div className="tree well">
+                    <Alert
+                      className="tree-alert"
+                      message="红色边框为虚拟流量计"
+                      type="info"
+                      closable
+                    />
                     <ul className="no-border">
                       <li>
                           <span className="icon-wrap">
@@ -405,6 +430,7 @@ class FlowMeter extends PureComponent {
           </div>
         </Content>
         <Modal
+          destroyOnClose={true}
           title="添加流量计"
           visible={this.state.addModal}
           onOk={this.handleAdd}
@@ -419,7 +445,8 @@ class FlowMeter extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+          <AddOrEditForm manufacturers={manufacturers.data} editRecord={this.state.editRecord}
+                         wrappedComponentRef={(inst) => this.editFormRef = inst}/>
 
         </Modal>
       </Layout>

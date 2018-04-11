@@ -12,6 +12,16 @@
     -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
     overflow: auto;
+    position: relative;
+    .tree-alert{
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      z-index: 999;
+      &.ant-alert-no-icon{
+        padding-right: 30px !important;
+      }
+    }
   }
   .icon{
     background: url("./images/area.png") center no-repeat;
