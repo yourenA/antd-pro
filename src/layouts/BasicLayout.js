@@ -226,14 +226,14 @@ class BasicLayout extends React.PureComponent {
       openKeys: this.state.openKeys,
     };
     const layout = (
-      <Layout>
+      <div>
         <Sider
           trigger={null}
           collapsible
           collapsed={collapsed}
           breakpoint="lg"
           onCollapse={this.onCollapse}
-          width={256}
+          width={200}
           className={styles.sider}//引入BasicLayout.less中的类名，使用css
         >
           <div className={styles.logo}>
@@ -253,8 +253,8 @@ class BasicLayout extends React.PureComponent {
             {this.getNavMenuItems(this.menus)}
           </Menu>
         </Sider>
-        <Layout>
-          <Header className={styles.header}>
+        <Layout className={styles.bce_content} style={{left:collapsed?'80px':'200px'}}>
+          <Header className={styles.header} style={{left:collapsed?'80px':'200px'}}>
             <Icon
               className={styles.trigger}
               type={collapsed ? 'menu-unfold' : 'menu-fold'}
@@ -282,59 +282,60 @@ class BasicLayout extends React.PureComponent {
               ) : <Spin size="small" style={{ marginLeft: 8 }} />}
             </div>
           </Header>
-          <Content style={{  height: '100%' }}>
-            <BackTop />
-            <Switch>
-              {
-                getRouteData('BasicLayout').map(item =>{
-                  return(
-                    <Route
-                      exact={item.exact}
-                      key={item.path}
-                      path={item.path}
-                      component={item.component}
-                    />
+          <Content  className={styles.main_area}>
+            <div className={styles.main}>
+              <BackTop />
+              <Switch>
+                {
+                  getRouteData('BasicLayout').map(item =>{
+                      return(
+                        <Route
+                          exact={item.exact}
+                          key={item.path}
+                          path={item.path}
+                          component={item.component}
+                        />
+                      )
+                    }
                   )
                 }
-                )
-              }
-              <Route
-                path='/access-management/endpoints/:id'
-                component={EndpointDetailLayout}
-              />
-              <Route
-                path='/system-management/usergroup/:id'
-                component={UsergroupLayout}
-              />
-              <Route
-                path='/user-info'
-                component={UserInfo}
-              />
-              {
-                (sessionStorage.getItem('role_display_name')==='系统管理员')?
-                  <Redirect exact from="/" to="/access-management/endpoints" />
-                  : <Redirect exact from="/" to="/main" />
-              }
+                <Route
+                  path='/access-management/endpoints/:id'
+                  component={EndpointDetailLayout}
+                />
+                <Route
+                  path='/system-management/usergroup/:id'
+                  component={UsergroupLayout}
+                />
+                <Route
+                  path='/user-info'
+                  component={UserInfo}
+                />
+                {
+                  (sessionStorage.getItem('role_display_name')==='系统管理员')?
+                    <Redirect exact from="/" to="/access-management/endpoints" />
+                    : <Redirect exact from="/" to="/main" />
+                }
 
-              <Route component={NotFound} />
-            </Switch>
-            <GlobalFooter
-              copyright={
-                <div>
-                  Copyright <Icon type="copyright" /> 2017辂轺科技
-                </div>
-              }
-            />
+                <Route component={NotFound} />
+              </Switch>
+              <GlobalFooter
+                copyright={
+                  <div>
+                    Copyright <Icon type="copyright" /> 2017辂轺科技
+                  </div>
+                }
+              />
+            </div>
+
           </Content>
         </Layout>
-      </Layout>
+      </div>
     );
 
     return (
       <DocumentTitle title={this.getPageTitle()}>
-        <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
+        <div >{layout}</div>
       </DocumentTitle>
     );
   }

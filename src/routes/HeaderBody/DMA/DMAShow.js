@@ -592,7 +592,7 @@ class Vendor extends PureComponent {
                           </table>
                         </div>
                         <h2 style={{marginBottom: '10px', marginTop: '10px'}}><span className="flowmeter-icon"></span>
-                          <p>下属流量计信息</p><span>（虚拟流量计名称为红色）</span></h2>
+                          <p>下属流量计信息</p><span>（红色名称为虚拟流量计）</span></h2>
                         <Table
                           className='meter-table'
                           rowKey={record => record.uuid}

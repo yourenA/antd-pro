@@ -182,6 +182,7 @@ const data = [{
       name: '实例列表',
       path: 'endpoints',
       component: Endpoints,
+      icon: 'tool',
       permissions:['iot_hub_management'],
     }],
   },   {
