@@ -17,24 +17,19 @@ export function getTimeDistance(type) {
     now.setSeconds(0);
     return [moment(now), moment(now.getTime() + (oneDay - 1000))];
   }
-
   if (type === 'week') {
     let day = now.getDay();
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
-
     if (day === 0) {
       day = 6;
     } else {
       day -= 1;
     }
-
     const beginTime = now.getTime() - (day * oneDay);
-
     return [moment(beginTime), moment( now.getTime())];
   }
-
   if (type === 'month') {
     const year = now.getFullYear();
     const month = now.getMonth();

@@ -87,7 +87,7 @@ class Main extends PureComponent {
           </Col>
         </Row>
         <Row gutter={24}>
-          {
+        {/*  {
             prefix==='http://api.water.test.com'&&
             <Col xl={18} lg={18} md={24} sm={24} xs={24}>
               <Card
@@ -99,7 +99,7 @@ class Main extends PureComponent {
                 <MapData/>
               </Card>
             </Col>
-          }
+          }*/}
           {
             prefix==='http://api.water.test.com'&&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>

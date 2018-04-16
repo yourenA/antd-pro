@@ -360,14 +360,14 @@ class Vendor extends PureComponent {
     const rectWidth = 147;
     const rectHeight = 57;
     const columns = [
-      {title: '名称', dataIndex: 'name', key: 'name',
+      {title: '流量计站点', dataIndex: 'site_name', key: 'site_name',
         render: (val, record, index) => (
           <span style={{color:record.is_virtual===1?'red':''}}>{val}</span>
         )
       },
-      {title: '读值', dataIndex: 'value', key: 'value'},
-      {title: '产销差', dataIndex: 'attrition_value', key: 'attrition_value'},
-      {title: '产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate'},
+      {title: '流量计读值', dataIndex: 'value', key: 'value'},
+      {title: '流量计产销差', dataIndex: 'attrition_value', key: 'attrition_value'},
+      {title: '流量计产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate'},
     ];
     return (
       <Layout className="layout">
@@ -573,8 +573,12 @@ class Vendor extends PureComponent {
                               <td>{allData.length > 0 ? allData[0].total_meter_value : null}</td>
                             </tr>
                             <tr>
-                              <td>流量计读数总值</td>
-                              <td>{allData.length > 0 ? allData[0].total_flow_meter_value : null}</td>
+                              <td>流量计正向流量总值</td>
+                              <td>{allData.length > 0 ? allData[0].total_forward_value : null}</td>
+                            </tr>
+                            <tr>
+                              <td>流量计反向流量总值</td>
+                              <td>{allData.length > 0 ? allData[0].total_reverse_value : null}</td>
                             </tr>
                             <tr>
                               <td>其他（大客户水表）读数</td>

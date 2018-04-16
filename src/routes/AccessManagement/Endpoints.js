@@ -44,6 +44,7 @@ export default class EndpointsList extends PureComponent {
   };
 
   componentDidMount() {
+    console.log(this.props)
     const {dispatch} = this.props;
     dispatch({
       type: 'endpoints/fetch',
@@ -51,8 +52,8 @@ export default class EndpointsList extends PureComponent {
         page: 1
       }
     });
+    this.props.findChildFunc(this.props.activeKey,this.handleFormReset)
   }
-
 
   handleMenuClick = (e) => {
     console.log('handleRemoveAll')
@@ -72,6 +73,7 @@ export default class EndpointsList extends PureComponent {
   }
   handleFormReset = () => {
     const {dispatch} = this.props;
+    this.searchFormRef.props.form.resetFields()
     dispatch({
       type: 'endpoints/fetch',
       payload: {},
@@ -300,7 +302,7 @@ export default class EndpointsList extends PureComponent {
         <Card bordered={false}>
           <div className='tableList'>
             <div className='tableListForm'>
-              <DefaultSearch handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
+              <DefaultSearch  wrappedComponentRef={(inst) => this.searchFormRef = inst} handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}/>
             </div>
             <div className='tableListOperator'>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>

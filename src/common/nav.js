@@ -10,7 +10,7 @@ import asyncComponent from './../AsyncComponent'
 // import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
 // )
 import Endpoints from '../routes/AccessManagement/Endpoints'
-
+import UserInfo from './../routes/UserInfo/Index'
 // const OrganizationManage = asyncComponent(() =>
 // import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
 // )
@@ -101,7 +101,7 @@ import UserArchives from './../routes/HeaderBody/UserArchives/Index'
 // const VendorMange = asyncComponent(() =>
 // import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
 // )
-import VendorMange from './../routes/HeaderBody/VendorMange/Index'
+import VendorMange from './../routes/HeaderBody/VendorMangeIgnore/Index'
 
 // const MeterModels = asyncComponent(() =>
 // import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
@@ -173,6 +173,19 @@ const data = [{
   name: '首页', // for breadcrumb
   path: '',
   children: [
+    {
+      name: '主页',            // 页面名称，会展示在菜单栏中
+      path: 'home',   // 匹配的路由
+      icon: 'home',              // 页面图标，会展示在菜单栏中
+      component:NewPage,
+    },
+    {
+      name: '个人中心',            // 页面名称，会展示在菜单栏中
+      path: 'user-info',   // 匹配的路由
+      icon: 'user',              // 页面图标，会展示在菜单栏中
+      component:UserInfo,
+      noshowInSibar:true
+    },
     {
     name: '接入管理',            // 页面名称，会展示在菜单栏中
     path: 'access-management',   // 匹配的路由

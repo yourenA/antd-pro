@@ -109,21 +109,6 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              名称
-            </span>
-            )}
-          >
-            {getFieldDecorator('name', {
-              initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-              rules: [{required: true, message: '名称不能为空'}],
-            })(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem
-            {...formItemLayoutWithLabel}
-            label={(
-              <span>
               流量表编号
             </span>
             )}
@@ -132,6 +117,26 @@ class AddPoliciesForm extends Component {
               initialValue: this.props.editRecord ? this.props.editRecord.number : '',
             })(
               <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              流量计站点
+            </span>
+            )}>
+            {getFieldDecorator('site_id', {
+              initialValue: this.props.editRecord?{key:this.props.editRecord.site_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
+              rules: [{required: true, message: '流量计站点不能为空'}],
+            })(
+              <Select labelInValue={true} >
+                { this.props.flow_meter_sites.map((item, key) => {
+                  return (
+                    <Option key={item.id} value={item.id.toString()}>{item.name}</Option>
+                  )
+                }) }
+              </Select>
             )}
           </FormItem>
           <FormItem
@@ -158,21 +163,6 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              地理信息编码
-            </span>
-            )}
-          >
-            {getFieldDecorator('geo_code', {
-              initialValue: this.props.editRecord ? this.props.editRecord.geo_code : '',
-              rules: [{required: true, message: '地理信息编码不能为空'}],
-            })(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem
-            {...formItemLayoutWithLabel}
-            label={(
-              <span>
                 所属DMA分区
             </span>
             )}>
@@ -188,7 +178,7 @@ class AddPoliciesForm extends Component {
               </TreeSelect>
             )}
           </FormItem>
-          <FormItem
+         {/* <FormItem
             label="是否虚拟流量计"
             {...formItemLayoutWithLabel}
           >
@@ -201,7 +191,7 @@ class AddPoliciesForm extends Component {
                 <Radio value={-1}>否</Radio>
               </RadioGroup>
             )}
-          </FormItem>
+          </FormItem>*/}
           <FormItem
             label="是否正向流量"
             {...formItemLayoutWithLabel}
@@ -216,7 +206,7 @@ class AddPoliciesForm extends Component {
               </RadioGroup>
             )}
           </FormItem>
-          <FormItem
+         {/* <FormItem
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -229,8 +219,8 @@ class AddPoliciesForm extends Component {
             })(
               <Input />
             )}
-          </FormItem>
-          <FormItem
+          </FormItem>*/}
+         {/* <FormItem
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -249,8 +239,8 @@ class AddPoliciesForm extends Component {
                 {this.renderFlowMetersTreeNodes(flow_meters.allData)}
               </TreeSelect>
             )}
-          </FormItem>
-          <FormItem
+          </FormItem>*/}
+        {/*  <FormItem
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -263,7 +253,7 @@ class AddPoliciesForm extends Component {
             })(
               <Input />
             )}
-          </FormItem>
+          </FormItem>*/}
         </Form>
       </div>
     );

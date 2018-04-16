@@ -1,5 +1,6 @@
 @import "~antd/lib/style/themes/default.less";
-.bce_content{
+
+.bce_content {
   position: absolute;
   top: 0;
   left: 200px;
@@ -21,7 +22,8 @@
   transition: all .2s;
   padding: 0 !important;
 }
-.main_area{
+
+.main_area {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -32,7 +34,7 @@
   padding: 0;
   clear: both;
 
-  .main{
+  .main {
     position: absolute;
     top: 65px;
     bottom: 0;
@@ -123,8 +125,8 @@
   .account {
     .avatar {
       margin: 20px 8px 20px 0;
-      color:#fff;
-      background:  @primary-color;
+      color: #fff;
+      background: @primary-color;
       vertical-align: middle;
     }
   }
@@ -150,5 +152,17 @@
   box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
   position: fixed;
   z-index: 10;
-  background-image:url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') ;
+  background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+}
+
+.tabs {
+  :global {
+    .ant-tabs-bar {
+      margin-bottom: 0 !important;
+       .ant-tabs-tab:nth-child(2){
+         .anticon-close{
+         }
+      }
+    }
+  }
 }
