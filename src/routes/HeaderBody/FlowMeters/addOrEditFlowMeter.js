@@ -127,7 +127,7 @@ class AddPoliciesForm extends Component {
             </span>
             )}>
             {getFieldDecorator('site_id', {
-              initialValue: this.props.editRecord?{key:this.props.editRecord.site_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
+              initialValue: this.props.editRecord?{key:this.props.editRecord.site_id,label:this.props.editRecord.site_name}:{key:'',label:''},
               rules: [{required: true, message: '流量计站点不能为空'}],
             })(
               <Select labelInValue={true} >

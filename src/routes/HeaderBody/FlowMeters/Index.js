@@ -394,6 +394,7 @@ class FlowMeter extends PureComponent {
                             //area_id: item.area_id,
                           },
                           callback: ()=> {
+                            item.site_name=
                             this.setState(
                               {
                                 editRecord: item,
@@ -432,10 +433,9 @@ class FlowMeter extends PureComponent {
                       <a href="javascript:;" onClick={()=> {
                         const {dispatch} = this.props;
                         dispatch({
-                          type: 'flow_meters/fetchAll',
+                          type: 'flow_meter_sites/fetchAll',
                           payload: {
                             return: 'all',
-                            area_id: item.area_id,
                           },
                           callback: ()=> {
                             this.setState(
