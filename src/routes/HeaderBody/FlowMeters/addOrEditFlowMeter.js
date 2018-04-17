@@ -109,12 +109,13 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              流量表编号
+              流量计编号
             </span>
             )}
           >
             {getFieldDecorator('number', {
               initialValue: this.props.editRecord ? this.props.editRecord.number : '',
+              rules: [{required: true, message: '流量计编号不能为空'}],
             })(
               <Input />
             )}

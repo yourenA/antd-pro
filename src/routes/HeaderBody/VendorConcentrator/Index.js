@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Row,Col} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm,Modal,Row,Col,Progress} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -85,7 +85,18 @@ class Vendor extends PureComponent {
     })
   }
   render() {
-    const {vendor_concentrator: {data, meta, loading},manufacturers} = this.props;
+    let {vendor_concentrator: {data, meta, loading},manufacturers} = this.props;
+    data=[{
+      name:'株州朱华1',concentrator_count:1123,concentrator_count1:10982,concentrator_count2:86,concentrator_count3:50,
+    },{
+      name:'株州朱华2',concentrator_count:1123,concentrator_count1:6000,concentrator_count2:98,concentrator_count3:40,
+    },{
+      name:'株州朱华3',concentrator_count:1123,concentrator_count1:5000,concentrator_count2:50,concentrator_count3:50,
+    },{
+      name:'株州朱华4',concentrator_count:1123,concentrator_count1:10982,concentrator_count2:86,concentrator_count3:20,
+    },{
+      name:'株州朱5',concentrator_count:1123,concentrator_count1:5000,concentrator_count2:20,concentrator_count3:50,
+    }]
     const columns = [
       {
         title: '序号',
@@ -103,8 +114,15 @@ class Vendor extends PureComponent {
       },
       {title: '厂商名称', dataIndex: 'name', key: 'name'},
       {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count'},
-      {title: '昨天上报率', dataIndex: 'concentrator_count2', key: 'concentrator_count2'},
-      {title: '工况总计', dataIndex: 'concentrator_count3', key: 'concentrator_count3'},
+      {title: '水表数量数量', dataIndex: 'concentrator_count1', key: 'concentrator_count1'},
+      {title: '昨天上报率', dataIndex: 'concentrator_count2', key: 'concentrator_count2',
+      render:(val)=>(
+        <Progress percent={val} size="small" />
+      )},
+      {title: '工况总计', dataIndex: 'concentrator_count3', key: 'concentrator_count3',
+        render:(val)=>(
+          <Progress percent={val} size="small" />
+        )},
     ];
     return (
       <Layout className="layout">
@@ -122,18 +140,13 @@ class Vendor extends PureComponent {
                 </div>*/}
                 <Row gutter={16}>
                   <Col span={10}>
-                    <Guage></Guage>
+                    <Guage data={data}></Guage>
                   </Col>
                   <Col span={14}>
                     <Table
-                      rowClassName={function (record, index) {
-                        if (record.description === '') {
-                          return 'error'
-                        }
-                      }}
                       className='meter-table'
                       loading={loading}
-                      rowKey={record => record.concentrator_number}
+                      rowKey={record => record.id}
                       dataSource={data}
                       columns={columns}
                       scroll={{y: this.state.tableY}}

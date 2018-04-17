@@ -34,11 +34,11 @@ class UserMeterLife extends PureComponent {
             <Switch>
               <Route
                 path='/main/system_manage/system_setup/night_warning_setup'
-                component={Working}
+                component={NightWarningSetup}
               />
               <Route
                 path='/main/system_manage/system_setup/zero_warning_setup'
-                component={Working}
+                component={ZeroWarningSetup}
               />
               <Route
                 path='/main/system_manage/system_setup/exchange_database'

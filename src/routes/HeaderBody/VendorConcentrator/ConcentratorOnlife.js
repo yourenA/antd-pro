@@ -31,9 +31,18 @@ export default class EndpointsList extends PureComponent {
   dynamic = (concentrator)=> {
     console.log('online')
     this.myChart = this.echarts.init(document.querySelector('.concentratorOnline'));
+    let data=this.props.data;
+    let parseData=[]
+    let parseData1=[]
+    let parseData2=[]
+    for(let i=0;i<data.length;i++){
+      parseData.push(data[i].name)
+      parseData1.push({name:data[i].name,value:data[i].concentrator_count})
+      parseData2.push({name:data[i].name,value:data[i].concentrator_count1})
+    }
     let option = option = {
       title : {
-        text: '厂商-集中器比例',
+        text: '厂商-集中器/水表比例',
         x:'center'
       },
       tooltip : {
@@ -41,21 +50,31 @@ export default class EndpointsList extends PureComponent {
         formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
       legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['厂商一','厂商二','厂商三']
+        orient: 'horizontal',
+        bottom: '100',
+        data: parseData
       },
       series : [
         {
           name: '集中器个数',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'厂商一'},
-            {value:310, name:'厂商二'},
-            {value:234, name:'厂商三'},
-          ],
+          radius : '35%',
+          center: ['30%', '40%'],
+          data:parseData1,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        },
+        {
+          name: '水表个数',
+          type: 'pie',
+          radius : '35%',
+          center: ['70%', '40%'],
+          data:parseData2,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,

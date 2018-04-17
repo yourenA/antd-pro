@@ -43,9 +43,9 @@ class ConcentratorManage extends PureComponent {
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
+    // this.setState({
+    //   tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    // })
     const {dispatch}=this.props
     dispatch({
       type: 'concentrator_models/fetch',
@@ -91,6 +91,7 @@ class ConcentratorManage extends PureComponent {
       showAddBtnByCon:false,
       concentrator_number:null
     },function () {
+      this.changeTableY();
       this.handleSearch({
         page: 1,
         query: '',
@@ -169,7 +170,7 @@ class ConcentratorManage extends PureComponent {
       payload: {
         ...formValues,
         village_id: formValues.village_id[formValues.village_id.length-1],
-        server_id: formValues.server_id.key,
+        // server_id: formValues.server_id.key,
         concentrator_model_id: formValues.concentrator_model_id.key,
         is_count: formValues.is_count.key,
       },
@@ -197,7 +198,7 @@ class ConcentratorManage extends PureComponent {
       type: 'concentrators/edit',
       payload: {
         ...formValues,
-        server_id: formValues.server_id.key,
+        // server_id: formValues.server_id.key,
         concentrator_model_id: formValues.concentrator_model_id.key,
         is_count: formValues.is_count.key,
         id:this.state.editRecord.id

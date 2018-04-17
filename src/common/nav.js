@@ -101,7 +101,7 @@ import UserArchives from './../routes/HeaderBody/UserArchives/Index'
 // const VendorMange = asyncComponent(() =>
 // import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
 // )
-import VendorMange from './../routes/HeaderBody/VendorMangeIgnore/Index'
+import VendorMange from './../routes/HeaderBody/VendorMange/Index'
 
 // const MeterModels = asyncComponent(() =>
 // import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
