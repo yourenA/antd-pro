@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'dva';
-import {Card, Row, Col, Form, Icon, Input, Button, Checkbox,Select,Badge,Table,Pagination,message} from 'antd';
+import {Card, Row, Col, Form, Icon, Input, Button, Checkbox,Select,Badge,Table,Pagination,message,Divider} from 'antd';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -10,21 +10,49 @@ const FormItem = Form.Item;
 class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
+    this.timer=null;
     this.state = {
+      auto:true,
       feature: [{key:'open_valve',value:'开阀'},{key:'close_valve',value:'关阀'},{key:'upload_single',value:'抄读单表'}]
     }
   }
   componentDidMount() {
     const {dispatch} = this.props;
+    const that=this;
     dispatch({
       type: 'user_command_data/fetch',
       payload: {
         page: 1,
       }
     });
-
+    this.timer=setInterval(function () {
+      that.handleSearch({
+        page: 1,
+      })
+    },5000)
   }
-
+  toggleAuto=()=>{
+    const that=this;
+    this.setState({
+      auto:!this.state.auto
+    },function () {
+      if(this.state.auto){
+        console.log('开启自动刷新')
+        clearInterval(this.timer)
+        that.handleSearch({
+          page: 1,
+        })
+        this.timer=setInterval(function () {
+          that.handleSearch({
+            page: 1,
+          })
+        },5000)
+      }else{
+        console.log('停止自动刷新')
+        clearInterval(this.timer)
+      }
+    })
+  }
   handleSubmit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -186,7 +214,7 @@ class Dashboard extends PureComponent {
 
           </Col>
           <Col sm={20} md={20} lg={16} >
-            <Card title="测试结果列表"  extra={<a onClick={()=>{this.handleSearch({page:1})}}>刷新 <Icon type="sync" /></a> }>
+            <Card title="测试结果列表"  extra={<div><Button type="primary" onClick={this.toggleAuto}>{this.state.auto?'停止自动刷新':'开启自动刷新'} <Icon type="sync" /></Button> <Divider type="vertical" /><Button disabled={this.state.auto} onClick={()=>{this.handleSearch({page:1})}}>手动刷新 <Icon type="sync" /></Button></div> }>
               <Table
                 rowClassName={function (record, index) {
                   if (record.description === '') {
