@@ -63,6 +63,9 @@ class BasicLayout extends React.PureComponent {
       }
       return arr.concat(current.children)
     }, []);
+    this.isPageExit=!!find(getRouteData('BasicLayout'), function(o) {
+      return o.path == props.location.pathname;
+    });
     const panes =(props.location.pathname===getRouteData('BasicLayout')[0].path||props.location.pathname==='/')? [getRouteData('BasicLayout')[0]]:[getRouteData('BasicLayout')[0],find(getRouteData('BasicLayout'), function(o) {
       return o.path == props.location.pathname;
     })];
@@ -122,7 +125,7 @@ class BasicLayout extends React.PureComponent {
     const currentMenuSelectedKeys = [...this.getCurrentMenuSelectedKeys(props)];
     currentMenuSelectedKeys.splice(-1, 1);//splice:切割数组 返回修改后的数组
     if (currentMenuSelectedKeys.length === 0) {
-      return ['access-management'];
+      return [''];
     }
     return currentMenuSelectedKeys;
   }
@@ -243,10 +246,10 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const {location} = this.props;
     const {pathname} = location;
-    let title = 'Ant Design Pro';
+    let title = '珠华水工业';
     getRouteData('BasicLayout').forEach((item) => {
       if (item.path === pathname) {
-        title = `${item.name} - Ant Design Pro`;
+        title = `${item.name} - 珠华水工业`;
       }
     });
     return title;
@@ -282,6 +285,16 @@ class BasicLayout extends React.PureComponent {
     this[path] = cb
   }
   render() {
+    // if(!this.isPageExit){
+    //   return(
+    //     <NotFound actions={
+    //       <Button type="primary" onClick={()=>{
+    //         this.props.dispatch(routerRedux.push(`/home`));
+    //         window.location.reload()
+    //       }}>返回首页</Button>
+    //     }/>
+    //   )
+    // }
     const {collapsed, login} = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
@@ -306,7 +319,9 @@ class BasicLayout extends React.PureComponent {
           className={styles.sider}//引入BasicLayout.less中的类名，使用css
         >
           <div className={styles.logo}>
-            <Link to="/">
+            <Link onClick={()=>{
+              this.setState({activeKey:'/home'});
+            }} to="/home">
               <img src={waterLogo} alt="logo"/>
               <h1>水务系统IOT</h1>
             </Link>

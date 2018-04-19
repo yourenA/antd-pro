@@ -5,6 +5,7 @@ import Proportion from './HomePage/Proportion'
 import ConcentratorOnlife from './HomePage/ConcentratorOnlife'
 import AreaSupplyList from './HomePage/AreaSupplyList'
 import DMArate from './HomePage/DMArate'
+import VendorConcentrator from './HomePage/VendorConcentrator'
 import Guage from './HomePage/Guage'
 import { Row, Col, Card,  Icon } from 'antd';
 import styles from './main.less'
@@ -148,16 +149,16 @@ class Main extends PureComponent {
             </Card>
           </Col>
 
-          {/*<Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="平台统计"
+              title="厂商-集中器/水表统计"
               style={{ marginBottom: 24, minHeight: 509  }}
             >
-              <DynamicData />
+              <VendorConcentrator />
             </Card>
           </Col>
-
+          {/*
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm, Modal, Row, Col, Button, Popover, Icon} from 'antd';
+import {Pagination, Table, Card, Layout, message, Popconfirm, Modal, Row, Col, Button, Popover, Icon,Progress} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
@@ -367,7 +367,10 @@ class Vendor extends PureComponent {
       },
       {title: '流量计读值', dataIndex: 'value', key: 'value'},
       {title: '流量计产销差', dataIndex: 'attrition_value', key: 'attrition_value'},
-      {title: '流量计产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate'},
+      {title: '流量计产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate',
+        render:(val)=>(
+          <Progress percent={parseFloat(val)} size="small" />
+        )},
     ];
     return (
       <Layout className="layout">
@@ -590,7 +593,7 @@ class Vendor extends PureComponent {
                             </tr>
                             <tr>
                               <td>产销差率</td>
-                              <td>{allData.length > 0 ? allData[0].attrition_rate : null}</td>
+                              <td>{allData.length > 0 ?  <Progress percent={parseFloat(allData[0].attrition_rate)} size="small" /> : null}</td>
                             </tr>
                             </tbody>
                           </table>

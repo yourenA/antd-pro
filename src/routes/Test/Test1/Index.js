@@ -91,7 +91,7 @@ class Dashboard extends PureComponent {
     const {user_command_data: {data, meta, loading,command_msg}} = this.props;
     const columns = [
       {
-        title: '序号123',
+        title: '序号',
         dataIndex: 'id',
         key: 'id',
         width: 45,
