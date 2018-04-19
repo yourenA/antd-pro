@@ -11,7 +11,7 @@ class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      feature: [{key:'open_valve',value:'开阀'},{key:'close_valve',value:'关阀'}]
+      feature: [{key:'open_valve',value:'开阀'},{key:'close_valve',value:'关阀'},{key:'upload_single',value:'抄读单表'}]
     }
   }
   componentDidMount() {

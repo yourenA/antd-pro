@@ -23,7 +23,6 @@ class Vendor extends PureComponent {
       showdelBtn: find(this.permissions, {name: 'manufacturer_delete'}),
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       tableY: 0,
-      manufacturer_id: '',
       page: 1,
       started_at: '',
       ended_at: '',
@@ -41,7 +40,6 @@ class Vendor extends PureComponent {
       }
     });*/
     this.handleSearch({
-      manufacturer_id: '',
       page: 1,
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
@@ -55,7 +53,6 @@ class Vendor extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
-      manufacturer_id: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -70,7 +67,6 @@ class Vendor extends PureComponent {
     });
     if(cb) cb()
     this.setState({
-      manufacturer_id:values.manufacturer_id,
       started_at: values.started_at,
       ended_at: values.ended_at,
       page: values.page
@@ -79,8 +75,6 @@ class Vendor extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      manufacturer_id: this.state.manufacturer_id,
-      query: this.state.query,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at
     })
@@ -103,14 +97,14 @@ class Vendor extends PureComponent {
         }
       },
       {title: '厂商名称', width: '25%',dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
-      {title: '集中器数量',width: '25%', dataIndex: 'concentrator_count', key: 'concentrator_count'},
-      {title: '水表数量数量',width: '25%', dataIndex: 'concentrator_count1', key: 'concentrator_count1'},
       {title: '集中器优良率', dataIndex: 'concentrator_excellent_rate', key: 'concentrator_excellent_rate',
         render:(val,record)=>{
           const parserVal=parseFloat(val)
           if(typeof parserVal === 'number' && !isNaN(parserVal) ){
             return(
-              <Progress percent={parseFloat(parserVal)} size="small" />
+              <div style={{paddingRight:'20px'}}>
+                <Progress percent={parseFloat(parserVal)} size="small" />
+              </div>
             )
           }else{
             return val
@@ -126,13 +120,13 @@ class Vendor extends PureComponent {
           <div className="content">
             <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: '厂商-集中器统计'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                {/*<div className='tableList'>
+               <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch  handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                    manufacturers={manufacturers.data} showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
-                </div>*/}
+                </div>
                 <Table
                   className='meter-table'
                   loading={loading}

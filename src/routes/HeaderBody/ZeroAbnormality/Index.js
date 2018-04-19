@@ -33,18 +33,18 @@ class FunctionContent extends PureComponent {
         return: 'all'
       },
       callback:()=>{
-        that.changeTableY()
+
       }
     });
     this.handleSearch({
       area_id: '',
       page: 1,
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
-    })
+    },  that.changeTableY)
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 17 + 45)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 30)
     })
   }
   handleFormReset = () => {
@@ -54,7 +54,7 @@ class FunctionContent extends PureComponent {
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
-  handleSearch = (values) => {
+  handleSearch = (values,cb) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
@@ -66,6 +66,7 @@ class FunctionContent extends PureComponent {
         that.setState({
           ...values,
         })
+        if(cb)cb()
       }
     });
   }
@@ -99,10 +100,10 @@ class FunctionContent extends PureComponent {
           )
         }
       },
-      {title: '户号', width: '15%', dataIndex: 'member_number', key: 'member_number'},
-      {title: '集中器编号', width:  '15%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表号', width: '15%', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '水表序号', width: '15%', dataIndex: 'meter_index', key: 'meter_index'},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
+      {title: '水表号', width:100, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表序号', width:100, dataIndex: 'meter_index', key: 'meter_index'},
       {title: '姓名', dataIndex: 'real_name',width:  '15%', key: 'real_name'},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
 
@@ -123,10 +124,10 @@ class FunctionContent extends PureComponent {
                 </div>
                 <Table
                   className='meter-table'
-                  loading={false}
-                  rowKey={record => record.id}
+                  rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
+                  loading={loading}
                   scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"

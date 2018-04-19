@@ -20,8 +20,6 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
-        concentrator_number:fieldsValue.concentrator_number,
-        manufacturer_id: fieldsValue.manufacturer_id?fieldsValue.manufacturer_id.key:'',
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
@@ -38,7 +36,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-         {/* <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+       <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -58,17 +56,6 @@ class SearchForm extends Component {
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
               />
-            )}
-          </FormItem>*/}
-          <FormItem
-            allowClear={true}
-            label="厂商名称"
-          >
-            {getFieldDecorator('manufacturer_id', {
-            })(
-              <Select labelInValue={true} style={{width:120}}>
-                { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
-              </Select>
             )}
           </FormItem>
 

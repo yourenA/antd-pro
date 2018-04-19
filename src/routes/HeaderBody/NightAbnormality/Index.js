@@ -126,8 +126,8 @@ class FunctionContent extends PureComponent {
                 </div>
                 <Table
                   className='meter-table'
-                  loading={false}
-                  rowKey={record => record.id}
+                  rowKey={record => record.uuidkey}
+                  loading={loading}
                   dataSource={data}
                   columns={columns}
                   scroll={{x: 1200, y: this.state.tableY}}
