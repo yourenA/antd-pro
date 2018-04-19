@@ -166,6 +166,9 @@ import NewPage from './../routes/NewPage'
 // )
 import Test1 from './../routes/Test/Test1/Index'
 
+import NightAbnormality from './../routes/HeaderBody/NightAbnormality/Index'
+import ZeroAbnormality from './../routes/HeaderBody/ZeroAbnormality/Index'
+
 import Working from '../routes/Exception/working';
 const data = [{
   component: BasicLayout,
@@ -374,13 +377,8 @@ const data = [{
           name: '系统设置',
           path: 'system_setup',
           component: SystemSetup,
-          permissions:['company_visit'],
-        },{
-        name: '交换数据库设置',
-        path: 'change_dbase_setting',
-        component: NewPage,
-        permissions:['iot_hub_management'],
-      }],
+          permissions:['config_edit'],
+        }],
     },{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
@@ -401,6 +399,16 @@ const data = [{
         path: 'statistics_daily',
         component: StatisticsDaily,
         permissions:['daily_error'],
+      },{
+        name: '夜间异常流量报警',
+        path: 'night_abnormality',
+        component: NightAbnormality,
+        permissions:['company_visit'],
+      },{
+        name: '零流量异常报警',
+        path: 'zero_abnormality',
+        component: ZeroAbnormality,
+        permissions:['company_visit'],
       }],
     }],
 },

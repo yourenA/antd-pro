@@ -152,7 +152,7 @@ class Main extends PureComponent {
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="厂商-集中器/水表统计"
+              title="厂商-集中器/水表个数"
               style={{ marginBottom: 24, minHeight: 509  }}
             >
               <VendorConcentrator />
