@@ -338,6 +338,7 @@ class MeterModel extends PureComponent {
           )
         }
       },
+      {title: '执行回调结果', dataIndex: 'result', key: 'result', },
       {title: '执行用户名', dataIndex: 'send_username', key: 'send_username'},
       {title: '创建时间', dataIndex: 'created_at', key: 'created_at',},
     ];

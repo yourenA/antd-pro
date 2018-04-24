@@ -106,7 +106,7 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title="五大区供水一览"
+                title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大区供水一览</span>}
                 bodyStyle={{ padding: 24 }}
                 style={{ marginBottom: 24, minHeight: 509 }}
               >
@@ -120,7 +120,7 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title="DMA损漏率"
+                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大区供水一览</span>}
                 bodyStyle={{ padding: 24 }}
                 style={{ marginBottom: 24, minHeight: 509 }}
               >
@@ -131,7 +131,7 @@ class Main extends PureComponent {
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="昨日集中器在线情况统计"
+              title={<span><Icon type='bar-chart' style={{marginRight:'5px',color:'#1890ff'}} />昨日集中器在线情况统计</span>}
               bodyStyle={{ padding: 24 }}
               style={{ marginBottom: 24, minHeight: 509 }}
             >
@@ -141,7 +141,7 @@ class Main extends PureComponent {
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="昨日水表状态统计"
+              title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />昨日水表状态统计</span>}
               bodyStyle={{ padding: 24 }}
               style={{ marginBottom: 24, minHeight: 509 }}
             >
@@ -152,7 +152,7 @@ class Main extends PureComponent {
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title="厂商-集中器/水表个数"
+              title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />厂商-集中器/水表个数</span>}
               style={{ marginBottom: 24, minHeight: 509  }}
             >
               <VendorConcentrator />

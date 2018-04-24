@@ -32,7 +32,7 @@ class EditUserArchives extends Component {
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -45,6 +45,7 @@ class EditUserArchives extends Component {
       <div>
       <Form onSubmit={this.handleSubmit}>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="户号"
           {...formItemLayoutWithLabel}
         >
@@ -56,6 +57,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         {this.props.editRecord ?null: <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="集中器编号"
           {...formItemLayoutWithLabel}
         >
@@ -69,6 +71,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="水表号"
           {...formItemLayoutWithLabel}
         >
@@ -81,6 +84,7 @@ class EditUserArchives extends Component {
         </FormItem>
 
         {this.props.editRecord ?null:  <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="水表序号"
           {...formItemLayoutWithLabel}
         >
@@ -92,6 +96,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         {this.props.editRecord ?null: <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="台区"
           {...formItemLayoutWithLabel}
         >
@@ -103,6 +108,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         {this.props.editRecord ?null: <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="表册"
           {...formItemLayoutWithLabel}
         >
@@ -115,6 +121,7 @@ class EditUserArchives extends Component {
         </FormItem>}
         <FormItem
           label="用户名称"
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('real_name', {
@@ -141,6 +148,7 @@ class EditUserArchives extends Component {
         </FormItem>*/}
         <FormItem
           {...formItemLayoutWithLabel}
+          style={{width:'50%',display:'inline-block'}}
           label={(
             <span>
               安装地址
@@ -155,6 +163,7 @@ class EditUserArchives extends Component {
         </FormItem>
 
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="邮箱地址"
           {...formItemLayoutWithLabel}
         >
@@ -165,6 +174,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="电话"
           {...formItemLayoutWithLabel}
         >
@@ -194,6 +204,7 @@ class EditUserArchives extends Component {
         </FormItem>*/}
         <FormItem
           label="身份证号码"
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('id_card', {
@@ -204,6 +215,7 @@ class EditUserArchives extends Component {
         </FormItem>
         <FormItem
           label="性别"
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('sex', {
@@ -218,6 +230,7 @@ class EditUserArchives extends Component {
         </FormItem>
         <FormItem
           label="抄表员"
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('reader', {
@@ -228,6 +241,7 @@ class EditUserArchives extends Component {
         </FormItem>
         {this.props.editRecord ?null:  <FormItem
           label="初始水量"
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('initial_water', {
@@ -237,6 +251,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         {this.props.editRecord ?null:   <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="历史读数"
           {...formItemLayoutWithLabel}
         >
@@ -247,6 +262,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         {this.props.editRecord ?null:     <FormItem
+          style={{width:'50%',display:'inline-block'}}
           label="换表记录"
           {...formItemLayoutWithLabel}
         >
@@ -263,6 +279,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>}
         {this.props.editRecord ?null:   <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>

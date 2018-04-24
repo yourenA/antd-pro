@@ -20,6 +20,8 @@ export default class Login extends Component {
 
   componentDidMount() {
     const that=this;
+    const { location } = this.props;
+    console.log(this.props)
    /* request(`/available_companies`,{
       method:'GET',
       params:{

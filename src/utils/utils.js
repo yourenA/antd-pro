@@ -105,7 +105,7 @@ const removeLoginStorage = () => {
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('permissions');
   sessionStorage.clear();
-  localStorage.clear()
+  // localStorage.clear()
   // localStorage.removeItem('username');
   // localStorage.removeItem('token');
 };
@@ -221,4 +221,22 @@ export function download(url) {
 
 export function disabledDate(current) {
   return (current && current > moment().add(0, 'days'))||(current && current < moment('2017-10-01'));
+}
+
+export function disabledPreDate(current) {
+  return (current && current > moment().add(-1, 'days'))||(current && current < moment('2017-10-01'));
+}
+
+export function getPreMonth() {
+  var date=new Date();
+  var year = date.getFullYear(); //获取当前日期的年份
+  var month = date.getMonth(); //获取当前日期的月份
+  var day = date.getDate(); //获取当前日期的日
+  if (month === 0) {//如果是1月份，则取上一年的12月份
+    year = year - 1;
+    month = 12;
+  }
+  day = new Date(year, month, 0).getDate();
+
+  return [moment(year+'-'+month+'-'+'0', 'YYYY-MM-DD'),moment(year+'-'+month+'-'+day, 'YYYY-MM-DD')]
 }

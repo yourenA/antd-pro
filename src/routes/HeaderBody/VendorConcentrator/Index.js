@@ -109,7 +109,8 @@ class Vendor extends PureComponent {
           }else{
             return val
           }
-        }}
+        }
+      }
 
 
     ];

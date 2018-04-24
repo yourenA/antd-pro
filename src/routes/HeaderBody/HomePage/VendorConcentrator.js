@@ -13,7 +13,7 @@ export default class VendorConcentrator extends PureComponent {
     const that=this;
     request(`/manufacturers`,{
       method:'GET',
-      query:{
+      params:{
         return:'all'
       }
     }).then((response)=>{

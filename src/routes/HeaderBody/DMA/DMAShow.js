@@ -7,6 +7,7 @@ import moment from 'moment'
 import imgSrc from './images/area.png'
 import find from 'lodash/find'
 import './index.less'
+import {getPreMonth} from './../../../utils/utils'
 import uuid from 'uuid/v4'
 import {ContextMenu, Item, Separator, Submenu, ContextMenuProvider} from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.min.css';
@@ -23,11 +24,12 @@ class Vendor extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.map = null;
     this.BMap = window.BMap;
-    this.dmaArea = []
+    this.dmaArea = [];
     this.state = {
       showAddBtn: find(this.permissions, {name: 'manufacturer_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'manufacturer_delete'}),
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange: new Date().getDate()===1?getPreMonth()
+        :[moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + (parseInt(new Date().getDate()) - 1), 'YYYY-MM-DD')],
       tableY: 0,
       imgW: 0,
       imgH: 0,
@@ -361,17 +363,12 @@ class Vendor extends PureComponent {
     const rectHeight = 57;
     const columns = [
       {title: '流量计站点', dataIndex: 'site_name', key: 'site_name',
-        render: (val, record, index) => (
-          <span style={{color:record.is_virtual===1?'red':''}}>{val}</span>
-        )
+        // render: (val, record, index) => (
+        //   <span style={{color:record.is_forward===-1?'red':''}}>{val}</span>
+        // )
       },
-      {title: '流量计读值', dataIndex: 'value', key: 'value'},
-      {title: '流量计产销差', dataIndex: 'attrition_value', key: 'attrition_value'},
-      {title: '流量计产销差率', dataIndex: 'attrition_rate', key: 'attrition_rate',
-        render:(val)=>(
-          <Progress percent={parseFloat(val)} size="small" />
-        )},
-    ];
+      {title: '下属流量计读值', dataIndex: 'value', key: 'value'},
+      ];
     return (
       <Layout className="layout">
         <Content >
@@ -572,7 +569,19 @@ class Vendor extends PureComponent {
                               <td>{allData.length > 0 ? allData[0].area_name : null}</td>
                             </tr>
                             <tr>
-                              <td>户表读数总值</td>
+                              <td>水表数量</td>
+                              <td>{allData.length > 0 ? allData[0].meter_count : null}</td>
+                            </tr>
+                            <tr>
+                              <td>水表有效读数数量</td>
+                              <td>{allData.length > 0 ? allData[0].meter_effective_count : null}</td>
+                            </tr>
+                            <tr>
+                              <td>水表有效读数率</td>
+                              <td>{allData.length > 0 ? allData[0].meter_effective_rate : null}</td>
+                            </tr>
+                            <tr>
+                              <td>水表读数总值</td>
                               <td>{allData.length > 0 ? allData[0].total_meter_value : null}</td>
                             </tr>
                             <tr>
@@ -593,13 +602,13 @@ class Vendor extends PureComponent {
                             </tr>
                             <tr>
                               <td>产销差率</td>
-                              <td>{allData.length > 0 ?  <Progress percent={parseFloat(allData[0].attrition_rate)} size="small" /> : null}</td>
+                              <td>{allData.length > 0 ?  (typeof parseFloat(allData[0].attrition_rate === 'number') && !isNaN(parseFloat(allData[0].attrition_rate))) ? <Progress percent={parseFloat(allData[0].attrition_rate)} size="small" />:allData[0].attrition_rate : null}</td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
                         <h2 style={{marginBottom: '10px', marginTop: '10px'}}><span className="flowmeter-icon"></span>
-                          <p>下属流量计信息</p><span>（红色名称为虚拟流量计）</span></h2>
+                          <p>下属流量计信息</p></h2>
                         <Table
                           className='meter-table'
                           rowKey={record => record.uuid}

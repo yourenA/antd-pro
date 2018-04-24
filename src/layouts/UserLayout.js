@@ -16,6 +16,8 @@ class UserLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
   }
+  componentDidMount() {
+  }
   getChildContext() {
     const { location } = this.props;
     return { location };

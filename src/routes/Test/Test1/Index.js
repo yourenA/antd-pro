@@ -25,11 +25,16 @@ class Dashboard extends PureComponent {
         page: 1,
       }
     });
-    this.timer=setInterval(function () {
-      that.handleSearch({
-        page: 1,
-      })
-    },5000)
+    this.timer=setInterval(this.setIntervalFetch,5000)
+
+  }
+  setIntervalFetch=()=>{
+    this.handleSearch({
+      page: 1,
+    })
+  }
+  componentWillUnmount=()=>{
+    clearInterval(this.timer)
   }
   toggleAuto=()=>{
     const that=this;

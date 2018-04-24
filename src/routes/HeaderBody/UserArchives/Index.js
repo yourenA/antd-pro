@@ -346,6 +346,7 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </Content>
         <Modal
+          width="650px"
           title="添加用户档案"
           visible={this.state.addModal}
           onOk={this.handleAdd}
@@ -354,6 +355,7 @@ class UserMeterAnalysis extends PureComponent {
           <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
         </Modal>
         <Modal
+          width="650px"
           key={ Date.parse(new Date())+1}
           title="编辑用户档案"
           visible={this.state.editModal}

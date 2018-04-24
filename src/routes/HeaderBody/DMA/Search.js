@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Form,DatePicker,Row,message,Input,Button,Switch,Divider,Badge,Select } from 'antd';
 import moment from 'moment'
-import {disabledDate} from './../../../utils/utils'
+import {disabledPreDate} from './../../../utils/utils'
 import {Link} from 'dva/router';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -46,7 +46,7 @@ class SearchForm extends Component {
               <DatePicker
                 onChange={(date,dateString)=>{this.props.setStart(dateString) }}
                 allowClear={false}
-                disabledDate={disabledDate}
+                disabledDate={disabledPreDate}
                 format="YYYY-MM-DD"
               />
             )}
@@ -58,7 +58,7 @@ class SearchForm extends Component {
               <DatePicker
                 onChange={(date,dateString)=>{this.props.setEnd(dateString) }}
                 allowClear={false}
-                disabledDate={disabledDate}
+                disabledDate={disabledPreDate}
                 format="YYYY-MM-DD"
               />
             )}
