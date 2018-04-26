@@ -31,13 +31,28 @@ class OrganizationForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              名称
+              机构名称
             </span>
           )}
         >
           {getFieldDecorator('name', {
             initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '目的地值不能为空'}],
+            rules: [{required: true, message: '机构名称不能为空'}],
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              机构代码
+            </span>
+          )}
+        >
+          {getFieldDecorator('code', {
+            initialValue: this.props.editRecord ? this.props.editRecord.code : '',
+            rules: [{required: true, message: '机构代码不能为空'}],
           })(
             <Input />
           )}

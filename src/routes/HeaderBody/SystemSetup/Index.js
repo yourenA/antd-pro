@@ -7,7 +7,7 @@ import './index.less'
 import Working from '../../Exception/working';
 import NightWarningSetup from './NightWarningSetup'
 import ZeroWarningSetup from './ZeroWarningSetup'
-import ExchangeDatabase from './ExchangeDatabase'
+import unusual_water from './Unusual_water'
 import SystemName from './SystemName'
 import SmsNotice from './SmsNotice'
 import EmailNotice from './EmailNotice'
@@ -41,8 +41,8 @@ class UserMeterLife extends PureComponent {
                 component={ZeroWarningSetup}
               />
               <Route
-                path='/main/system_manage/system_setup/exchange_database'
-                component={Working}
+                path='/main/system_manage/system_setup/unusual_water'
+                component={unusual_water}
               />
               <Route
                 path='/main/system_manage/system_setup/system_name'

@@ -58,7 +58,7 @@ class BasicLayout extends React.PureComponent {
     super(props);
     // 把一级 Layout 的 children 作为菜单项
     this.menus = getNavData().reduce((arr, current) => {
-      if (current.layout === 'UserLayout' || current.layout === 'HeaderBodyLayout' || current.showInSibar === false) {
+      if (current.layout === 'UserLayout' || current.layout === 'HeaderBodyLayout' || current.layout === 'TestLayout'|| current.showInSibar === false) {
         return arr.concat([])
       }
       return arr.concat(current.children)

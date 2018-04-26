@@ -151,6 +151,8 @@ import ConcentratorErrorAnalysis from './../routes/HeaderBody/ConcentratorErrorA
 // )
 import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
 
+import Consumption_abnormality from '../routes/HeaderBody/Consumption_abnormality/Index'
+
 // const StatisticsDaily = asyncComponent(() =>
 // import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
 // )
@@ -190,6 +192,23 @@ const data = [{
       noshowInSibar:true
     },
     {
+      name: '平台管理',            // 页面名称，会展示在菜单栏中
+      path: 'platform-management',   // 匹配的路由
+      icon: 'api',              // 页面图标，会展示在菜单栏中
+      permissions:['company_add_and_edit','company_status_edit','company_delete'],
+      children: [{
+        name: '机构管理',
+        path: 'organization',
+        component:OrganizationManage,
+        permissions:['company_add_and_edit','company_status_edit','company_delete'],
+      },{
+        name: '平台设置',
+        path: 'setting',
+        component:PlatformSetting,
+        permissions:['company_add_and_edit','company_status_edit','company_delete'],
+      }],
+    },
+   /* {
     name: '接入管理',            // 页面名称，会展示在菜单栏中
     path: 'access-management',   // 匹配的路由
     icon: 'tool',              // 页面图标，会展示在菜单栏中
@@ -250,7 +269,7 @@ const data = [{
         path: 'DistributionGraph',
         component:DistributionGraph,
       }],
-    }],
+    }*/],
 },{
   component: HeaderBodyLayout,
   layout: 'HeaderBodyLayout',
@@ -400,6 +419,11 @@ const data = [{
         component: StatisticsDaily,
         permissions:['daily_error'],
       },{
+        name: '用水量异常报警',
+        path: 'water_unusual_analysis',
+        component: Consumption_abnormality,
+        permissions:['company_visit'],
+      },{
         name: '夜间异常流量报警',
         path: 'night_abnormality',
         component: NightAbnormality,
@@ -424,7 +448,7 @@ const data = [{
           component: Test1,
       }
   ]
-},{
+},/*{
   component: UserLayout,
   layout: 'UserLayout',
   children: [{
@@ -451,7 +475,7 @@ const data = [{
     target: '_blank',
     icon: 'book',
   }],
-}];
+}*/];
 
 export function getNavData() {
   return data;

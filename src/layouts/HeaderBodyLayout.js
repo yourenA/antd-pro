@@ -53,6 +53,7 @@ class HeaderBodyLayout extends React.PureComponent {
     }, []);
     this.zeroNotify = null;
     this.nightNotify = null;
+    this.noConsumptionNotifyDay = null;
     this.state = {
       current: '',
       editModal: false
@@ -74,7 +75,48 @@ class HeaderBodyLayout extends React.PureComponent {
     const date = moment(new Date()).format('YYYY-MM-DD');
     const noZeroNotifyDay = localStorage.getItem('noZeroNotifyDay');
     const noNightNotifyDay = localStorage.getItem('noNightNotifyDay');
-    const dispatch = this.props.dispatch
+    const noConsumptionNotifyDay = localStorage.getItem('noConsumptionNotifyDay');
+    const dispatch = this.props.dispatch;
+
+    if (noConsumptionNotifyDay === date) {
+      console.log('不提醒')
+    } else {
+      request(`/consumption_abnormality`, {
+        method: 'get',
+        params: {
+          started_at: date,
+          ended_at:date,
+          page: 1
+        }
+      }).then((response)=> {
+        console.log(response);
+        const data = response.data.data
+        if (data.length > 0) {
+          const args = {
+            placement: 'bottomRight',
+            message: '用水量异常报警',
+            duration: 10,
+            key:'noConsumptionNotifyDay',
+            description: <div>{data[0].meter_number} 等水表出现用水量异常报警
+              <p>
+                <a href="javascript:;" onClick={()=> {
+                  console.log(' this.noConsumptionNotifyDay', this.noConsumptionNotifyDay)
+                  localStorage.setItem('noConsumptionNotifyDay', date);
+                  notification.close('noConsumptionNotifyDay')
+                }
+                }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+                dispatch(routerRedux.push('/main/unusual_analysis/water_unusual_analysis'));
+              }
+              }>查看详情</a>
+              </p>
+            </div>,
+          };
+          this.noConsumptionNotifyDay = notification.warning(args);
+          console.log(' this.noConsumptionNotifyDay', this.noConsumptionNotifyDay)
+        }
+      })
+    }
+
     if (noZeroNotifyDay === date) {
       console.log('不提醒')
     } else {
@@ -92,15 +134,16 @@ class HeaderBodyLayout extends React.PureComponent {
             placement: 'bottomRight',
             message: '零流量异常报警',
             duration: 10,
+            key:'zeroNotify',
             description: <div>{data[0].meter_number} 等水表出现零流量异常
               <p>
                 <a href="javascript:;" onClick={()=> {
                   localStorage.setItem('noZeroNotifyDay', date);
-                  notification.destroy(this.zeroNotify)
+                  notification.close('zeroNotify')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
                 dispatch(routerRedux.push('/main/unusual_analysis/zero_abnormality'));
-                //notification.destroy(this.zeroNotify)
+                //notification.close(this.zeroNotify)
               }
               }>查看详情</a>
               </p>
@@ -128,15 +171,16 @@ class HeaderBodyLayout extends React.PureComponent {
             placement: 'bottomRight',
             message: '夜间异常流量报警',
             duration: 10,
+            key:'noNightNotifyDay',
             description: <div>{data[0].meter_number} 等水表出现夜间流量异常
               <p>
                 <a href="javascript:;" onClick={()=> {
                   localStorage.setItem('noNightNotifyDay', date)
-                  notification.destroy(this.nightNotify)
+                  notification.close('noNightNotifyDay')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
                 dispatch(routerRedux.push('/main/unusual_analysis/night_abnormality'));
-                //notification.destroy(this.nightNotify)
+                //notification.close(this.nightNotify)
               }
               }>查看详情</a>
               </p>

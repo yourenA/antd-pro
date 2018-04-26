@@ -28,27 +28,9 @@ class NewPage extends PureComponent {
     return (
       <div>
         <Row gutter={24}>
-          <Col span={8}>
             <Card bordered={false}>
-              <Link to="/home/123">卡片内容</Link>
-              <p>卡片内容</p>
-              <p>卡片内容</p>
+              主页
             </Card>
-          </Col>
-          <Col span={8}>
-            <Card bordered={false}>
-              <p>卡片内容</p>
-              <p>卡片内容</p>
-              <p>卡片内容</p>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card bordered={false}>
-              <p>卡片内容</p>
-              <p>卡片内容</p>
-              <p>卡片内容</p>
-            </Card>
-          </Col>
         </Row>
       </div>
     );
