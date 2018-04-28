@@ -19,4 +19,6 @@ npm-debug.log*
 
 server-config.js
 
+pm2.json
+
 .idea
