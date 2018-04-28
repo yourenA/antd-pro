@@ -180,7 +180,8 @@ class AddPoliciesForm extends Component {
           forEach(that.state.group, function (value, key) {
             permissions.push(...that.state[key + 'CheckedList'])
           });
-          console.log('permissions',permissions)
+          // console.log('permissions',permissions)
+          const company_code = sessionStorage.getItem('company_code');
           const data = this.isNew ? {
             permissions: permissions,
             ...values
@@ -196,7 +197,7 @@ class AddPoliciesForm extends Component {
             },
             callback: function () {
               message.success(msg)
-              that.props.dispatch(routerRedux.replace(`/main/system_manage/account_manage/user_group_manage`));
+              that.props.dispatch(routerRedux.replace(`/${company_code}/main/system_manage/account_manage/user_group_manage`));
             }
           });
         }
@@ -304,13 +305,14 @@ class AddPoliciesForm extends Component {
     };
     const {getFieldDecorator} = this.props.form;
     const {usergroup:{editRecord}}=this.props
+    const company_code = sessionStorage.getItem('company_code');
     return (
         <Content >
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '账号管理'},{name: '角色管理'},{name: this.isNew ? '添加角色' : '修改角色'}]}>
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <Button icon="left" type="primary" onClick={()=> {
-                  this.props.dispatch(routerRedux.replace(`/main/system_manage/account_manage/user_group_manage`));
+                  this.props.dispatch(routerRedux.replace(`/${company_code}/main/system_manage/account_manage/user_group_manage`));
                 }}>
                   后退
                 </Button>

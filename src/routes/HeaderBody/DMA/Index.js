@@ -17,21 +17,22 @@ class UserMeterLife extends PureComponent {
   }
 
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content style={{background:'#fff'}}>
           <Switch>
             <Route
-              path='/main/run_manage/DMA/DMA_show'
+              path={`/${company_code}/main/run_manage/DMA/DMA_show`}
               component={DMAShow}
             />
             <Route
               exact
-              path='/main/run_manage/DMA/DMA_manage'
+              path={`/${company_code}/main/run_manage/DMA/DMA_manage`}
               component={DMAManage}
             />
-            <Redirect  from="/main/run_manage/DMA" to="/main/run_manage/DMA/DMA_show" />
+            <Redirect  from={`/${company_code}/main/run_manage/DMA`} to={`/${company_code}/main/run_manage/DMA/DMA_show`} />
           </Switch>
         </Content>
       </Layout>

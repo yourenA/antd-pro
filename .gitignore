@@ -17,4 +17,6 @@ npm-debug.log*
 # config
 /src/common/config.js
 
+server-config.js
+
 .idea

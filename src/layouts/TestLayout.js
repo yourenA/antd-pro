@@ -69,6 +69,7 @@ class TestLayout extends React.PureComponent {
   }
 
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     console.log( getRouteData('TestLayout'))
     const layout= (
       <Layout  style={{minHeight:'100vh' }}>
@@ -79,7 +80,7 @@ class TestLayout extends React.PureComponent {
                 return(
                   <Route
                     key={item.path}
-                    path={`/test${item.path}`}
+                    path={`/${company_code}/test${item.path}`}
                     component={item.component}
                   />
                 )

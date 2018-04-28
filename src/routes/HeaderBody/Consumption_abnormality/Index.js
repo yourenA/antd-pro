@@ -122,7 +122,7 @@ class Consumption_abnormality extends PureComponent {
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
       {title: '日期', dataIndex: 'date', width: 120,  key: 'date',},
-      {title: '当天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
+      {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
       {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value'},
       {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value'},
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},

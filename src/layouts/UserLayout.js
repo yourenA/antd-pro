@@ -7,7 +7,8 @@ import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
 import Login from '../routes/User/Login';
 import waterLogo from '../images/water.png'
-import {projectName,poweredBy} from './../common/config'
+import zhuhuaLogo from '../images/zhuhua.png'
+import {projectName,poweredBy,prefix} from './../common/config'
 const links = [];
 
 const copyright = <div>powered by {poweredBy}</div>;
@@ -31,10 +32,10 @@ class UserLayout extends React.PureComponent {
         <div className={styles.container}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
-                <img alt="" className={styles.logo} src={waterLogo} />
+              <span>
+                <img alt="" className={styles.logo} src={prefix.indexOf('182.61.56.51:8081')>=0?zhuhuaLogo:waterLogo} />
                 <span className={styles.title}>{projectName}</span>
-              </Link>
+              </span>
             </div>
             <p className={styles.desc}></p>
           </div>

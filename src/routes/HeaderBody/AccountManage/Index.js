@@ -22,25 +22,26 @@ class UserMeterLife extends PureComponent {
   }
 
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content style={{background:'#fff'}}>
             <Switch>
               <Route
-                path='/main/system_manage/account_manage/user_manage'
+                path={`/${company_code}/main/system_manage/account_manage/user_manage`}
                 component={UsersManage}
               />
               <Route
                 exact
-                path='/main/system_manage/account_manage/user_group_manage'
+                path={`/${company_code}/main/system_manage/account_manage/user_group_manage`}
                 component={UsergroupManage}
               />
               <Route
-                path='/main/system_manage/account_manage/user_group_manage/:id'
+                path={`/${company_code}/main/system_manage/account_manage/user_group_manage/:id`}
                 component={AddOrEditUsergroup}
               />
-              <Redirect  from="/main/system_manage/account_manage" to="/main/system_manage/account_manage/user_manage" />
+              <Redirect  from={`/${company_code}/main/system_manage/account_manage`} to={`/${company_code}/main/system_manage/account_manage/user_manage`} />
             </Switch>
         </Content>
       </Layout>

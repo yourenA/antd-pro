@@ -21,7 +21,7 @@ export default class Login extends Component {
   componentDidMount() {
     const that=this;
     const { location } = this.props;
-    console.log(this.props)
+    console.log(this.props.location.pathname.split('/'))
    /* request(`/available_companies`,{
       method:'GET',
       params:{
@@ -64,6 +64,9 @@ export default class Login extends Component {
     console.log('submit')
     e.preventDefault();
     const { type } = this.state;
+    const company_code=this.props.location.pathname.split('/')
+    console.log('company_code',company_code)
+    console.log(this.props.location.pathname)
     this.props.form.validateFields({ force: true },
       (err, values) => {
         console.log('values')
@@ -74,9 +77,13 @@ export default class Login extends Component {
             type: `login/${type}Submit`,
             payload: {
               ...values,
-              preUrl
+              preUrl,
+              company_code:company_code.length===2?'hy':company_code[company_code.length-1]
               // company_id:values.company_id.key,
             },
+            callback:()=>{
+
+            }
           });
         }
       }

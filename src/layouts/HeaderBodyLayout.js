@@ -95,7 +95,7 @@ class HeaderBodyLayout extends React.PureComponent {
           const args = {
             placement: 'bottomRight',
             message: '用水量异常报警',
-            duration: 10,
+            duration: 15,
             key:'noConsumptionNotifyDay',
             description: <div>{data[0].meter_number} 等水表出现用水量异常报警
               <p>
@@ -133,7 +133,7 @@ class HeaderBodyLayout extends React.PureComponent {
           const args = {
             placement: 'bottomRight',
             message: '零流量异常报警',
-            duration: 10,
+            duration: 15,
             key:'zeroNotify',
             description: <div>{data[0].meter_number} 等水表出现零流量异常
               <p>
@@ -170,7 +170,7 @@ class HeaderBodyLayout extends React.PureComponent {
           const args = {
             placement: 'bottomRight',
             message: '夜间异常流量报警',
-            duration: 10,
+            duration: 15,
             key:'noNightNotifyDay',
             description: <div>{data[0].meter_number} 等水表出现夜间流量异常
               <p>
@@ -237,11 +237,15 @@ class HeaderBodyLayout extends React.PureComponent {
 
   }
 
-  getNavMenuItems(menusData, parentPath = '/main/') {
+  getNavMenuItems(menusData, parentPath = '') {
     let permissions = (localStorage.getItem('permissions') ? JSON.parse(localStorage.getItem('permissions'))
       : sessionStorage.getItem('permissions') ? JSON.parse(sessionStorage.getItem('permissions')) : []).map((item, index)=> {
       return item.name
     })
+
+    const company_code = sessionStorage.getItem('company_code');
+
+
     if (!menusData) {
       return [];
     }
@@ -253,7 +257,7 @@ class HeaderBodyLayout extends React.PureComponent {
       if (item.path.indexOf('http') === 0) {
         itemPath = item.path;
       } else {
-        itemPath = `${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
+        itemPath = `/${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
       }
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
@@ -275,7 +279,7 @@ class HeaderBodyLayout extends React.PureComponent {
         }
       }
       const icon = item.icon && <Icon type={item.icon}/>;
-      if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
+      if ((intersection(permissions, item.permissions).length > 0 || !item.permissions)  && (!item.showCompany || item.showCompany.indexOf(company_code)>=0)) {
         return (
           <Menu.Item key={item.key || item.path}>
             <Link to={itemPath} target={item.target}>
@@ -310,11 +314,13 @@ class HeaderBodyLayout extends React.PureComponent {
 
   render() {
     const {login} = this.props;
+    const company_code = sessionStorage.getItem('company_code');
+    const company_name = sessionStorage.getItem('company_name');
     const layout = (
       <Layout style={{minHeight: '100vh'}}>
         <div className={styles.header}>
           <div className="logo">
-            <Link to="/main" className="logo-up">{projectName}</Link>
+            <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
           </div>
           <Menu
             onClick={this.handleClick}
@@ -323,7 +329,7 @@ class HeaderBodyLayout extends React.PureComponent {
             style={{lineHeight: '64px'}}
             selectedKeys={[this.state.current]}
           >
-            {this.getNavMenuItems(this.menus)}
+            {this.getNavMenuItems(this.menus,company_code+'/main/')}
             <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
                      <Avatar icon="user" className={styles.avatar}/>
               {login.username}
@@ -342,7 +348,7 @@ class HeaderBodyLayout extends React.PureComponent {
                     return (
                       <Route
                         key={item.path}
-                        path={`/main${item.path}`}
+                        path={`/${company_code}/main${item.path}`}
                         component={item.component}
                       />
                     )
@@ -351,7 +357,7 @@ class HeaderBodyLayout extends React.PureComponent {
               }
               <Route
                 exact
-                path={`/main`}
+                path={`/${company_code}/main`}
                 component={Main}
               />
               <Route component={NotFound}/>

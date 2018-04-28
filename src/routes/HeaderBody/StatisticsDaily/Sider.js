@@ -30,11 +30,13 @@ class SiderNav extends PureComponent {
     })
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
+
     const that=this;
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
       return (
         <div onClick={()=>that.changeNavIndex(item.url)} key={index} className={that.state.activeNav===item.url?"siderNav-item siderNav-item-active":"siderNav-item"}>
-          <Link to={`/main/unusual_analysis/statistics_daily/${item.url}`}>{item.name}</Link>
+          <Link to={`/${company_code}/main/unusual_analysis/statistics_daily/${item.url}`}>{item.name}</Link>
         </div>
       )
     })

@@ -26,6 +26,7 @@ class UserMeterLife extends PureComponent {
   }
 
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -33,30 +34,30 @@ class UserMeterLife extends PureComponent {
           <div className="content">
             <Switch>
               <Route
-                path='/main/system_manage/system_setup/night_warning_setup'
+                path={`/${company_code}/main/system_manage/system_setup/night_warning_setup`}
                 component={NightWarningSetup}
               />
               <Route
-                path='/main/system_manage/system_setup/zero_warning_setup'
+                path={`/${company_code}/main/system_manage/system_setup/zero_warning_setup`}
                 component={ZeroWarningSetup}
               />
               <Route
-                path='/main/system_manage/system_setup/unusual_water'
+                path={`/${company_code}/main/system_manage/system_setup/unusual_water`}
                 component={unusual_water}
               />
               <Route
-                path='/main/system_manage/system_setup/system_name'
+                path={`/${company_code}/main/system_manage/system_setup/system_name`}
                 component={Working}
               />
               <Route
-                path='/main/system_manage/system_setup/sms_notice'
+                path={`/${company_code}/main/system_manage/system_setup/sms_notice`}
                 component={Working}
               />
               <Route
-                path='/main/system_manage/system_setup/email_notice'
+                path={`/${company_code}/main/system_manage/system_setup/email_notice`}
                 component={Working}
               />
-              <Redirect  from="/main/system_manage/system_setup" to="/main/system_manage/system_setup/night_warning_setup" />
+              <Redirect  from={`/${company_code}/main/system_manage/system_setup`} to={`/${company_code}/main/system_manage/system_setup/night_warning_setup`} />
             </Switch>
           </div>
         </Content>

@@ -189,6 +189,7 @@ class Vendor extends PureComponent {
     });
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     const {usergroup: {data, meta, loading},dispatch} = this.props;
     const columns = [
       {
@@ -240,7 +241,7 @@ class Vendor extends PureComponent {
         render: (val, record, index) => (
           <p>
             <a href="javascript:;" onClick={()=>{
-              dispatch(routerRedux.push(`/main/system_manage/account_manage/user_group_manage/${record.id}`))
+              dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/${record.id}`))
 
             }}>编辑</a>
             <span className="ant-divider" />
@@ -269,7 +270,7 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={() => dispatch(routerRedux.push(`/main/system_manage/account_manage/user_group_manage/add`))}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={() => dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/add`))}/>
                   </div>
                 </div>
                 <Table

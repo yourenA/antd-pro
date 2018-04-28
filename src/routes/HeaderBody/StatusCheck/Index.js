@@ -24,6 +24,7 @@ class UserMeterLife extends PureComponent {
   }
 
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -31,18 +32,18 @@ class UserMeterLife extends PureComponent {
           <div className="content">
             <Switch>
               <Route
-                path='/main/run_manage/status_check/heartbeat'
+                path={`/${company_code}/main/run_manage/status_check/heartbeat`}
                 component={ Working}
               />
               <Route
-                path='/main/run_manage/status_check/function'
+                path={`/${company_code}/main/run_manage/status_check/function`}
                 component={Working}
               />
               <Route
-                path='/main/run_manage/status_check/timing'
+                path={`/${company_code}/main/run_manage/status_check/timing`}
                 component={  Working}
               />
-              <Redirect  from="/main/run_manage/status_check" to="/main/run_manage/status_check/heartbeat" />
+              <Redirect  from={`/${company_code}/main/run_manage/status_check`} to={`/${company_code}/main/run_manage/status_check/heartbeat`} />
             </Switch>
           </div>
         </Content>

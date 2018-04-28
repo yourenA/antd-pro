@@ -9,6 +9,7 @@ import moment from 'moment'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import './index.less'
+import {getPreDay} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,
@@ -26,7 +27,7 @@ class UserMeterAnalysis extends PureComponent {
       member_number: '',
       install_address: '',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange: getPreDay(),
       started_at: '',
       ended_at: '',
       village_id: '',

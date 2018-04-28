@@ -15,7 +15,8 @@ import {
   message,
   List,
   Badge,
-  Tooltip
+  Tooltip,
+  Avatar
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {Link} from 'dva/router';
@@ -275,7 +276,7 @@ export default class EndpointsList extends PureComponent {
         />
       </div>
     );
-
+    const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
     return (
       <PageHeaderLayout title={{label: '机构管理'}} breadcrumb={[{name: '平台管理'}, {name: '机构管理'}]}
                         content={pageHeaderContent}>
@@ -311,10 +312,10 @@ export default class EndpointsList extends PureComponent {
                   <Card.Meta
                     className={styles.antCardMeta}
                     avatar={<div>
-                      <img alt="" className={styles.cardAvatar} src={avatar[index % avatar.length]}/>
+                      <Avatar  style={{ backgroundColor:colorList[index % colorList.length]}} >{item.code.toLocaleUpperCase()}</Avatar>
                       {item.status === 1 ? <p>已{item.status_explain}</p> : <p> 已{item.status_explain}</p>}
                     </div>}
-                    title={item.lock===1?<p className={styles.cardTitle}>{item.name}</p>:<a href="#" className={styles.cardTitle}>{item.name}</a>}
+                    title={item.lock===1?<p className={styles.cardTitle}>{item.name}</p>:<span className={styles.cardTitle}>{item.name}  {item.code}</span>}
                     description={(
                       <div>
                         <p>管理员用户名 : {item.management_username}</p>

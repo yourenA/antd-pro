@@ -6,10 +6,11 @@ var path = require('path');
 var ejs = require('ejs');
 var logger = require('morgan');
 var app = express();
+var config=require('./server-config')
 if(process.env.NODE_ENV === 'production'){
     console.log('在生产环境')
 }
-
+// console.log(config)
 app.use(express.static(path.join(__dirname, 'dist')));
 // view engine setup for html
 app.set('views', path.join(__dirname, 'dist'));
@@ -27,7 +28,7 @@ app.get('/*', function(req, res, next) {
     res.render('index');
 });
 
-var server = app.listen(3004,'0.0.0.0', function () {
+var server = app.listen(config.port,'0.0.0.0', function () {
     var host = server.address().address;
     var port = server.address().port;
     console.log('WATER APP listening at http://%s:%s', host, port);

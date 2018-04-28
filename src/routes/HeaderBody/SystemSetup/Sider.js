@@ -7,8 +7,10 @@ class SiderNav extends PureComponent {
     super(props);
     this.state = {
       collapsed: false,
-      siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'}, {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
-                  {name: '邮件通知设置', url: 'email_notice' }],
+      siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'},
+        // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
+        //           {name: '邮件通知设置', url: 'email_notice' }
+                  ],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }
   }
@@ -30,11 +32,12 @@ class SiderNav extends PureComponent {
     })
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     const that=this;
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
       return (
         <div onClick={()=>that.changeNavIndex(item.url)} key={index} className={that.state.activeNav===item.url?"siderNav-item siderNav-item-active":"siderNav-item"}>
-          <Link to={`/main/system_manage/system_setup/${item.url}`}>{item.name}</Link>
+          <Link to={`/${company_code}/main/system_manage/system_setup/${item.url}`}>{item.name}</Link>
         </div>
       )
     })

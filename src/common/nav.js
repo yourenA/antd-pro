@@ -325,12 +325,13 @@ const data = [{
         component: ConcentratorManage,
         permissions:['concentrator_add_and_edit','concentrator_delete'],
       },
+      //   {
+      //   name: '指令和状态查看',
+      //   path: 'status_check',
+      //   component: StatusCheck,
+      //   permissions:['company_visit'],
+      // },
         {
-        name: '指令和状态查看',
-        path: 'status_check',
-        component: StatusCheck,
-        permissions:['company_visit'],
-      },{
         name: '用户档案',
         path: 'user_archives',
         component: UserArchives,
@@ -341,12 +342,14 @@ const data = [{
           path: 'DMA',
           component: DMA,
           permissions:['area_add_and_edit','area_delete'],
+          showCompany:['hy']
         },
         {
           name: '流量计管理',
           path: 'flow_meters',
           component: FlowMeters,
           permissions:['flow_meter_add_and_edit','flow_meter_delete'],
+          showCompany:['hy']
         },
        {
           name: '厂商-集中器统计',

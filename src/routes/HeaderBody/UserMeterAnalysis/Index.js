@@ -12,6 +12,7 @@ import './index.less'
 import config from '../../../common/config'
 import {download} from '../../../utils/utils'
 import uuid from 'uuid/v4'
+import {getPreDay} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -29,7 +30,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address:'',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:getPreDay(),
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -284,10 +285,10 @@ class UserMeterAnalysis extends PureComponent {
 
           </p>
         )},
-      {title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
       {title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
-      {title: '本次读数(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
+      {title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
       {title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
+      {title: '本次读数(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
       {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},

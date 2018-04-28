@@ -13,9 +13,9 @@ function RouterConfig({ history }) {
       <Router history={history}>
         <Switch>
           <Route path="/login" component={UserLayout} />
-          <Route path="/test" component={TestLayout} />
-          <Route path="/main" component={HeaderBodyLayout} />
-          <Route path="/" component={BasicLayout} />
+          <Route path="/:code/test" component={TestLayout} />
+          <Route path="/:code/main" component={HeaderBodyLayout} />
+          <Route path="/:code/" component={BasicLayout} />
         </Switch>
       </Router>
     </LocaleProvider>

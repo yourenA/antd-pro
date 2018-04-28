@@ -14,7 +14,7 @@ import HeaderSearch from '../components/HeaderSearch';
 import GlobalFooter from '../components/GlobalFooter';
 import {getNavData} from '../common/nav';
 import {getRouteData} from '../utils/utils';
-import waterLogo from '../images/water.png'
+import zhuhuaLogo from '../images/zhuhua.png'
 // import DeviceManage from '../routes/AccessManagement/DeviceManage';
 // import IdentifyManage from '../routes/AccessManagement/IdentifyManage';
 // import StrategyManage from '../routes/AccessManagement/StrategyManage';
@@ -23,6 +23,7 @@ import EndpointDetailLayout from './../routes/AccessManagement/EndpointDetailLay
 import UsergroupLayout from './../routes/SystemManagement/UsergroupLayout'
 import UserInfo from './../routes/UserInfo/Index'
 import NewPage from './../routes/NewPage'
+import {projectName, poweredBy} from './../common/config'
 const TabPane = Tabs.TabPane;
 const {Header, Sider, Content} = Layout;
 const {SubMenu} = Menu;
@@ -155,7 +156,7 @@ class BasicLayout extends React.PureComponent {
       if (item.path.indexOf('http') === 0) {
         itemPath = item.path;
       } else {
-        itemPath = `${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
+        itemPath = `/${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
       }
       if (!item.noshowInSibar && item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
@@ -186,7 +187,9 @@ class BasicLayout extends React.PureComponent {
                   {icon}<span>{item.name}</span>
                 </a>
               ) : (
-                <Link onClick={()=>this.changeTab({...item, path: itemPath})} to={itemPath} target={item.target}>
+                <Link
+                  //onClick={()=>this.changeTab({...item, path: itemPath})}
+                  to={itemPath} target={item.target}>
                   {icon}<span>{item.name}</span>
                 </Link>
               )
@@ -307,6 +310,7 @@ class BasicLayout extends React.PureComponent {
     const menuProps = collapsed ? {} : {
       openKeys: this.state.openKeys,
     };
+    const company_code = sessionStorage.getItem('company_code');
     const layout = (
       <div>
         <Sider
@@ -320,10 +324,10 @@ class BasicLayout extends React.PureComponent {
         >
           <div className={styles.logo}>
             <Link onClick={()=>{
-              this.setState({activeKey:'/home'});
-            }} to="/home">
-              <img src={waterLogo} alt="logo"/>
-              <h1>水务系统IOT</h1>
+              this.setState({activeKey:`/${company_code}/home`});
+            }} to={`/${company_code}/home`}>
+              <img src={zhuhuaLogo} alt="logo"/>
+              <h1>{poweredBy}</h1>
             </Link>
           </div>
           <Menu
@@ -334,7 +338,7 @@ class BasicLayout extends React.PureComponent {
             selectedKeys={this.getCurrentMenuSelectedKeys()}
             style={{padding: '16px 0', width: '100%'}}
           >
-            {this.getNavMenuItems(this.menus)}
+            {this.getNavMenuItems(this.menus,company_code)}
           </Menu>
         </Sider>
         <Layout className={styles.bce_content} style={{left: collapsed ? '80px' : '200px'}}>
@@ -345,7 +349,7 @@ class BasicLayout extends React.PureComponent {
               onClick={this.toggle}
             />
             <div className={styles.right}>
-              <HeaderSearch
+            {/*  <HeaderSearch
                 className={`${styles.action} ${styles.search}`}
                 placeholder="站内搜索"
                 dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
@@ -355,7 +359,7 @@ class BasicLayout extends React.PureComponent {
                 onPressEnter={(value) => {
                   console.log('enter', value); // eslint-disable-line
                 }}
-              />
+              />*/}
               {login.username ? (
                 <Dropdown overlay={menu}>
                   <span className={`${styles.action} ${styles.account}`}>
@@ -368,15 +372,15 @@ class BasicLayout extends React.PureComponent {
           </Header>
           <Content className={styles.main_area}>
             <div className={styles.main}>
-              <Switch>
+           {/*   <Switch>
                 {
                   (sessionStorage.getItem('role_display_name') === '系统管理员') ?
                     <Redirect exact from="/" to="/home"/>
                     : <Redirect exact from="/" to="/main"/>
                 }
-              </Switch>
+              </Switch>*/}
               <BackTop />
-              {
+             {/* {
                 this.state.panes.length>0&&
                 <Tabs
                   className={styles.tabs}
@@ -391,27 +395,26 @@ class BasicLayout extends React.PureComponent {
                     const Conp = pane.component
                     return (
                       <TabPane  closable={pane.path==='/home'?false:true} tab={<span><Icon type={pane.icon} />{ pane.name}</span>} key={ pane.path}>
-                        {/*<Route
+                        /!*<Route
                          exact={pane.exact}
                          key={pane.path}
                          path={pane.path}
                          component={pane.component}
-                         />*/}
+                         />*!/
                         <Conp findChildFunc={this.findChildFunc} activeKey={this.state.activeKey} foce={this.state.foce}/>
                       </TabPane>
                     )
                   })}
                 </Tabs>
-              }
-
-              {/*    <Switch>
+              }*/}
+            <Switch>
                {
                getRouteData('BasicLayout').map(item =>{
                return(
                <Route
                exact={item.exact}
                key={item.path}
-               path={item.path}
+               path={`/${company_code}${item.path}`}
                component={item.component}
                />
                )
@@ -419,29 +422,29 @@ class BasicLayout extends React.PureComponent {
                )
                }
                <Route
-               path='/access-management/endpoints/:id'
+               path={`/${company_code}access-management/endpoints/:id`}
                component={EndpointDetailLayout}
                />
                <Route
-               path='/system-management/usergroup/:id'
+               path={`/${company_code}system-management/usergroup/:id`}
                component={UsergroupLayout}
                />
                <Route
-               path='/user-info'
+               path={`/${company_code}user-info`}
                component={UserInfo}
                />
                {
                (sessionStorage.getItem('role_display_name')==='系统管理员')?
-               <Redirect exact from="/" to="/access-management/endpoints" />
-               : <Redirect exact from="/" to="/main" />
+               <Redirect exact from={`/${company_code}`} to={`/${company_code}/home`}/>
+               : <Redirect exact from={`/${company_code}`} to={`/${company_code}/main`} />
                }
 
                <Route component={NotFound} />
-               </Switch>*/}
+               </Switch>
               <GlobalFooter
                 copyright={
                   <div>
-                    Copyright <Icon type="copyright"/> 2017辂轺科技
+                    powered by {poweredBy}
                   </div>
                 }
               />

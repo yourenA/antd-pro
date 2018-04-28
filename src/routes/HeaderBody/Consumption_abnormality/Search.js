@@ -44,22 +44,26 @@ class SearchForm extends Component {
     });
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <FormItem
-            label='DMA分区'>
-            {getFieldDecorator('area_id', {
-            })(
-              <TreeSelect
-                style={{width:'100px'}}
-                allowClear
-              >
-                {this.renderDMATreeNodes(this.props.dma.allData)}
-              </TreeSelect>
-            )}
-          </FormItem>
+          {
+            company_code==='hy'&&
+            <FormItem
+              label='DMA分区'>
+              {getFieldDecorator('area_id', {
+              })(
+                <TreeSelect
+                  style={{width:'100px'}}
+                  allowClear
+                >
+                  {this.renderDMATreeNodes(this.props.dma.allData)}
+                </TreeSelect>
+              )}
+            </FormItem>
+          }
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',

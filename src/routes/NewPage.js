@@ -12,7 +12,7 @@ class NewPage extends PureComponent {
     this.path='/home'
   }
   componentDidMount() {
-    this.props.findChildFunc(this.props.activeKey,this.fetch)
+    // this.props.findChildFunc(this.props.activeKey,this.fetch)
   }
   fetch=()=>{
     console.log('fetch')

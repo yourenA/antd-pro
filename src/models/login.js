@@ -19,6 +19,8 @@ export default {
       const username = sessionStorage.getItem('username');
       const token = sessionStorage.getItem('token');
       const role_display_name = sessionStorage.getItem('role_display_name');
+      const company_code = sessionStorage.getItem('company_code');
+      const company_name = sessionStorage.getItem('company_name');
       const permissions = JSON.parse( sessionStorage.getItem('permissions'));
       // const company_name = sessionStorage.getItem('company_name')|| localStorage.getItem('company_name');
       // console.log(permissions)
@@ -30,19 +32,21 @@ export default {
             token,
             role_display_name,
             permissions,
+            company_code,
+            company_name
           },
         });
       }else{
-
         //存储输入的地址
         yield put({
           type: 'changePreUrl',
           payload:payload,
         });
-        yield put(routerRedux.replace('/login'));
+        console.log('payload',payload)
+        yield put(routerRedux.replace(`/login/${payload.split('/')[1]}`));
       }
     },
-    *accountSubmit({ payload }, { call, put }) {
+    *accountSubmit({ payload,callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       console.log(response)
       if(response.status===200){
@@ -54,6 +58,8 @@ export default {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('permissions', JSON.stringify(response.data.permissions.data));
         sessionStorage.setItem('role_display_name', response.data.role_display_name);
+        sessionStorage.setItem('company_code', response.data.company_code);
+        sessionStorage.setItem('company_name', response.data.company_name);
         // sessionStorage.setItem('company_name', response.data.company_name);
         // localStorage.setItem('company_name', response.data.company_name);
         /*if (payload.remember) {
@@ -70,16 +76,20 @@ export default {
             token:response.data.token,
             permissions:response.data.permissions.data,
             role_display_name:response.data.role_display_name,
-            // company_name:response.data.company_name,
+            company_code:response.data.company_code,
+            company_name:response.data.company_name,
             status:true
           },
         });
+
+
+
         //登陆的时候获取储存的输入地址
         if(payload.preUrl){
           yield put(routerRedux.push(payload.preUrl));
 
         }else{
-          yield put(routerRedux.push('/'));
+          yield put(routerRedux.push(`/${response.data.company_code}`));
         }
       }
 
@@ -103,8 +113,9 @@ export default {
     *logout(_, { call,put }) {
       const response = yield call(logout);
       console.log(response);
+      const company_code = sessionStorage.getItem('company_code');
+      yield put(routerRedux.push(`/login/${company_code}`));
       removeLoginStorage()
-      yield put(routerRedux.push('/login'));
       location.reload();
     },
   },
@@ -118,7 +129,8 @@ export default {
         permissions:payload.permissions,
         status: payload.status,
         role_display_name:payload.role_display_name,
-        // company_name:payload.company_name
+        company_name:payload.company_name,
+        company_code:payload.company_code
       };
     },
     changePreUrl(state, { payload }) {
