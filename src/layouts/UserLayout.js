@@ -8,7 +8,7 @@ import styles from './UserLayout.less';
 import Login from '../routes/User/Login';
 import waterLogo from '../images/water.png'
 import zhuhuaLogo from '../images/zhuhua.png'
-import {projectName,poweredBy,prefix} from './../common/config'
+import {projectName,poweredBy,prefix,loginTitle} from './../common/config'
 const links = [];
 
 const copyright = <div>powered by {poweredBy}</div>;
@@ -34,7 +34,7 @@ class UserLayout extends React.PureComponent {
             <div className={styles.header}>
               <span>
                 <img alt="" className={styles.logo} src={prefix.indexOf('182.61.56.51:8081')>=0?zhuhuaLogo:waterLogo} />
-                <span className={styles.title}>{projectName}</span>
+                <span className={styles.title}>{loginTitle}</span>
               </span>
             </div>
             <p className={styles.desc}></p>

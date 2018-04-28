@@ -208,13 +208,16 @@ class HeaderBodyLayout extends React.PureComponent {
   getPageTitle() {
     const {location} = this.props;
     let {pathname} = location;
-    let title = projectName;
+    const company_name = sessionStorage.getItem('company_name');
+    const company_code = sessionStorage.getItem('company_code');
+    let title = company_name+projectName;
     getRouteData('HeaderBodyLayout').forEach((item) => {
-      if (`/main${item.path}` === pathname) {
-        title = `${item.name} - ${projectName}`;
+      // console.log(`/${company_code}/main${item.path}`)
+      if (`/${company_code}/main${item.path}` === pathname) {
+        title = `${item.name} - ${company_name+projectName}`;
       }
       if (pathname.indexOf(`system_setup`) > 0) {
-        title = `系统设置 - ${projectName}`;
+        title = `系统设置 - ${company_name+projectName}`;
       }
     });
     return title;
