@@ -164,11 +164,25 @@ class UserMeterAnalysis extends PureComponent {
       {title: '用户名称', width: 150, dataIndex: 'real_name', key: 'real_name'},
       {
         title: '异常类型', width: 150, dataIndex: 'status', key: 'status'
-        , render: (val, record, index) => (
-        <p>
-          <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
-        </p>
-      )
+        , render: (val, record, index) => {
+          let status='success';
+          switch (val){
+            case -2:
+              status='error'
+              break;
+            case -1:
+              status='warning'
+              break;
+            default:
+              status='success'
+          }
+
+          return (
+            <p>
+              <Badge status={status}/>{record.status_explain}
+            </p>
+          )
+      }
       },
       {title: '用水量', width: 150, dataIndex: 'consumption', key: 'consumption'},
       {title: '日期', dataIndex: 'date', width: 150,  key: 'date',},

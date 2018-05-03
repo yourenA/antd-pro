@@ -77,7 +77,7 @@ class HeaderBodyLayout extends React.PureComponent {
     const noNightNotifyDay = localStorage.getItem('noNightNotifyDay');
     const noConsumptionNotifyDay = localStorage.getItem('noConsumptionNotifyDay');
     const dispatch = this.props.dispatch;
-
+    const company_code = sessionStorage.getItem('company_code');
     if (noConsumptionNotifyDay === date) {
       console.log('不提醒')
     } else {
@@ -105,7 +105,7 @@ class HeaderBodyLayout extends React.PureComponent {
                   notification.close('noConsumptionNotifyDay')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                dispatch(routerRedux.push('/main/unusual_analysis/water_unusual_analysis'));
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/water_unusual_analysis`));
               }
               }>查看详情</a>
               </p>
@@ -142,7 +142,7 @@ class HeaderBodyLayout extends React.PureComponent {
                   notification.close('zeroNotify')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                dispatch(routerRedux.push('/main/unusual_analysis/zero_abnormality'));
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/zero_abnormality`));
                 //notification.close(this.zeroNotify)
               }
               }>查看详情</a>
@@ -179,7 +179,7 @@ class HeaderBodyLayout extends React.PureComponent {
                   notification.close('noNightNotifyDay')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                dispatch(routerRedux.push('/main/unusual_analysis/night_abnormality'));
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
                 //notification.close(this.nightNotify)
               }
               }>查看详情</a>

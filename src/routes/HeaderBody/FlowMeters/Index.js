@@ -287,13 +287,11 @@ class FlowMeter extends PureComponent {
     return (
       <div className="popover">
         <table className="custom-table">
-          <thead>
-          <tr>
-            <td>名称</td>
-            <td>值</td>
-          </tr>
-          </thead>
           <tbody>
+          <tr>
+            <td>流量计编号</td>
+            <td>{item.number}</td>
+          </tr>
           <tr>
             <td>DMA分区名称</td>
             <td>{item.area_name}</td>
@@ -319,13 +317,11 @@ class FlowMeter extends PureComponent {
     return (
       <div className="popover">
         <table className="custom-table">
-          <thead>
-          <tr>
-            <td>名称</td>
-            <td>值</td>
-          </tr>
-          </thead>
           <tbody>
+          <tr>
+            <td>流量计站点名称</td>
+            <td>{item.name}</td>
+          </tr>
           <tr>
             <td>流量计站点编号</td>
             <td>{item.number}</td>

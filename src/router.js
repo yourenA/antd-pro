@@ -16,6 +16,7 @@ function RouterConfig({ history }) {
           <Route path="/:code/test" component={TestLayout} />
           <Route path="/:code/main" component={HeaderBodyLayout} />
           <Route path="/:code/" component={BasicLayout} />
+          <Redirect exact from={`/`} to={`/login`}/>
         </Switch>
       </Router>
     </LocaleProvider>

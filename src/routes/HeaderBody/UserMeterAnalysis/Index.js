@@ -6,6 +6,7 @@ import Search from './Search'
 import Sider from './../Sider'
 import Detail from './Detail'
 import {connect} from 'dva';
+import update from 'immutability-helper'
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
@@ -13,6 +14,7 @@ import config from '../../../common/config'
 import {download} from '../../../utils/utils'
 import uuid from 'uuid/v4'
 import {getPreDay} from './../../../utils/utils'
+import Export from './ExportCSV'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -36,8 +38,40 @@ class UserMeterAnalysis extends PureComponent {
       village_id: '',
       editModal: false,
       changeModal: false,
+      exportModal:false,
       member_number: '',
-      display_type:'all'
+      display_type:'all',
+      cards: [
+        {
+          id: 1,
+          text: '户号',
+        },
+        {
+          id: 2,
+          text: '水表编号',
+        },
+        {
+          id: 3,
+          text: '用水量',
+        },
+        {
+          id: 4,
+          text: '上次读数',
+        },
+        {
+          id: 5,
+          text:
+            '上次读数时间',
+        },
+        {
+          id: 6,
+          text: '本次读数'
+        },
+        {
+          id: 7,
+          text: '本次读数时间',
+        },
+      ],
     }
   }
 
@@ -253,7 +287,20 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
-
+  handleExport=()=>{
+    console.log(this.state.cards)
+  }
+  moveCard=(dragIndex, hoverIndex) =>{
+    const { cards } = this.state
+    const dragCard = cards[dragIndex]
+    this.setState(
+      update(this.state, {
+        cards: {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
+        },
+      }),
+    )
+  }
   render() {
     const {member_meter_data: {data, meta, loading}} = this.props;
     for(let i=0;i<data.length;i++){
@@ -294,9 +341,7 @@ class UserMeterAnalysis extends PureComponent {
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
       {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,},
 
-      {title: '抄表员', dataIndex: 'reader', key: 'reader', width: 120},
-      {title: '台区', dataIndex: 'distribution_area', key: 'distribution_area', width: 100},
-      {title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms'},
+      {title: '抄表员', dataIndex: 'reader', key: 'reader', },
       {
         title: '查询历史状况',
         key: 'operation',
@@ -325,6 +370,11 @@ class UserMeterAnalysis extends PureComponent {
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             exportCSV={this.exportCSV}
+                            export={()=>{
+                              this.setState({
+                                exportModal:true
+                              })
+                            }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                             clickAdd={()=>this.setState({addModal: true})}/>
@@ -341,7 +391,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1760, y: this.state.tableY}}
+                  scroll={{x: 1560, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -361,7 +411,14 @@ class UserMeterAnalysis extends PureComponent {
         >
           <Detail member_number={this.state.member_number} ended_at={this.state.ended_at} started_at={this.state.started_at}/>
         </Modal>
-
+        <Modal
+          title={`导出设置`}
+          visible={this.state.exportModal}
+          onCancel={() => this.setState({exportModal: false})}
+          onOk={this.handleExport}
+        >
+          <Export moveCard={this.moveCard} cards={this.state.cards} />
+        </Modal>
       </Layout>
     );
   }

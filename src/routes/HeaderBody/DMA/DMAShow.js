@@ -264,13 +264,17 @@ class Vendor extends PureComponent {
       return (
         <div>
           <table className="custom-table">
-            <thead>
+            {/*<thead>
             <tr>
               <td>名称</td>
               <td>值</td>
             </tr>
-            </thead>
+            </thead>*/}
             <tbody>
+            <tr>
+              <td>分区名称</td>
+              <td>{item.name}</td>
+            </tr>
             <tr>
               <td>创建时间</td>
               <td>{item.created_at}</td>
@@ -557,12 +561,12 @@ class Vendor extends PureComponent {
                         <div className="DMADetail">
                           <h2 style={{marginBottom: '10px'}}><span className="info-icon"></span><p>基本信息</p></h2>
                           <table className="custom-table">
-                            <thead>
+                           {/* <thead>
                             <tr>
                               <td>名称</td>
                               <td>值</td>
                             </tr>
-                            </thead>
+                            </thead>*/}
                             <tbody>
                             <tr>
                               <td>分区名称</td>
