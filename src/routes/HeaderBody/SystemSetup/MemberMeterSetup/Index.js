@@ -39,10 +39,10 @@ class EditPassword extends Component {
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '用水量异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs defaultActiveKey="1" className="system-tabs" >
-                  <TabPane tab='显示字段设置' key="1">
+                  <TabPane tab='页面表格显示字段设置' key="1">
                     <Fields />
                   </TabPane>
-                  <TabPane  tab='导出字段设置' key="2" >
+                  <TabPane  tab='导出CSV字段设置' key="2" >
                     <ExportCSV />
                   </TabPane>
                 </Tabs>

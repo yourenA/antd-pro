@@ -8,7 +8,7 @@ class SiderNav extends PureComponent {
     this.state = {
       collapsed: false,
       siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'},
-        {name: '户表水量分析设置', url: 'member_meter_setup'},
+        {name: '户表水量分析页面设置', url: 'member_meter_setup'},
         // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
         //           {name: '邮件通知设置', url: 'email_notice' }
                   ],

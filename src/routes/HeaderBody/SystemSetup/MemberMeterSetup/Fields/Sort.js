@@ -196,7 +196,7 @@ class Container extends Component {
           </div>
           <div className="card-block">
             <div className="card-header">
-              需要显示字段
+              需要显示字段(拖动排序)
             </div>
             <div  style={{maxHeight:`${this.state.tableY}px`,overflow:'auto'}}>
               {cards.map((card, i) => (
