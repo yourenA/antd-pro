@@ -26,7 +26,7 @@ export default class OriginalCards extends Component {
     } = this.props
     return (
       <div style={{...style}}>
-        <Input size="small" style={{width:'120px'}}  defaultValue={text} /> : <Input size="small" style={{width:'80px'}}   defaultValue={size} disabled/> px
+        <Input disabled size="small" style={{width:'120px'}}  defaultValue={text} /> : <Input size="small" style={{width:'80px'}}   defaultValue={size} disabled/> px
         <Button size="small" type="primary"  style={{float:'right'}} onClick={()=>{
 
           console.log('click',index);
