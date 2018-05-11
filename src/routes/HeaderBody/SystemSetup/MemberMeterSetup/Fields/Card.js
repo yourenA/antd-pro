@@ -101,7 +101,7 @@ export default class Card extends Component {
 
     return connectDragSource(
       connectDropTarget(<div style={{...style, opacity}}>
-          <Input size="small" style={{width:'120px'}}  defaultValue={text} onChange={(e)=>changeCardText(e,index)}/> : <InputNumber size="small" style={{width:'80px'}}  min={1} addonAfter="px" defaultValue={size} onChange={(e)=>changeCardValue(e,index)}/> px
+          <Input size="small" style={{width:'120px'}}  defaultValue={text} onChange={(e)=>changeCardText(e,index)}/> : <InputNumber size="small" style={{width:'80px'}}  min={1}  defaultValue={size} onChange={(e)=>changeCardValue(e,index)}/> px
         <Button  size="small" type="danger" style={{float:'right'}} onClick={()=>{
 
           console.log('click',index);
