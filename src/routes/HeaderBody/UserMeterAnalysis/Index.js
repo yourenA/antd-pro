@@ -341,7 +341,6 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
     ];
-    console.log(this.state.tableY)
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
