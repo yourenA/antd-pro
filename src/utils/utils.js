@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-import {message} from 'antd'
+import {message,Badge} from 'antd'
 import messageJson from './message.json';
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -28,20 +28,20 @@ export function getTimeDistance(type) {
       day -= 1;
     }
     const beginTime = now.getTime() - (day * oneDay);
-    return [moment(beginTime), moment( now.getTime())];
+    return [moment(beginTime), moment(now.getTime())];
   }
   if (type === 'month') {
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
-    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${year}-${parseInt(month+1)}-${day} 00:00:00`).valueOf())];
+    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${year}-${parseInt(month + 1)}-${day} 00:00:00`).valueOf())];
   }
 
   if (type === 'year') {
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
-    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${parseInt(month+1)}-${day} 23:59:59`).valueOf())];
+    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${parseInt(month + 1)}-${day} 23:59:59`).valueOf())];
   }
 }
 
@@ -65,8 +65,7 @@ function getPlainNode(nodeList, parentPath = '') {
 }
 
 export function getRouteData(path) {
-  if (!navData.some(item => item.layout === path) ||
-      !(navData.filter(item => item.layout === path)[0].children)) {
+  if (!navData.some(item => item.layout === path) || !(navData.filter(item => item.layout === path)[0].children)) {
     return null;
   }
   const dataList = cloneDeep(navData.filter(item => item.layout === path)[0]);
@@ -115,7 +114,7 @@ exports.removeLoginStorage = removeLoginStorage;
  *  判断错误码(数组)
  * */
 
-export function converErrorCodeToMsg (error) {
+export function converErrorCodeToMsg(error) {
   console.log("error", error.toString())
   if (error.toString() === 'Error: Network Error') {
     message.error(messageJson['network error'], 3);
@@ -138,8 +137,8 @@ export function converErrorCodeToMsg (error) {
   }
 }
 
-export function convertPoliciesTopic  (form)  {
-  console.log('form',form)
+export function convertPoliciesTopic(form) {
+  console.log('form', form)
   const addPoliciesDate = {
     name: form.name,
     description: form.desc,
@@ -148,33 +147,33 @@ export function convertPoliciesTopic  (form)  {
   for (var k in form) {
     if (k.indexOf('topics') >= 0) {
       if (form.hasOwnProperty(k)) {
-        if(form[k]===undefined){
+        if (form[k] === undefined) {
           return false
         }
         if (form[k].authority == 0) {
           addPoliciesDate.permissions.push({
-            id:form[k].id,
+            id: form[k].id,
             topic: form[k].name,
             allow_publish: -1,
             allow_subscribe: 1
           })
         } else if (form[k].authority == 1) {
           addPoliciesDate.permissions.push({
-            id:form[k].id,
+            id: form[k].id,
             topic: form[k].name,
             allow_publish: 1,
             allow_subscribe: -1
           })
         } else if (form[k].authority == 2) {
           addPoliciesDate.permissions.push({
-            id:form[k].id,
+            id: form[k].id,
             topic: form[k].name,
             allow_publish: 1,
             allow_subscribe: 1
           })
-        }else{
+        } else {
           addPoliciesDate.permissions.push({
-            id:form[k].id,
+            id: form[k].id,
             topic: form[k].name,
             allow_publish: form[k].allow_publish,
             allow_subscribe: form[k].allow_subscribe
@@ -196,7 +195,7 @@ export function getBetweemDay(begin, end) {
   de.setUTCFullYear(ae[0], ae[1] - 1, ae[2]);
   var unixDb = db.getTime();
   var unixDe = de.getTime();
-  var result=[];
+  var result = [];
   for (var k = unixDb; k <= unixDe;) {
     result.push(moment(parseInt(k)).format("YYYY-MM-DD"));
     k = k + 24 * 60 * 60 * 1000;
@@ -220,15 +219,15 @@ export function download(url) {
 }
 
 export function disabledDate(current) {
-  return (current && current > moment().add(0, 'days'))||(current && current < moment('2017-10-01'));
+  return (current && current > moment().add(0, 'days')) || (current && current < moment('2017-10-01'));
 }
 
 export function disabledPreDate(current) {
-  return (current && current > moment().add(-1, 'days'))||(current && current < moment('2017-10-01'));
+  return (current && current > moment().add(-1, 'days')) || (current && current < moment('2017-10-01'));
 }
 
 export function getPreMonth() {
-  var date=new Date();
+  var date = new Date();
   var year = date.getFullYear(); //获取当前日期的年份
   var month = date.getMonth(); //获取当前日期的月份
   var day = date.getDate(); //获取当前日期的日
@@ -238,9 +237,53 @@ export function getPreMonth() {
   }
   day = new Date(year, month, 0).getDate();
 
-  return [moment(year+'-'+month+'-'+'0', 'YYYY-MM-DD'),moment(year+'-'+month+'-'+day, 'YYYY-MM-DD')]
+  return [moment(year + '-' + month + '-' + '0', 'YYYY-MM-DD'), moment(year + '-' + month + '-' + day, 'YYYY-MM-DD')]
 }
 
 export function getPreDay() {
-  return [moment().add(-1, 'days'),moment(new Date(), 'YYYY-MM-DD')]
+  return [moment().add(-1, 'days'), moment(new Date(), 'YYYY-MM-DD')]
+}
+
+export function renderCustomHeaders(headers) {
+  let  custom_width=55;
+  let custom_headers=[{
+    title: '序号',
+    dataIndex: 'id',
+    key: 'id',
+    width: 45,
+    className: 'table-index',
+    fixed: 'left',
+    render: (text, record, index) => {
+      return (
+        <span>
+                {index + 1}
+            </span>
+      )
+    }
+  }];
+  headers&&headers.forEach((item, index)=> {
+    custom_width += item.size;
+    if (item.key === 'status_explain') {
+      custom_headers.push({
+        title: item.display_name,
+        dataIndex: item.key,
+        key: item.key,
+        width: index === headers.length - 1 ? '' : item.size,
+        render: (val, record, index) => (
+          <p>
+            <Badge status={record.status === 1 ? "success" : "error"}/>{val}
+          </p>
+        )
+      })
+    } else {
+      custom_headers.push({
+        title: item.display_name,
+        dataIndex: item.key,
+        key: item.key,
+        width: index === headers.length - 1 ? '' : item.size,
+      })
+    }
+  })
+
+  return {custom_headers,custom_width}
 }

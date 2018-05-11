@@ -19,7 +19,7 @@ class Detail extends PureComponent {
     this.myChart2=null;
     this.state = {
       Data:[],
-      rangePickerValue: [moment(this.props.started_at , 'YYYY-MM-DD'), moment(this.props.ended_at, 'YYYY-MM-DD')],
+      rangePickerValue: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
     }
   }
   componentDidMount() {

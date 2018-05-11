@@ -73,7 +73,7 @@ class Container extends Component {
   changeTableY = ()=> {
     console.log(document.querySelector('.card-container').offsetTop  )
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.card-container').offsetTop - (68 + 210)
+      tableY: document.body.offsetHeight - document.querySelector('.card-container').offsetTop - (68 + 240)
     })
   }
   getState=(value)=>{
@@ -107,6 +107,15 @@ class Container extends Component {
       update(this.state, {
         cards: {
           $splice: [[index, 1,{...this.state.cards[index],size:e}]],
+        },
+      }),
+    )
+  }
+  changeCardText=(e,index)=>{
+    this.setState(
+      update(this.state, {
+        cards: {
+          $splice: [[index, 1,{...this.state.cards[index],display_name:e.target.value}]],
         },
       }),
     )
@@ -151,7 +160,20 @@ class Container extends Component {
     return (
       <div className="card-container">
         <div>
+          <div className="card-scale">
+            <div className="card-scale-content">
+              比例尺 :
+              <div className="scale-item">
+                <span className="first">50px</span>
+                <span>100px</span>
+                <span>150px</span>
+              </div>
+
+            </div>
+
+          </div>
           <div className="card-block">
+
             <div className="card-header">
               不需要显示字段
             </div>
@@ -185,6 +207,7 @@ class Container extends Component {
                   text={card.display_name}
                   size={card.size}
                   changeCardValue={this.changeCardValue}
+                  changeCardText={this.changeCardText}
                   moveCard={this.moveCard}
                   removeCard={this.removeCard}
                 />

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Popconfirm, Layout, message, Modal, Button,Badge} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -14,7 +14,7 @@ import config from '../../../common/config'
 import {download} from '../../../utils/utils'
 import uuid from 'uuid/v4'
 import request from "./../../../utils/request";
-import {getPreDay} from './../../../utils/utils'
+import {getPreDay, renderCustomHeaders} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -22,8 +22,9 @@ const {Content} = Layout;
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
-    this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
-    this.cards=()=>{}
+    this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
+    this.cards = ()=> {
+    }
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon: false,
@@ -31,22 +32,24 @@ class UserMeterAnalysis extends PureComponent {
       tableY: 0,
       meter_number: '',
       real_name: '',
-      install_address:'',
+      install_address: '',
       page: 1,
-      initRange:getPreDay(),
+      initRange: getPreDay(),
       started_at: '',
       ended_at: '',
       village_id: '',
       editModal: false,
       changeModal: false,
-      exportModal:false,
+      exportModal: false,
       member_number: '',
-      display_type:'all',
+      display_type: 'all',
     }
   }
 
   componentDidMount() {
+    this.changeTableY()
   }
+
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
@@ -61,11 +64,11 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
-      install_address:'',
+      install_address: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id,
-      display_type:'all'
+      display_type: 'all'
     })
   }
 
@@ -75,17 +78,16 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon: false,
       concentrator_number: null
     }, function () {
-      this.changeTableY();
       this.handleSearch({
         page: 1,
         meter_number: '',
         real_name: '',
-        install_address:'',
+        install_address: '',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id,
-        display_type:'all'
-      })
+        display_type: 'all'
+      },this.changeTableY)
     })
 
   }
@@ -99,12 +101,12 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
-      install_address:'',
+      install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id,
       concentrator_number: concentrator_number,
-      display_type:'all'
+      display_type: 'all'
     })
   }
   handleFormReset = () => {
@@ -112,14 +114,14 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       real_name: '',
-      install_address:'',
+      install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      display_type:'all'
+      display_type: 'all'
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,cb) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
@@ -136,6 +138,7 @@ class UserMeterAnalysis extends PureComponent {
           started_at: values.started_at,
           ended_at: values.ended_at,
         })
+        if(cb) cb()
       }
     });
 
@@ -144,7 +147,7 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      install_address:this.state.install_address,
+      install_address: this.state.install_address,
       meter_number: this.state.meter_number,
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
@@ -259,13 +262,33 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   findChildFunc = (cb)=> {
-    this.cards=cb
+    this.cards = cb
   }
+
   render() {
     const {member_meter_data: {data, meta, loading}} = this.props;
-    for(let i=0;i<data.length;i++){
-      data[i].uuidkey=uuid()
+    for (let i = 0; i < data.length; i++) {
+      data[i].uuidkey = uuid()
     }
+    const parseHeader = renderCustomHeaders(meta.custom_headers)
+    let  custom_width = parseHeader.custom_width;
+    const custom_headers = parseHeader.custom_headers;
+    custom_width+=110;
+    custom_headers.push(
+      {
+        title: '查询历史状况',
+        key: 'operation',
+        fixed: 'right',
+        width: 110,
+        render: (val, record, index) => {
+          return (
+            <div>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+            </div>
+          )
+        }
+      }
+    )
     const columns = [
       {
         title: '序号',
@@ -285,13 +308,15 @@ class UserMeterAnalysis extends PureComponent {
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',},
       {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', width: 100,},
       {title: '用水量(T)', dataIndex: 'difference_value', key: 'difference_value', width: 100},
-      {title: '状态', dataIndex: 'status', key: 'status', width: 70,
-        render:(val, record, index) => (
+      {
+        title: '状态', dataIndex: 'status', key: 'status', width: 70,
+        render: (val, record, index) => (
           <p>
-            <Badge status={val===1?"success":"error"} />{record.status_explain}
+            <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
 
           </p>
-        )},
+        )
+      },
       {title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
       {title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
       {title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
@@ -301,7 +326,7 @@ class UserMeterAnalysis extends PureComponent {
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
       {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,},
 
-      {title: '抄表员', dataIndex: 'reader', key: 'reader', },
+      {title: '抄表员', dataIndex: 'reader', key: 'reader',},
       {
         title: '查询历史状况',
         key: 'operation',
@@ -316,6 +341,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
     ];
+    console.log(this.state.tableY)
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -330,9 +356,9 @@ class UserMeterAnalysis extends PureComponent {
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             exportCSV={this.exportCSV}
-                            export={()=>{
+                            export={()=> {
                               this.setState({
-                                exportModal:true
+                                exportModal: true
                               })
                             }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
@@ -350,8 +376,8 @@ class UserMeterAnalysis extends PureComponent {
                   loading={loading}
                   rowKey={record => record.uuidkey}
                   dataSource={data}
-                  columns={columns}
-                  scroll={{x: 1560, y: this.state.tableY}}
+                  columns={custom_headers}
+                  scroll={{x: custom_width, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -369,7 +395,8 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <Detail member_number={this.state.member_number} ended_at={this.state.ended_at} started_at={this.state.started_at}/>
+          <Detail member_number={this.state.member_number} ended_at={this.state.ended_at}
+                  started_at={this.state.started_at}/>
         </Modal>
       </Layout>
     );
