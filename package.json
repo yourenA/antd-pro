@@ -53,6 +53,9 @@
     "react-fittext": "^1.0.0",
     "react-treebeard": "^2.1.0",
     "roadhog-api-doc": "^0.2.5",
+    "rsuite": "^3.0.2",
+    "rsuite-table": "^3.0.0",
+    "rsuite-theme": "^2.0.20",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

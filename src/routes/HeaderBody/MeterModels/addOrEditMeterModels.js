@@ -18,7 +18,7 @@ class AddPoliciesForm extends Component {
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -31,6 +31,7 @@ class AddPoliciesForm extends Component {
       <div>
       <Form onSubmit={this.handleSubmit}>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -46,6 +47,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -61,6 +63,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -81,6 +84,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -95,6 +99,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -114,6 +119,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -128,6 +134,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -142,6 +149,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -156,6 +164,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         <FormItem
+          style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>

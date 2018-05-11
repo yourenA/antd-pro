@@ -3,5 +3,5 @@ import { Link } from 'dva/router';
 import Exception from '../../components/Exception';
 
 export default () => (
-  <Exception type="404" style={{ minHeight: 500, height: '80%' }} desc={'页面正在开发中......'} linkElement={Link} />
+  <Exception type="403" style={{ minHeight: 500, height: '80%' }} desc={'页面正在开发中......'}  linkElement={Link} actions={<div></div>} />
 );

@@ -3,18 +3,18 @@ import { Table, Card, Popconfirm, Layout, message, Modal, Button,Badge} from 'an
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import Sider from './../Sider'
+import Sider from './../EmptySider'
 import Detail from './Detail'
 import {connect} from 'dva';
+
 import moment from 'moment'
 import find from 'lodash/find'
-import forEach from "lodash/forEach";
 import './index.less'
 import config from '../../../common/config'
 import {download} from '../../../utils/utils'
 import uuid from 'uuid/v4'
-import request from "./../../../utils/request";
 import {getPreDay} from './../../../utils/utils'
+import Export from './ExportCSV'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -42,6 +42,37 @@ class UserMeterAnalysis extends PureComponent {
       exportModal:false,
       member_number: '',
       display_type:'all',
+      cards: [
+        {
+          id: 1,
+          text: '户号',
+        },
+        {
+          id: 2,
+          text: '水表编号',
+        },
+        {
+          id: 3,
+          text: '用水量',
+        },
+        {
+          id: 4,
+          text: '上次读数',
+        },
+        {
+          id: 5,
+          text:
+            '上次读数时间',
+        },
+        {
+          id: 6,
+          text: '本次读数'
+        },
+        {
+          id: 7,
+          text: '本次读数时间',
+        },
+      ],
     }
   }
 
@@ -257,7 +288,10 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
-
+  handleExport=()=>{
+    let card=this.cards();
+    console.log('card',card)
+  }
   findChildFunc = (cb)=> {
     this.cards=cb
   }
@@ -324,39 +358,7 @@ class UserMeterAnalysis extends PureComponent {
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表水量分析'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
-                            initRange={this.state.initRange}
-                            village_id={this.state.village_id}
-                            exportCSV={this.exportCSV}
-                            export={()=>{
-                              this.setState({
-                                exportModal:true
-                              })
-                            }}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
-                            clickAdd={()=>this.setState({addModal: true})}/>
-                  </div>
-                </div>
-                <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.uuidkey}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{x: 1560, y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
-
+                <Export findChildFunc={this.findChildFunc} />
               </Card>
             </PageHeaderLayout>
           </div>
@@ -370,6 +372,15 @@ class UserMeterAnalysis extends PureComponent {
           onCancel={() => this.setState({editModal: false})}
         >
           <Detail member_number={this.state.member_number} ended_at={this.state.ended_at} started_at={this.state.started_at}/>
+        </Modal>
+        <Modal
+          destroyOnClose={true}
+          title={`导出设置`}
+          visible={this.state.exportModal}
+          onCancel={() => this.setState({exportModal: false})}
+          onOk={this.handleExport}
+        >
+          <Export findChildFunc={this.findChildFunc} />
         </Modal>
       </Layout>
     );

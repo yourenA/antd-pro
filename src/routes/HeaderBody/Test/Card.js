@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
-import { DragSource, DropTarget } from 'react-dnd'
+import {Button,Input} from 'antd'
+import {findDOMNode} from 'react-dom'
+import {DragSource, DropTarget} from 'react-dnd'
 const style = {
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
@@ -86,15 +87,27 @@ export default class Card extends Component {
 
   render() {
     const {
+      index,
       text,
+      width,
       isDragging,
       connectDragSource,
       connectDropTarget,
+      removeCard,
+      changeCardValue
     } = this.props
     const opacity = isDragging ? 0.2 : 1
 
     return connectDragSource(
-      connectDropTarget(<div style={{ ...style, opacity }}>{text}</div>),
+      connectDropTarget(<div style={{...style, opacity}}>
+        {text} : <Input size="small" style={{width:'100px'}}  addonAfter="px" defaultValue={width} onChange={(e)=>changeCardValue(e,index)}/>
+        <Button  size="small" type="danger" style={{float:'right'}} onClick={()=>{
+
+          console.log('click',index);
+          removeCard(index)
+        }}>删除</Button>
+      </div>
+      ),
     )
   }
 }

@@ -1,0 +1,56 @@
+:global {
+  .card-scale{
+    overflow: hidden;
+    height: 30px;
+    .card-scale-content{
+      float: right;
+      .scale-item{
+        display: inline-block;
+        margin-left: 5px;
+        span{
+          width: 50px;
+          border-bottom:1px solid #001529 ;
+          display: inline-block;
+          position: relative;
+          text-align: center;
+          font-size: 12px;
+          &.first:before{
+            content: '';
+            width: 1px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 6px;
+            background: #001529;
+          }
+          &:after{
+            content: '';
+            width: 1px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 6px;
+            background: #001529;
+          }
+        }
+      }
+
+    }
+  }
+  .card-block{
+    display: inline-block;
+    width: ~"calc(50% - 30px)";
+    padding: 10px;
+    vertical-align: top;
+    border: 1px solid #94a0b4;
+    .card-header{
+      width: 100%;
+      height: 50px;
+      background: #cccccc;
+      color: #001529;
+      text-align: center;
+      line-height: 50px;
+      margin-bottom: .5rem;
+    }
+   }
+}

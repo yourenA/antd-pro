@@ -9,7 +9,7 @@ import asyncComponent from './../AsyncComponent'
 // const Endpoints = asyncComponent(() =>
 // import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
 // )
-import Endpoints from '../routes/AccessManagement/Endpoints'
+import Test from '../routes/HeaderBody/Test/Index'
 import UserInfo from './../routes/UserInfo/Index'
 // const OrganizationManage = asyncComponent(() =>
 // import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
+import {Table,  Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Pagination from './../../../components/Pagination/Index'
@@ -8,8 +8,10 @@ import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
-import './index.less'
+// import 'rsuite-table/lib/less/index.less'
 import {getPreDay} from './../../../utils/utils'
+// import './index.less'
+// import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,
@@ -216,7 +218,74 @@ class UserMeterAnalysis extends PureComponent {
     const formValues = this.ChangeTableformRef.props.form.getFieldsValue();
     console.log(formValues)
   }
+  renderRsuiteTable=(data,loading)=>{
+    return (
+      <div>
+        <Table
+          bordered
+          height={this.state.tableY}
+          data={data}
+          loading={loading}
+          className="rsuiteTable"
+          onRowClick={(data) => {
+            console.log(data);
+          }}
+        >
+          <Column width={50} align="center" fixed resizable >
+            <HeaderCell>序号</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
 
+          <Column width={130} fixed resizable >
+            <HeaderCell>First Name</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={130} >
+            <HeaderCell>Last Name</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>City</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Street</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+
+          <Column width={200} >
+            <HeaderCell>Company Name</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="meter_number" />
+          </Column>
+
+        </Table>
+      </div>
+    )
+  }
   render() {
     const {village_meter_data: {data, meta, loading}, concentrators, meters} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -284,7 +353,7 @@ class UserMeterAnalysis extends PureComponent {
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <Table
+               <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
