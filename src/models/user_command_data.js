@@ -16,6 +16,7 @@ export default {
         payload: true,
       });
       const response = yield call(query, payload);
+      console.log(response)
       if(response.status===200){
         yield put({
           type: 'save',

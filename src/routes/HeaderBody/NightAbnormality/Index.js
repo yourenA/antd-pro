@@ -3,9 +3,11 @@ import {Table, Card, Layout, message, Badge} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
+import { routerRedux } from 'dva/router';
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import moment from 'moment';
+import {renderIndex} from './../../../utils/utils'
 import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
@@ -20,7 +22,10 @@ class FunctionContent extends PureComponent {
       page: 1,
       initDate: moment(new Date(), 'YYYY-MM-DD'),
       date: '',
-      area_id: ''
+      area_id: '',
+      concentrator_number: '',
+      meter_number: '',
+      member_number: '',
     }
   }
 
@@ -39,6 +44,9 @@ class FunctionContent extends PureComponent {
     this.handleSearch({
       area_id: '',
       page: 1,
+      concentrator_number: '',
+      meter_number: '',
+      member_number: '',
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
@@ -51,6 +59,9 @@ class FunctionContent extends PureComponent {
     this.handleSearch({
       area_id: '',
       page: 1,
+      concentrator_number: '',
+      meter_number: '',
+      member_number: '',
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
@@ -74,6 +85,9 @@ class FunctionContent extends PureComponent {
       area_id: this.state.area_id,
       page: page,
       date: this.state.date,
+      concentrator_number: this.state.concentrator_number,
+      meter_number: this.state.meter_number,
+      member_number: this.state.member_number,
     })
   }
 
@@ -88,18 +102,14 @@ class FunctionContent extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '户号', width: 120, dataIndex: 'member_number', key: 'member_number'},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
       {title: '集中器编号', width: 120, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表号', width:120, dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表序号', width:120, dataIndex: 'meter_index', key: 'meter_index'},
@@ -110,6 +120,8 @@ class FunctionContent extends PureComponent {
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
 
     ];
+    const {dispatch}=this.props;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -120,7 +132,11 @@ class FunctionContent extends PureComponent {
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch dma={dma} handleSearch={this.handleSearch}
+                    <DefaultSearch
+                      setWarningRule={()=>{
+                        dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/night_warning_setup`));
+                      }}
+                      dma={dma} handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
                   </div>
                 </div>
@@ -130,7 +146,7 @@ class FunctionContent extends PureComponent {
                   loading={loading}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1200, y: this.state.tableY}}
+                  scroll={{x: 1200}}
                   pagination={false}
                   size="small"
                 />

@@ -9,6 +9,7 @@ import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMember'
+import {renderIndex} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   user: state.user,
@@ -253,14 +254,11 @@ class Vendor extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        fixed: 'left',
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
@@ -391,7 +389,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000, y: this.state.tableY}}
+                  scroll={{x: 1000}}
                   pagination={false}
                   size="small"
                 />

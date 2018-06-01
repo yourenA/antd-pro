@@ -10,6 +10,16 @@ export default {
 
   },
   effects: {
+    *reset({ payload }, { call, put }) {
+      console.log('meter_models reset')
+      yield put({
+        type: 'save',
+        payload: {
+          data:[],
+          meta:{pagination: {total: 0, per_page: 0}}
+        }
+      });
+    },
     *fetch({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',

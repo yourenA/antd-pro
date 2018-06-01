@@ -414,8 +414,8 @@ class Vendor extends PureComponent {
                               <div className="DMA-rect DMA-rect-node1" onClick={()=>this.clickNode('中心区')} style={{
                                 width: rectWidth * zoom + 'px',
                                 height: rectHeight * zoom + 'px',
-                                left: 606 * zoom + 'px',
-                                top: 769 * zoom + 'px'
+                                left: 595 * zoom + 'px',
+                                top: 845 * zoom + 'px'
                               }}></div>
                             </Popover>
                             <Popover content={this.getPopover('华新区')} title="华新区">
@@ -487,7 +487,7 @@ class Vendor extends PureComponent {
                                 width: iconWidth * zoom + 'px',
                                 height: iconWidth * zoom + 'px',
                                 left: 638 * zoom + 'px',
-                                top: 816 * zoom + 'px'
+                                top: 805 * zoom + 'px'
                               }}></div>
                             </Popover>
                             <Popover content={this.getPopover('7区')} title="7区">

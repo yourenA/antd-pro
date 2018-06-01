@@ -5,6 +5,7 @@ import DefaultSearch from './../../../components/DefaultSearch/index'
 import Sider from './Sider'
 import {connect} from 'dva';
 import moment from 'moment';
+import {renderIndex} from '../../../utils/utils'
 import find from 'lodash/find';
 import './index.less'
 const {Content} = Layout;
@@ -145,15 +146,11 @@ class CommunityAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '水表编号', width: 120, dataIndex: 'name', key: 'name', fixed: 'left',},

@@ -1,14 +1,20 @@
 import React, { PureComponent } from 'react';
 import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
+import {connect} from 'dva';
 const { Sider} = Layout;
+
+@connect(state => ({
+  global:state.global,
+}))
 class SiderNav extends PureComponent {
   constructor(props) {
     super(props);
+    const {isMobile} =this.props.global;
     this.state = {
-      collapsed: false,
+      collapsed: isMobile,
       siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'},
-        {name: '户表水量分析页面设置', url: 'member_meter_setup'},
+        {name: '漏水异常报警设置', url: 'leak_warning_setup'},{name: '户表水量分析页面设置', url: 'member_meter_setup'},
         // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
         //           {name: '邮件通知设置', url: 'email_notice' }
                   ],
@@ -43,14 +49,14 @@ class SiderNav extends PureComponent {
       )
     })
     return (
-      <Sider collapsed={this.state.collapsed} className="sider" width="210">
+      <Sider collapsed={this.state.collapsed}  collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
           选项
         </div>
         <div className="siderNav">
           {renderSiderNav}
         </div>
-        <div className="toggle" onClick={this.onCollapse}>
+        <div className="showToggle"   onClick={this.onCollapse}>
           <Icon type={this.state.collapsed ? "right" : "left"}/>
         </div>
       </Sider>

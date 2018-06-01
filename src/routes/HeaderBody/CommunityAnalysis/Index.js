@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table,  Card, Popconfirm, Layout, message, Modal, Button} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Pagination from './../../../components/Pagination/Index'
@@ -9,7 +9,7 @@ import moment from 'moment'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 // import 'rsuite-table/lib/less/index.less'
-import {getPreDay} from './../../../utils/utils'
+import {getPreDay, renderIndex, renderErrorData} from './../../../utils/utils'
 // import './index.less'
 // import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 const {Content} = Layout;
@@ -218,7 +218,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues = this.ChangeTableformRef.props.form.getFieldsValue();
     console.log(formValues)
   }
-  renderRsuiteTable=(data,loading)=>{
+  renderRsuiteTable = (data, loading)=> {
     return (
       <div>
         <Table
@@ -231,61 +231,62 @@ class UserMeterAnalysis extends PureComponent {
             console.log(data);
           }}
         >
-          <Column width={50} align="center" fixed resizable >
+          <Column width={50} align="center" fixed resizable>
             <HeaderCell>序号</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={130} fixed resizable >
+          <Column width={130} fixed resizable>
             <HeaderCell>First Name</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={130} >
+          <Column width={130}>
             <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>City</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Street</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number" />
+            <Cell dataKey="meter_number"/>
           </Column>
 
         </Table>
       </div>
     )
   }
+
   render() {
     const {village_meter_data: {data, meta, loading}, concentrators, meters} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -296,15 +297,11 @@ class UserMeterAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta, this.state.page, index)
         }
       },
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
@@ -316,24 +313,34 @@ class UserMeterAnalysis extends PureComponent {
       {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 120,},
       {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',},
 
       {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 300,
+        title: '安装地址', dataIndex: 'install_address', key: 'install_address',
         render: (val, record, index) => {
           return (
-            <div>
-              <Button type="primary" size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 901F</Button>
-              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 90EF</Button>
-              {/*<Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>*/}
-              <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>关阀</Button>
-            </div>
+            <Tooltip title={val}>
+              <span>{val.length > 10 ? val.substring(0, 7) + '...' : val}</span>
+            </Tooltip>
           )
         }
       },
+
+      /*{
+       title: '操作',
+       key: 'operation',
+       fixed: 'right',
+       width: 300,
+       render: (val, record, index) => {
+       return (
+       <div>
+       <Button type="primary" size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 901F</Button>
+       <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>点抄 90EF</Button>
+       {/!*<Button type="danger" size='small' onClick={()=>message.info('该功能暂未开通')}>停用</Button>*!/}
+       <Button type="primary" disabled size='small' onClick={()=>message.info('该功能暂未开通')}>关阀</Button>
+       </div>
+       )
+       }
+       },*/
     ];
     return (
       <Layout className="layout">
@@ -353,9 +360,9 @@ class UserMeterAnalysis extends PureComponent {
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-               <Table
+                <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if (record.status === -2) {
                       return 'error'
                     }
                   }}
@@ -364,7 +371,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1700, y: this.state.tableY}}
+                  scroll={{x: 1280}}
                   pagination={false}
                   size="small"
                 />

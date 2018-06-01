@@ -3,6 +3,7 @@ import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './../OnlyAdd'
+import {renderIndex} from './../../../utils/utils'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
@@ -11,6 +12,7 @@ const {Content} = Layout;
 @connect(state => ({
   concentrator_models: state.concentrator_models,
   manufacturers: state.manufacturers,
+  global:state.global,
 }))
 class ConcentratorModels extends PureComponent {
   constructor(props) {
@@ -164,15 +166,11 @@ class ConcentratorModels extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '类型编码', width:  '20%', dataIndex: 'code', key: 'code'},
@@ -212,6 +210,7 @@ class ConcentratorModels extends PureComponent {
         ),
       },
     ];
+    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -237,7 +236,7 @@ class ConcentratorModels extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{y: this.state.tableY}}
+                  scroll={isMobile?{x:700}:{}}
                   pagination={false}
                   size="small"
                 />

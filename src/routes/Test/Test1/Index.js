@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'dva';
-import {Card, Row, Col, Form, Icon, Input, Button, Checkbox,Select,Badge,Table,Pagination,message,Divider} from 'antd';
+import {Card, Row, Col, Form, Icon, Input, Button, Checkbox,Select,Badge,Table,Pagination,message,Divider,Tooltip} from 'antd';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -13,7 +13,8 @@ class Dashboard extends PureComponent {
     this.timer=null;
     this.state = {
       auto:true,
-      feature: [{key:'open_valve',value:'开阀'},{key:'close_valve',value:'关阀'},{key:'upload_single',value:'抄读单表'}]
+      feature: [{key:'open_valve',value:'开阀'},{key:'close_valve',value:'关阀'},{key:'upload_single',value:'抄读单表'}
+        ,{key:'read_single_901f',value:'901F点抄'},{key:'read_multiple_901f',value:'901F集抄'},{key:'upload_single',value:'点抄'},{key:'runonce_upload_multiple_timing',value:'集抄'}]
     }
   }
   componentDidMount() {
@@ -25,7 +26,7 @@ class Dashboard extends PureComponent {
         page: 1,
       }
     });
-    this.timer=setInterval(this.setIntervalFetch,5000)
+    this.timer=setInterval(this.setIntervalFetch,10000)
 
   }
   setIntervalFetch=()=>{
@@ -127,7 +128,7 @@ class Dashboard extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
           return (
@@ -137,13 +138,13 @@ class Dashboard extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', width: '15%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表号', width: '15%', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '功能代码', dataIndex: 'feature', key: 'feature', width:  '15%', },
+      {title: '集中器编号', width: 110, dataIndex: 'concentrator_number', key: 'concentrator_number'},
+      {title: '水表号', width: 100, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '功能代码', dataIndex: 'feature', key: 'feature', width: 140, },
       {
         title: '状态',
         dataIndex: 'status',
-        width: '10%',
+        width: 100,
         render:(val,record,index)=>{
           return(
             <span>
@@ -152,9 +153,17 @@ class Dashboard extends PureComponent {
           )
         }
       },
-      {title: '执行回调结果', dataIndex: 'result', key: 'result'},
-      {title: '执行用户名', dataIndex: 'send_username', key: 'send_username'},
-      {title: '创建名称', dataIndex: 'created_at', key: 'created_at',},
+      {title: '执行回调结果', dataIndex: 'result', key: 'result', width: 130,},
+      {title: '附带参数', dataIndex: 'body', key: 'body', width: 150,
+        render:(val,record,index)=>{
+          return(
+          <Tooltip title={<p style={{width:'200px',wordWrap:'break-word'}}>{ JSON.stringify(val)}</p>}>
+            <p style={{width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{JSON.stringify(val)}</p>
+          </Tooltip>
+          )
+        }},
+      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',},
+
     ];
     return (
       <div>
@@ -201,6 +210,15 @@ class Dashboard extends PureComponent {
                   )}
                 </FormItem>
                 <FormItem
+                  {...formItemLayoutWithLabel}
+                  label={(
+                    <span>协议</span>
+                  )}>
+                  {getFieldDecorator('protocol', {})(
+                    <Input placeholder="协议"/>
+                  )}
+                </FormItem>
+                <FormItem
                   {...formItemLayoutWithOutLabel}
                 >
                   <Button style={{width:'100%'}} type="primary" onClick={this.handleSubmit}>
@@ -232,6 +250,7 @@ class Dashboard extends PureComponent {
                 dataSource={data}
                 columns={columns}
                 pagination={false}
+                scroll={{x: 1000}}
                 size="small"
               />
               <Pagination showQuickJumper className='pagination' total={meta.pagination.total}

@@ -4,7 +4,7 @@ import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
 const ButtonGroup = Button.Group;
-import {getTimeDistance,disabledDate} from './../../../utils/utils';
+import {getTimeDistance,disabledDate,errorNumber} from './../../../utils/utils';
 import request from './../../../utils/request'
 import moment from 'moment'
 const TabPane = Tabs.TabPane;
@@ -47,20 +47,23 @@ class Detail extends PureComponent {
   dynamic=(data)=>{
     let Date=[];
     let Data=[];
+    let diffData=[];
     forEach(data,(value)=>{
       Date.push(value.date);
-      Data.push(value.value)
+      if(value.value.toString().indexOf(errorNumber)>=0){
+        Data.push('-')
+      }else{
+        Data.push(value.value)
+      }
+      diffData.push(value.difference_value)
     })
     this.myChart = this.echarts.init(document.querySelector('.month-analysis'));
     let option = {
       tooltip: {
         trigger: 'axis' //只显示一条线
       },
-      legend: {
-        data:['最高用水量','最低用水量']
-      },
       toolbox: {
-        show: true,
+        show: false,
         feature: {
           dataView: {readOnly: false},
           saveAsImage: {}
@@ -78,33 +81,60 @@ class Detail extends PureComponent {
         },
       ],
       xAxis:  {
-        type: 'category',
-        boundaryGap: false,//坐标轴两边留白策略.默认为 true，这时候刻度只是作为分隔线
+        // type: 'category',
+        // boundaryGap: false,//坐标轴两边留白策略.默认为 true，这时候刻度只是作为分隔线
+        silent: false,
+        axisLine: {onZero: true},
+        splitLine: {show: false},
+        splitArea: {show: false},
         data:Date
       },
-      yAxis: {
-        type: 'value',
-        axisLabel: { //格式化刻度尺上面的文字
-          formatter: '{value} T'
-        }
-      },
-      series: [
-        {   //第一条数据
-          name:'用水量',
-          type:'line',
-          data:Data,
-          markPoint: { //在该数据线上描点
-            data: [
-              {type: 'max', name: '最大值'},
-              {type: 'min', name: '最小值'}
-            ]
+      yAxis:  [
+        {
+          type: 'value',
+          name: '水表读数',
+          position: 'left',
+          axisLine: {
+            lineStyle: {
+              color: '#2f4554'
+            }
           },
-          markLine: { //在该数据线上描线
-            data: [
-              {type: 'average', name: '平均值'}
-            ]
+        },
+        {
+          type: 'value',
+          name: '用水量',
+          position: 'right',
+          axisLine: {
+            lineStyle: {
+              color: '#c23531'
+            }
+          },
+        },
+      ],
+      series: [
+        {
+          name:'水表读数',
+          type:'bar',
+          data:Data,
+          itemStyle:{
+            normal: {
+              color: '#2f4554',
+            }
           }
         },
+        {
+          name:'用水量',
+          type:'line',
+          yAxisIndex: 1,
+          data:diffData,
+          smooth: true,
+          itemStyle:{
+            normal: {
+              color: '#c23531',
+            }
+          }
+        },
+
       ]
     };
 

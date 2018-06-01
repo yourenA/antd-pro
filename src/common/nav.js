@@ -9,7 +9,7 @@ import asyncComponent from './../AsyncComponent'
 // const Endpoints = asyncComponent(() =>
 // import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
 // )
-import Test from '../routes/HeaderBody/Test/Index'
+import Test from '../routes/HeaderBody/Test/RowSpan'
 import UserInfo from './../routes/UserInfo/Index'
 // const OrganizationManage = asyncComponent(() =>
 // import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
@@ -152,6 +152,7 @@ import ConcentratorErrorAnalysis from './../routes/HeaderBody/ConcentratorErrorA
 import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
 
 import Consumption_abnormality from '../routes/HeaderBody/Consumption_abnormality/Index'
+import Leak_abnormality from '../routes/HeaderBody/Leak_abnormality/Index'
 
 // const StatisticsDaily = asyncComponent(() =>
 // import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
@@ -296,12 +297,14 @@ const data = [{
         path: 'user_meter_life',
         component: UserMeterLife,
         permissions:['meter_status'],
-      },{
-        name: '产销差分析',
-        path: 'production_marketing__analysis',
-        component: ProductionMarketingAnalysis,
-        permissions:['village_difference_consumption'],
-      },],
+      }
+      // ,{
+      //   name: '产销差分析',
+      //   path: 'production_marketing__analysis',
+      //   component: ProductionMarketingAnalysis,
+      //   permissions:['village_difference_consumption'],
+      // },
+      ],
     },  {
       name: '运行管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
@@ -423,7 +426,7 @@ const data = [{
         permissions:['daily_error'],
       },{
         name: '用水量异常报警',
-        path: 'water_unusual_analysis',
+        path: 'consumption_abnormality',
         component: Consumption_abnormality,
         permissions:['company_visit'],
       },{
@@ -436,6 +439,11 @@ const data = [{
         path: 'zero_abnormality',
         component: ZeroAbnormality,
         permissions:['company_visit'],
+      },{
+        name: '漏水异常报警',
+        path: 'leak_abnormality',
+        component: Leak_abnormality,
+        permissions:['leak_abnormality'],
       }],
     }],
 },

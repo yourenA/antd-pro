@@ -5,10 +5,13 @@ import Pagination from './../../../components/Pagination/Index'
 import Search from './Search'
 import Sider from './../Sider'
 import {connect} from 'dva';
+import { routerRedux} from 'dva/router';
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import {renderIndex,renderErrorData} from './../../../utils/utils'
+
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
@@ -31,7 +34,12 @@ class UserMeterAnalysis extends PureComponent {
       village_id: '',
       editModal: false,
       changeModal: false,
-      member_number: ''
+      concentrator_number: '',
+      meter_number: '',
+      member_number: '',
+      display_type: 'all',
+
+
     }
   }
 
@@ -57,6 +65,9 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       manufacturer_id: '',
+      meter_number: '',
+      member_number: '',
+      concentrator_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
@@ -69,15 +80,20 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields();
     this.setState({
       showAddBtnByCon: false,
-      concentrator_number: null
+      concentrator_number:''
     }, function () {
       this.changeTableY();
       this.handleSearch({
         page: 1,
         manufacturer_id: '',
+        meter_number: '',
+        member_number: '',
+        concentrator_number:'',
+        display_type: 'all',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id
+        village_id: village_id,
+
       })
     })
 
@@ -101,6 +117,10 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       manufacturer_id: '',
+      concentrator_number:'',
+      meter_number: '',
+      member_number: '',
+      display_type: 'all',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -112,14 +132,21 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'meter_errors/fetch',
       payload: {
-        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
-        village_id: values.village_id ? values.village_id : this.state.village_id,
         ...values,
+        // concentrator_number: values.concentrator_number,
+        // meter_number: values.meter_number,
+        // member_number: values.member_number,
+        // display_type: values.display_type,
+        village_id: values.village_id ? values.village_id : this.state.village_id,
       },
       callback: function () {
         that.setState({
           ...values,
           village_id: values.village_id ? values.village_id : that.state.village_id,
+          concentrator_number: values.concentrator_number,
+          meter_number: values.meter_number,
+          member_number: values.member_number,
+          display_type: values.display_type,
           started_at: values.started_at,
           ended_at: values.ended_at,
         })
@@ -131,7 +158,11 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
+      concentrator_number: this.state.concentrator_number,
       manufacturer_id: this.state.manufacturer_id,
+      meter_number: this.state.meter_number,
+      member_number: this.state.member_number,
+      display_type: this.state.display_type,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       // area: this.state.area
@@ -139,7 +170,8 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   render() {
-    const {meter_errors: {data, meta, loading}, manufacturers} = this.props;
+    const {meter_errors: {data, meta, loading}, manufacturers,dispatch} = this.props;
+    const company_code = sessionStorage.getItem('company_code');
     for(let i=0;i<data.length;i++){
       data[i].uuidkey=uuid()
     }
@@ -148,22 +180,26 @@ class UserMeterAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'
+        , render: (val, record, index) => {
+        return (
+          <p  className="link" onClick={()=>{
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}`));
+          }} >{val}</p>
+        )
+      }},
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
-      {title: '用户名称', width: 150, dataIndex: 'real_name', key: 'real_name'},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
       {
-        title: '异常类型', width: 150, dataIndex: 'status', key: 'status'
+        title: '异常类型', width: 100, dataIndex: 'status', key: 'status'
         , render: (val, record, index) => {
           let status='success';
           switch (val){
@@ -184,9 +220,13 @@ class UserMeterAnalysis extends PureComponent {
           )
       }
       },
-      {title: '用水量', width: 150, dataIndex: 'consumption', key: 'consumption'},
+      {title: '用水量', width: 80, dataIndex: 'consumption', key: 'consumption',
+        render: (val, record, index) => {
+          return renderErrorData(val)
+        }
+      },
       {title: '日期', dataIndex: 'date', width: 150,  key: 'date',},
-      {title: '当日阀值', width: 150, dataIndex: 'threshold', key: 'threshold'},
+      {title: '当日阀值', width: 80, dataIndex: 'threshold', key: 'threshold'},
       {title: '超出阀值',dataIndex: 'beyond_threshold', key: 'beyond_threshold'},
     ];
     return (
@@ -210,7 +250,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if (record.status === -2) {
                       return 'error'
                     }
                   }}
@@ -219,7 +259,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1250, y: this.state.tableY}}
+                  scroll={{x: 1000}}
                   pagination={false}
                   size="small"
                 />

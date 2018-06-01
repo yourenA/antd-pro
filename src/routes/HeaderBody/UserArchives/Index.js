@@ -1,13 +1,16 @@
 import React, {PureComponent} from 'react';
-import { Table , Card, Popconfirm , Layout,message,Modal} from 'antd';
+import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import AddOREditUserArchives from './addOREditUserArchives'
+import ImportArchives from './ImportUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
+import request from "./../../../utils/request";
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
+import {renderIndex,renderRowSpan,parseRowSpanData} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 const { Content} = Layout;
@@ -15,6 +18,7 @@ const { Content} = Layout;
   members: state.members,
   concentrators: state.concentrators,
   meters: state.meters,
+  meter_models: state.meter_models,
   sider_regions: state.sider_regions,
 
 }))
@@ -22,10 +26,12 @@ class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
+    this.file=()=>{}
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon:true,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
+      showImportBtn: find(this.permissions, {name: 'member_delete'}),
       tableY:0,
       query: '',
       page: 1,
@@ -35,10 +41,12 @@ class UserMeterAnalysis extends PureComponent {
       village_id: '',
       editModal:false,
       changeModal:false,
+      importModal:false,
       area: '',
       distribution_area:'',
       statistical_forms:'',
-      meter_number:''
+      meter_number:'',
+      concentrator_number:'',
     }
   }
 
@@ -56,8 +64,19 @@ class UserMeterAnalysis extends PureComponent {
         return: 'all'
       }
     });
+    dispatch({
+      type: 'meter_models/fetch',
+      payload: {
+        return: 'all'
+      }
+    });
   }
-
+  componentWillUnmount(){
+    const {dispatch}=this.props
+    dispatch({
+      type: 'concentrators/reset',
+    });
+  }
   siderLoadedCallback = (village_id)=> {
     console.log('加载区域', village_id)
     this.setState({
@@ -68,6 +87,7 @@ class UserMeterAnalysis extends PureComponent {
       distribution_area:'',
       statistical_forms:'',
       meter_number:'',
+      concentrator_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
@@ -81,7 +101,7 @@ class UserMeterAnalysis extends PureComponent {
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      concentrator_number:null
+      concentrator_number:''
     },function () {
 
       this.changeTableY();
@@ -90,18 +110,19 @@ class UserMeterAnalysis extends PureComponent {
         distribution_area:'',
         statistical_forms:'',
         meter_number:'',
+        concentrator_number:'',
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         village_id: village_id
       })
     })
     const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
+    // dispatch({
+    //   type: 'concentrators/fetch',
+    //   payload: {
+    //     village_id: village_id
+    //   }
+    // });
 
   }
   changeConcentrator = (concentrator_number,village_id)=> {
@@ -110,21 +131,21 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number:concentrator_number,
     })
     const {dispatch}=this.props
-    dispatch({
-      type: 'concentrators/fetch',
-      payload: {
-        village_id: village_id
-      }
-    });
+    // dispatch({
+    //   type: 'concentrators/fetch',
+    //   payload: {
+    //     village_id: village_id
+    //   }
+    // });
     this.handleSearch({
       page: 1,
       distribution_area:'',
       statistical_forms:'',
+      concentrator_number:'',
       meter_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id:village_id,
-      concentrator_number:concentrator_number
     })
   }
   handleFormReset = () => {
@@ -133,7 +154,8 @@ class UserMeterAnalysis extends PureComponent {
       query: '',
       meter_number:'',
       distribution_area:'',
-      statistical_forms:''
+      statistical_forms:'',
+      concentrator_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -145,7 +167,6 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'members/fetch',
       payload: {
-        concentrator_number:this.state.concentrator_number?this.state.concentrator_number:'',
         village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
       },
@@ -165,6 +186,7 @@ class UserMeterAnalysis extends PureComponent {
       distribution_area:this.state.distribution_area,
       statistical_forms:this.state.statistical_forms,
       meter_number:this.state.meter_number,
+      concentrator_number:this.state.concentrator_number,
       // ended_at: this.state.ended_at,
       // started_at: this.state.started_at,
       // area: this.state.area
@@ -190,7 +212,10 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          query: that.state.query,
+          distribution_area:that.state.distribution_area,
+          statistical_forms:that.state.statistical_forms,
+          meter_number:that.state.meter_number,
+          concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -216,6 +241,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
+          concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -234,6 +260,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
+          concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -242,40 +269,87 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.ChangeTableformRef.props.form.getFieldsValue();
     console.log(formValues)
   }
+
+  findChildFunc = (cb)=> {
+    this.file=cb
+  }
+  handleImport=()=>{
+    let file=this.file();
+    const formValues =this.importFormRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    var formData = new FormData();
+    formData.append("file", formValues.file.file);
+    formData.append("meter_model_id", formValues.meter_model_id);
+    formData.append("concentrator_number", formValues.concentrator_number);
+    const that=this;
+    request(`/meter_import`, {
+      method: 'POST',
+      data: formData
+    }).then((response)=> {
+      console.log(response);
+      if(response.status===200){
+        message.success('导入成功');
+        that.setState({
+          importModal:false
+        })
+      }
+    })
+  }
   render() {
-    const {members: {data, meta, loading},concentrators,meters,sider_regions} = this.props;
+    const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models} = this.props;
+    const resetMeterData=parseRowSpanData(data)
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          const children=renderIndex(meta,this.state.page,record.index)
+          return renderRowSpan(children,record)
         }
       },
-      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',  fixed: 'left', },
-      { title: '户号', width: 80, dataIndex: 'number', key: 'number' },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80, },
-
-      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,},
-      { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,},
+      { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left', },
+      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
+        const children= (
+          <Tooltip title={val}>
+            <span>{val.length>3?val.substring(0,3)+'...':val}</span>
+          </Tooltip>
+        )
+        return renderRowSpan(children,record)
+      } },
+      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 150,   render: (val, record, index) => {
+        const children=  (
+          <Tooltip title={val}>
+            <span>{val.length>10?val.substring(0,7)+'...':val}</span>
+          </Tooltip>
+        )
+        return renderRowSpan(children,record)
+      }},
+      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
+      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number' },
+      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
+      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
+      { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
+      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,  render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
       // { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 90},
       // { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
-      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at',width: 180},
-      { title: '安装地址', dataIndex: 'address', key: 'address' ,},
+      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at',  render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
       {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 140,
+        width: 90,
         render: (val, record, index) => {
           return(
             <p>
@@ -300,12 +374,8 @@ class UserMeterAnalysis extends PureComponent {
                               onConfirm={()=>this.handleRemove(record.id)}>
                   <a href="">删除</a>
                 </Popconfirm>
-                    <span className="ant-divider"/>
                 </span>
               }
-              <a href="javascript:;"  onClick={()=>
-                message.info('该功能暂未开通')
-              }>换表</a>
             </p>
           )
         }
@@ -316,14 +386,16 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '会员档案'}]}>
+            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '用户档案'}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             village_id={this.state.village_id}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}/>
+                            showImportBtn={this.state.showImportBtn}
+                            showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}
+                            clickImport={()=>{this.setState({importModal:true})}}/>
                   </div>
                 </div>
                 <Table
@@ -334,10 +406,10 @@ class UserMeterAnalysis extends PureComponent {
                   }}
                   className='meter-table'
                   loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
+                  rowKey={record => record.number}
+                  dataSource={resetMeterData}
                   columns={columns}
-                  scroll={{ x: 1370, y: this.state.tableY }}
+                  scroll={{ x: 1350 }}
                   pagination={false}
                   size="small"
                 />
@@ -364,6 +436,14 @@ class UserMeterAnalysis extends PureComponent {
           onCancel={() => this.setState({editModal:false})}
         >
           <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+        </Modal>
+        <Modal
+          title="批量导入用户"
+          visible={this.state.importModal}
+          onOk={this.handleImport}
+          onCancel={() => this.setState({importModal:false})}
+        >
+          <ImportArchives  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
         <Modal
           key={ Date.parse(new Date())+2}

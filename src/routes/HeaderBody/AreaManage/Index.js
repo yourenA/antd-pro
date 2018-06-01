@@ -3,7 +3,6 @@ import { Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './../OnlyAdd'
-
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
@@ -79,7 +78,8 @@ class Vendor extends PureComponent {
   handleAdd = () => {
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
+    console.log('formValues',formValues);
+
     this.props.dispatch({
       type: 'area/add',
       payload: {
@@ -203,7 +203,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ y: this.state.tableY}}
+                  //scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

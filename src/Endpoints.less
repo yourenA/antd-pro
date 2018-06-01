@@ -3,25 +3,25 @@
 
 :global {
   body {
-    min-width: 1000px;
+    //min-width: 1000px;
   }
   /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-  ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+/*  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
     background-color: #F5F5F5; }
 
-  /*定义滚动条轨道 内阴影+圆角*/
+  !*定义滚动条轨道 内阴影+圆角*!
   ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(23, 23, 23, 0.3);
     border-radius: 10px;
     background-color: #F5F5F5; }
 
-  /*定义滑块 内阴影+圆角*/
+  !*定义滑块 内阴影+圆角*!
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(23, 23, 23, 0.3);
-    background-color: rgba(0,0,0,0.2); }
+    background-color: rgba(0,0,0,0.2); }*/
 
 
   .inline-block {
@@ -48,9 +48,8 @@
       margin-right: 0;
       display: inline-block !important;
       > .ant-form-item-label {
-        width: auto;
-        line-height: 38px;
-        padding-right: 8px;
+        //line-height: 38px;
+        //padding-right: 8px;
       }
     }
     .ant-form-item-control-wrapper {
@@ -59,7 +58,7 @@
   }
   .content .tableListForm {
     .ant-form-item {
-      margin-bottom: 12px !important;
+      margin-bottom: 10px !important;
     }
   }
   .submitButtons {
@@ -116,9 +115,17 @@
     margin-top: 10px !important;;
   }
 
-  .dynamic-data, .proportion-data, .concentratorOnline, .guage, .areasupplylist, .DMArate,.VendorConcentrator {
+  .dynamic-data, .proportion-data, .concentratorOnline, .guage, .areasupplylist, .DMArate,.VendorConcentrator ,.site-data,.leak-date,.concentratorOffline{
     width: 100%;
     height: 400px;
+  }
+  .site-data-chart{
+    width: 100%;
+    height: 300px;
+  }
+  .dma-data{
+    width: 100%;
+    height: 375px;
   }
   .mapData {
     width: 100%;
@@ -151,6 +158,17 @@
       overflow: hidden;
       border: 1px solid #ddd
     }
+  }
+  .ant-table-small .error {
+    .link{
+      color: #f5222d;
+    }
+    color: #f5222d;
+  }
+  .ant-table-small .link{
+    cursor:pointer;
+    color:#1890ff;
+    text-decoration:underline;
   }
   .concentrator-num:after, .fine-num:after {
     position: absolute;
@@ -211,7 +229,6 @@
     overflow: hidden;
     .sider {
       //position: fixed;
-      padding: 0 0 45px 0;
       background: #ffffff !important;
       height: 100%;
       border-right: 2px solid #ccc;
@@ -248,6 +265,22 @@
         color: white;
         font-size: 20px;
         line-height: 45px;
+      }
+      .showToggle {
+        transition:width 0.3s;
+        transition-duration:0.3s;
+        cursor: pointer;
+        position: absolute;
+        bottom: 0;
+        left: 100%;
+        height: 45px;
+        width: 45px;
+        background: #002140;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        line-height: 45px;
+        z-index: 999;
       }
       .sider-content {
         position: relative;
@@ -336,9 +369,7 @@
       margin-right: 0;
     }
   }
-  .ant-table-small .error {
-    color: #f5222d;
-  }
+
   .ant-table-small {
     .ant-table-tbody {
       tr:nth-child(odd) {
@@ -349,6 +380,15 @@
       }
     }
   }
+  .no-interval .ant-table-small {
+    .ant-table-thead > tr.ant-table-row-hover > td,
+    .ant-table-tbody > tr.ant-table-row-hover > td,
+    .ant-table-thead > tr:hover > td,
+    .ant-table-tbody > tr:hover > td {
+      background: none !important;
+    }
+  }
+
   .ant-popover-inner-content {
     //padding: 0 !important;
   }
@@ -381,7 +421,29 @@
   .tableListForm :global(.ant-form-item) {
     margin-right: 8px;
   }
+
+
 }
+
+  @media screen and (max-width: @screen-sm) {
+    :global{
+      .tableListForm{
+        //background: #91d5ff;
+        .ant-form-item-label, .ant-form-item-control-wrapper{
+          //z-index: 999;
+          width: inherit!important;
+        }
+        .ant-form-item-label{
+          padding: 0 !important;
+        }
+      }
+      .ant-pagination-options{
+        display: inline-block;
+      }
+    }
+  }
+
+
 
 
 

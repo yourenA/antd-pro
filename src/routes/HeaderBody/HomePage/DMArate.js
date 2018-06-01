@@ -65,7 +65,7 @@ export default class DMArate extends PureComponent {
     let option = {
       backgroundColor: '#eee',
       legend: {
-        data: ['漏损量', '住户用水量', '公司用水量'],
+        data: ['漏损量', '总用水量'],
         orient: 'vertical',
         left: 'left',
       },
@@ -120,21 +120,13 @@ export default class DMArate extends PureComponent {
           yAxisIndex: 0,
         },
         {
-          name: '住户用水量',
+          name: '总用水量',
           type: 'bar',
           stack: 'one',
           itemStyle: itemStyle,
           data: data2,
           yAxisIndex: 0,
 
-        },
-        {
-          name: '公司用水量',
-          type: 'bar',
-          stack: 'one',
-          itemStyle: itemStyle,
-          data: data3,
-          yAxisIndex: 0,
         },
         {
           name:'漏损率',

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge,Tooltip } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -8,13 +8,13 @@ import Detail from './Detail'
 import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
+import {renderIndex} from './../../../utils/utils'
 import forEach from "lodash/forEach";
 import './index.less'
 import config from '../../../common/config'
-import {download} from '../../../utils/utils'
+import { routerRedux } from 'dva/router';
 import uuid from 'uuid/v4'
-import request from "./../../../utils/request";
-import {getPreDay, renderCustomHeaders} from './../../../utils/utils'
+import {getPreDay, renderCustomHeaders,download} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -31,6 +31,8 @@ class UserMeterAnalysis extends PureComponent {
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY: 0,
       meter_number: '',
+      concentrator_number: '',
+      member_number: '',
       real_name: '',
       install_address: '',
       page: 1,
@@ -41,8 +43,9 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       exportModal: false,
-      member_number: '',
+      edit_member_number: '',
       display_type: 'all',
+      total_difference_value:'0'
     }
   }
 
@@ -63,6 +66,8 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       meter_number: '',
+      member_number: '',
+      concentrator_number: '',
       real_name: '',
       install_address: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
@@ -76,11 +81,13 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields();
     this.setState({
       showAddBtnByCon: false,
-      concentrator_number: null
+      concentrator_number: ''
     }, function () {
       this.handleSearch({
         page: 1,
         meter_number: '',
+        concentrator_number: '',
+        member_number: '',
         real_name: '',
         install_address: '',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
@@ -100,6 +107,7 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       meter_number: '',
+      member_number: '',
       real_name: '',
       install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
@@ -113,6 +121,8 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       meter_number: '',
+      member_number: '',
+      concentrator_number: '',
       real_name: '',
       install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
@@ -127,7 +137,7 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'member_meter_data/fetch',
       payload: {
-        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        // concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: values.village_id ? values.village_id : this.state.village_id,
         ...values,
       },
@@ -149,6 +159,8 @@ class UserMeterAnalysis extends PureComponent {
       page: page,
       install_address: this.state.install_address,
       meter_number: this.state.meter_number,
+      concentrator_number: this.state.concentrator_number,
+      member_number: this.state.member_number,
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
@@ -157,92 +169,14 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
 
-  handleAdd = () => {
-    const that = this;
-    const formValues = this.formRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'member_meter_data/add',
-      payload: {
-        ...formValues,
-        is_change: formValues.is_change.key,
-        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
-        village_id: this.state.village_id,
-        concentrator_number: this.state.concentrator_number
-      },
-      callback: function () {
-        message.success('添加用户成功')
-        that.setState({
-          addModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          install_address: that.state.install_address,
-          only_show_unusual: that.state.only_show_unusual,
-          real_name: that.state.real_name,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
-    });
-  }
   handleEdit = () => {
-    const that = this;
-    const formValues = this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'member_meter_data/edit',
-      payload: {
-        ...formValues,
-        village_id: this.state.village_id,
-        id: this.state.editRecord.id
-      },
-      callback: function () {
-        message.success('修改用户成功')
-        that.setState({
-          editModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          install_address: that.state.install_address,
-          only_show_unusual: that.state.only_show_unusual,
-          real_name: that.state.real_name,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
+    this.setState({
+      editModal: false,
     });
-  }
-  handleRemove = (id)=> {
-    const that = this;
-    this.props.dispatch({
-      type: 'member_meter_data/remove',
-      payload: {
-        id: id,
-      },
-      callback: function () {
-        message.success('删除用户成功')
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          only_show_unusual: that.state.only_show_unusual,
-          real_name: that.state.real_name,
-          install_address: that.state.install_address,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
-    });
-  }
-  handleChangeTable = ()=> {
-    const formValues = this.ChangeTableformRef.props.form.getFieldsValue();
-    console.log(formValues)
   }
   operate = (record)=> {
     this.setState({
-      member_number: record.member_number,
+      edit_member_number: record.member_number,
       editModal: true
     })
   }
@@ -270,16 +204,16 @@ class UserMeterAnalysis extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const parseHeader = renderCustomHeaders(meta.custom_headers)
+    const parseHeader = renderCustomHeaders(meta.custom_headers,meta,this.state.page)
     let  custom_width = parseHeader.custom_width;
     const custom_headers = parseHeader.custom_headers;
-    custom_width+=110;
+    custom_width+=120;
     custom_headers.push(
       {
         title: '查询历史状况',
         key: 'operation',
         fixed: 'right',
-        width: 110,
+        width: 120,
         render: (val, record, index) => {
           return (
             <div>
@@ -289,12 +223,13 @@ class UserMeterAnalysis extends PureComponent {
         }
       }
     )
-    const columns = [
+  console.log('custom_headers',custom_headers)
+  /*  const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
@@ -307,25 +242,43 @@ class UserMeterAnalysis extends PureComponent {
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',},
       {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', width: 100,},
-      {title: '用水量(T)', dataIndex: 'difference_value', key: 'difference_value', width: 100},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,
+        render: (val, record, index) => {
+          return (
+            <Tooltip title={val}>
+              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
+            </Tooltip>
+          )
+        }},
+      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value', width: 80},
+      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
+      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
+      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
+      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
       {
         title: '状态', dataIndex: 'status', key: 'status', width: 70,
-        render: (val, record, index) => (
-          <p>
-            <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
-
-          </p>
-        )
+        render: (val, record, index) => {
+          let status='success';
+          switch (val){
+            case -2:
+              status='error'
+              break;
+            case -1:
+              status='warning'
+              break;
+            default:
+              status='success'
+          }
+          return (
+            <p>
+              <Badge status={status}/>{record.status_explain}
+            </p>
+          )
+        }
       },
-      {title: '上次读数时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
-      {title: '上次读数(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
-      {title: '本次读数时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
-      {title: '本次读数(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
-      {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
       {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,},
-
       {title: '抄表员', dataIndex: 'reader', key: 'reader',},
       {
         title: '查询历史状况',
@@ -340,7 +293,9 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-    ];
+    ];*/
+    const {dispatch} =this.props;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -351,7 +306,7 @@ class UserMeterAnalysis extends PureComponent {
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                    <Search  wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             exportCSV={this.exportCSV}
@@ -360,14 +315,18 @@ class UserMeterAnalysis extends PureComponent {
                                 exportModal: true
                               })
                             }}
+                            setExport={()=>{
+                              dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/member_meter_setup`));
+                            }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
-                            clickAdd={()=>this.setState({addModal: true})}/>
+                            clickAdd={()=>this.setState({addModal: true})}
+                             total_difference_value={meta.aggregator.total_difference_value }/>
                   </div>
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.description === '') {
+                    if (record.status === -2) {
                       return 'error'
                     }
                   }}
@@ -376,7 +335,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={custom_headers}
-                  scroll={{x: custom_width, y: this.state.tableY}}
+                  scroll={{x: custom_width}}//, y: this.state.tableY
                   pagination={false}
                   size="small"
                 />
@@ -389,12 +348,12 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           width="750px"
           key={ Date.parse(new Date())}
-          title={`${this.state.member_number} 详细信息`}
+          title={`${this.state.edit_member_number} 详细信息`}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <Detail member_number={this.state.member_number} ended_at={this.state.ended_at}
+          <Detail member_number={this.state.edit_member_number} ended_at={this.state.ended_at}
                   started_at={this.state.started_at}/>
         </Modal>
       </Layout>

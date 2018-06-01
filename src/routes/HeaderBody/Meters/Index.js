@@ -6,6 +6,7 @@ import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../EmptySider'
+import {renderIndex} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 const {Content} = Layout;
@@ -13,6 +14,7 @@ const {Content} = Layout;
   user_command_data:state.user_command_data,
   meter_models: state.meter_models,
   meters: state.meters,
+  global:state.global,
 }))
 class MeterModel extends PureComponent {
   constructor(props) {
@@ -23,11 +25,11 @@ class MeterModel extends PureComponent {
       showdelBtn: find(this.permissions, {name: 'meter_model_delete'}),
       showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       tableY: 0,
-      query: '',
       page: 1,
       commandPage:'',
       started_at: '',
       ended_at: '',
+      number: '',
       editModal: false,
       addModal: false,
       commandModal: false,
@@ -67,8 +69,8 @@ class MeterModel extends PureComponent {
       payload: {},
     });
     this.setState({
+      number: '',
       page: 1,
-      query: '',
       started_at: '',
       ended_at: '',
     })
@@ -81,9 +83,8 @@ class MeterModel extends PureComponent {
         ...values,
       },
     });
-
     this.setState({
-      query: values.query,
+      number: values.number,
       started_at: values.started_at,
       ended_at: values.ended_at,
       page: values.page
@@ -92,7 +93,7 @@ class MeterModel extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      query: this.state.query,
+      number: this.state.number,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at
     })
@@ -119,7 +120,7 @@ class MeterModel extends PureComponent {
         that.props.dispatch({
           type: 'meters/fetch',
           payload: {
-            query: that.state.query,
+            number: that.state.number,
             page: that.state.page
           }
         });
@@ -150,7 +151,7 @@ class MeterModel extends PureComponent {
         that.props.dispatch({
           type: 'meters/fetch',
           payload: {
-            query: that.state.query,
+            number: that.state.number,
             page: that.state.page
           }
         });
@@ -169,7 +170,7 @@ class MeterModel extends PureComponent {
         that.props.dispatch({
           type: 'meters/fetch',
           payload: {
-            query: that.state.query,
+            number: that.state.number,
             page: that.state.page
           }
         });
@@ -220,24 +221,22 @@ class MeterModel extends PureComponent {
     if(cb)cb()
   }
   render() {
+
     const {meters: {data, meta, loading}, meter_models,user_command_data} = this.props;
+    const {isMobile} =this.props.global;
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '水表号', width: 100, dataIndex: 'number', key: 'number', fixed: 'left',},
+      {title: '水表号', width: 80, dataIndex: 'number', key: 'number', fixed: 'left',},
       {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
       {title: '水表类型名称', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name'},
       {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
@@ -267,7 +266,7 @@ class MeterModel extends PureComponent {
 
       {
         title: '操作',
-        width: 180,
+        width: isMobile?90:180,
         fixed: 'right',
         render: (val, record, index) => (
           <p>
@@ -318,11 +317,7 @@ class MeterModel extends PureComponent {
         width: 45,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(user_command_data.meta,this.state.commandPage,index)
         }
       },
       {title: '水表号', dataIndex: 'meter_number', key: 'meter_number'},
@@ -368,7 +363,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1400, y: this.state.tableY}}
+                  scroll={{x: 1400}}
                   pagination={false}
                   size="small"
                 />

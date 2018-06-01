@@ -1,13 +1,17 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message,Badge} from 'antd';
+import { Table, Card, Layout, message,Badge,Col,Row} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './ConcentratorErrorSearch'
+import { routerRedux} from 'dva/router';
 import {connect} from 'dva';
 import moment from 'moment';
+import {renderIndex} from './../../../utils/utils'
+import ConcentratorOfflife from './ConcentratorOfflife'
 import uuid from 'uuid/v4'
 @connect(state => ({
   concentrator_daily_errors: state.concentrator_daily_errors,
+  global:state.global,
 }))
 class FunctionContent extends PureComponent {
   constructor(props) {
@@ -22,13 +26,15 @@ class FunctionContent extends PureComponent {
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
     this.handleSearch({
       concentrator_number:'',
       page: 1,
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
+    },this.changeTableY)
+  }
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
   }
   handleFormReset = () => {
@@ -38,7 +44,7 @@ class FunctionContent extends PureComponent {
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
-  handleSearch = (values) => {
+  handleSearch = (values,cb) => {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
@@ -49,7 +55,8 @@ class FunctionContent extends PureComponent {
       callback:function () {
         that.setState({
           ...values,
-        })
+        });
+        if(cb) cb()
       }
     });
   }
@@ -64,56 +71,73 @@ class FunctionContent extends PureComponent {
 
 
   render() {
-    const {concentrator_daily_errors: {data, meta, loading}} = this.props;
+    const {concentrator_daily_errors: {data, meta, loading},dispatch} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const company_code = sessionStorage.getItem('company_code');
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '集中器编号', width: '25%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '离线时间', width:  '30%', dataIndex: 'offlines', key: 'offlines'},
-      {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
+      {title: '集中器编号', width:100, dataIndex: 'concentrator_number', key: 'concentrator_number'
+        , render: (val, record, index) => {
+        return (
+          <p  className="link" onClick={()=>{
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}`));
+          }} >{val}</p>
+        )
+      }},
+      {title: '离线时间',  dataIndex: 'offlines', key: 'offlines'},
+      {title: '错误类型', dataIndex: 'status', key: 'status' ,width:80,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
         </p>
       )},
-      {title: '安装地址', width:  '25%', dataIndex: 'install_address', key: 'install_address'},
-
+      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
+      {title: '水表上传数', width: 90, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '水表上传率', width: 90, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate'},
+      {title: '水表正常读值数', width: 120, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '水表正常读值率', width: 120, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate'},
     ];
+    const {isMobile} =this.props.global;
     return (
       <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '集中器错误'}]}>
         <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-          <div className='tableList'>
-            <div className='tableListForm'>
-              <DefaultSearch inputText="集中器编号" dateText="发送时间" handleSearch={this.handleSearch}
-                             handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
-            </div>
-          </div>
-          <Table
-            className='meter-table'
-            loading={false}
-            rowKey={record => record.uuidkey}
-            dataSource={data}
-            columns={columns}
-            scroll={{y: this.state.tableY}}
-            pagination={false}
-            size="small"
-          />
-          <Pagination meta={meta} handPageChange={this.handPageChange}/>
+          <Row>
+            <Col md={24} lg={14} >
+              <div className='tableList'>
+                <div className='tableListForm'>
+                  <DefaultSearch inputText="集中器编号" dateText="发送时间" handleSearch={this.handleSearch}
+                                 handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
+                </div>
+              </div>
+              <Table
+                className='meter-table'
+                loading={loading}
+                rowKey={record => record.uuidkey}
+                dataSource={data}
+                columns={columns}
+                scroll={{x:950}}
+                //scroll={{y: this.state.tableY}}
+                pagination={false}
+                size="small"
+              />
+              <Pagination meta={meta} handPageChange={this.handPageChange}/>
+            </Col>
+            <Col  md={24} lg={10} >
+              <ConcentratorOfflife concentrator={data}/>
+            </Col>
+          </Row>
+
 
         </Card>
       </PageHeaderLayout>

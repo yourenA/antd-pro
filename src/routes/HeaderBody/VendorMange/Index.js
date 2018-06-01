@@ -5,6 +5,7 @@ import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './../OnlyAdd'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
+import {renderIndex} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditVendor from './addOrEditVendor'
 const {Content} = Layout;
@@ -154,14 +155,10 @@ class Vendor extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '厂商编号', width: '10%', dataIndex: 'code', key: 'code'},
@@ -228,7 +225,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{y: this.state.tableY}}
+                  //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

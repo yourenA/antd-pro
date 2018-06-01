@@ -1,13 +1,14 @@
 @import "~antd/lib/style/themes/default.less";
 
 .header {
-  min-width: 1000px;
+  //min-width: 1000px;
   padding: 0;
   top: 0;
   left: 0;
   right: 0;
   position:fixed;
   z-index:999;
+  background:#001529;
   :global {
     .logo {
       float: left;
@@ -48,5 +49,12 @@
       }
     }
   }
+}
+.mobile_menu{
+  float:right;
+  margin: 18px 8px 18px 0;
+  font-size: 30px;
+  color: @primary-color;
+  cursor: pointer;
 }
 

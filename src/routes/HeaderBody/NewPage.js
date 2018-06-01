@@ -6,13 +6,18 @@ import ConcentratorOnlife from './HomePage/ConcentratorOnlife'
 import AreaSupplyList from './HomePage/AreaSupplyList'
 import DMArate from './HomePage/DMArate'
 import VendorConcentrator from './HomePage/VendorConcentrator'
+import DMADate from './HomePage/DMADate'
 import Guage from './HomePage/Guage'
 import { Row, Col, Card,  Icon } from 'antd';
+import { routerRedux} from 'dva/router';
 import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
 import {prefix,projectName,poweredBy} from './../../common/config'
+import {connect} from 'dva';
+@connect(state => ({
+}))
 class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -46,6 +51,8 @@ class Main extends PureComponent {
     })
   }
   render() {
+    const dispatch = this.props.dispatch;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <div className={styles.main}>
         <Row gutter={24}>
@@ -120,7 +127,7 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大区供水一览</span>}
+                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />每天用水总量与漏损率</span>}
                 bodyStyle={{ padding: 24 }}
                 style={{ marginBottom: 24, minHeight: 509 }}
               >
@@ -156,6 +163,18 @@ class Main extends PureComponent {
               style={{ marginBottom: 24, minHeight: 509  }}
             >
               <VendorConcentrator />
+            </Card>
+          </Col>
+          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+            <Card
+              extra={<a href="javascript:;" onClick={()=>{
+                dispatch(routerRedux.push(`/${company_code}/main/run_manage/DMA/DMA_data`));
+              }}>查看详情</a>}
+              bordered={false}
+              title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大DMA分区每小时用水量</span>}
+              style={{ marginBottom: 24, minHeight: 509  }}
+            >
+              <DMADate />
             </Card>
           </Col>
           {/*

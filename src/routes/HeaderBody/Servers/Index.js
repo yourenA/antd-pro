@@ -6,6 +6,7 @@ import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditServers'
+import {renderIndex} from './../../../utils/utils'
 import EditStatusForm from './editStatus'
 const {Content} = Layout;
 @connect(state => ({
@@ -182,14 +183,10 @@ class MeterModel extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '服务器地址', width: '20%', dataIndex: 'ip', key: 'ip', },
@@ -272,7 +269,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{y: this.state.tableY}}
+                  //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

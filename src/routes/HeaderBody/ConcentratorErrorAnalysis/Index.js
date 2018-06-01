@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table , Card, Badge  , Layout,message,Modal,Button } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
+import {renderIndex,ellipsis} from './../../../utils/utils'
 
 import Search from './Search'
 import Sider from './../Sider'
@@ -19,6 +20,10 @@ class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
+    const initConcentrator={[this.props.history.location.search.slice(1).split('=')[0]]:this.props.history.location.search.slice(1).split('=')[1]}
+    if(initConcentrator.concentrator){
+        this.initConcentrator=initConcentrator.concentrator
+    }
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon:false,
@@ -33,11 +38,13 @@ class UserMeterAnalysis extends PureComponent {
       village_id: '',
       editModal:false,
       changeModal:false,
-      member_number:''
+      member_number:'',
+
     }
   }
 
   componentDidMount() {
+    console.log(this.initConcentrator)
     const {dispatch} = this.props;
     dispatch({
       type: 'manufacturers/fetch',
@@ -48,6 +55,14 @@ class UserMeterAnalysis extends PureComponent {
         this.changeTableY()
       }
     });
+    if(this.initConcentrator){
+      this.handleSearch({
+        page: 1,
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        concentrator_number:this.initConcentrator
+      })
+    }
   }
   changeTableY = ()=> {
     this.setState({
@@ -56,6 +71,9 @@ class UserMeterAnalysis extends PureComponent {
   }
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
+    this.searchFormRef.props.form.setFieldsValue({
+      concentrator_number: '',
+    });
     this.setState({
       manufacturer_id:'',
       concentrator_number:''
@@ -141,21 +159,25 @@ class UserMeterAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '集中器编号', width: 110, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
       {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
-      {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 150,},
+      {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 100,
+        render: (val, record, index) => {
+          return ellipsis(val,7)
+        }},
       {title: '日期', dataIndex: 'date', key: 'date',},
+      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
+      {title: '水表上传数', width: 90, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '水表上传率', width: 90, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate'},
+      {title: '水表正常读值数', width: 120, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '水表正常读值率', width: 120, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate'},
       {title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[0])
       }},
@@ -231,14 +253,16 @@ class UserMeterAnalysis extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  />
+        <Sider noClickSider={this.initConcentrator} changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  />
         <Content style={{background:'#fff'}}>
           <div className="content">
             <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '集中器异常分析'}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                    <Search
+                      initConcentrator={this.initConcentrator}
+                      wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             manufacturers={manufacturers.data}
@@ -257,7 +281,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1480, y: this.state.tableY }}
+                  scroll={{ x: 1940}}
                   pagination={false}
                   size="small"
                 />

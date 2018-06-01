@@ -9,9 +9,11 @@ import DefaultSearch from './Search'
 import {connect} from 'dva';
 import find from 'lodash/find'
 import {Link, routerRedux} from 'dva/router';
+import {renderIndex} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   usergroup: state.usergroup,
+  global:state.global,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
@@ -196,14 +198,10 @@ class Vendor extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {
@@ -259,6 +257,7 @@ class Vendor extends PureComponent {
         ),
       },
     ];
+    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
@@ -279,7 +278,8 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ y: this.state.tableY}}
+                  scroll={isMobile?{x:600}:{}}
+                  //scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

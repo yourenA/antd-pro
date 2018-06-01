@@ -6,9 +6,12 @@ import Search from './Search'
 import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
+import { routerRedux } from 'dva/router';
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import {renderIndex} from './../../../utils/utils'
+
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -31,7 +34,9 @@ class Consumption_abnormality extends PureComponent {
       village_id: '',
       editModal: false,
       changeModal: false,
-      member_number: '',
+      member_number:'',
+      concentrator_number:'',
+      meter_number:'',
       area_id: ''
     }
   }
@@ -51,6 +56,9 @@ class Consumption_abnormality extends PureComponent {
     this.handleSearch({
       area_id: '',
       page: 1,
+      member_number:'',
+      concentrator_number:'',
+      meter_number:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -65,6 +73,9 @@ class Consumption_abnormality extends PureComponent {
     this.handleSearch({
       page: 1,
       area_id: '',
+      member_number:'',
+      concentrator_number:'',
+      meter_number:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -91,6 +102,9 @@ class Consumption_abnormality extends PureComponent {
     this.handleSearch({
       area_id: this.state.area_id,
       page: page,
+      member_number:this.state.member_number,
+      concentrator_number:this.state.concentrator_number,
+      meter_number:this.state.meter_number,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       // area: this.state.area
@@ -107,29 +121,27 @@ class Consumption_abnormality extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
       {title: '日期', dataIndex: 'date', width: 120,  key: 'date',},
       {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
       {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value'},
       {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
 
     ];
+    const {dispatch}=this.props;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -141,6 +153,9 @@ class Consumption_abnormality extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search
+                      setWarningRule={()=>{
+                        dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/unusual_water`));
+                      }}
                              dma={dma}
                             initRange={this.state.initRange}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
@@ -158,7 +173,7 @@ class Consumption_abnormality extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1200, y: this.state.tableY}}
+                  scroll={{x: 1250}}
                   pagination={false}
                   size="small"
                 />

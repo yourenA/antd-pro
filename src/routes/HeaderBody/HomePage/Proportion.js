@@ -52,7 +52,7 @@ export default class Proportion extends PureComponent {
           name: '昨日水表状态统计',
           type: 'pie',
           radius : '55%',
-          center: ['50%', '50%'],
+          center: ['50%', '60%'],
           data:[
             {value:meter.yesterday_upload_count, name:'水表上传数量',
               itemStyle:{

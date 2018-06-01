@@ -7,6 +7,7 @@ import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
+import {renderIndex} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   meter_models: state.meter_models,
@@ -161,20 +162,17 @@ class MeterModel extends PureComponent {
 
   render() {
     const {meter_models: {data, meta, loading}, manufacturers} = this.props;
+    console.log('meta',meta)
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '水表类型', width: 80, dataIndex: 'type', key: 'type'},
@@ -251,7 +249,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 800, y: this.state.tableY}}
+                  scroll={{x: 800}}
                   pagination={false}
                   size="small"
                 />

@@ -86,9 +86,25 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
+          <FormItem label="户号">
+            {getFieldDecorator('member_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="集中器编号">
+            {getFieldDecorator('concentrator_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="水表编号">
+            {getFieldDecorator('meter_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>
           </FormItem>
         </Row>
       </Form>

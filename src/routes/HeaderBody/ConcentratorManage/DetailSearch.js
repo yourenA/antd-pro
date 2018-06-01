@@ -9,7 +9,23 @@ const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.timer=null
+    this.state = {
+      disabled:false,
+      time:new Date().getTime()
+    };
+  }
+  componentDidMount() {
+    const that=this;
+    this.timer=setInterval(function () {
+      that.setState({
+        // disabled:false
+        time:new Date().getTime()
+      })
+    },10000)
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +46,15 @@ class SearchForm extends Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form;
+    const command=this.props.protocols.split('|');
+
+    const renderCommandBtn=command.map((item,index)=>{
+      const clickTime=sessionStorage.getItem(`concentrator_number-${item}-${this.props.concentratorNumber}`)
+      const isLoading=clickTime&&this.state.time-clickTime<120000
+      return(
+        <Button loading={isLoading} key={index} type="primary" style={{marginLeft: 8}} onClick={()=>{this.setState({ time:new Date().getTime()});this.props.read_multiple_901f(item)}}>{isLoading?'正在':''}{item.toUpperCase()}集抄 {this.props.concentratorNumber}</Button>
+      )
+    })
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
@@ -44,6 +69,8 @@ class SearchForm extends Component {
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            {this.props.showCommandBtn&&renderCommandBtn}
+
           </FormItem>
         </Row>
       </Form>

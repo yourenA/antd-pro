@@ -1,12 +1,18 @@
 import React, { PureComponent } from 'react';
 import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
+import {connect} from 'dva';
+
 const { Sider} = Layout;
+@connect(state => ({
+  global:state.global,
+}))
 class SiderNav extends PureComponent {
   constructor(props) {
     super(props);
+    const {isMobile} =this.props.global;
     this.state = {
-      collapsed: false,
+      collapsed: isMobile,
       siderNav: [{name: '集中器错误', url: 'concentrator_error'}, {name: '户表错误', url: 'user_meter_error'}],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }
@@ -41,14 +47,14 @@ class SiderNav extends PureComponent {
       )
     })
     return (
-      <Sider collapsed={this.state.collapsed} className="sider" width="210">
+      <Sider collapsed={this.state.collapsed}  collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
           选项
         </div>
         <div className="siderNav">
           {renderSiderNav}
         </div>
-        <div className="toggle" onClick={this.onCollapse}>
+        <div className="showToggle"   onClick={this.onCollapse}>
           <Icon type={this.state.collapsed ? "right" : "left"}/>
         </div>
       </Sider>

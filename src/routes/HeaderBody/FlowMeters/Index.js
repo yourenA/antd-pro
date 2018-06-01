@@ -536,7 +536,7 @@ class FlowMeter extends PureComponent {
                             }}/>
                   </div>
                 </div>
-                <div className="DMA-content" style={{maxHeight: this.state.tableY + 'px', overflow: 'auto'}}>
+                <div className="DMA-content">
                   <div className="tree well">
                     <Alert
                       className="tree-alert"

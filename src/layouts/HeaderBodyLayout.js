@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button} from 'antd';
+import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button, Badge,Popover} from 'antd';
 import styles from './HeaderBodyLayout.less';
 import {connect} from 'dva';
 import {Link, Route, Redirect, Switch, routerRedux} from 'dva/router';
@@ -11,6 +11,7 @@ import {getRouteData} from '../utils/utils';
 import DocumentTitle from 'react-document-title';
 import {ContainerQuery} from 'react-container-query';
 import intersection from 'lodash/intersection';
+import throttle from 'lodash/throttle'
 import Main from './../routes/HeaderBody/NewPage';
 import classNames from 'classnames';
 import EditPassword from '../routes/HeaderBody/HomePage/EditPassword'
@@ -56,7 +57,12 @@ class HeaderBodyLayout extends React.PureComponent {
     this.noConsumptionNotifyDay = null;
     this.state = {
       current: '',
-      editModal: false
+      editModal: false,
+      consumption_abnormality: false,
+      zero_abnormality: false,
+      night_abnormality: false,
+      leah_abnormality: false,
+
     };
   }
 
@@ -75,28 +81,33 @@ class HeaderBodyLayout extends React.PureComponent {
     const date = moment(new Date()).format('YYYY-MM-DD');
     const noZeroNotifyDay = localStorage.getItem('noZeroNotifyDay');
     const noNightNotifyDay = localStorage.getItem('noNightNotifyDay');
+    const noLeakNotifyDay = localStorage.getItem('noLeakNotifyDay');
     const noConsumptionNotifyDay = localStorage.getItem('noConsumptionNotifyDay');
     const dispatch = this.props.dispatch;
     const company_code = sessionStorage.getItem('company_code');
-    if (noConsumptionNotifyDay === date) {
-      console.log('不提醒')
-    } else {
-      request(`/consumption_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at:date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
+    const that = this;
+    request(`/consumption_abnormality`, {
+      method: 'get',
+      params: {
+        started_at: date,
+        ended_at: date,
+        page: 1
+      }
+    }).then((response)=> {
+      console.log(response);
+      const data = response.data.data
+      if (data.length > 0) {
+        that.setState({
+          consumption_abnormality: true
+        })
+        if (noConsumptionNotifyDay === date) {
+          console.log('不提醒')
+        } else {
           const args = {
             placement: 'bottomRight',
             message: '用水量异常报警',
             duration: 15,
-            key:'noConsumptionNotifyDay',
+            key: 'noConsumptionNotifyDay',
             description: <div>{data[0].meter_number} 等水表出现用水量异常报警
               <p>
                 <a href="javascript:;" onClick={()=> {
@@ -105,36 +116,81 @@ class HeaderBodyLayout extends React.PureComponent {
                   notification.close('noConsumptionNotifyDay')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/water_unusual_analysis`));
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/consumption_abnormality`));
               }
               }>查看详情</a>
               </p>
             </div>,
           };
           this.noConsumptionNotifyDay = notification.warning(args);
-          console.log(' this.noConsumptionNotifyDay', this.noConsumptionNotifyDay)
         }
-      })
-    }
+      }
+    })
 
-    if (noZeroNotifyDay === date) {
-      console.log('不提醒')
-    } else {
-      request(`/zero_abnormality`, {
-        method: 'get',
-        params: {
-          date: date,
-          page: 1
+
+    request(`/leak_abnormality`, {
+      method: 'get',
+      params: {
+        started_at: date,
+        ended_at: date,
+        page: 1
+      }
+    }).then((response)=> {
+      console.log(response);
+      const data = response.data.data
+      if (data.length > 0) {
+        that.setState({
+          leah_abnormality: true
+        })
+        if (noLeakNotifyDay === date) {
+          console.log('不提醒')
+        } else {
+          const args = {
+            placement: 'bottomRight',
+            message: '漏水异常报警',
+            duration: 15,
+            key: 'noLeakNotifyDay',
+            description: <div>{data[0].meter_number} 等水表漏水异常报警
+              <p>
+                <a href="javascript:;" onClick={()=> {
+                  console.log(' this.noLeakNotifyDay', this.noLeakNotifyDay)
+                  localStorage.setItem('noConsumptionNotifyDay', date);
+                  notification.close('noConsumptionNotifyDay')
+                }
+                }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/consumption_abnormality`));
+              }
+              }>查看详情</a>
+              </p>
+            </div>,
+          };
+          this.noLeakNotifyDay = notification.warning(args);
         }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
+      }
+    })
+
+    request(`/zero_abnormality`, {
+      method: 'get',
+      params: {
+        started_at: date,
+        ended_at: date,
+        page: 1
+      }
+    }).then((response)=> {
+      console.log(response);
+      const data = response.data.data
+      if (data.length > 0) {
+        that.setState({
+          zero_abnormality: true
+        })
+        if (noZeroNotifyDay === date) {
+          console.log('不提醒')
+        } else {
           const args = {
             placement: 'bottomRight',
             message: '零流量异常报警',
             duration: 15,
-            key:'zeroNotify',
+            key: 'zeroNotify',
             description: <div>{data[0].meter_number} 等水表出现零流量异常
               <p>
                 <a href="javascript:;" onClick={()=> {
@@ -151,12 +207,11 @@ class HeaderBodyLayout extends React.PureComponent {
           };
           this.zeroNotify = notification.warning(args);
         }
-      })
-    }
 
-    if (noNightNotifyDay === date) {
-      console.log('不提醒')
-    } else {
+      }
+    })
+
+
       request(`/night_abnormality`, {
         method: 'get',
         params: {
@@ -167,29 +222,46 @@ class HeaderBodyLayout extends React.PureComponent {
         console.log(response);
         const data = response.data.data
         if (data.length > 0) {
-          const args = {
-            placement: 'bottomRight',
-            message: '夜间异常流量报警',
-            duration: 15,
-            key:'noNightNotifyDay',
-            description: <div>{data[0].meter_number} 等水表出现夜间流量异常
-              <p>
-                <a href="javascript:;" onClick={()=> {
-                  localStorage.setItem('noNightNotifyDay', date)
-                  notification.close('noNightNotifyDay')
+          that.setState({
+            night_abnormality: true
+          })
+          if (noNightNotifyDay === date) {
+            console.log('不提醒')
+          } else {
+            const args = {
+              placement: 'bottomRight',
+              message: '夜间异常流量报警',
+              duration: 15,
+              key: 'noNightNotifyDay',
+              description: <div>{data[0].meter_number} 等水表出现夜间流量异常
+                <p>
+                  <a href="javascript:;" onClick={()=> {
+                    localStorage.setItem('noNightNotifyDay', date)
+                    notification.close('noNightNotifyDay')
+                  }
+                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
+                  //notification.close(this.nightNotify)
                 }
-                }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
-                //notification.close(this.nightNotify)
-              }
-              }>查看详情</a>
-              </p>
-            </div>,
-          };
-          this.nightNotify = notification.warning(args);
+                }>查看详情</a>
+                </p>
+              </div>,
+            };
+            this.nightNotify = notification.warning(args);
+          }
         }
       })
-    }
+
+    window.addEventListener('resize', throttle(this.resize,100))
+
+  }
+  resize=()=>{
+    console.log('resize',document.documentElement.clientWidth);
+    const offsetW=document.documentElement.clientWidth;
+    this.props.dispatch({
+      type: 'global/SetMobile',
+      payload: offsetW
+    });
   }
 
   componentWillReceiveProps = (nextProps)=> {
@@ -202,7 +274,8 @@ class HeaderBodyLayout extends React.PureComponent {
     }
   }
   componentWillUnmount = ()=> {
-    notification.destroy()
+    notification.destroy();
+    window.removeEventListener('resize', this.resize)
   }
 
   getPageTitle() {
@@ -210,14 +283,14 @@ class HeaderBodyLayout extends React.PureComponent {
     let {pathname} = location;
     const company_name = sessionStorage.getItem('company_name');
     const company_code = sessionStorage.getItem('company_code');
-    let title = company_name+projectName;
+    let title = company_name + projectName;
     getRouteData('HeaderBodyLayout').forEach((item) => {
       // console.log(`/${company_code}/main${item.path}`)
       if (`/${company_code}/main${item.path}` === pathname) {
-        title = `${item.name} - ${company_name+projectName}`;
+        title = `${item.name} - ${company_name + projectName}`;
       }
       if (pathname.indexOf(`system_setup`) > 0) {
-        title = `系统设置 - ${company_name+projectName}`;
+        title = `系统设置 - ${company_name + projectName}`;
       }
     });
     return title;
@@ -264,13 +337,18 @@ class HeaderBodyLayout extends React.PureComponent {
       }
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
+          let showBadge=false
+          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality || this.state.night_abnormality || this.state.zero_abnormality)) {
+            showBadge=true
+          }
           return (
             <SubMenu
               title={
                 item.icon ? (
                   <span>
                   <Icon type={item.icon}/>
-                  <span>{item.name}</span>
+                  <span>{item.name} </span>
+                    {showBadge&&<Badge status="error"/>}
                 </span>
                 ) : item.name
               }
@@ -282,11 +360,18 @@ class HeaderBodyLayout extends React.PureComponent {
         }
       }
       const icon = item.icon && <Icon type={item.icon}/>;
-      if ((intersection(permissions, item.permissions).length > 0 || !item.permissions)  && (!item.showCompany || item.showCompany.indexOf(company_code)>=0)) {
+      if ((intersection(permissions, item.permissions).length > 0 || !item.permissions) && (!item.showCompany || item.showCompany.indexOf(company_code) >= 0)) {
+        let showBadge=false
+        if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality) ||
+          (item.path === 'night_abnormality' && this.state.night_abnormality)||
+          (item.path === 'zero_abnormality' && this.state.zero_abnormality)) {
+          showBadge=true
+        }
         return (
           <Menu.Item key={item.key || item.path}>
             <Link to={itemPath} target={item.target}>
-              {icon}<span>{item.name}</span>
+              {icon}<span>{item.name} </span>
+              {showBadge&&<Badge status="error"/>}
             </Link>
           </Menu.Item>
         );
@@ -317,30 +402,55 @@ class HeaderBodyLayout extends React.PureComponent {
 
   render() {
     const {login} = this.props;
+    const {isMobile} =this.props.global;
     const company_code = sessionStorage.getItem('company_code');
     const company_name = sessionStorage.getItem('company_name');
+    console.log(isMobile)
+    const renderMenu=(
+      <Menu
+        onClick={this.handleClick}
+        theme="dark"
+        mode="horizontal"
+        style={{lineHeight: '64px'}}
+        selectedKeys={[this.state.current]}
+      >
+        {this.getNavMenuItems(this.menus, company_code + '/main/')}
+        <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
+                     <Avatar icon="user" className={styles.avatar}/>
+          {login.username}
+                  </span>}>
+          <Menu.Item key="password"><Icon type="user"/>修改密码</Menu.Item>
+          <Menu.Item key="logout"><Icon type="logout"/>退出登录</Menu.Item>
+        </SubMenu>
+      </Menu>
+    )
+    const renderMobileMenu=(
+      <Menu
+        onClick={this.handleClick}
+        theme="dark"
+        selectedKeys={[this.state.current]}
+      >
+        {this.getNavMenuItems(this.menus, company_code + '/main/')}
+        <SubMenu title={ <span >
+                      <Icon type='user'/>
+                    {login.username}
+                  </span>}>
+          <Menu.Item key="password"><Icon type="user"/>修改密码</Menu.Item>
+          <Menu.Item key="logout"><Icon type="logout"/>退出登录</Menu.Item>
+        </SubMenu>
+      </Menu>
+    )
     const layout = (
-      <Layout style={{minHeight: '100vh'}}>
+      <Layout >
         <div className={styles.header}>
           <div className="logo">
             <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
           </div>
-          <Menu
-            onClick={this.handleClick}
-            theme="dark"
-            mode="horizontal"
-            style={{lineHeight: '64px'}}
-            selectedKeys={[this.state.current]}
-          >
-            {this.getNavMenuItems(this.menus,company_code+'/main/')}
-            <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
-                     <Avatar icon="user" className={styles.avatar}/>
-              {login.username}
-                  </span>}>
-              <Menu.Item key="password"><Icon type="user"/>修改密码</Menu.Item>
-              <Menu.Item key="logout"><Icon type="logout"/>退出登录</Menu.Item>
-            </SubMenu>
-          </Menu>
+          {
+            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomLeft" >
+            <Icon  className={`${styles.mobile_menu}`}   type="bars" />
+          </Popover>: renderMenu
+          }
         </div>
         <Layout className={styles.layoutContainer}>
           <Content style={{background: '#f0f2f5'}}>
@@ -391,5 +501,6 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 }
 export default connect(state => ({
+  global:state.global,
   login: state.login
 }))(HeaderBodyLayout);

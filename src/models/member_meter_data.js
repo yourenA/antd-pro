@@ -6,7 +6,7 @@ export default {
     data:[],
     monthData:[],
     dayData:[],
-    meta: {pagination: {total: 0, per_page: 0}},
+    meta: {aggregator:{},pagination: {total: 0, per_page: 0}},
     loading: true,
     name:''
 

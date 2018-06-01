@@ -7,9 +7,17 @@ export default {
     meta: {pagination: {total: 0, per_page: 0}},
     loading: true,
     name:''
-
   },
   effects: {
+    *reset({ payload }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          data:[],
+          meta: {pagination: {total: 0, per_page: 0}}
+        }
+      });
+    },
     *fetch({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',

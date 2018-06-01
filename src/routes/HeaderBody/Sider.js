@@ -10,13 +10,15 @@ const {Sider} = Layout;
 
 @connect(state => ({
   sider_regions: state.sider_regions,
+  global:state.global,
 }))
 class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
     this.dataList=[];
+    const {isMobile} =this.props.global;
     this.state = {
-      collapsed: false,
+      collapsed: isMobile,
       treeData: [
       ],
       selectedKeys: [],
@@ -46,13 +48,17 @@ class SiderTree extends PureComponent {
         // console.log(that.dataList)
       })
       if(initial){
-        if(response.data.data.length>0){
-          that.setState({
-            selectedKeys:[response.data.data[0].id]
-        })
-          that.props.changeArea(response.data.data[0].id)
+        if(this.props.noClickSider){
+          console.log('不从sider加载数据')
         }else{
-          message.info('没有数据')
+          if(response.data.data.length>0){
+            that.setState({
+              selectedKeys:[response.data.data[0].id]
+            })
+            that.props.changeArea(response.data.data[0].id)
+          }else{
+            that.props.changeArea('')
+          }
         }
       }
     })
@@ -225,8 +231,9 @@ class SiderTree extends PureComponent {
   };
   render() {
     const {sider_regions:{data}}=this.props;
+
     return (
-      <Sider collapsed={this.state.collapsed} className="sider" width="210">
+      <Sider collapsed={this.state.collapsed} collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
           区域信息
         </div>
@@ -253,9 +260,12 @@ class SiderTree extends PureComponent {
           }
         </div>
 
-        <div className="toggle" onClick={this.onCollapse}>
+        {/*<div className="toggle" onClick={this.onCollapse}>
           <Icon type={this.state.collapsed ? "right" : "left"}/>
-        </div>
+        </div>*/}
+            <div className="showToggle"   onClick={this.onCollapse}>
+              <Icon type={this.state.collapsed ? "right" : "left"}/>
+            </div>
       </Sider>
     );
   }

@@ -78,7 +78,7 @@ export default class Login extends Component {
             payload: {
               ...values,
               preUrl,
-              company_code:company_code.length===2?'hy':company_code[company_code.length-1]
+              company_code:company_code.length===2?'hy':company_code[company_code.length-1]==='null'?'hy':company_code[company_code.length-1]
               // company_id:values.company_id.key,
             },
             callback:()=>{

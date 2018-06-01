@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-import {message,Badge} from 'antd'
+import {message,Badge,Tooltip} from 'antd'
 import messageJson from './message.json';
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -34,14 +34,14 @@ export function getTimeDistance(type) {
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
-    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${year}-${parseInt(month + 1)}-${day} 00:00:00`).valueOf())];
+    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(`${year}-${fixedZero(month + 1)}-${day} 00:00:00`)];
   }
 
   if (type === 'year') {
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
-    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${parseInt(month + 1)}-${day} 23:59:59`).valueOf())];
+    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${fixedZero(month + 1)}-${day} 23:59:59`).valueOf())];
   }
 }
 
@@ -244,36 +244,101 @@ export function getPreDay() {
   return [moment().add(-1, 'days'), moment(new Date(), 'YYYY-MM-DD')]
 }
 
-export function renderCustomHeaders(headers) {
-  let  custom_width=55;
+const errorNumber='141414141414.14'
+exports.errorNumber = errorNumber;
+
+function renderIndex(meta,page,index) {
+  const parseIndex=meta?String((meta.pagination.per_page*(page-1))+(index + 1)):0;
+  return (
+    <span title={parseIndex} >
+                {parseIndex.length>4?parseIndex.substring(0,3)+'...':parseIndex}
+            </span>
+  )
+}
+
+exports.renderIndex = renderIndex;
+
+function renderErrorData(val,error=errorNumber) {
+  if(val.toString().indexOf(error)>=0){
+    return '异常数据'
+  }
+  return val
+
+}
+
+exports.renderErrorData = renderErrorData;
+
+export function renderCustomHeaders(headers,meta,page) {
+  let  custom_width=50;
   let custom_headers=[{
     title: '序号',
     dataIndex: 'id',
     key: 'id',
-    width: 45,
+    width: 50,
     className: 'table-index',
     fixed: 'left',
     render: (text, record, index) => {
-      return (
-        <span>
-                {index + 1}
-            </span>
-      )
+      return renderIndex(meta,page,index)
     }
   }];
   headers&&headers.forEach((item, index)=> {
-    custom_width += item.size;
-    if (item.key === 'status_explain') {
+    custom_width =custom_width+ item.size;
+    if(item.key==='install_address'){
+      custom_headers.push({
+          title: item.display_name,
+          dataIndex: item.key,
+          key: item.key,
+          width: index === headers.length - 1 ? '' : item.size,
+          render: (val, record, index) => (
+            <Tooltip title={val}>
+              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
+            </Tooltip>
+          )
+        })
+    }else if(item.key==='real_name'){
       custom_headers.push({
         title: item.display_name,
         dataIndex: item.key,
         key: item.key,
         width: index === headers.length - 1 ? '' : item.size,
-        render: (val, record, index) => (
-          <p>
-            <Badge status={record.status === 1 ? "success" : "error"}/>{val}
-          </p>
-        )
+        render: (val, record, index) => {
+          return ellipsis(val,3)
+        }
+      })
+    }else if (item.key === 'status_explain') {
+      custom_headers.push({
+        title: item.display_name,
+        dataIndex: item.key,
+        key: item.key,
+        width: index === headers.length - 1 ? '' : item.size,
+        render: (val, record, index) => {
+          let status='success';
+          switch (record.status){
+            case -2:
+              status='error'
+              break;
+            case -1:
+              status='warning'
+              break;
+            default:
+              status='success'
+          }
+          return (
+            <p>
+              <Badge status={status}/>{val}
+            </p>
+          )
+        }
+      })
+    }else if(item.key === 'latest_value'||item.key === 'previous_value'){
+      custom_headers.push({
+        title: item.display_name,
+        dataIndex: item.key,
+        key: item.key,
+        width: index === headers.length - 1 ? '' : item.size,
+        render: (val, record, index) => {
+          return renderErrorData(val)
+        }
       })
     } else {
       custom_headers.push({
@@ -287,3 +352,57 @@ export function renderCustomHeaders(headers) {
 
   return {custom_headers,custom_width}
 }
+export function ellipsis(val,len=10) {
+  return (
+    <Tooltip title={val}>
+      <span>{val.length>len?val.substring(0,len)+'...':val}</span>
+    </Tooltip>
+  )
+}
+
+export function searchFormItemLayout() {
+  return {
+    labelCol: {
+      span:6
+    },
+    wrapperCol: {
+      span:18
+    }
+  };
+}
+
+
+function renderRowSpan(children,record) {
+  const obj = {
+    children: children,
+    props: {},
+  };
+  obj.props.rowSpan = record.rowSpan;
+  // These two are merged into above cell
+  return obj;
+}
+
+exports.renderRowSpan = renderRowSpan;
+
+function parseRowSpanData(data) {
+  for (let i = 0; i < data.length; i++) {
+    data[i].index = i
+  }
+  let resetMeterData = []
+  data.map((item, index)=> {
+    if(item.meters.data.length>0){
+      for (let i = 0; i < item.meters.data.length; i++) {
+        if (item.meters.data.length === 1) {
+          resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1})
+        } else {
+          resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meter.length : 0})
+        }
+      }
+    }else{
+      resetMeterData.push({...item, rowSpan: 1})
+    }
+  });
+  return resetMeterData
+}
+
+exports.parseRowSpanData = parseRowSpanData;

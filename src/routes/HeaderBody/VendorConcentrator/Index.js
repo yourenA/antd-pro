@@ -5,9 +5,9 @@ import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
-import Guage from './ConcentratorOnlife'
 import Sider from './../EmptySider'
 import find from 'lodash/find'
+import {renderIndex} from './../../../utils/utils'
 import AddOrEditVendor from './addOrEditVendor'
 const {Content} = Layout;
 @connect(state => ({
@@ -86,14 +86,10 @@ class Vendor extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '厂商名称', width: '25%',dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
@@ -134,7 +130,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.manufacturer_id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{y: this.state.tableY}}
+                  //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

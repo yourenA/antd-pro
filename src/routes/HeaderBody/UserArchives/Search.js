@@ -38,12 +38,17 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
+          <FormItem label="集中器编号">
+            {getFieldDecorator('concentrator_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
           <FormItem label="水表编号">
             {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label="台区">
+      {/*    <FormItem label="台区">
             {getFieldDecorator('distribution_area')(
               <Input placeholder="请输入"/>
             )}
@@ -52,7 +57,7 @@ class SearchForm extends Component {
             {getFieldDecorator('statistical_forms')(
               <Input placeholder="请输入"/>
             )}
-          </FormItem>
+          </FormItem>*/}
          {/* <FormItem label="创建时间">
             {getFieldDecorator('range-time-picker', {
               initialValue: this.props.initRange ? this.props.initRange : '',
@@ -64,6 +69,7 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}
+            {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>批量导入</Button>}
           </FormItem>
         </Row>
       </Form>

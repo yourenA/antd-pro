@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Popconfirm, Layout, message, Modal} from 'antd';
+import { Table, Card, Popconfirm, Layout, message, Modal,Tooltip } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 
@@ -9,6 +9,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
+import {renderIndex} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
@@ -216,14 +217,11 @@ class UserMeterAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
+        fixed: 'left',
         className: 'table-index',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
@@ -232,8 +230,16 @@ class UserMeterAnalysis extends PureComponent {
       {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
       {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
-      {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at', width: '15%',},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', },
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 130,
+        render: (val, record, index) => {
+          return (
+            <Tooltip title={val}>
+              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
+            </Tooltip>
+          )
+        }},
+      {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at',},
+
 
     ];
     return (
@@ -264,7 +270,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000, y: this.state.tableY}}
+                  scroll={{x: 1000}}
                   pagination={false}
                   size="small"
                 />

@@ -56,46 +56,7 @@ class EditUserArchives extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
-        {this.props.editRecord ?null: <FormItem
-          style={{width:'50%',display:'inline-block'}}
-          label="集中器编号"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('concentrator_number', {
-            initialValue: this.props.editRecord?this.props.editRecord.concentrator_number : '',
-            rules: [{required: true, message: '集中器编号不能为空'}],
-          })(
-            <Select >
-              { this.props.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
-            </Select>
-          )}
-        </FormItem>}
-        <FormItem
-          style={{width:'50%',display:'inline-block'}}
-          label="水表号"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('meter_number', {
-            initialValue: this.props.editRecord ? this.props.editRecord.meter_number : '',
-            rules: [{required: true, message: '水表号不能为空'}],
-          })(
-            <Input  disabled={this.props.editRecord ?true:false}/>
-          )}
-        </FormItem>
-
-        {this.props.editRecord ?null:  <FormItem
-          style={{width:'50%',display:'inline-block'}}
-          label="水表序号"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('meter_index', {
-            initialValue: this.props.editRecord ? this.props.editRecord.meter_index : '',
-            rules: [{required: true, message: '水表序号不能为空'}],
-          })(
-            <InputNumber />
-          )}
-        </FormItem>}
-        {this.props.editRecord ?null: <FormItem
+       {/* {this.props.editRecord ?null: <FormItem
           style={{width:'50%',display:'inline-block'}}
           label="台区"
           {...formItemLayoutWithLabel}
@@ -118,7 +79,7 @@ class EditUserArchives extends Component {
           })(
             <Input />
           )}
-        </FormItem>}
+        </FormItem>}*/}
         <FormItem
           label="用户名称"
           style={{width:'50%',display:'inline-block'}}

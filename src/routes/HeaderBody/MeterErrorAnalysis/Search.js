@@ -2,12 +2,14 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch,Select} from 'antd';
+import {Form,DatePicker,Row,message,Input,Button,Switch,Select,Radio} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,11 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
-        manufacturers: fieldsValue.manufacturers?fieldsValue.manufacturers.key:'',
+        concentrator_number:fieldsValue.concentrator_number,
+        display_type:fieldsValue.display_type,
+        member_number: fieldsValue.member_number,
+        meter_number: fieldsValue.meter_number,
+        manufacturer_id: fieldsValue.manufacturer_id?fieldsValue.manufacturer_id.key:'',
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
@@ -61,13 +67,48 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem
+            label='集中器编号'
+          >
+            {getFieldDecorator('concentrator_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem
+            label='水表编号'
+          >
+            {getFieldDecorator('meter_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem
+            label='户号'
+          >
+            {getFieldDecorator('member_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem
             label="厂商名称"
           >
-            {getFieldDecorator('manufacturers', {
+            {getFieldDecorator('manufacturer_id', {
             })(
               <Select labelInValue={true} style={{width:120}}>
                 { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
               </Select>
+            )}
+          </FormItem>
+          <FormItem label="显示">
+            {getFieldDecorator('display_type',{
+              initialValue:  'all',
+            })(
+              <RadioGroup>
+                <RadioButton value="all">全部</RadioButton>
+                <RadioButton value="only_missing_upload">漏报</RadioButton>
+                <RadioButton value="only_error_upload">错报</RadioButton>
+              </RadioGroup>
             )}
           </FormItem>
           <FormItem>

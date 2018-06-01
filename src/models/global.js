@@ -2,14 +2,21 @@ import { queryNotices } from '../services/api';
 
 export default {
   namespace: 'global',
-
   state: {
     collapsed: false,
     notices: [],
     fetchingNotices: false,
+    isMobile:document.documentElement.clientWidth<=767?true:false
   },
 
   effects: {
+    *SetMobile({ payload }, { put, select }) {
+        yield put({
+          type: 'changeView',
+          payload: payload<=767
+        });
+
+    },
     *fetchNotices(_, { call, put }) {
       yield put({
         type: 'changeNoticeLoading',
@@ -43,6 +50,12 @@ export default {
      *   payload: collapsed,
      * });
      * */
+    changeView(state, {  payload }) {
+      return {
+        ...state,
+        isMobile: payload,
+      };
+    },
     changeLayoutCollapsed(state, { payload }) {
       return {
         ...state,

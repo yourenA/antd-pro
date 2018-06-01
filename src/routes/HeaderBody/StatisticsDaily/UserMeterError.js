@@ -4,9 +4,12 @@ import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
+import {renderIndex} from './../../../utils/utils'
 import moment from 'moment'
+import { routerRedux} from 'dva/router';
 @connect(state => ({
   meter_daily_errors: state.meter_daily_errors,
+  global:state.global,
 }))
 class FunctionContent extends PureComponent {
   constructor(props) {
@@ -15,9 +18,11 @@ class FunctionContent extends PureComponent {
       tableY: 0,
       page: 1,
       initDate:moment(new Date(), 'YYYY-MM-DD'),
-      date: '',
+      date:  moment(moment(new Date(), 'YYYY-MM-DD')).format('YYYY-MM-DD'),
       concentrator_number:'',
-      meter_number:''
+      meter_number:'',
+      member_number: '',
+      display_type: 'all',
     }
   }
 
@@ -30,6 +35,8 @@ class FunctionContent extends PureComponent {
         page: 1,
         concentrator_number:'',
         meter_number:'',
+        member_number: '',
+        display_type: 'all',
         date: moment(this.state.initDate).format('YYYY-MM-DD'),
       },
       callback:function () {
@@ -47,6 +54,8 @@ class FunctionContent extends PureComponent {
       page: 1,
       concentrator_number:'',
       meter_number:'',
+      member_number: '',
+      display_type: 'all',
       date: moment(this.state.initDate).format('YYYY-MM-DD'),
     })
   }
@@ -71,37 +80,45 @@ class FunctionContent extends PureComponent {
     this.handleSearch({
       concentrator_number:this.state.concentrator_number,
       meter_number:this.state.meter_number,
+      member_number: this.state.member_number,
+      display_type: this.state.display_type,
       page: page,
       date: this.state.date,
     })
   }
   render() {
-    const {meter_daily_errors: {data, meta, loading}} = this.props;
+    const {meter_daily_errors: {data, meta, loading},dispatch} = this.props;
+    const company_code = sessionStorage.getItem('company_code');
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '集中器编号', width: '25%', dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表编号', width:  '25%', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '户表索引', width:  '25%', dataIndex: 'meter_index', key: 'meter_index'},
+      {title: '集中器编号', width: '20%', dataIndex: 'concentrator_number', key: 'concentrator_number'
+        , render: (val, record, index) => {
+        return (
+          <p  className="link" onClick={()=>{
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}`));
+          }} >{val}</p>
+        )
+      }},
+      {title: '户号', width:  '20%', dataIndex: 'member_number', key: 'member_number'},
+      {title: '水表编号', width:  '20%', dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表序号', width:  '20%', dataIndex: 'meter_index', key: 'meter_index'},
       {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
         </p>
       )},
     ];
+    const {isMobile} =this.props.global;
     return (
       <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '户表错误'}]}>
         <Card bordered={false} style={{margin: '-16px -16px 0'}}>
@@ -118,11 +135,12 @@ class FunctionContent extends PureComponent {
               }
             }}
             className='meter-table'
-            loading={false}
+            loading={loading}
             rowKey={record => record.meter_number}
             dataSource={data}
             columns={columns}
-            scroll={{y: this.state.tableY}}
+            scroll={isMobile?{x:600}:{}}
+            //scroll={{y: this.state.tableY}}
             pagination={false}
             size="small"
           />

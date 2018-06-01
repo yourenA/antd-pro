@@ -10,6 +10,7 @@ import AddOrEditForm from './addOrEditDMA'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
+  global:state.global,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
@@ -150,8 +151,8 @@ class Vendor extends PureComponent {
   render() {
     const {dma: {data, meta, loading},dma} = this.props;
     const columns = [
-      {title: '名称', dataIndex: 'name', key: 'name',width:'30%'},
-      {title: '备注', dataIndex: 'remark', key: 'remark',width:'30%'},
+      {title: '名称', dataIndex: 'name', key: 'name',},
+      {title: '备注', dataIndex: 'remark', key: 'remark'},
       {title: '创建时间', dataIndex: 'created_at', key: 'created_at'},
       {
         title: '操作',
@@ -194,6 +195,7 @@ class Vendor extends PureComponent {
         ),
       },
     ];
+    const {isMobile} =this.props.global;
     return (
           <div className="content">
             <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: 'DMA分区管理'}, {name: '分区管理'}]}>
@@ -228,7 +230,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ y: this.state.tableY}}
+                  scroll={isMobile?{x:600}:{}}
                   pagination={false}
                   size="small"
                 />

@@ -13,10 +13,10 @@ export default class MyPagination extends PureComponent {
       <div>
         <Pagination
                     showTotal={(total, range) =>{
-                      return `获取第${range[0]}-${range[1]}条  总数 : ${total}`
+                      return `获取第${range[0]?range[0]:''}-${range[1]?range[1]:''}条  总数 : ${total}`
                     } }
-                    showQuickJumper className='pagination' total={meta.pagination.total}
-                    current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
+                    showQuickJumper className='pagination' total={meta ? meta.pagination.total:0}
+                    current={meta ? meta.pagination.current_page:0} pageSize={meta ? meta.pagination.per_page:0}
                     style={{marginTop: '10px'}} onChange={handPageChange}/>
       </div>
     );

@@ -31,6 +31,9 @@ class SearchForm extends Component {
   handleFormReset = () => {
     const {form} = this.props;
     form.resetFields();
+    form.setFieldsValue({
+      concentrator_number: '',
+    });
     this.props.handleFormReset()
   }
   render() {
@@ -64,6 +67,7 @@ class SearchForm extends Component {
             label='集中器编号'
           >
             {getFieldDecorator('concentrator_number', {
+              initialValue: this.props.initConcentrator ? this.props.initConcentrator : '',
             })(
               <Input/>
             )}

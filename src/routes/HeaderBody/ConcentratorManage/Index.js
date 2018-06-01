@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table , Card, Popconfirm, Layout,message,Modal,Badge} from 'antd';
+import { Table , Card, Popconfirm, Layout,message,Modal,Badge,Tooltip} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -9,6 +9,7 @@ import {connect} from 'dva';
 import Detail from './Detail'
 import find from 'lodash/find'
 // import moment from 'moment'
+import {renderIndex,ellipsis} from './../../../utils/utils'
 import './index.less'
 import ConcentratorDetail from './ConcentratorDetail'
 const { Content} = Layout;
@@ -236,6 +237,7 @@ class ConcentratorManage extends PureComponent {
     this.setState({
       concentratorId:record.id,
       concentratorNumber:record.number,
+      protocols:record.protocols,
     },function () {
       this.setState({
         showArea:false
@@ -255,28 +257,25 @@ class ConcentratorManage extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
-        width: 45,
+        width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta,this.state.page,index)
         }
       },
-      { title: '集中器编号', width: 100, dataIndex: 'number', key: 'number',    fixed: 'left',
+      { title: '集中器编号', width: 90, dataIndex: 'number', key: 'number',    fixed: 'left',
         render: (text, record, index) => {
           return (
-            <p style={{cursor:'pointer' ,color:'#1890ff'}}  onClick={()=>this.showConcentrator(record)}>
+            <p className="link"  onClick={()=>this.showConcentrator(record)}>
               {text}
             </p>
           )
         }
       },
       { title: '集中器类型', width: 120, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name'},
-      { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 100, },
+      { title: '支持协议', width: 120, dataIndex: 'protocols', key: 'protocols'},
+      { title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number' ,width: 120, },
       { title: '水表总数', dataIndex: 'meter_count', key: 'meter_count',width: 80},
       { title: '在线状态', dataIndex: 'is_online', key: '3' ,width: 80,
         render:(val, record, index) => (
@@ -284,13 +283,26 @@ class ConcentratorManage extends PureComponent {
             <Badge status={val===1?"success":"error"} />{val===1?"是":"否"}
           </p>
         )},
-      { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,},
-      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,},
+      { title: '安装小区', dataIndex: 'village_name', key: 'village_name' ,width: 150,
+        render: (val, record, index) => {
+          return ellipsis(val)
+        }},
+      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 150,
+        render: (val, record, index) => {
+          return ellipsis(val)
+        }
+      },
 
       { title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at' ,width: 150,},
       { title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at',width: 150,},
-      { title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message',width: 150,},
-      { title: '下行报文（指令）', dataIndex: 'downlink_message', key: 'downlink_message',width: 150},
+      { title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message',width: 150,
+        render: (val, record, index) => {
+          return ellipsis(val)
+        }},
+      { title: '下行报文（指令）', dataIndex: 'downlink_message', key: 'downlink_message',width: 150,
+        render: (val, record, index) => {
+          return ellipsis(val)
+        }},
       { title: '是否做统计日报', dataIndex: 'is_count', key: 'is_count'  ,width: 150,
         render: (val, record, index) => {
         return (
@@ -304,7 +316,7 @@ class ConcentratorManage extends PureComponent {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 150,
+        width: 90,
         render: (val, record, index) => {
           return(
             <p>
@@ -329,10 +341,8 @@ class ConcentratorManage extends PureComponent {
                               onConfirm={()=>this.handleRemove(record.id)}>
                   <a href="">删除</a>
                 </Popconfirm>
-                    <span className="ant-divider"/>
                 </span>
               }
-              <a href="javascript:;" onClick={()=>message.info('该功能暂未开通')}>指令</a>
             </p>
             )
         }
@@ -369,14 +379,14 @@ class ConcentratorManage extends PureComponent {
                       rowKey={record => record.id}
                       dataSource={data}
                       columns={columns}
-                      scroll={{ x: 1950,y: this.state.tableY }}
+                      scroll={{ x: 2100}}
                       pagination={false}
                       size="small"
                     />
                     <Pagination meta={meta} handPageChange={this.handPageChange}/>
                   </div>
                   :
-                  <ConcentratorDetail concentratorId={this.state.concentratorId}  handleBack={this.handleBack}/>
+                  <ConcentratorDetail protocols={this.state.protocols} concentratorId={this.state.concentratorId} concentratorNumber={this.state.concentratorNumber} handleBack={this.handleBack}/>
               }
               </Card>
           </PageHeaderLayout>

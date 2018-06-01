@@ -23,7 +23,9 @@ class SearchForm extends Component {
       const date = fieldsValue['date'];
       const values = {
         ...fieldsValue,
-        date: date ? moment(date).format('YYYY-MM-DD') : '',
+        // date: date ? moment(date).format('YYYY-MM-DD') : '',
+        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values, page: 1})
     });
@@ -50,7 +52,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+        <Row gutter={16}>
           {
             company_code==='hy'&&
             <FormItem
@@ -66,17 +68,55 @@ class SearchForm extends Component {
               )}
             </FormItem>
           }
+      <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+            {getFieldDecorator('started_at', {
+              initialValue: this.props.initRange ? this.props.initRange[0] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+            {getFieldDecorator('ended_at', {
+              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label="户号">
+            {getFieldDecorator('member_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="集中器编号">
+            {getFieldDecorator('concentrator_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="水表编号">
+            {getFieldDecorator('meter_number')(
+              <Input placeholder="请输入"/>
+            )}
+          </FormItem>
 
-          <FormItem label={ '日期'}>
+         {/* <FormItem label={ '日期'}>
             {getFieldDecorator('date', {
               initialValue: this.props.initDate ? this.props.initDate : '',
             })(
               <DatePicker allowClear={false}  disabledDate={disabledDate} />
             )}
-          </FormItem>
+          </FormItem>*/}
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>
           </FormItem>
         </Row>
       </Form>

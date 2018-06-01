@@ -50,7 +50,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+        <Row gutter={16}>
           {
             company_code==='hy'&&
             <FormItem
@@ -73,9 +73,34 @@ class SearchForm extends Component {
               <DatePicker allowClear={false}  disabledDate={disabledDate} />
             )}
           </FormItem>
+          <FormItem
+            label='集中器编号'
+          >
+            {getFieldDecorator('concentrator_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem
+            label='水表编号'
+          >
+            {getFieldDecorator('meter_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem
+            label='户号'
+          >
+            {getFieldDecorator('member_number', {
+            })(
+              <Input/>
+            )}
+          </FormItem>
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>
           </FormItem>
         </Row>
       </Form>

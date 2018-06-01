@@ -5,6 +5,7 @@ import {connect} from 'dva';
 import { Link, Route, Redirect, Switch,} from 'dva/router';
 import DMAShow from './DMAShow'
 import DMAManage from './DMAManage/Index'
+import DMAData from './DMAData/Index'
 const { Content} = Layout;
 class UserMeterLife extends PureComponent {
   constructor(props) {
@@ -32,7 +33,12 @@ class UserMeterLife extends PureComponent {
               path={`/${company_code}/main/run_manage/DMA/DMA_manage`}
               component={DMAManage}
             />
-            <Redirect  from={`/${company_code}/main/run_manage/DMA`} to={`/${company_code}/main/run_manage/DMA/DMA_show`} />
+            <Route
+              exact
+              path={`/${company_code}/main/run_manage/DMA/DMA_data`}
+              component={DMAData}
+            />
+            <Redirect  from={`/${company_code}/main/run_manage/DMA`} to={`/${company_code}/main/run_manage/DMA/DMA_data`} />
           </Switch>
         </Content>
       </Layout>
