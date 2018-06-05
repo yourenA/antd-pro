@@ -236,7 +236,7 @@ class ConcentratorModels extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={isMobile?{x:700}:{}}
+                  scroll={isMobile?{x:700}:{y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

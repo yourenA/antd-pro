@@ -38,8 +38,8 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <FormItem label="集中器编号">
-            {getFieldDecorator('concentrator_number')(
+          <FormItem label="户号">
+            {getFieldDecorator('member_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>

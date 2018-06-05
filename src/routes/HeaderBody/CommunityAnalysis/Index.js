@@ -36,6 +36,7 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       area: '',
+      // concentrator_number:''
     }
   }
 
@@ -47,6 +48,7 @@ class UserMeterAnalysis extends PureComponent {
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
   }
+
   siderLoadedCallback = (village_id)=> {
     console.log('加载区域', village_id)
     this.setState({
@@ -66,8 +68,8 @@ class UserMeterAnalysis extends PureComponent {
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      showAddBtnByCon: false,
-      concentrator_number: null
+      concentrator_number:'',
+      village_id: village_id
     }, function () {
       this.changeTableY();
       this.handleSearch({
@@ -77,26 +79,25 @@ class UserMeterAnalysis extends PureComponent {
         install_address: '',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id
+
       })
     })
-
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number,village_id)=> {
     this.searchFormRef.props.form.resetFields()
     this.setState({
-      concentrator_number: concentrator_number,
-      showAddBtnByCon: true,
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id,
-      concentrator_number: concentrator_number
+      village_id:'',
+      concentrator_number:concentrator_number
+    }, function(){
+      this.handleSearch({
+        page: 1,
+        meter_number: '',
+        member_number: '',
+        install_address: '',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+
+      })
     })
   }
   handleFormReset = () => {
@@ -104,6 +105,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       meter_number: '',
       member_number: '',
+      // concentrator_number:'',
       install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
@@ -113,19 +115,18 @@ class UserMeterAnalysis extends PureComponent {
   handleSearch = (values) => {
     const that = this;
     const {dispatch} = this.props;
+    console.log('village_id',this.state.village_id)
     dispatch({
       type: 'village_meter_data/fetch',
       payload: {
-        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
-        village_id: values.village_id ? values.village_id : this.state.village_id,
+
         ...values,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
       callback: function () {
         that.setState({
           ...values,
-          village_id: values.village_id ? values.village_id : that.state.village_id,
-          started_at: values.started_at,
-          ended_at: values.ended_at,
         })
       }
     });
@@ -142,149 +143,6 @@ class UserMeterAnalysis extends PureComponent {
       started_at: this.state.started_at,
       // area: this.state.area
     })
-  }
-
-  handleAdd = () => {
-    const that = this;
-    const formValues = this.formRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'village_meter_data/add',
-      payload: {
-        ...formValues,
-        is_change: formValues.is_change.key,
-        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
-        village_id: this.state.village_id,
-        concentrator_number: this.state.concentrator_number
-      },
-      callback: function () {
-        message.success('添加用户成功')
-        that.setState({
-          addModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
-    });
-  }
-  handleEdit = () => {
-    const that = this;
-    const formValues = this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'village_meter_data/edit',
-      payload: {
-        ...formValues,
-        village_id: this.state.village_id,
-        id: this.state.editRecord.id
-      },
-      callback: function () {
-        message.success('修改用户成功')
-        that.setState({
-          editModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
-    });
-  }
-  handleRemove = (id)=> {
-    const that = this;
-    this.props.dispatch({
-      type: 'village_meter_data/remove',
-      payload: {
-        id: id,
-      },
-      callback: function () {
-        message.success('删除用户成功')
-        that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-          ended_at: that.state.ended_at,
-          started_at: that.state.started_at,
-        })
-      }
-    });
-  }
-  handleChangeTable = ()=> {
-    const formValues = this.ChangeTableformRef.props.form.getFieldsValue();
-    console.log(formValues)
-  }
-  renderRsuiteTable = (data, loading)=> {
-    return (
-      <div>
-        <Table
-          bordered
-          height={this.state.tableY}
-          data={data}
-          loading={loading}
-          className="rsuiteTable"
-          onRowClick={(data) => {
-            console.log(data);
-          }}
-        >
-          <Column width={50} align="center" fixed resizable>
-            <HeaderCell>序号</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={130} fixed resizable>
-            <HeaderCell>First Name</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={130}>
-            <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>City</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Street</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-
-          <Column width={200}>
-            <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="meter_number"/>
-          </Column>
-
-        </Table>
-      </div>
-    )
   }
 
   render() {
@@ -344,7 +202,8 @@ class UserMeterAnalysis extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
+        <Sider changeArea={this.changeArea}
+               changeConcentrator={this.changeConcentrator}
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
@@ -371,7 +230,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1280}}
+                  scroll={{x: 1280,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

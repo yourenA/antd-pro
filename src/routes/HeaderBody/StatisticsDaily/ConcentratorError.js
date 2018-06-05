@@ -34,7 +34,7 @@ class FunctionContent extends PureComponent {
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   handleFormReset = () => {
@@ -103,9 +103,9 @@ class FunctionContent extends PureComponent {
         </p>
       )},
       {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
-      {title: '水表上传数', width: 90, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '水表上传数量', width: 110, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
       {title: '水表上传率', width: 90, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate'},
-      {title: '水表正常读值数', width: 120, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '水表正常读值数量', width: 130, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
       {title: '水表正常读值率', width: 120, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate'},
     ];
     const {isMobile} =this.props.global;
@@ -126,7 +126,7 @@ class FunctionContent extends PureComponent {
                 rowKey={record => record.uuidkey}
                 dataSource={data}
                 columns={columns}
-                scroll={{x:950}}
+                scroll={{x:1000,y: this.state.tableY}}
                 //scroll={{y: this.state.tableY}}
                 pagination={false}
                 size="small"

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table , Card, Badge  , Layout,message,Modal,Button } from 'antd';
+import { Table , Card, Badge  , Layout,message,Modal,Button,Progress } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import {renderIndex,ellipsis} from './../../../utils/utils'
@@ -32,7 +32,7 @@ class UserMeterAnalysis extends PureComponent {
       manufacturer_id: '',
       concentrator_number: '',
       page: 1,
-      initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:[ moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
       ended_at:'',
       village_id: '',
@@ -56,42 +56,60 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
     if(this.initConcentrator){
-      this.handleSearch({
-        page: 1,
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      this.setState({
         concentrator_number:this.initConcentrator
+      },function () {
+        this.handleSearch({
+          page: 1,
+          started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+          ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        })
       })
     }
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
-    this.searchFormRef.props.form.setFieldsValue({
-      concentrator_number: '',
-    });
+    // this.searchFormRef.props.form.setFieldsValue({
+    //   concentrator_number: '',
+    // });
     this.setState({
-      manufacturer_id:'',
-      concentrator_number:''
+      concentrator_number:'',
+      village_id: village_id
     },function () {
       this.handleSearch({
         page: 1,
+        manufacturer_id:'',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id
+
       })
     })
 
+  }
+  changeConcentrator = (concentrator_number,village_id)=> {
+    this.searchFormRef.props.form.resetFields()
+    this.setState({
+      village_id:'',
+      concentrator_number:concentrator_number
+    }, function(){
+      this.handleSearch({
+        page: 1,
+        manufacturer_id:'',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+
+      })
+    })
   }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
       manufacturer_id: '',
-      concentrator_number: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -103,14 +121,13 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'concentrator_errors/fetch',
       payload: {
-        village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
       callback:function () {
         that.setState({
           ...values,
-          village_id: values.village_id? values.village_id:that.state.village_id,
-          concentrator_number: values.concentrator_number,
           started_at: values.started_at,
           ended_at: values.ended_at,
         })
@@ -121,7 +138,6 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      concentrator_number: this.state.concentrator_number,
       manufacturer_id: this.state.manufacturer_id,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
@@ -166,18 +182,24 @@ class UserMeterAnalysis extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '集中器编号', width: 110, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
-      {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
-      {title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 100,
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '生产厂商', width: 80, dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
+      {title: '安装位置', dataIndex: 'install_address', key: 'install_address',
         render: (val, record, index) => {
-          return ellipsis(val,7)
+          return ellipsis(val,5)
         }},
-      {title: '日期', dataIndex: 'date', key: 'date',},
+      {title: '日期', dataIndex: 'date', key: 'date', width: 100},
       {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
-      {title: '水表上传数', width: 90, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
-      {title: '水表上传率', width: 90, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate'},
-      {title: '水表正常读值数', width: 120, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
-      {title: '水表正常读值率', width: 120, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate'},
+      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate',className: 'align-center',
+        render: (val, record, index) => {
+          return parseFloat(val)?<Progress type="circle" percent={parseFloat(val)}  width={30} format={(val) =>val+'%'}/>:val
+        }},
+      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '正常读值率', width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate',className: 'align-center',
+        render: (val, record, index) => {
+          return parseFloat(val)?<Progress type="circle" percent={parseFloat(val)}  width={30} format={(val) =>val+'%'}/>:val
+        }},
       {title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[0])
       }},
@@ -276,12 +298,12 @@ class UserMeterAnalysis extends PureComponent {
                       return 'error'
                     }
                   }}
-                  className='meter-table error-analysis'
+                  className='meter-table error-analysis padding-6'
                   loading={loading}
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{ x: 1940}}
+                  scroll={{ x: 1880,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

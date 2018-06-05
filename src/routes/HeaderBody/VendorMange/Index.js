@@ -11,6 +11,7 @@ import AddOrEditVendor from './addOrEditVendor'
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
+  global:state.global,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
@@ -200,6 +201,7 @@ class Vendor extends PureComponent {
         ),
       },
     ];
+    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -225,6 +227,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
+                  scroll={isMobile?{x:800}:{y: this.state.tableY}}
                   //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"

@@ -22,7 +22,7 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const values = {
         member_number: fieldsValue.member_number,
-        concentrator_number: fieldsValue.concentrator_number,
+        // concentrator_number: fieldsValue.concentrator_number,
         meter_number: fieldsValue.meter_number,
         install_address: fieldsValue.install_address,
         real_name: fieldsValue.real_name,
@@ -72,11 +72,11 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label="集中器编号">
+          {/*<FormItem label="集中器编号">
             {getFieldDecorator('concentrator_number')(
               <Input placeholder="请输入"/>
             )}
-          </FormItem>
+          </FormItem>*/}
             <FormItem label="水表编号">
               {getFieldDecorator('meter_number')(
                 <Input placeholder="请输入"/>

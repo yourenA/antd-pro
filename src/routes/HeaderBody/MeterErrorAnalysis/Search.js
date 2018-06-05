@@ -22,7 +22,6 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
-        concentrator_number:fieldsValue.concentrator_number,
         display_type:fieldsValue.display_type,
         member_number: fieldsValue.member_number,
         meter_number: fieldsValue.meter_number,
@@ -64,14 +63,6 @@ class SearchForm extends Component {
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
               />
-            )}
-          </FormItem>
-          <FormItem
-            label='集中器编号'
-          >
-            {getFieldDecorator('concentrator_number', {
-            })(
-              <Input/>
             )}
           </FormItem>
           <FormItem

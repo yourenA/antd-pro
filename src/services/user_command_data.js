@@ -9,6 +9,16 @@ export async function query(params) {
     }
   });
 }
+
+export async function queryMeterDataDetail(params) {
+  return request(`/meter_data_detail`,{
+    method:'GET',
+    params:{
+      ...params
+    }
+  });
+}
+
 export async function remove({id}) {
   return request(`/concentrators/${id}`, {
     method: 'DELETE',

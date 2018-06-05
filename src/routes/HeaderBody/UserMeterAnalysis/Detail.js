@@ -146,6 +146,7 @@ class Detail extends PureComponent {
   isActive(type) {
     const {rangePickerValue} = this.state;
     const value = getTimeDistance(type);
+    console.log('value',value)
     if (!rangePickerValue[0] || !rangePickerValue[1]) {
       return false;
     }

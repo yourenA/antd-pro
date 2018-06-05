@@ -35,6 +35,20 @@ class AddConcentrator extends Component {
       return  <TreeNode value={item.id}  title={item.name} key={item.id} />
     });
   }
+  getParentKey = (key, tree) => {
+    let parentKey;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.children) {
+        if (node.children.some(item => item.id === key)) {
+          parentKey = node.id;
+        } else if (this.getParentKey(key, node.children)) {
+          parentKey = this.getParentKey(key, node.children);
+        }
+      }
+    }
+    return parentKey;
+  };
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -47,6 +61,11 @@ class AddConcentrator extends Component {
       }
     };
     const {getFieldDecorator, getFieldValue} = this.props.form;
+    // if(this.props.editRecord){
+    //   const village_id=this.getParentKey(this.props.editRecord.village_id,this.props.area);
+    //   console.log('village_id',village_id)
+    // }
+
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -106,21 +125,6 @@ class AddConcentrator extends Component {
             <Input  disabled={this.props.editRecord ?true:false}/>
           )}
         </FormItem>
-        {
-          this.props.editRecord?
-          <FormItem
-            {...formItemLayoutWithLabel}
-            label={(
-              <span>
-              安装小区
-            </span>
-            )}>
-            {getFieldDecorator('village_id', {
-              initialValue: this.props.editRecord.village_name,
-            })(
-              <Input disabled={true}/>
-            )}
-          </FormItem>:
             <FormItem
               {...formItemLayoutWithLabel}
               label={(
@@ -130,15 +134,11 @@ class AddConcentrator extends Component {
               )}>
               {getFieldDecorator('village_id', {
                 rules: [{required: true, message: '安装小区不能为空'}],
-                initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
+                initialValue: this.props.editRecord?this.props.editRecord.village_ids:'',
               })(
                 <Cascader options={this.renderTreeSelect(this.props.area)} placeholder="请选择"/>
               )}
             </FormItem>
-
-
-        }
-
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

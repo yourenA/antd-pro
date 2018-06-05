@@ -55,7 +55,7 @@ class UserMeterAnalysis extends PureComponent {
 
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   siderLoadedCallback = (village_id)=> {
@@ -80,7 +80,8 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields();
     this.setState({
       showAddBtnByCon: false,
-      concentrator_number:''
+      concentrator_number:'',
+      village_id: village_id
     }, function () {
       this.changeTableY();
       this.handleSearch({
@@ -88,12 +89,9 @@ class UserMeterAnalysis extends PureComponent {
         manufacturer_id: '',
         meter_number: '',
         member_number: '',
-        concentrator_number:'',
         display_type: 'all',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id,
-
       })
     })
 
@@ -102,22 +100,25 @@ class UserMeterAnalysis extends PureComponent {
     this.searchFormRef.props.form.resetFields()
     this.setState({
       concentrator_number: concentrator_number,
+      village_id:'',
       showAddBtnByCon: true,
+    },function () {
+      this.handleSearch({
+        page: 1,
+        manufacturer_id: '',
+        meter_number: '',
+        member_number: '',
+        display_type: 'all',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      })
     })
-    this.handleSearch({
-      page: 1,
-      manufacturer_id: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id,
-      concentrator_number: concentrator_number
-    })
+
   }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
       manufacturer_id: '',
-      concentrator_number:'',
       meter_number: '',
       member_number: '',
       display_type: 'all',
@@ -133,22 +134,12 @@ class UserMeterAnalysis extends PureComponent {
       type: 'meter_errors/fetch',
       payload: {
         ...values,
-        // concentrator_number: values.concentrator_number,
-        // meter_number: values.meter_number,
-        // member_number: values.member_number,
-        // display_type: values.display_type,
-        village_id: values.village_id ? values.village_id : this.state.village_id,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
       callback: function () {
         that.setState({
           ...values,
-          village_id: values.village_id ? values.village_id : that.state.village_id,
-          concentrator_number: values.concentrator_number,
-          meter_number: values.meter_number,
-          member_number: values.member_number,
-          display_type: values.display_type,
-          started_at: values.started_at,
-          ended_at: values.ended_at,
         })
       }
     });
@@ -158,7 +149,6 @@ class UserMeterAnalysis extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      concentrator_number: this.state.concentrator_number,
       manufacturer_id: this.state.manufacturer_id,
       meter_number: this.state.meter_number,
       member_number: this.state.member_number,
@@ -259,7 +249,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000}}
+                  scroll={{x: 1000,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

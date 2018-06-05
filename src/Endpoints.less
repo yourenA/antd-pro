@@ -30,6 +30,9 @@
     width: 100%;
     margin: 150px 0;
   }
+  .align-center{
+    text-align: center;
+  }
   .tableList {
     .tableListOperator {
       margin-bottom: 16px;
@@ -236,8 +239,8 @@
       .sider-title {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.65);
-        height: 53px;
-        line-height: 53px;
+        height: 46px;
+        line-height: 46px;
         border-bottom: 1px solid #e8e8e8;
         padding-left: 12px;
         white-space: nowrap;
@@ -317,7 +320,6 @@
   .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_close:after, :root .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_open:after, :root .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after {
     font-size: 18px !important;
     color: @primary-color;
-
   }
   .ant-tree.ant-tree-show-line li.concentrator span.ant-tree-switcher.ant-tree-switcher-noop:after {
     content: "\E951" !important;
@@ -388,7 +390,12 @@
       background: none !important;
     }
   }
-
+  .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td,
+  .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td,
+  .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td,
+  .ant-table-small > .ant-table-content > .ant-table-body > table > .ant-table-tbody > tr > td{
+    padding:7px !important; ;
+  }
   .ant-popover-inner-content {
     //padding: 0 !important;
   }

@@ -62,7 +62,7 @@ class Leak_abnormality extends PureComponent {
 
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 +5)
     })
   }
   handleFormReset = () => {
@@ -184,7 +184,7 @@ class Leak_abnormality extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 950}}
+                  scroll={{x: 950,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

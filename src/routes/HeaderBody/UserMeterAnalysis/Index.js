@@ -55,7 +55,7 @@ class UserMeterAnalysis extends PureComponent {
 
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   siderLoadedCallback = (village_id)=> {
@@ -80,19 +80,18 @@ class UserMeterAnalysis extends PureComponent {
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      showAddBtnByCon: false,
-      concentrator_number: ''
+      concentrator_number: '',
+      village_id: village_id,
     }, function () {
       this.handleSearch({
         page: 1,
         meter_number: '',
-        concentrator_number: '',
         member_number: '',
         real_name: '',
         install_address: '',
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id,
+
         display_type: 'all'
       },this.changeTableY)
     })
@@ -101,28 +100,29 @@ class UserMeterAnalysis extends PureComponent {
   changeConcentrator = (concentrator_number, village_id)=> {
     this.searchFormRef.props.form.resetFields()
     this.setState({
+      village_id:'',
       concentrator_number: concentrator_number,
-      showAddBtnByCon: true,
+    },function () {
+      this.handleSearch({
+        page: 1,
+        meter_number: '',
+        member_number: '',
+        real_name: '',
+        install_address: '',
+        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+
+        display_type: 'all'
+      })
     })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      real_name: '',
-      install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id,
-      concentrator_number: concentrator_number,
-      display_type: 'all'
-    })
+
   }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
       meter_number: '',
       member_number: '',
-      concentrator_number: '',
+      // concentrator_number: '',
       real_name: '',
       install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
@@ -137,16 +137,13 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'member_meter_data/fetch',
       payload: {
-        // concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
-        village_id: values.village_id ? values.village_id : this.state.village_id,
         ...values,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
       callback: function () {
         that.setState({
           ...values,
-          village_id: values.village_id ? values.village_id : that.state.village_id,
-          started_at: values.started_at,
-          ended_at: values.ended_at,
         })
         if(cb) cb()
       }
@@ -159,7 +156,6 @@ class UserMeterAnalysis extends PureComponent {
       page: page,
       install_address: this.state.install_address,
       meter_number: this.state.meter_number,
-      concentrator_number: this.state.concentrator_number,
       member_number: this.state.member_number,
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
@@ -335,7 +331,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={custom_headers}
-                  scroll={{x: custom_width}}//, y: this.state.tableY
+                  scroll={{x: custom_width,y: this.state.tableY}}//, y: this.state.tableY
                   pagination={false}
                   size="small"
                 />

@@ -27,7 +27,6 @@ class EditUserArchives extends Component {
       return  <TreeNode value={item.id}  title={item.name} key={item.id} />
     });
   }
-
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -54,6 +53,24 @@ class EditUserArchives extends Component {
             rules: [{required: true, message: '户号不能为空'}],
           })(
             <Input  disabled={this.props.editRecord ?true:false}/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          style={{width:'50%',display:'inline-block'}}
+          label={(
+            <span>
+              安装小区
+            </span>
+          )}>
+          {getFieldDecorator('village_id', {
+            initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
+          })(
+            <TreeSelect
+              treeDefaultExpandAll={true}
+            >
+              {this.renderTreeNodes(data)}
+            </TreeSelect>
           )}
         </FormItem>
        {/* {this.props.editRecord ?null: <FormItem

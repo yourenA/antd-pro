@@ -46,7 +46,7 @@ class FunctionContent extends PureComponent {
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   handleFormReset = () => {
@@ -139,7 +139,7 @@ class FunctionContent extends PureComponent {
             rowKey={record => record.meter_number}
             dataSource={data}
             columns={columns}
-            scroll={isMobile?{x:600}:{}}
+            scroll={isMobile?{x:600}:{y: this.state.tableY}}
             //scroll={{y: this.state.tableY}}
             pagination={false}
             size="small"

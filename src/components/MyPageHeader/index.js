@@ -30,6 +30,10 @@ export default class PageHeader extends PureComponent {
               return(
                 <Breadcrumb.Item  key={index}><Link to={item.link}>{item.name}</Link></Breadcrumb.Item>
               )
+            }else if(item.click){
+              return(
+                <Breadcrumb.Item style={{cursor:'pointer',textDecoration:'underline'}} key={index} onClick={item.click}>{item.name}</Breadcrumb.Item>
+              )
             }else{
               return(
                 <Breadcrumb.Item  key={index}>{item.name}</Breadcrumb.Item>

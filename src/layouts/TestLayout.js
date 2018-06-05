@@ -72,8 +72,6 @@ class TestLayout extends React.PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     console.log( getRouteData('TestLayout'))
     const layout= (
-      <Layout  style={{minHeight:'100vh' }}>
-        <Content>
           <Switch>
           {
             getRouteData('TestLayout').map(item =>{
@@ -88,8 +86,6 @@ class TestLayout extends React.PureComponent {
             )
           }
           </Switch>
-        </Content>
-      </Layout>
     )
     return (
       <DocumentTitle title={this.getPageTitle()}>

@@ -41,7 +41,7 @@ export function getTimeDistance(type) {
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
-    return [moment(`${year}-01-01 00:00:00`), moment(moment(`${year}-${fixedZero(month + 1)}-${day} 23:59:59`).valueOf())];
+    return [moment(`${year}-01-01 00:00:00`), moment(`${year}-${fixedZero(month + 1)}-${day} 23:59:59`)];
   }
 }
 
@@ -244,7 +244,7 @@ export function getPreDay() {
   return [moment().add(-1, 'days'), moment(new Date(), 'YYYY-MM-DD')]
 }
 
-const errorNumber='141414141414.14'
+const errorNumber='141414'
 exports.errorNumber = errorNumber;
 
 function renderIndex(meta,page,index) {
@@ -352,10 +352,25 @@ export function renderCustomHeaders(headers,meta,page) {
 
   return {custom_headers,custom_width}
 }
-export function ellipsis(val,len=10) {
+export function ellipsis(val,len=8) {
   return (
     <Tooltip title={val}>
       <span>{val.length>len?val.substring(0,len)+'...':val}</span>
+    </Tooltip>
+  )
+}
+
+export function ellipsis2(val,len=150) {
+  return (
+    <Tooltip arrowPointAtCenter
+             title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
+      <p style={{
+        display:'inline-block',
+        width: `${len-20}px`,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
+      }}>{val}</p>
     </Tooltip>
   )
 }
@@ -390,13 +405,17 @@ function parseRowSpanData(data) {
   }
   let resetMeterData = []
   data.map((item, index)=> {
-    if(item.meters.data.length>0){
-      for (let i = 0; i < item.meters.data.length; i++) {
-        if (item.meters.data.length === 1) {
-          resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1})
-        } else {
-          resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meter.length : 0})
+    if(item.meters){
+      if(item.meters.data.length>0){
+        for (let i = 0; i < item.meters.data.length; i++) {
+          if (item.meters.data.length === 1) {
+            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1})
+          } else {
+            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meter.length : 0})
+          }
         }
+      }else{
+        resetMeterData.push({...item, rowSpan: 1})
       }
     }else{
       resetMeterData.push({...item, rowSpan: 1})

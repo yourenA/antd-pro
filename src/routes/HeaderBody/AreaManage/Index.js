@@ -203,7 +203,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  //scroll={{ y: this.state.tableY}}
+                  scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

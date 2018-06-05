@@ -47,6 +47,7 @@ class UserMeterAnalysis extends PureComponent {
       statistical_forms:'',
       meter_number:'',
       concentrator_number:'',
+      member_number:'',
     }
   }
 
@@ -88,32 +89,29 @@ class UserMeterAnalysis extends PureComponent {
       statistical_forms:'',
       meter_number:'',
       concentrator_number:'',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       village_id: village_id
     })
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   changeArea = (village_id)=> {
     this.searchFormRef.props.form.resetFields();
     this.setState({
-      concentrator_number:''
+      concentrator_number:'',
+      village_id: village_id
     },function () {
-
       this.changeTableY();
       this.handleSearch({
         page: 1,
         distribution_area:'',
         statistical_forms:'',
         meter_number:'',
-        concentrator_number:'',
-        // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        village_id: village_id
+        member_number:'',
+        install_address: '',
+        real_name: '',
       })
     })
     const {dispatch}=this.props
@@ -128,34 +126,31 @@ class UserMeterAnalysis extends PureComponent {
   changeConcentrator = (concentrator_number,village_id)=> {
     this.searchFormRef.props.form.resetFields()
     this.setState({
+      village_id:'',
       concentrator_number:concentrator_number,
+    },function () {
+      this.handleSearch({
+        page: 1,
+        distribution_area:'',
+        statistical_forms:'',
+        meter_number:'',
+        member_number:'',
+        install_address: '',
+        real_name: '',
+      })
     })
-    const {dispatch}=this.props
-    // dispatch({
-    //   type: 'concentrators/fetch',
-    //   payload: {
-    //     village_id: village_id
-    //   }
-    // });
-    this.handleSearch({
-      page: 1,
-      distribution_area:'',
-      statistical_forms:'',
-      concentrator_number:'',
-      meter_number:'',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id:village_id,
-    })
+
   }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
       query: '',
       meter_number:'',
+      member_number:'',
+      install_address: '',
+      real_name: '',
       distribution_area:'',
       statistical_forms:'',
-      concentrator_number:'',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -167,13 +162,13 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'members/fetch',
       payload: {
-        village_id: values.village_id? values.village_id:this.state.village_id,
         ...values,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
       callback:function () {
         that.setState({
           ...values,
-          village_id: values.village_id? values.village_id:that.state.village_id,
         })
       }
     });
@@ -186,7 +181,9 @@ class UserMeterAnalysis extends PureComponent {
       distribution_area:this.state.distribution_area,
       statistical_forms:this.state.statistical_forms,
       meter_number:this.state.meter_number,
-      concentrator_number:this.state.concentrator_number,
+      member_number: this.state.member_number,
+      install_address: this.state.install_address,
+      real_name: this.state.real_name,
       // ended_at: this.state.ended_at,
       // started_at: this.state.started_at,
       // area: this.state.area
@@ -203,7 +200,6 @@ class UserMeterAnalysis extends PureComponent {
         ...formValues,
         is_change:formValues.is_change.key,
         installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
-        village_id: this.state.village_id,
       },
       callback: function () {
         message.success('添加用户成功')
@@ -215,7 +211,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
-          concentrator_number:that.state.concentrator_number,
+          // concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -228,7 +224,6 @@ class UserMeterAnalysis extends PureComponent {
       type: 'members/edit',
       payload: {
         ...formValues,
-        village_id: this.state.village_id,
         id:this.state.editRecord.id
       },
       callback: function () {
@@ -241,7 +236,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
-          concentrator_number:that.state.concentrator_number,
+          // concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -260,7 +255,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
-          concentrator_number:that.state.concentrator_number,
+          // concentrator_number:that.state.concentrator_number,
         })
       }
     });
@@ -409,7 +404,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.number}
                   dataSource={resetMeterData}
                   columns={columns}
-                  scroll={{ x: 1350 }}
+                  scroll={{ x: 1350,y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

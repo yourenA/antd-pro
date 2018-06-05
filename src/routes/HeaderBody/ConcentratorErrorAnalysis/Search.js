@@ -20,7 +20,6 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
-        concentrator_number:fieldsValue.concentrator_number,
         manufacturer_id: fieldsValue.manufacturer_id?fieldsValue.manufacturer_id.key:'',
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
@@ -31,9 +30,9 @@ class SearchForm extends Component {
   handleFormReset = () => {
     const {form} = this.props;
     form.resetFields();
-    form.setFieldsValue({
-      concentrator_number: '',
-    });
+    // form.setFieldsValue({
+    //   concentrator_number: '',
+    // });
     this.props.handleFormReset()
   }
   render() {
@@ -61,15 +60,6 @@ class SearchForm extends Component {
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
               />
-            )}
-          </FormItem>
-          <FormItem
-            label='集中器编号'
-          >
-            {getFieldDecorator('concentrator_number', {
-              initialValue: this.props.initConcentrator ? this.props.initConcentrator : '',
-            })(
-              <Input/>
             )}
           </FormItem>
           <FormItem

@@ -4,7 +4,7 @@ import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
 import Sider from './../Sider'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis} from './../../../utils/utils'
 import {connect} from 'dva';
 import Detail from './Detail'
 import moment from 'moment'
@@ -13,6 +13,7 @@ import './index.less'
 const {Content} = Layout;
 @connect(state => ({
   concentrator_water: state.concentrator_water,
+  global:state.global,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -38,7 +39,7 @@ class UserMeterAnalysis extends PureComponent {
 
   componentDidMount() {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
     this.handleSearch({
       page: 1,
@@ -86,7 +87,7 @@ class UserMeterAnalysis extends PureComponent {
   read_multiple_901f=(command)=>{
     console.log('集抄：',this.props.concentratorNumber)
     const {dispatch} = this.props;
-    sessionStorage.setItem(`concentrator_number-${command}-${this.props.concentratorNumber}`,new Date().getTime())
+    const that=this;
     dispatch({
       type: 'user_command_data/add',
       payload:{
@@ -95,18 +96,19 @@ class UserMeterAnalysis extends PureComponent {
         protocol:command
       },
       callback:()=>{
+        sessionStorage.setItem(`concentrator_number-${command}-${this.props.concentratorNumber}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
         message.success('发送指令成功')
       }
     });
   }
   read_single_901f=(command,meter_number)=>{
     console.log('点抄：',meter_number)
-    this.setState({
-      // disabled:false
-      time:new Date().getTime()
-    })
-    sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
     const {dispatch} = this.props;
+    const that=this;
     dispatch({
       type: 'user_command_data/add',
       payload:{
@@ -115,6 +117,11 @@ class UserMeterAnalysis extends PureComponent {
         protocol:command
       },
       callback:()=>{
+        sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
         message.success('发送指令成功')
       }
     });
@@ -146,9 +153,15 @@ class UserMeterAnalysis extends PureComponent {
       },
       {title: '水表号', width: 100, dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width:  '15%',},
-      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: '15%',},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',},
+      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width:  '15%',render: (val, record, index) => {
+        return ellipsis(val,3)
+      }},
+      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: '15%',render: (val, record, index) => {
+        return ellipsis(val)
+      }},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
+        return ellipsis(val)
+      }},
       {
         title: '操作',
         key: 'operation',
@@ -162,6 +175,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
     ];
+    const {isMobile} =this.props.global;
     return (
 
       <div>
@@ -185,6 +199,7 @@ class UserMeterAnalysis extends PureComponent {
           rowKey={record => record.meter_number}
           dataSource={data}
           columns={columns}
+          scroll={isMobile?{x:900}:{y: this.state.tableY}}
           //scroll={{ y: this.state.tableY}}
           pagination={false}
           size="small"

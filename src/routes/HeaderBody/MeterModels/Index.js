@@ -249,7 +249,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 800}}
+                  scroll={{x: 800,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
