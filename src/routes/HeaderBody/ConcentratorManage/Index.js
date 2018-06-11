@@ -9,7 +9,7 @@ import {connect} from 'dva';
 import Detail from './Detail'
 import find from 'lodash/find'
 // import moment from 'moment'
-import {renderIndex, ellipsis} from './../../../utils/utils'
+import {renderIndex, ellipsis, ellipsis2} from './../../../utils/utils'
 import './index.less'
 import ConcentratorDetail from './ConcentratorDetail'
 const {Content} = Layout;
@@ -38,7 +38,9 @@ class ConcentratorManage extends PureComponent {
       orderModal: false,
       village_id: '',
       showArea: true,
-      editRecord: null
+      editRecord: null,
+      refreshSider: 0,
+      canOperateConcentrator: localStorage.getItem('canOperateConcentrator') === 'true' ? true : false
     }
 
   }
@@ -105,7 +107,7 @@ class ConcentratorManage extends PureComponent {
     this.setState({
       query: concentrator_number,
       village_id: '',
-    },function () {
+    }, function () {
       this.handleSearch({
         page: 1,
       })
@@ -171,6 +173,7 @@ class ConcentratorManage extends PureComponent {
         message.success('添加集中器成功')
         that.setState({
           addModal: false,
+          refreshSider: that.state.refreshSider + 1
         });
         that.handleSearch({
           page: that.state.page,
@@ -193,7 +196,7 @@ class ConcentratorManage extends PureComponent {
         ...formValues,
         // server_id: formValues.server_id.key,
         concentrator_model_id: formValues.concentrator_model_id.key,
-        village_id:formValues.village_id[formValues.village_id.length-1],
+        village_id: formValues.village_id[formValues.village_id.length - 1],
         is_count: formValues.is_count.key,
         id: this.state.editRecord.id
       },
@@ -201,6 +204,7 @@ class ConcentratorManage extends PureComponent {
         message.success('修改集中器成功')
         that.setState({
           editModal: false,
+          refreshSider: that.state.refreshSider + 1
         });
         that.handleSearch({
           page: that.state.page,
@@ -218,6 +222,9 @@ class ConcentratorManage extends PureComponent {
       },
       callback: function () {
         message.success('删除集中器成功')
+        that.setState({
+          refreshSider: that.state.refreshSider + 1
+        });
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
@@ -268,11 +275,20 @@ class ConcentratorManage extends PureComponent {
           )
         }
       },
-      {title: '集中器类型', width: 100, dataIndex: 'concentrator_model_name', key: 'concentrator_model_name',
+      {
+        title: '集中器类型',
+        width: 100,
+        dataIndex: 'concentrator_model_name',
+        key: 'concentrator_model_name',
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }
       },
-      {title: '支持协议', width: 100, dataIndex: 'protocols', key: 'protocols',render: (val, record, index) => {
-        return ellipsis(val)
-      }},
+      {
+        title: '支持协议', width: 100, dataIndex: 'protocols', key: 'protocols', render: (val, record, index) => {
+        return  ellipsis2(val,100)
+      }
+      },
       {title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number', width: 100,},
       {title: '水表总数', dataIndex: 'meter_count', key: 'meter_count', width: 80},
       {
@@ -304,13 +320,13 @@ class ConcentratorManage extends PureComponent {
       {
         title: '安装小区', dataIndex: 'village_name', key: 'village_name', width: 120,
         render: (val, record, index) => {
-          return ellipsis(val,7)
+          return ellipsis(val, 7)
         }
       },
       {
         title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 120,
         render: (val, record, index) => {
-          return ellipsis(val,7)
+          return ellipsis2(val, 120)
         }
       },
 
@@ -338,10 +354,15 @@ class ConcentratorManage extends PureComponent {
           )
         }
       },
-      {title: '备注', dataIndex: 'remark', key: 'remark', render: (val, record, index) => {
-        return ellipsis(val,8)
-      }},
-     {
+      {
+        title: '备注', dataIndex: 'remark', key: 'remark', render: (val, record, index) => {
+        return ellipsis(val, 8)
+      }
+      },
+
+    ];
+    if (this.state.canOperateConcentrator) {
+      columns.push({
         title: '操作',
         key: 'operation',
         fixed: 'right',
@@ -375,14 +396,19 @@ class ConcentratorManage extends PureComponent {
             </p>
           )
         }
-      },
-    ];
-    let breadcrumb = this.state.concentratorNumber ? [{name: '运行管理'}, {name: '集中器管理',click:this.handleBack}, {name: this.state.concentratorNumber}] : [{name: '运行管理'}, {name: '集中器管理'}]
+      })
+    }
+    let breadcrumb = this.state.concentratorNumber ? [{name: '运行管理'}, {
+      name: '集中器管理',
+      click: this.handleBack
+    }, {name: this.state.concentratorNumber}] : [{name: '运行管理'}, {name: '集中器管理'}]
     return (
       <Layout className="layout">
-        <Sider showSiderCon={this.state.showSiderCon} changeArea={this.changeArea}
+        <Sider refreshSider={this.state.refreshSider} showSiderCon={this.state.showSiderCon}
+               changeArea={this.changeArea}
                changeConcentrator={this.changeConcentrator} showArea={this.state.showArea}
-               siderLoadedCallback={this.siderLoadedCallback}/>
+               siderLoadedCallback={this.siderLoadedCallback}
+        />
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="运行管理" breadcrumb={breadcrumb}>
@@ -391,12 +417,15 @@ class ConcentratorManage extends PureComponent {
                   this.state.showArea
                     ?
                     <div>
-                     <div className='tableList'>
+                      <div className='tableList'>
                         <div className='tableListForm'>
                           <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                                   village_id={this.state.village_id}
                                   handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                                  showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}/>
+                                  showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
+                                  canOperateConcentrator={this.state.canOperateConcentrator} changeShowOperate={()=> {
+                            this.setState({canOperateConcentrator: !this.state.canOperateConcentrator})
+                          }}/>
                         </div>
                       </div>
                       <Table
@@ -410,7 +439,7 @@ class ConcentratorManage extends PureComponent {
                         rowKey={record => record.id}
                         dataSource={data}
                         columns={columns}
-                        scroll={{x: 1800,y: this.state.tableY}}
+                        scroll={{x: 1800, y: this.state.tableY}}
                         pagination={false}
                         size="small"
                       />

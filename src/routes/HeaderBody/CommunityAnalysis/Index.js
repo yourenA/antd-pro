@@ -9,12 +9,14 @@ import moment from 'moment'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 // import 'rsuite-table/lib/less/index.less'
-import {getPreDay, renderIndex, renderErrorData} from './../../../utils/utils'
+import {getPreDay, renderIndex, renderErrorData,renderIndex2} from './../../../utils/utils'
 // import './index.less'
 // import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,
+  global:state.global,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -29,6 +31,7 @@ class UserMeterAnalysis extends PureComponent {
       member_number: '',
       install_address: '',
       page: 1,
+      initPage:1,
       initRange: getPreDay(),
       started_at: '',
       ended_at: '',
@@ -36,16 +39,52 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       area: '',
+      canLoadByScroll:true,
       // concentrator_number:''
     }
   }
 
   componentDidMount() {
+    // document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
   }
-
+  componentWillUnmount() {
+    // document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {village_meter_data: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            meter_number: this.state.meter_number,
+            member_number: this.state.member_number,
+            install_address: this.state.install_address,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at,
+            // area: this.state.area
+          },true,function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          })
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
 
@@ -112,12 +151,12 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,fetchAndPush=false,cb) => {
     const that = this;
     const {dispatch} = this.props;
     console.log('village_id',this.state.village_id)
     dispatch({
-      type: 'village_meter_data/fetch',
+      type: fetchAndPush?'village_meter_data/fetchAndPush':'village_meter_data/fetch',
       payload: {
 
         ...values,
@@ -128,12 +167,17 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
         })
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb)cb()
       }
     });
-
-
   }
   handPageChange = (page)=> {
+    const that=this;
     this.handleSearch({
       page: page,
       meter_number: this.state.meter_number,
@@ -153,13 +197,13 @@ class UserMeterAnalysis extends PureComponent {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'index',
+        key: 'index',
         width: 50,
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return renderIndex(meta, this.state.page, index)
+          return renderIndex(meta, this.state.initPage, index)
         }
       },
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
@@ -200,6 +244,7 @@ class UserMeterAnalysis extends PureComponent {
        }
        },*/
     ];
+    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -230,11 +275,11 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1280,y: this.state.tableY}}
+                  scroll={{x: 1280,y: isMobile?document.body.offsetHeight-200:this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta} initPage={this.state.initPage} handPageChange={this.handPageChange}/>
 
               </Card>
             </PageHeaderLayout>

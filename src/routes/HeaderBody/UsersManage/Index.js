@@ -31,6 +31,7 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateuser')==='true'?true:false,
     }
   }
 
@@ -261,22 +262,22 @@ class Vendor extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '账号', width: '10%', dataIndex: 'username', key: 'username'},
-      {title: '名字', width: '8%', dataIndex: 'real_name', key: 'real_name'},
-      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: '11%'},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: '15%'},
-      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: '8%',
+      {title: '账号', width: 100, dataIndex: 'username', key: 'username', fixed: 'left',},
+      {title: '名字', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: 150},
+      {title: '邮箱', dataIndex: 'email', key: 'email', width: 150},
+      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: 100,
         render: (val, record, index) => (
           <Switch checked={record.is_sms_notify===1?true:false}  />
         )},
 
       {
-        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: '8%',
+        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: 100,
         render: (val, record, index) => (
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: '12%',},
+      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,},
       {
         title: '状态',
         dataIndex: 'status',
@@ -289,9 +290,12 @@ class Vendor extends PureComponent {
           )
         }
       },
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push(  {
         title: '操作',
         width: 150,
+        fixed:'right',
         render: (val, record, index) =>{
           if(record.lock===1){
             return null
@@ -343,18 +347,18 @@ class Vendor extends PureComponent {
                 }
                 {
                   (this.state.showdelBtn || this.state.showPasswordBtn)?
-                  <Dropdown onVisibleChange={(visible)=>{
-                    if(visible){
-                      this.setState({
-                        editRecord:record,
-                      })
-                    }else{
-                      this.setState({
-                        editRecord:{},
-                      })
-                    }
+                    <Dropdown onVisibleChange={(visible)=>{
+                      if(visible){
+                        this.setState({
+                          editRecord:record,
+                        })
+                      }else{
+                        this.setState({
+                          editRecord:{},
+                        })
+                      }
 
-                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
+                    }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
                     :null
                 }
 
@@ -362,8 +366,8 @@ class Vendor extends PureComponent {
             )
           }
         }
-      },
-    ];
+      })
+    }
     return (
       <Layout className="layout">
         {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
@@ -375,7 +379,10 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="账号" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}/>
                   </div>
                 </div>
                 <Table
@@ -389,7 +396,7 @@ class Vendor extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000,y: this.state.tableY}}
+                  scroll={{x: 1100,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

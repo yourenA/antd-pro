@@ -258,6 +258,17 @@ function renderIndex(meta,page,index) {
 
 exports.renderIndex = renderIndex;
 
+function renderIndex2(meta,page,index) {
+  const parseIndex=meta?String((meta.pagination.per_page*(page-1))+(index + 1)):0;
+  return (
+    <span title={parseIndex} >
+                {parseIndex.length>4?parseIndex.substring(0,3)+'...':parseIndex}
+            </span>
+  )
+}
+
+exports.renderIndex2 = renderIndex2;
+
 function renderErrorData(val,error=errorNumber) {
   if(val.toString().indexOf(error)>=0){
     return '异常数据'
@@ -353,11 +364,16 @@ export function renderCustomHeaders(headers,meta,page) {
   return {custom_headers,custom_width}
 }
 export function ellipsis(val,len=8) {
-  return (
-    <Tooltip title={val}>
-      <span>{val.length>len?val.substring(0,len)+'...':val}</span>
-    </Tooltip>
-  )
+  if(val){
+    return (
+      <Tooltip title={val}>
+        <span>{val.length>len?val.substring(0,len)+'...':val}</span>
+      </Tooltip>
+    )
+  }else{
+    return ''
+  }
+
 }
 
 export function ellipsis2(val,len=150) {
@@ -366,7 +382,7 @@ export function ellipsis2(val,len=150) {
              title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
       <p style={{
         display:'inline-block',
-        width: `${len-20}px`,
+        width: `${len-15}px`,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap'
@@ -405,13 +421,13 @@ function parseRowSpanData(data) {
   }
   let resetMeterData = []
   data.map((item, index)=> {
-    if(item.meters){
+    if(item.meters.data){
       if(item.meters.data.length>0){
         for (let i = 0; i < item.meters.data.length; i++) {
           if (item.meters.data.length === 1) {
             resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1})
           } else {
-            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meter.length : 0})
+            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meters.data.length : 0})
           }
         }
       }else{
@@ -425,3 +441,9 @@ function parseRowSpanData(data) {
 }
 
 exports.parseRowSpanData = parseRowSpanData;
+
+export function  GetQueryString(name,search){
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = search.substr(1).match(reg);
+  if(r!=null)return r[2]; return null;
+}

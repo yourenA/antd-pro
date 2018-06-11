@@ -97,7 +97,18 @@ class BasicLayout extends React.PureComponent {
       payload:pathname
     });
   }
-
+  componentWillReceiveProps = (nextProps)=> {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
+      let {pathname} = nextProps.location;
+      const pathArr = pathname.split('/');
+      console.log('pathArr',pathArr.length)
+      const company_code = sessionStorage.getItem('company_code');
+      if(pathArr[1]!==company_code){
+        console.log('url 以改变')
+        this.props.dispatch(routerRedux.push(`/login/${pathArr[1]}`));
+      }
+    }
+  }
   componentWillUnmount() {
     clearTimeout(this.resizeTimeout);
   }

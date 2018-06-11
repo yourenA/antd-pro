@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,Row,Input,Button} from 'antd';
+import {Form,Row,Input,Button,Switch} from 'antd';
 const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+        <Row gutter={16}>
             <FormItem  label={this.props.inputText?this.props.inputText:"名称"}>
               {getFieldDecorator('query')(
                 <Input placeholder="请输入"/>
@@ -39,7 +39,12 @@ class SearchForm extends Component {
               <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
               {this.props.showAddBtn&&<Button  type="primary"  style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}
             </FormItem>
-
+          <FormItem  label="打开操作栏" style={{float:'right'}}>
+            <Switch defaultChecked={localStorage.getItem('canOperateuser')==='true'?true:false} onChange={(checked)=>{
+              localStorage.setItem('canOperateuser',checked);
+              this.props.changeShowOperate()
+            }} />
+          </FormItem>
         </Row>
       </Form>
     )

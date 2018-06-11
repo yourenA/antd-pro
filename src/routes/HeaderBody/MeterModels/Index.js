@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../OnlyAdd'
+import DefaultSearch from './Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
@@ -27,6 +27,7 @@ class MeterModel extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateMeterModel')==='true'?true:false,
     }
   }
 
@@ -192,7 +193,9 @@ class MeterModel extends PureComponent {
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
         width: 100,
         fixed: 'right',
@@ -222,8 +225,8 @@ class MeterModel extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -235,7 +238,11 @@ class MeterModel extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="水表类型" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}
+                    />
                   </div>
                 </div>
                 <Table

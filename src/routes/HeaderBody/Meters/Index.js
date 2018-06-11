@@ -6,7 +6,7 @@ import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../EmptySider'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 const {Content} = Layout;
@@ -33,6 +33,7 @@ class MeterModel extends PureComponent {
       editModal: false,
       addModal: false,
       commandModal: false,
+      canOperateMeter:localStorage.getItem('canOperateMeter')==='true'?true:false,
     }
   }
 
@@ -55,11 +56,11 @@ class MeterModel extends PureComponent {
       }
     });
 
-    this.handleCommandSearch({page:1})
+    // this.handleCommandSearch({page:1})
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
   handleFormReset = () => {
@@ -238,7 +239,9 @@ class MeterModel extends PureComponent {
       },
       {title: '水表号', width: 80, dataIndex: 'number', key: 'number', fixed: 'left',},
       {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
-      {title: '水表类型名称', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name'},
+      {title: '水表类型名称', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (text, record, index) => {
+        return ellipsis2(text,130)
+      }},
       {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
         render:(val, record, index) => (
           <p>
@@ -252,36 +255,58 @@ class MeterModel extends PureComponent {
             <Badge status={val===1?"success":"error"} />{record.valve_status_explain}
           </p>
         )},
+      {title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
+        render:(val, record, index) => (
+          <p>
+            <Badge status={val===1?"success":"error"} />{record.status_explain}
+          </p>
+        )},
       {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at'},
       {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at'},
 
       {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100},
       {title: '条码', dataIndex: 'barcode', key: 'barcode', width: 100},
       {
-        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',width: 100
+        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',width: 100,render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }
       },
       {
-        title: '备注', dataIndex: 'remark', key: 'remark',
+        title: '备注', dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }
       },
-
-      {
+    ];
+    if(this.state.canOperateMeter){
+      columns.push({
         title: '操作',
-        width: isMobile?90:180,
+        width: isMobile?90:140,
         fixed: 'right',
         render: (val, record, index) => (
           <p>
             {
-              this.state.showCommandBtn && record.is_valve===1 &&
+              (this.state.showCommandBtn && record.is_valve===1) &&
               <span>
-                      <a href="javascript:;" onClick={()=> {
-                        this.handleCommand(record,'open_valve')
-                      }}>开阀</a>
-            <span className="ant-divider"/>
-                 <a href="javascript:;" onClick={()=> {
-                   this.handleCommand(record,'close_valve')
-                 }}>关阀</a>
-            <span className="ant-divider"/>
+                {record.valve_status===-1&&
+                <Popconfirm placement="topRight" title={ `确定要开阀吗?`}
+                            onConfirm={()=> {
+                              this.handleCommand(record,'open_valve')
+                            }}>
+                <span>
+                  <a href="javascript:;" >开阀</a>
                 </span>
+                </Popconfirm>}
+                {record.valve_status===1&&
+                <Popconfirm placement="topRight" title={ `确定要关阀吗?`}
+                            onConfirm={()=> {
+                              this.handleCommand(record,'close_valve')
+                            }}>
+                <span>
+                   <a href="javascript:;" >关阀</a>
+                </span>
+                </Popconfirm>}
+                <span className="ant-divider"/>
+              </span>
             }
             {
               this.state.showAddBtn &&
@@ -307,8 +332,8 @@ class MeterModel extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     const commandColumns = [
       {
         title: '序号',
@@ -349,7 +374,9 @@ class MeterModel extends PureComponent {
                     <DefaultSearch inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
                                    clickInfo={this.showCommandInfo}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
+                                   canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=>{this.setState({canOperateMeter:!this.state.canOperateMeter})}}
+                    />
                   </div>
                 </div>
                 <Table
@@ -363,7 +390,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1400,y: this.state.tableY}}
+                  scroll={{x: 1460,y:this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

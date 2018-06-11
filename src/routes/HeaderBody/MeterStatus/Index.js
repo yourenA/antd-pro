@@ -9,7 +9,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
@@ -230,14 +230,13 @@ class UserMeterAnalysis extends PureComponent {
       {title: '年限', width: 100,dataIndex: 'service_life', key: 'service_life'},
       {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
       {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',
+        render: (val, record, index) => {
+          return ellipsis(val, 3)
+        }},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 130,
         render: (val, record, index) => {
-          return (
-            <Tooltip title={val}>
-              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
-            </Tooltip>
-          )
+          return ellipsis(val, 7)
         }},
       {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at',},
 

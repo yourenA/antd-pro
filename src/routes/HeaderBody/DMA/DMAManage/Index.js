@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
+import {Table, Card, Layout, message, Popconfirm, Modal, Switch} from 'antd';
 import PageHeaderLayout from '../../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../../OnlyAdd'
+import DefaultSearch from './Search'
 import Pagination from './../../../../components/Pagination/Index'
 
 import {connect} from 'dva';
@@ -10,7 +10,7 @@ import AddOrEditForm from './addOrEditDMA'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
-  global:state.global,
+  global: state.global,
 }))
 class Vendor extends PureComponent {
   constructor(props) {
@@ -24,6 +24,7 @@ class Vendor extends PureComponent {
       page: 1,
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateDMA')==='true'?true:false,
     }
   }
 
@@ -37,11 +38,12 @@ class Vendor extends PureComponent {
       payload: {
         page: 1,
       },
-      callback:()=>{
+      callback: ()=> {
         this.changeTableY()
       }
     });
   }
+
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
@@ -81,8 +83,8 @@ class Vendor extends PureComponent {
   }
   handleAdd = () => {
     const that = this;
-    const formValues =this.formRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
+    const formValues = this.formRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
     this.props.dispatch({
       type: 'dma/add',
       payload: {
@@ -96,23 +98,23 @@ class Vendor extends PureComponent {
         that.props.dispatch({
           type: 'dma/fetch',
           payload: {
-            query:that.state.query,
-            page:that.state.page
+            query: that.state.query,
+            page: that.state.page
           }
         });
       }
     });
 
   }
-  handleEdit=()=>{
-    const formValues =this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
+  handleEdit = ()=> {
+    const formValues = this.editFormRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
     const that = this;
     this.props.dispatch({
       type: 'dma/edit',
       payload: {
         ...formValues,
-        id:this.state.editRecord.id,
+        id: this.state.editRecord.id,
       },
       callback: function () {
         message.success('修改DMA分区成功')
@@ -122,8 +124,8 @@ class Vendor extends PureComponent {
         that.props.dispatch({
           type: 'dma/fetch',
           payload: {
-            query:that.state.query,
-            page:that.state.page
+            query: that.state.query,
+            page: that.state.page
           }
         });
       }
@@ -134,29 +136,32 @@ class Vendor extends PureComponent {
     this.props.dispatch({
       type: 'dma/remove',
       payload: {
-        id:id,
+        id: id,
       },
       callback: function () {
         message.success('删除DMA分区成功')
         that.props.dispatch({
           type: 'dma/fetch',
           payload: {
-            query:that.state.query,
-            page:that.state.page
+            query: that.state.query,
+            page: that.state.page
           }
         });
       }
     });
   }
+
   render() {
-    const {dma: {data, meta, loading},dma} = this.props;
+    const {dma: {data, meta, loading}, dma} = this.props;
     const columns = [
-      {title: '名称', dataIndex: 'name', key: 'name',},
+      {title: '名称', dataIndex: 'name', key: 'name',width:'25%'},
       {title: '备注', dataIndex: 'remark', key: 'remark'},
-      {title: '创建时间', dataIndex: 'created_at', key: 'created_at'},
-      {
+      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',width:'30%'},
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
-          width:100,
+        width: 100,
         render: (val, record, index) => (
           <p>
             {
@@ -169,7 +174,7 @@ class Vendor extends PureComponent {
                           payload: {
                             return: 'all'
                           },
-                          callback:()=>{
+                          callback: ()=> {
                             this.setState(
                               {
                                 editRecord: record,
@@ -193,69 +198,74 @@ class Vendor extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     const {isMobile} =this.props.global;
     return (
-          <div className="content">
-            <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: 'DMA分区管理'}, {name: '分区管理'}]}>
-              <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <DefaultSearch handleSearch={this.handleSearch}
-                                   handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>{
-                      const {dispatch} = this.props;
-                      dispatch({
-                        type: 'dma/fetchAll',
-                        payload: {
-                          return: 'all'
-                        },
-                        callback:()=>{
-                          this.setState({addModal:true})
-                        }
-                      });
-
-                    }}/>
-                  </div>
-                </div>
-                <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
+      <div className="content">
+        <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: 'DMA分区管理'}, {name: '分区管理'}]}>
+          <Card bordered={false} style={{margin: '-16px -16px 0'}}>
+            <div className='tableList'>
+              <div className='tableListForm'>
+                <DefaultSearch handleSearch={this.handleSearch}
+                               handleFormReset={this.handleFormReset} initRange={this.state.initRange}
+                               showAddBtn={this.state.showAddBtn} clickAdd={()=> {
+                  const {dispatch} = this.props;
+                  dispatch({
+                    type: 'dma/fetchAll',
+                    payload: {
+                      return: 'all'
+                    },
+                    callback: ()=> {
+                      this.setState({addModal: true})
                     }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={isMobile?{x:600}:{y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
+                  });
+
+                }}
+                               changeShowOperate={()=> {
+                                 this.setState({canOperate: !this.state.canOperate})
+                               }}
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
-              </Card>
-            </PageHeaderLayout>
-            <Modal
-              key={ Date.parse(new Date())+1}
-              title="添加DMA分区"
-              visible={this.state.addModal}
-              onOk={this.handleAdd}
-              onCancel={() => this.setState({addModal: false})}
-            >
-              <AddOrEditForm    dma={dma} wrappedComponentRef={(inst) => this.formRef = inst}/>
-            </Modal>
-            <Modal
-              key={ Date.parse(new Date())}
-              title="修改DMA分区"
-              visible={this.state.editModal}
-              onOk={this.handleEdit}
-              onCancel={() => this.setState({editModal: false})}
-            >
-              <AddOrEditForm  dma={dma} editRecord={this.state.editRecord}  wrappedComponentRef={(inst) => this.editFormRef = inst}/>
-            </Modal>
-          </div>
+              </div>
+            </div>
+            <Table
+              rowClassName={function (record, index) {
+                if (record.description === '') {
+                  return 'error'
+                }
+              }}
+              className='meter-table'
+              loading={loading}
+              rowKey={record => record.id}
+              dataSource={data}
+              columns={columns}
+              scroll={isMobile ? {x: 600} : {y: this.state.tableY}}
+              pagination={false}
+              size="small"
+            />
+            <Pagination meta={meta} handPageChange={this.handPageChange}/>
+          </Card>
+        </PageHeaderLayout>
+        <Modal
+          key={ Date.parse(new Date()) + 1}
+          title="添加DMA分区"
+          visible={this.state.addModal}
+          onOk={this.handleAdd}
+          onCancel={() => this.setState({addModal: false})}
+        >
+          <AddOrEditForm dma={dma} wrappedComponentRef={(inst) => this.formRef = inst}/>
+        </Modal>
+        <Modal
+          key={ Date.parse(new Date())}
+          title="修改DMA分区"
+          visible={this.state.editModal}
+          onOk={this.handleEdit}
+          onCancel={() => this.setState({editModal: false})}
+        >
+          <AddOrEditForm dma={dma} editRecord={this.state.editRecord}
+                         wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+        </Modal>
+      </div>
 
 
     );

@@ -31,6 +31,7 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateUserGroup')==='true'?true:false,
     }
   }
 
@@ -233,7 +234,9 @@ class Vendor extends PureComponent {
           )
         }
       },
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push(   {
         title: '操作',
         width:150,
         render: (val, record, index) => (
@@ -255,8 +258,8 @@ class Vendor extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
@@ -269,7 +272,11 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={() => dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/add`))}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={() => dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/add`))}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}
+                    />
                   </div>
                 </div>
                 <Table

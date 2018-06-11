@@ -51,7 +51,13 @@ class SearchForm extends Component {
           <FormItem>
             {/*<Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
-            {(this.props.showAddBtn && this.props.village_id)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
+            {(this.props.showAddBtn)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
+          </FormItem>
+          <FormItem  label="打开操作栏" style={{float:'right'}}>
+            <Switch defaultChecked={localStorage.getItem('canOperateConcentrator')==='true'?true:false} onChange={(checked)=>{
+              localStorage.setItem('canOperateConcentrator',checked);
+              this.props.changeShowOperate()
+            }} />
           </FormItem>
         </Row>
       </Form>

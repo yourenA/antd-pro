@@ -8,6 +8,7 @@ import TestLayout from './layouts/TestLayout';
 import HeaderBodyLayout from './layouts/HeaderBodyLayout';
 import Maintain from './routes/Exception/Maintain';
 import {inWorking} from './common/config'
+import NotFound from './routes/Exception/404';
 //LocaleProvider 使用 React 的 context 特性，只需在应用外围包裹一次即可全局生效。
 console.log('inWorking',inWorking)
 function RouterConfig({ history }) {

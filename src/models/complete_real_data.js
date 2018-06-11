@@ -1,7 +1,7 @@
-import { query,add,remove,edit } from '../services/village_meter_data';
+import { query,add,remove,edit } from '../services/complete_real_data';
 
 export default {
-  namespace: 'village_meter_data',
+  namespace: 'complete_real_data',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},

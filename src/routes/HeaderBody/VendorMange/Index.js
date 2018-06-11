@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
-import DefaultSearch from './../OnlyAdd'
+import DefaultSearch from './Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import {renderIndex} from './../../../utils/utils'
@@ -27,6 +27,7 @@ class Vendor extends PureComponent {
       ended_at: '',
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateVendor')==='true'?true:false,
     }
   }
 
@@ -170,7 +171,9 @@ class Vendor extends PureComponent {
       {
         title: '联系人', dataIndex: 'contact', key: 'contact',
       },
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push({
         title: '操作',
         width: 100,
         render: (val, record, index) => (
@@ -199,8 +202,8 @@ class Vendor extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
@@ -213,7 +216,10 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="厂商名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}/>
                   </div>
                 </div>
                 <Table

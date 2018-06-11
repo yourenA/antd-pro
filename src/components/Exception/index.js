@@ -4,8 +4,10 @@ import { Button } from 'antd';
 import config from './typeConfig';
 import styles from './index.less';
 
+
 export default ({ className, linkElement = 'a', type, title, desc, img, actions, ...rest }) => {
   const pageType = type in config ? type : '404';
+  const company_code = sessionStorage.getItem('company_code');
   const clsString = classNames(styles.exception, className);
   return (
     <div className={clsString} {...rest}>
@@ -22,8 +24,8 @@ export default ({ className, linkElement = 'a', type, title, desc, img, actions,
           {
             actions ||
               createElement(linkElement, {
-                to: '/',
-                href: '/',
+                to: company_code==='system'?`/${company_code}/home`:`/${company_code}/main`,
+                href: company_code==='system'?`/${company_code}/home`:`/${company_code}/main`,
               }, <Button type="primary" >返回首页</Button>)
           }
         </div>

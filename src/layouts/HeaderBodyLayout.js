@@ -65,7 +65,6 @@ class HeaderBodyLayout extends React.PureComponent {
 
     };
   }
-
   componentDidMount() {
     // console.log(this.menus)
     const {location} = this.props;
@@ -267,10 +266,19 @@ class HeaderBodyLayout extends React.PureComponent {
   componentWillReceiveProps = (nextProps)=> {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       let {pathname} = nextProps.location;
-      const pathArr = pathname.split('/')
+      const pathArr = pathname.split('/');
+      console.log('pathArr',pathArr.length)
       this.setState({
-        current: pathArr[pathArr.length - 1]
+        current: pathArr[4]
       })
+      const company_code = sessionStorage.getItem('company_code');
+      if(pathArr[1]!==company_code){
+        console.log('url code 已经改变');
+        this.props.dispatch({
+          type: 'login/toLoginPage',
+          payload:pathname
+        });
+      }
     }
   }
   componentWillUnmount = ()=> {
@@ -401,11 +409,16 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 
   render() {
-    const {login} = this.props;
+    const {login,dispatch} = this.props;
     const {isMobile} =this.props.global;
     const company_code = sessionStorage.getItem('company_code');
     const company_name = sessionStorage.getItem('company_name');
-    console.log(isMobile)
+    const {location} = this.props;
+    let {pathname} = location;
+    const pathArr = pathname.split('/');
+    // console.log('pathArr',pathArr[1])
+    // console.log('company_code',company_code)
+
     const renderMenu=(
       <Menu
         onClick={this.handleClick}

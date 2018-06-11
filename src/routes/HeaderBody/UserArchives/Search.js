@@ -71,6 +71,12 @@ class SearchForm extends Component {
             {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}
             {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>批量导入</Button>}
           </FormItem>
+          <FormItem  label="打开操作栏" style={{float:'right'}}>
+            <Switch defaultChecked={localStorage.getItem('canOperateUserArchives')==='true'?true:false} onChange={(checked)=>{
+              localStorage.setItem('canOperateUserArchives',checked);
+              this.props.changeShowOperate()
+            }} />
+          </FormItem>
         </Row>
       </Form>
     )

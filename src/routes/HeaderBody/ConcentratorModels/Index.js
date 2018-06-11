@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../OnlyAdd'
+import DefaultSearch from './Search'
 import {renderIndex} from './../../../utils/utils'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
@@ -27,6 +27,7 @@ class ConcentratorModels extends PureComponent {
       started_at: '',
       ended_at: '',
       editModal: false,
+      canOperate:localStorage.getItem('canOperateConcentratorModel')==='true'?true:false,
       addModal: false,
     }
   }
@@ -179,7 +180,9 @@ class ConcentratorModels extends PureComponent {
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
         width: 100,
         render: (val, record, index) => (
@@ -208,8 +211,8 @@ class ConcentratorModels extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
@@ -222,7 +225,11 @@ class ConcentratorModels extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="类型名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}
+                    />
                   </div>
                 </div>
                 <Table

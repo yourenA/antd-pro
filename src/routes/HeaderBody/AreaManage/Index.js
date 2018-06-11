@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Layout, message, Popconfirm,Modal,Switch} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../OnlyAdd'
+import DefaultSearch from './Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
@@ -23,6 +23,7 @@ class Vendor extends PureComponent {
       page: 1,
       editModal: false,
       addModal: false,
+      canOperate:localStorage.getItem('canOperateArea')==='true'?true:false,
     }
   }
 
@@ -153,7 +154,9 @@ class Vendor extends PureComponent {
     const columns = [
       {title: '区域名称', dataIndex: 'name', key: 'name',width:'30%'},
       {title: '备注', dataIndex: 'remark', key: 'remark',width:'30%'},
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
         render: (val, record, index) => (
           <p>
@@ -181,8 +184,8 @@ class Vendor extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -194,7 +197,10 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="区域名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}/>
                   </div>
                 </div>
                 <Table

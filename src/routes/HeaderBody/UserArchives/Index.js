@@ -12,6 +12,7 @@ import ChangeTable from './ChangeTable'
 import moment from 'moment'
 import {renderIndex,renderRowSpan,parseRowSpanData} from './../../../utils/utils'
 import find from 'lodash/find'
+import uuid from 'uuid/v4'
 import './index.less'
 const { Content} = Layout;
 @connect(state => ({
@@ -48,6 +49,7 @@ class UserMeterAnalysis extends PureComponent {
       meter_number:'',
       concentrator_number:'',
       member_number:'',
+      canOperate:localStorage.getItem('canOperateUserArchives')==='true'?true:false,
     }
   }
 
@@ -272,9 +274,14 @@ class UserMeterAnalysis extends PureComponent {
     let file=this.file();
     const formValues =this.importFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
+    if(!formValues.file){
+      message.error('请选择文件');
+      return false
+    }
     var formData = new FormData();
     formData.append("file", formValues.file.file);
     formData.append("meter_model_id", formValues.meter_model_id);
+    formData.append("is_reset", formValues.is_reset.key);
     formData.append("concentrator_number", formValues.concentrator_number);
     const that=this;
     request(`/meter_import`, {
@@ -292,6 +299,9 @@ class UserMeterAnalysis extends PureComponent {
   }
   render() {
     const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models} = this.props;
+    for (let i = 0; i < data.length; i++) {
+      data[i].uuidkey = uuid()
+    }
     const resetMeterData=parseRowSpanData(data)
     const columns = [
       {
@@ -306,7 +316,9 @@ class UserMeterAnalysis extends PureComponent {
           return renderRowSpan(children,record)
         }
       },
-      { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left', },
+      { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      } },
       { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
         const children= (
           <Tooltip title={val}>
@@ -339,8 +351,11 @@ class UserMeterAnalysis extends PureComponent {
       // { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
       { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at',  render: (val, record, index) => {
         return renderRowSpan(val,record)
-      }},
-      {
+      }}
+
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
         key: 'operation',
         fixed: 'right',
@@ -374,8 +389,8 @@ class UserMeterAnalysis extends PureComponent {
             </p>
           )
         }
-      },
-    ];
+      })
+    }
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
@@ -390,18 +405,15 @@ class UserMeterAnalysis extends PureComponent {
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showImportBtn={this.state.showImportBtn}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}
-                            clickImport={()=>{this.setState({importModal:true})}}/>
+                            clickImport={()=>{this.setState({importModal:true})}}
+                            changeShowOperate={()=>{this.setState({canOperate:!this.state.canOperate})}}
+                    />
                   </div>
                 </div>
                 <Table
-                  rowClassName={function (record, index) {
-                    if(record.description===''){
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
+                  className='meter-table no-interval'
                   loading={loading}
-                  rowKey={record => record.number}
+                  rowKey={record => record.meter_number}
                   dataSource={resetMeterData}
                   columns={columns}
                   scroll={{ x: 1350,y: this.state.tableY }}

@@ -46,6 +46,14 @@ export default {
         yield put(routerRedux.replace(`/login/${payload.split('/')[1]}`));
       }
     },
+    *toLoginPage({ payload,callback }, { call, put }) {
+      yield put({
+        type: 'changePreUrl',
+        payload:payload,
+      });
+      console.log('payload',payload)
+      yield put(routerRedux.replace(`/login/${payload.split('/')[1]}`));
+    },
     *accountSubmit({ payload,callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       console.log(response)
@@ -87,7 +95,6 @@ export default {
         //登陆的时候获取储存的输入地址
         if(payload.preUrl){
           yield put(routerRedux.push(payload.preUrl));
-
         }else{
           yield put(routerRedux.push(`/${response.data.company_code}`));
         }

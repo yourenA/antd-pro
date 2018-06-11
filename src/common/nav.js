@@ -55,6 +55,7 @@ import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
 // import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
 // )
 import UserMeterLife from './../routes/HeaderBody/MeterStatus/Index'
+import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'
 
 // const ProductionMarketingAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "ProductionMarketingAnalysis" */ "./../routes/HeaderBody/ProductionMarketingAnalysis/Index")
@@ -297,6 +298,12 @@ const data = [{
         path: 'user_meter_life',
         component: UserMeterLife,
         permissions:['meter_status'],
+      },{
+        name: '完整实时数据',
+        path: 'complete_realData',
+        component: CompleteRealData,
+        permissions:['meter_status'],
+        // showCompany:['test']
       }
       // ,{
       //   name: '产销差分析',

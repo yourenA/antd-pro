@@ -4,10 +4,11 @@
 import React from 'react';
 import { Layout, Menu, Modal, Icon, Avatar, message ,BackTop,notification} from 'antd';
 import { connect } from 'dva';
-import { Link, Route, Redirect, Switch } from 'dva/router';
+import { Link, Route, Redirect, Switch,routerRedux } from 'dva/router';
 import { getNavData } from '../common/nav';
 import { getRouteData } from '../utils/utils';
 import DocumentTitle from 'react-document-title';
+import NotFound from './../routes/Exception/404';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 const { Header, Content } = Layout;
@@ -53,6 +54,21 @@ class TestLayout extends React.PureComponent {
       payload:pathname
     });
   }
+  componentWillReceiveProps = (nextProps)=> {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
+      let {pathname} = nextProps.location;
+      const pathArr = pathname.split('/')
+      const company_code = sessionStorage.getItem('company_code');
+      if(pathArr[1]!==company_code){
+        console.log('url code 已经改变');
+        this.props.dispatch({
+          type: 'login/toLoginPage',
+          payload:pathname
+        });
+        // this.props.dispatch(routerRedux.replace(`/login/${pathArr[1]}`));
+      }
+    }
+  }
   componentWillUnmount=()=>{
     notification.destroy()
   }
@@ -70,7 +86,6 @@ class TestLayout extends React.PureComponent {
 
   render() {
     const company_code = sessionStorage.getItem('company_code');
-    console.log( getRouteData('TestLayout'))
     const layout= (
           <Switch>
           {
@@ -87,6 +102,9 @@ class TestLayout extends React.PureComponent {
           }
           </Switch>
     )
+    if(company_code==='hy'){
+      return (<NotFound></NotFound>)
+    }
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <ContainerQuery query={query}>

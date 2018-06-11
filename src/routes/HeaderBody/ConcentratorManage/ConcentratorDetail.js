@@ -33,7 +33,8 @@ class UserMeterAnalysis extends PureComponent {
       area: '',
       showArea: true,
       clickCommand:[],
-      time:new Date().getTime()
+      time:new Date().getTime(),
+      canOperate:localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false,
     }
   }
 
@@ -161,8 +162,11 @@ class UserMeterAnalysis extends PureComponent {
       }},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
         return ellipsis(val)
-      }},
-      {
+      }}
+
+    ];
+    if(this.state.canOperate){
+      columns.push( {
         title: '操作',
         key: 'operation',
         width: 190,
@@ -173,8 +177,8 @@ class UserMeterAnalysis extends PureComponent {
             </div>
           )
         }
-      },
-    ];
+      })
+    }
     const {isMobile} =this.props.global;
     return (
 
@@ -184,7 +188,11 @@ class UserMeterAnalysis extends PureComponent {
             <DetailSearch protocols={this.props.protocols} concentratorNumber={this.props.concentratorNumber} wrappedComponentRef={(inst) => this.formRef = inst}
                           showCommandBtn={this.state.showCommandBtn} onBack={this.props.handleBack}
                           handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                          read_multiple_901f={this.read_multiple_901f} initRange={this.state.initRange}/>
+                          read_multiple_901f={this.read_multiple_901f} initRange={this.state.initRange}
+                          changeShowOperate={()=> {
+                            this.setState({canOperate: !this.state.canOperate})
+                          }}
+            />
           </div>
         </div>
         <Table

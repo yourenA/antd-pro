@@ -105,7 +105,7 @@ class FunctionContent extends PureComponent {
         , render: (val, record, index) => {
         return (
           <p  className="link" onClick={()=>{
-            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}`));
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}&date=${this.state.date}`));
           }} >{val}</p>
         )
       }},

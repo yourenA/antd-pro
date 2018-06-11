@@ -9,12 +9,14 @@ const {Sider} = Layout;
 
 @connect(state => ({
   sider_regions: state.sider_regions,
+  global:state.global,
 }))
 class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
+    const {isMobile} =this.props.global;
     this.state = {
-      collapsed: false,
+      collapsed: isMobile,
       treeData: [
       ],
       selectedKeys: []
@@ -24,6 +26,12 @@ class SiderTree extends PureComponent {
   componentDidMount() {
     const {dispatch}=this.props;
     this.queryVillages(true);
+  }
+  componentWillReceiveProps = (nextProps)=> {
+    if (nextProps.refreshSider !== this.props.refreshSider) {
+      console.log('刷新sider');
+      this.queryVillages(true);
+    }
   }
   queryVillages=(initial)=>{
     const that=this;
@@ -36,13 +44,18 @@ class SiderTree extends PureComponent {
       console.log('response',response.data.data)
       that.setState({
         treeData:this.props.showSiderCon===false?response.data.data:that.transilate(response.data.data)
+      },function () {
       })
       if(initial){
         if(response.data.data.length>0){
-          that.setState({
-            selectedKeys:[response.data.data[0].id]
-          })
-          that.props.changeArea(response.data.data[0].id)
+          // console.log('that.props.initConcentrator',that.props.initConcentrator)
+          if(that.props.noClickSider){
+          }else{
+            that.setState({
+              selectedKeys:[response.data.data[0].id]
+            })
+            that.props.changeArea(response.data.data[0].id)
+          }
         }else{
           that.props.changeArea('')
         }
@@ -54,11 +67,13 @@ class SiderTree extends PureComponent {
     return data.map((item) => {
       if (item.concentrators) {
         if(item.concentrators.length>0){
-          let concatR=item.children?item.children.concat(item.concentrators):item.concentrators
+          item.children=item.children||[];
+          let concatR=item.children?item.children.concat(item.concentrators):item.concentrators;
+          // console.log('concatR',concatR)
           item.children=concatR
         }
-        this.transilate(item.children)
       }
+      this.transilate(item.children)
       return item
     });
   }
@@ -124,7 +139,6 @@ class SiderTree extends PureComponent {
           resolve();
         })
       }else{
-        console.log('else')
         resolve();
       }
     });
@@ -179,7 +193,7 @@ class SiderTree extends PureComponent {
             <Tree
               //loadData={this.onLoadData}
               onExpand={this.onExpandNode}
-              defaultExpandAll={true}
+              defaultExpandedKeys={[this.state.treeData[0].id]}
               showLine onSelect={this.onSelect}
               selectedKeys={this.state.selectedKeys}
               //defaultExpandedKeys={[data[0].id]}

@@ -55,7 +55,7 @@ class Main extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     return (
       <div className={styles.main}>
-        <Row gutter={24}>
+        <Row gutter={16}>
           <Col  xl={6} lg={6} md={12} sm={24} >
             <div  className={`${styles.topItem} ${styles.topItem1}`}>
               <div className={styles.count}>{this.state.concentrator.total_count}</div>
@@ -94,7 +94,7 @@ class Main extends PureComponent {
             </div>
           </Col>
         </Row>
-        <Row gutter={24}>
+        <Row gutter={16}>
         {/*  {
             prefix==='http://api.water.test.com'&&
             <Col xl={18} lg={18} md={24} sm={24} xs={24}>
@@ -115,7 +115,7 @@ class Main extends PureComponent {
                 bordered={false}
                 title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大区供水一览</span>}
                 bodyStyle={{ padding: 24 }}
-                style={{ marginBottom: 24, minHeight: 509 }}
+                style={{ marginBottom: 16, minHeight: 509 }}
               >
                 <AreaSupplyList/>
               </Card>
@@ -129,7 +129,7 @@ class Main extends PureComponent {
                 bordered={false}
                 title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />每天用水总量与漏损率</span>}
                 bodyStyle={{ padding: 24 }}
-                style={{ marginBottom: 24, minHeight: 509 }}
+                style={{ marginBottom: 16, minHeight: 509 }}
               >
                 <DMArate/>
               </Card>
@@ -140,7 +140,7 @@ class Main extends PureComponent {
               bordered={false}
               title={<span><Icon type='bar-chart' style={{marginRight:'5px',color:'#1890ff'}} />昨日集中器在线情况统计</span>}
               bodyStyle={{ padding: 24 }}
-              style={{ marginBottom: 24, minHeight: 509 }}
+              style={{ marginBottom: 16, minHeight: 509 }}
             >
               <ConcentratorOnlife concentrator={this.state.concentrator}/>
             </Card>
@@ -150,7 +150,7 @@ class Main extends PureComponent {
               bordered={false}
               title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />昨日水表状态统计</span>}
               bodyStyle={{ padding: 24 }}
-              style={{ marginBottom: 24, minHeight: 509 }}
+              style={{ marginBottom: 16, minHeight: 509 }}
             >
               <Proportion meter={this.state.meter}/>
             </Card>
@@ -160,23 +160,25 @@ class Main extends PureComponent {
             <Card
               bordered={false}
               title={<span><Icon type='pie-chart' style={{marginRight:'5px',color:'#1890ff'}} />厂商-集中器/水表个数</span>}
-              style={{ marginBottom: 24, minHeight: 509  }}
+              style={{ marginBottom: 16, minHeight: 509  }}
             >
               <VendorConcentrator />
             </Card>
           </Col>
-          <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-            <Card
-              extra={<a href="javascript:;" onClick={()=>{
-                dispatch(routerRedux.push(`/${company_code}/main/run_manage/DMA/DMA_data`));
-              }}>查看详情</a>}
-              bordered={false}
-              title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大DMA分区每小时用水量</span>}
-              style={{ marginBottom: 24, minHeight: 509  }}
-            >
-              <DMADate />
-            </Card>
-          </Col>
+          {
+            company_code==='hy'&&<Col xl={12} lg={12} md={24} sm={24} xs={24}>
+              <Card
+                extra={<a href="javascript:;" onClick={()=>{
+                  dispatch(routerRedux.push(`/${company_code}/main/run_manage/DMA/DMA_data`));
+                }}>查看详情</a>}
+                bordered={false}
+                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />五大DMA分区每小时用水量</span>}
+                style={{ marginBottom: 16, minHeight: 509  }}
+              >
+                <DMADate />
+              </Card>
+            </Col>
+          }
           {/*
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card

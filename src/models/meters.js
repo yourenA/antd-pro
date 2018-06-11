@@ -17,7 +17,7 @@ export default {
       });
       const response = yield call(query, payload);
       console.log(response)
-      if(response.status){
+      if(response.status===200){
         if(response.data.meta){
           yield put({
             type: 'save',
@@ -40,6 +40,7 @@ export default {
             payload: false,
           });
         }
+        if(callback) callback()
       }
 
     },

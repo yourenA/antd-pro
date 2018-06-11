@@ -109,6 +109,26 @@ class EditUserArchives extends Component {
         </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              是否重置数据
+            </span>
+          )}>
+          {getFieldDecorator('is_reset', {
+            initialValue:{key:-1,label:'否'},
+            rules: [{required: true}],
+          })(
+            <Select labelInValue={true} >
+              { [{key:1,label:'是'},{key:-1,label:'否'}].map((item, key) => {
+                return (
+                  <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
+                )
+              }) }
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
           label="Excel文件"
         >
           <div className="dropbox">

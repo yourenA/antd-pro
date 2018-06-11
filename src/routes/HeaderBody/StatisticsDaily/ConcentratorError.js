@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message,Badge,Col,Row} from 'antd';
+import { Table, Card, Layout, message,Badge,Col,Row,Progress} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './ConcentratorErrorSearch'
@@ -92,7 +92,7 @@ class FunctionContent extends PureComponent {
         , render: (val, record, index) => {
         return (
           <p  className="link" onClick={()=>{
-            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}`));
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/concentrator_unusual_analysis?concentrator=${val}&date=${this.state.date}`));
           }} >{val}</p>
         )
       }},
@@ -103,10 +103,22 @@ class FunctionContent extends PureComponent {
         </p>
       )},
       {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
-      {title: '水表上传数量', width: 110, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
-      {title: '水表上传率', width: 90, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate'},
-      {title: '水表正常读值数量', width: 130, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
-      {title: '水表正常读值率', width: 120, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate'},
+      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {
+        title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
+        render: (val, record, index) => {
+          return parseFloat(val) ?
+            <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
+        }
+      },
+      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {
+        title: '正常读值率', width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
+        render: (val, record, index) => {
+          return parseFloat(val) ?
+            <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
+        }
+      },
     ];
     const {isMobile} =this.props.global;
     return (
@@ -121,7 +133,7 @@ class FunctionContent extends PureComponent {
                 </div>
               </div>
               <Table
-                className='meter-table'
+                className='meter-table padding-6'
                 loading={loading}
                 rowKey={record => record.uuidkey}
                 dataSource={data}

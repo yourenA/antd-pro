@@ -396,7 +396,14 @@ class Dashboard extends PureComponent {
     }
 
     if(dataMeterDetail.length>0){
+      var sdic=Object.keys(dataMeterDetail[0].body).sort();
+      // console.log('sdic',sdic)
       let body0=dataMeterDetail[0].body;
+      let body={}
+      for(let i in sdic) {
+        body[sdic[i]]=body0[sdic[i]]
+      }
+      // console.log(body)
       for(let i in body0) {
           let itemWidth=parseInt(i.length*5+60);
         // if(itemWidth>150)

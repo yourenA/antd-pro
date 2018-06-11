@@ -1,19 +1,21 @@
 .main{
-  padding: 24px;
+  padding: 12px;
   .topItem{
     height: 100px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: #ffffff;
-
+    box-shadow:0 15px 10px -10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
     .count{
       font-weight: bold;
       text-align: center;
       font-size: 28px;
+
     }
     .explain{
       font-size: 18px;
@@ -23,12 +25,13 @@
       content: '';
       position: absolute;
       width: 100px;
-      height: 7px;
+      height: 8px;
       border-bottom: 1px dotted #000;
       background: #ffffff;
       right: -25px;
       top: 0;
       transform: rotate(45deg);
+
     }
     &.topItem1{
       background: #40c4ff;
@@ -39,7 +42,6 @@
     &.topItem3{
       background: #63869e;
     }
-
 
     &.topItem4{
       background: #ef5350;
