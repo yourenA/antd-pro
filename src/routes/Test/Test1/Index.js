@@ -36,7 +36,7 @@ class Dashboard extends PureComponent {
         , {key: 'read_single_901f', value: '901F点抄'}, {
           key: 'read_multiple_901f',
           value: '901F集抄'
-        }, {key: 'upload_single', value: '点抄'}, {key: 'runonce_upload_multiple_timing', value: '集抄'}]
+        }, {key: 'upload_single_lora', value: '点抄'}, {key: 'runonce_upload_multiple_timing', value: '集抄'}]
     }
   }
 
@@ -419,6 +419,7 @@ class Dashboard extends PureComponent {
         })
       }
     }
+    console.log('1')
     return (
       <div>
         <Row type="flex" justify="center" align="top" gutter={16}>

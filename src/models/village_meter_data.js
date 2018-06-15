@@ -10,6 +10,12 @@ export default {
 
   },
   effects: {
+    *reset({ payload }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: []
+      });
+    },
     *fetch({ payload,callback }, { call, put }) {
       yield put({
         type: 'changeLoading',
@@ -83,8 +89,8 @@ export default {
       // })
       return {
         ...state,
-        data: action.payload.data,
-        meta:action.payload.meta
+        data: action.payload,
+        // meta:action.payload.meta
       };
     },
     saveAndPush(state, action) {

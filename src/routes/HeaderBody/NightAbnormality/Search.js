@@ -23,7 +23,8 @@ class SearchForm extends Component {
       const date = fieldsValue['date'];
       const values = {
         ...fieldsValue,
-        date: date ? moment(date).format('YYYY-MM-DD') : '',
+        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
       this.props.handleSearch({...values, page: 1})
     });
@@ -66,11 +67,34 @@ class SearchForm extends Component {
               )}
             </FormItem>
           }
-          <FormItem label={ '日期'}>
-            {getFieldDecorator('date', {
-              initialValue: this.props.initDate ? this.props.initDate : '',
+          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+            {getFieldDecorator('started_at', {
+              initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
-              <DatePicker allowClear={false}  disabledDate={disabledDate} />
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+            {getFieldDecorator('ended_at', {
+              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+            })(
+              <DatePicker
+                allowClear={false}
+                disabledDate={disabledDate}
+                format="YYYY-MM-DD"
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label='户号'
+          >
+            {getFieldDecorator('member_number', {
+            })(
+              <Input/>
             )}
           </FormItem>
           <FormItem
@@ -89,14 +113,7 @@ class SearchForm extends Component {
               <Input/>
             )}
           </FormItem>
-          <FormItem
-            label='户号'
-          >
-            {getFieldDecorator('member_number', {
-            })(
-              <Input/>
-            )}
-          </FormItem>
+
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>

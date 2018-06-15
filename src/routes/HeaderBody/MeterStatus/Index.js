@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Popconfirm, Layout, message, Modal,Tooltip } from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Tooltip} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 
@@ -9,7 +9,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
-import {renderIndex,ellipsis} from './../../../utils/utils'
+import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
@@ -45,7 +45,8 @@ class UserMeterAnalysis extends PureComponent {
   componentDidMount() {
 
   }
-  changeTableY=()=>{
+
+  changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
@@ -65,7 +66,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
       showAddBtnByCon: false,
       village_id: village_id,
@@ -74,7 +75,10 @@ class UserMeterAnalysis extends PureComponent {
       this.changeTableY();
       this.handleSearch({
         page: 1,
-        meter_number: '', member_number: '', real_name: '', install_address: '',
+        meter_number: this.state.meter_number,
+        member_number:this.state.member_number,
+        real_name:this.state.real_name,
+        install_address:this.state.install_address,
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
 
@@ -83,15 +87,18 @@ class UserMeterAnalysis extends PureComponent {
 
   }
   changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:'',
+      village_id: '',
       concentrator_number: concentrator_number,
       showAddBtnByCon: true,
-    },function () {
+    }, function () {
       this.handleSearch({
         page: 1,
-        meter_number: '', member_number: '', real_name: '', install_address: '',
+        meter_number: this.state.meter_number,
+        member_number:this.state.member_number,
+        real_name:this.state.real_name,
+        install_address:this.state.install_address,
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       })
@@ -127,10 +134,13 @@ class UserMeterAnalysis extends PureComponent {
 
   }
   handPageChange = (page)=> {
-    const that=this;
+    const that = this;
     this.handleSearch({
       page: page,
-      meter_number:that.state.meter_number, member_number:that.state.member_number, real_name: that.state.real_name, install_address:that.state.install_address,
+      meter_number: that.state.meter_number,
+      member_number: that.state.member_number,
+      real_name: that.state.real_name,
+      install_address: that.state.install_address,
 
       // ended_at: this.state.ended_at,
       // started_at: this.state.started_at,
@@ -158,7 +168,10 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          meter_number:that.state.meter_number, member_number:that.state.member_number, real_name: that.state.real_name, install_address:that.state.install_address,
+          meter_number: that.state.meter_number,
+          member_number: that.state.member_number,
+          real_name: that.state.real_name,
+          install_address: that.state.install_address,
         })
       }
     });
@@ -181,7 +194,10 @@ class UserMeterAnalysis extends PureComponent {
         });
         that.handleSearch({
           page: that.state.page,
-          meter_number:that.state.meter_number, member_number:that.state.member_number, real_name: that.state.real_name, install_address:that.state.install_address,
+          meter_number: that.state.meter_number,
+          member_number: that.state.member_number,
+          real_name: that.state.real_name,
+          install_address: that.state.install_address,
 
         })
       }
@@ -198,7 +214,10 @@ class UserMeterAnalysis extends PureComponent {
         message.success('删除用户成功')
         that.handleSearch({
           page: that.state.page,
-          meter_number:that.state.meter_number, member_number:that.state.member_number, real_name: that.state.real_name, install_address:that.state.install_address,
+          meter_number: that.state.meter_number,
+          member_number: that.state.member_number,
+          real_name: that.state.real_name,
+          install_address: that.state.install_address,
         })
       }
     });
@@ -222,22 +241,36 @@ class UserMeterAnalysis extends PureComponent {
         fixed: 'left',
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta, this.state.page, index)
         }
       },
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
-      {title: '年限', width: 100,dataIndex: 'service_life', key: 'service_life'},
-      {title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',},
-      {title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',
+      {title: '年限', width: 100, dataIndex: 'service_life', key: 'service_life'},
+      {
+        title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',
         render: (val, record, index) => {
-          return ellipsis(val, 3)
-        }},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 130,
+          return ellipsis2(val, 125)
+        }
+      },
+      {
+        title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',
         render: (val, record, index) => {
-          return ellipsis(val, 7)
-        }},
+          return ellipsis2(val, 95)
+        }
+      },
+      {
+        title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 95)
+        }
+      },
+      {
+        title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 130,
+        render: (val, record, index) => {
+          return ellipsis2(val, 125)
+        }
+      },
       {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at',},
 
 
@@ -270,7 +303,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000,y: this.state.tableY}}
+                  scroll={{x: 1000, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

@@ -214,7 +214,8 @@ class HeaderBodyLayout extends React.PureComponent {
       request(`/night_abnormality`, {
         method: 'get',
         params: {
-          date: date,
+          started_at: date,
+          ended_at: date,
           page: 1
         }
       }).then((response)=> {

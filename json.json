@@ -1,1 +1,281 @@
-{"name":"fafa1236","description":"fafa","from":"fafafa","select":"fafaa5","where":"faa > 1230","destinations":[{"kind":"TSDB","value":"fafa"},{"kind":"TSDB","value":"fafafff"},{"kind":"MQTT_DYNAMIC","value":"fafaffff123"}]}
+[
+  {
+    "title": "户号",
+    "dataIndex": "member_number"
+  },
+  {
+    "title": "用户名称",
+    "dataIndex": "real_name",
+    "key": "real_name"
+  },
+  {
+    "title": "水表编号",
+    "dataIndex": "meter_number",
+    "key": "meter_number"
+  },
+  {
+    "title": "当前正累计流量(m³)",
+    "dataIndex": "meter_value",
+    "key": "meter_value"
+  },
+  {
+    "title": "0点使用量(m³)",
+    "dataIndex": "fmv0",
+    "key": "fmv0"
+  },
+  {
+    "title": "1点使用量(m³)",
+    "dataIndex": "fmv1",
+    "key": "fmv1"
+  },
+  {
+    "title": "2点使用量(m³)",
+    "dataIndex": "fmv2",
+    "key": "fmv2"
+  },
+  {
+    "title": "3点使用量(m³)",
+    "dataIndex": "fmv3",
+    "key": "fmv3"
+  },
+  {
+    "title": "4点使用量(m³)",
+    "dataIndex": "fmv4",
+    "key": "fmv4"
+  },
+  {
+    "title": "5点使用量(m³)",
+    "dataIndex": "fmv5",
+    "key": "fmv5"
+  },
+  {
+    "title": "6点使用量(m³)",
+    "dataIndex": "fmv6",
+    "key": "fmv6"
+  },
+  {
+    "title": "7点使用量(m³)",
+    "dataIndex": "fmv7",
+    "key": "fmv7"
+  },
+  {
+    "title": "8点使用量(m³)",
+    "dataIndex": "fmv8",
+    "key": "fmv8"
+  },
+  {
+    "title": "9点使用量(m³)",
+    "dataIndex": "fmv9",
+    "key": "fmv9"
+  },
+  {
+    "title": "10点使用量(m³)",
+    "dataIndex": "fmv10",
+    "key": "fmv10"
+  },
+  {
+    "title": "11点使用量(m³)",
+    "dataIndex": "fmv11",
+    "key": "fmv11"
+  },
+  {
+    "title": "12点使用量(m³)",
+    "dataIndex": "fmv12",
+    "key": "fmv12"
+  },
+  {
+    "title": "13点使用量(m³)",
+    "dataIndex": "fmv13",
+    "key": "fmv13"
+  },
+  {
+    "title": "14点使用量(m³)",
+    "dataIndex": "fmv14",
+    "key": "fmv14"
+  },
+  {
+    "title": "15点使用量(m³)",
+    "dataIndex": "fmv15",
+    "key": "fmv15"
+  },
+  {
+    "title": "16点使用量(m³)",
+    "dataIndex": "fmv16",
+    "key": "fmv16"
+  },
+  {
+    "title": "17点使用量(m³)",
+    "dataIndex": "fmv17",
+    "key": "fmv17"
+  },
+  {
+    "title": "18点使用量(m³)",
+    "dataIndex": "fmv18",
+    "key": "fmv18"
+  },
+  {
+    "title": "19点使用量(m³)",
+    "dataIndex": "fmv19",
+    "key": "fmv19"
+  },
+  {
+    "title": "20点使用量(m³)",
+    "dataIndex": "fmv20",
+    "key": "fmv20"
+  },
+  {
+    "title": "21点使用量(m³)",
+    "dataIndex": "fmv21",
+    "key": "fmv21"
+  },
+  {
+    "title": "22点使用量(m³)",
+    "dataIndex": "fmv22",
+    "key": "fmv22"
+  },
+  {
+    "title": "23点使用量(m³)",
+    "dataIndex": "fmv23",
+    "key": "fmv23"
+  },
+  {
+    "title": "集中器协议",
+    "dataIndex": "protocols",
+    "key": "protocols"
+  },
+  {
+    "title": "集中器类型",
+    "dataIndex": "concentrator_model_name",
+    "key": "concentrator_model_name"
+  },
+  {
+    "title": "水表类型",
+    "dataIndex": "meter_model_name",
+    "key": "meter_model_name"
+  },
+  {
+    "title": "集中器编号",
+    "dataIndex": "concentrator_number",
+    "key": "concentrator_number"
+  },
+  {
+    "title": "采集时间",
+    "dataIndex": "collected_at",
+    "key": "collected_at"
+  },
+  {
+    "title": "上传时间",
+    "dataIndex": "uploaded_at",
+    "key": "uploaded_at"
+  },
+  {
+    "title": "水表序号",
+    "dataIndex": "meter_index",
+    "key": "meter_index"
+  },
+  {
+    "title": "当前负累积流量(m³)",
+    "dataIndex": "meter_revalue",
+    "key": "meter_revalue"
+  },
+  {
+    "title": "水表时间",
+    "dataIndex": "meter_time",
+    "key": "meter_time"
+  },
+  {
+    "title": "流量超量程(m³)",
+    "dataIndex": "flow_up",
+    "key": "flow_up"
+  },
+  {
+    "title": "流量超量程时间",
+    "dataIndex": "flow_up_time",
+    "key": "flow_up_time"
+  },
+  {
+    "title": "温度报警(℃)",
+    "dataIndex": "temp_up",
+    "key": "temp_up"
+  },
+  {
+    "title": "温度报警时间",
+    "dataIndex": "temp_up_time",
+    "key": "temp_up_time"
+  },
+  {
+    "title": "上盖被打开报警时间",
+    "dataIndex": "cover_is_opened",
+    "key": "cover_is_opened"
+  },
+  {
+    "title": "空管报警时间",
+    "dataIndex": "empty_pipe_alarm",
+    "key": "empty_pipe_alarm"
+  },
+  {
+    "title": "电池低电压报警时间",
+    "dataIndex": "low_voltage",
+    "key": "low_voltage"
+  },
+  {
+    "title": "反向流量曾达到值(m³)",
+    "dataIndex": "reflow_up",
+    "key": "reflow_up"
+  },
+  {
+    "title": "反向流量报警时间",
+    "dataIndex": "reflow_up_time",
+    "key": "reflow_up_time"
+  },
+  {
+    "title": "0点总流量数据",
+    "dataIndex": "point0_freeze_value",
+    "key": "point0_freeze_value"
+  },
+  {
+    "title": "1#电池电压(V)",
+    "dataIndex": "cell_voltage_1",
+    "key": "cell_voltage_1"
+  },
+  {
+    "title": "2#电池电压(V)",
+    "dataIndex": "cell_voltage_2",
+    "key": "cell_voltage_2"
+  },
+  {
+    "title": "LoRa电池电压(V)",
+    "dataIndex": "cell_voltage_lora",
+    "key": "cell_voltage_lora"
+  },
+  {
+    "title": "水温(℃)",
+    "dataIndex": "water_temperature",
+    "key": "water_temperature"
+  },
+  {
+    "title": "信号强度",
+    "dataIndex": "signal",
+    "key": "signal"
+  },
+  {
+    "title": "阀门状态",
+    "dataIndex": "state_valve",
+    "key": "state_valve"
+  },
+  {
+    "title": "电池状态",
+    "dataIndex": "state_voltage_level",
+    "key": "state_voltage_level"
+  },
+  {
+    "title": "温度传感器",
+    "dataIndex": "state_temperature_sensor",
+    "key": "state_temperature_sensor"
+  },
+  {
+    "title": "电子铅封",
+    "dataIndex": "state_elock",
+    "key": "state_elock"
+  }
+]

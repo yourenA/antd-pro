@@ -128,7 +128,10 @@ class EditPassword extends Component {
         sm: {span: 12},
       }
     };
-
+    var arr = new Array(60);
+    for(let i = 0;i < arr.length;i++){
+      arr[i]=i;
+    }
     const {getFieldDecorator,} = this.props.form;
     return (
       <Layout className="layout">
@@ -151,14 +154,14 @@ class EditPassword extends Component {
                     {...formItemLayoutWithLabel}
                     label={this.state.night_abnormality_started_at.display_name}>
                     {getFieldDecorator('night_abnormality_started_at', {})(
-                      <TimePicker format={this.format} disabled={this.state.disabled}/>
+                      <TimePicker format={this.format}  disabledMinutes={()=>{return arr;}} disabled={this.state.disabled}/>
                     )}
                   </FormItem>
                   <FormItem
                     {...formItemLayoutWithLabel}
                     label={this.state.night_abnormality_ended_at.display_name}>
                     {getFieldDecorator('night_abnormality_ended_at', {})(
-                      <TimePicker format={this.format}  disabled={this.state.disabled}/>
+                      <TimePicker format={this.format} disabledMinutes={()=>{return arr;}} disabled={this.state.disabled}/>
                     )}
                   </FormItem>
 

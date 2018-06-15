@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Layout, message, Badge} from 'antd';
+import {Table, Card, Layout, message, Badge,Modal,Button } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
@@ -7,7 +7,8 @@ import { routerRedux } from 'dva/router';
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import moment from 'moment';
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
+import Detail from './Detail'
 import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
@@ -20,12 +21,13 @@ class FunctionContent extends PureComponent {
     this.state = {
       tableY: 0,
       page: 1,
-      initDate: moment(new Date(), 'YYYY-MM-DD'),
+      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       date: '',
       area_id: '',
       concentrator_number: '',
       meter_number: '',
       member_number: '',
+      editModal: false,
     }
   }
 
@@ -47,7 +49,8 @@ class FunctionContent extends PureComponent {
       concentrator_number: '',
       meter_number: '',
       member_number: '',
-      date: moment(this.state.initDate).format('YYYY-MM-DD'),
+      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
   changeTableY = ()=> {
@@ -62,7 +65,8 @@ class FunctionContent extends PureComponent {
       concentrator_number: '',
       meter_number: '',
       member_number: '',
-      date: moment(this.state.initDate).format('YYYY-MM-DD'),
+      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
   handleSearch = (values) => {
@@ -84,13 +88,22 @@ class FunctionContent extends PureComponent {
     this.handleSearch({
       area_id: this.state.area_id,
       page: page,
-      date: this.state.date,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
       concentrator_number: this.state.concentrator_number,
       meter_number: this.state.meter_number,
       member_number: this.state.member_number,
     })
   }
 
+  operate = (record)=> {
+    this.setState({
+      member_number:record.member_number,
+      abnormality_hours: record.abnormality_hours,
+      difference_values: record.difference_values,
+      editModal: true
+    })
+  }
 
   render() {
     const {night_abnormality: {data, meta, loading}, dma} = this.props;
@@ -109,16 +122,34 @@ class FunctionContent extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
-      {title: '集中器编号', width: 120, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表号', width:120, dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '水表序号', width:120, dataIndex: 'meter_index', key: 'meter_index'},
-      {title: '抄见时间', width:180, dataIndex: 'collected_at', key: 'collected_at'},
-      {title: '抄见数值', width: 100, dataIndex: 'meter_value', key: 'meter_value'},
-      {title: '超出报警数值', width:150, dataIndex: 'overflow_value', key: 'overflow_value'},
-      {title: '姓名', dataIndex: 'real_name',width: 120, key: 'real_name'},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
-
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
+      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
+      {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
+      {title: '安装地址', dataIndex: 'install_address',   key: 'install_address', render: (val, record, index) => {
+        return ellipsis2(val,100)
+      }},
+      {title: '日期', dataIndex: 'date',   key: 'date', width: 150,
+       },
+      {title: '异常时间', dataIndex: 'abnormality_hours',   key: 'abnormality_hours', width: 100,
+        render: (val, record, index) => {
+          const parseVal=val.join(',');
+          return ellipsis2(parseVal,100)
+        }},
+      {
+        title: '当天水表读数',
+        key: 'operation',
+        fixed: 'right',
+        width: 110,
+        render: (val, record, index) => {
+          return (
+            <div>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>当天水表读数</Button>
+            </div>
+          )
+        }
+      },
     ];
     const {dispatch}=this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -137,7 +168,7 @@ class FunctionContent extends PureComponent {
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/night_warning_setup`));
                       }}
                       dma={dma} handleSearch={this.handleSearch}
-                                   handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
+                                   handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
                   </div>
                 </div>
                 <Table
@@ -146,13 +177,23 @@ class FunctionContent extends PureComponent {
                   loading={loading}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1200,y: this.state.tableY}}
+                  scroll={{x: 1050,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
                 <Pagination meta={meta} handPageChange={this.handPageChange}/>
 
               </Card>
+              <Modal
+                width="750px"
+                key={ Date.parse(new Date())}
+                title={`${this.state.member_number} 当天水量 (红色表示异常时间)`}
+                visible={this.state.editModal}
+                onOk={() => this.setState({editModal: false})}
+                onCancel={() => this.setState({editModal: false})}
+              >
+                <Detail abnormality_hours={this.state.abnormality_hours} difference_values={this.state.difference_values}/>
+              </Modal>
             </PageHeaderLayout>
           </div>
         </Content>

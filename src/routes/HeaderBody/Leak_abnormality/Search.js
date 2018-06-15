@@ -96,7 +96,7 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem  label={"水表号"}>
+          <FormItem  label={"水表编号"}>
             {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
             )}

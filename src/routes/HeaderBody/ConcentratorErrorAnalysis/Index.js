@@ -68,7 +68,7 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     // this.searchFormRef.props.form.setFieldsValue({
     //   concentrator_number: '',
     // });
@@ -78,26 +78,25 @@ class UserMeterAnalysis extends PureComponent {
     }, function () {
       this.handleSearch({
         page: 1,
-        manufacturer_id: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        manufacturer_id: this.state.manufacturer_id,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
 
       })
     })
 
   }
   changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
       village_id: '',
       concentrator_number: concentrator_number
     }, function () {
       this.handleSearch({
         page: 1,
-        manufacturer_id: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-
+        manufacturer_id: this.state.manufacturer_id,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
       })
     })
   }
@@ -180,15 +179,15 @@ class UserMeterAnalysis extends PureComponent {
       },
       {title: '集中器编号', width: 90, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
       {title: '生产厂商', width: 90, dataIndex: 'manufacturer_name', key: 'manufacturer_name',render: (val, record, index) => {
-        return ellipsis2(val, 80)
+        return ellipsis2(val, 90)
       }},
       {
-        title: '安装位置', dataIndex: 'install_address', key: 'install_address',
+        title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 130,
         render: (val, record, index) => {
-          return ellipsis(val, 9)
+          return ellipsis2(val, 130)
         }
       },
-      {title: '日期', dataIndex: 'date', key: 'date', width: 100},
+      {title: '日期', dataIndex: 'date', key: 'date'},
       {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
       {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
       {

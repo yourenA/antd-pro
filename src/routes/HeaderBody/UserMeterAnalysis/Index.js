@@ -23,8 +23,7 @@ class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
-    this.cards = ()=> {
-    }
+    const company_code = sessionStorage.getItem('company_code');
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon: false,
@@ -36,7 +35,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address: '',
       page: 1,
-      initRange: getPreDay(),
+      initRange: company_code==='hy'?getPreDay():[moment().add(-2, 'days'), moment().add(-1, 'days')],
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -78,41 +77,41 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
       concentrator_number: '',
       village_id: village_id,
     }, function () {
       this.handleSearch({
         page: 1,
-        meter_number: '',
-        member_number: '',
-        real_name: '',
-        install_address: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
+        real_name:this.state.real_name,
+        install_address:this.state.install_address,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
 
-        display_type: 'all'
+        display_type: this.state.display_type
       },this.changeTableY)
     })
 
   }
   changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
       village_id:'',
       concentrator_number: concentrator_number,
     },function () {
       this.handleSearch({
         page: 1,
-        meter_number: '',
-        member_number: '',
-        real_name: '',
-        install_address: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        meter_number:this.state.meter_number,
+        member_number:this.state.member_number,
+        real_name: this.state.real_name,
+        install_address: this.state.install_address,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
 
-        display_type: 'all'
+        display_type: this.state.display_type
       })
     })
 

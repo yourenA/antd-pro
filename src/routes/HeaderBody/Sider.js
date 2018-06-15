@@ -65,7 +65,7 @@ class SiderTree extends PureComponent {
   transilate=(data)=>{
     if(!data) return null;
     return data.map((item) => {
-      if (item.concentrators) {
+      if (item.concentrators && this.props.showConcentrator!==false) {
         if(item.concentrators.length>0){
           item.children=item.children||[];
           let concatR=item.children?item.children.concat(item.concentrators):item.concentrators;

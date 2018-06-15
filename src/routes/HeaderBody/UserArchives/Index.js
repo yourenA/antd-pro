@@ -100,7 +100,7 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
       concentrator_number:'',
       village_id: village_id
@@ -108,12 +108,12 @@ class UserMeterAnalysis extends PureComponent {
       this.changeTableY();
       this.handleSearch({
         page: 1,
-        distribution_area:'',
-        statistical_forms:'',
-        meter_number:'',
-        member_number:'',
-        install_address: '',
-        real_name: '',
+        distribution_area:this.state.distribution_area,
+        statistical_forms:this.state.statistical_forms,
+        meter_number:this.state.meter_number,
+        member_number:this.state.member_number,
+        install_address: this.state.install_address,
+        real_name: this.state.real_name,
       })
     })
     const {dispatch}=this.props
@@ -126,19 +126,19 @@ class UserMeterAnalysis extends PureComponent {
 
   }
   changeConcentrator = (concentrator_number,village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
       village_id:'',
       concentrator_number:concentrator_number,
     },function () {
       this.handleSearch({
         page: 1,
-        distribution_area:'',
-        statistical_forms:'',
-        meter_number:'',
-        member_number:'',
-        install_address: '',
-        real_name: '',
+        distribution_area:this.state.distribution_area,
+        statistical_forms:this.state.statistical_forms,
+        meter_number:this.state.meter_number,
+        member_number:this.state.member_number,
+        install_address: this.state.install_address,
+        real_name: this.state.real_name,
       })
     })
 

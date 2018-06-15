@@ -77,7 +77,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
       showAddBtnByCon: false,
       concentrator_number:'',
@@ -86,18 +86,18 @@ class UserMeterAnalysis extends PureComponent {
       this.changeTableY();
       this.handleSearch({
         page: 1,
-        manufacturer_id: '',
-        meter_number: '',
-        member_number: '',
-        display_type: 'all',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        manufacturer_id: this.state.manufacturer_id,
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
+        display_type: this.state.display_type,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
       })
     })
 
   }
   changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
       concentrator_number: concentrator_number,
       village_id:'',
@@ -105,12 +105,12 @@ class UserMeterAnalysis extends PureComponent {
     },function () {
       this.handleSearch({
         page: 1,
-        manufacturer_id: '',
-        meter_number: '',
-        member_number: '',
-        display_type: 'all',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        manufacturer_id: this.state.manufacturer_id,
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
+        display_type: this.state.display_type,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
       })
     })
 

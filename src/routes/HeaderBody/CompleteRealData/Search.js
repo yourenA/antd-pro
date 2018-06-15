@@ -2,12 +2,14 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Col, Input, Button} from 'antd';
+import {Form, DatePicker, Row, Col, Input, Button,Radio} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 import DataRangePickers from './../../../components/DataRangePickers/Index'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -81,7 +83,16 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-
+          <FormItem label="显示">
+            {getFieldDecorator('display_type',{
+              initialValue:  'only_latest',
+            })(
+              <RadioGroup>
+                <RadioButton value="only_latest">最新数据</RadioButton>
+                <RadioButton value="all">全部数据</RadioButton>
+              </RadioGroup>
+            )}
+          </FormItem>
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>

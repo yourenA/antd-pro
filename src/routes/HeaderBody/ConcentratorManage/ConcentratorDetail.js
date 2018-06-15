@@ -52,7 +52,7 @@ class UserMeterAnalysis extends PureComponent {
         // disabled:false
         time:new Date().getTime()
       })
-    },10000)
+    },2000)
   }
   componentWillUnmount() {
     clearInterval(this.timer)
@@ -107,6 +107,7 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
   read_single_901f=(command,meter_number)=>{
+    const company_code = sessionStorage.getItem('company_code');
     console.log('点抄：',meter_number)
     const {dispatch} = this.props;
     const that=this;
@@ -114,7 +115,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'user_command_data/add',
       payload:{
         meter_number,
-        feature:'upload_single',
+        feature:company_code==='hy'?'upload_single':'upload_single_lora',
         protocol:command
       },
       callback:()=>{
@@ -134,13 +135,14 @@ class UserMeterAnalysis extends PureComponent {
     const renderComandRecord=(record)=>{
       const renderCommandBtn=command.map((item,index)=>{
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
-        const isLoading=clickTime&&this.state.time-clickTime<120000
+        const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
           <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{isLoading?'正在':''}{item.toUpperCase()}点抄</Button>
         )
       })
       return renderCommandBtn
     }
+    const company_code = sessionStorage.getItem('company_code');
     const columns = [
       {
         title: '序号',
@@ -169,7 +171,7 @@ class UserMeterAnalysis extends PureComponent {
       columns.push( {
         title: '操作',
         key: 'operation',
-        width: 190,
+        width: 300,
         render: (val, record, index) => {
           return (
             <div>

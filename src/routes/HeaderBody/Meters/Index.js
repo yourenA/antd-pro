@@ -5,7 +5,7 @@ import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
-import Sider from './../EmptySider'
+import Sider from './../Sider'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
@@ -29,7 +29,12 @@ class MeterModel extends PureComponent {
       commandPage:'',
       started_at: '',
       ended_at: '',
+
       number: '',
+      member_number: '',
+      install_address: '',
+      real_name:'',
+
       editModal: false,
       addModal: false,
       commandModal: false,
@@ -38,17 +43,16 @@ class MeterModel extends PureComponent {
   }
 
   componentDidMount() {
-
     const {dispatch} = this.props;
-    dispatch({
-      type: 'meters/fetch',
-      payload: {
-        page: 1,
-      },
-      callback:()=>{
-      this.changeTableY()
-    }
-    });
+    // dispatch({
+    //   type: 'meters/fetch',
+    //   payload: {
+    //     page: 1,
+    //   },
+    //   callback:()=>{
+    //   this.changeTableY()
+    // }
+    // });
     dispatch({
       type: 'meter_models/fetch',
       payload: {
@@ -63,40 +67,72 @@ class MeterModel extends PureComponent {
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
-  handleFormReset = () => {
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'meters/fetch',
-      payload: {},
-    });
+
+  changeArea = (village_id)=> {
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
-      number: '',
+      concentrator_number:'',
+      village_id: village_id
+    }, function () {
+      this.changeTableY();
+      this.handleSearch({
+        page: 1,
+        number: this.state.number,
+        member_number: this.state.member_number,
+        install_address: this.state.install_address,
+        real_name:this.state.real_name,
+      })
+    })
+  }
+  changeConcentrator = (concentrator_number,village_id)=> {
+    // this.searchFormRef.props.form.resetFields()
+    this.setState({
+      village_id:'',
+      concentrator_number:concentrator_number
+    }, function(){
+      this.handleSearch({
+        page: 1,
+        number: this.state.number,
+        member_number: this.state.member_number,
+        install_address: this.state.install_address,
+        real_name:this.state.real_name,
+      })
+    })
+  }
+
+  handleFormReset = () => {
+    this.handleSearch({
       page: 1,
-      started_at: '',
-      ended_at: '',
+      number: '',
+      member_number: '',
+      install_address: '',
+      real_name:'',
     })
   }
   handleSearch = (values) => {
     const {dispatch} = this.props;
+    const that = this;
     dispatch({
       type: 'meters/fetch',
       payload: {
         ...values,
+        concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
+        village_id: this.state.village_id ? this.state.village_id : '',
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        })
+      }
     });
-    this.setState({
-      number: values.number,
-      started_at: values.started_at,
-      ended_at: values.ended_at,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
       number: this.state.number,
-      ended_at: this.state.ended_at,
-      started_at: this.state.started_at
+      member_number: this.state.member_number,
+      install_address:this.state.install_address,
+      real_name:this.state.real_name,
     })
   }
   handleAdd = () => {
@@ -122,6 +158,9 @@ class MeterModel extends PureComponent {
           type: 'meters/fetch',
           payload: {
             number: that.state.number,
+            member_number: that.state.member_number,
+            install_address:that.state.install_address,
+            real_name:that.state.real_name,
             page: that.state.page
           }
         });
@@ -153,6 +192,9 @@ class MeterModel extends PureComponent {
           type: 'meters/fetch',
           payload: {
             number: that.state.number,
+            member_number: that.state.member_number,
+            install_address:that.state.install_address,
+            real_name:that.state.real_name,
             page: that.state.page
           }
         });
@@ -172,6 +214,9 @@ class MeterModel extends PureComponent {
           type: 'meters/fetch',
           payload: {
             number: that.state.number,
+            member_number: that.state.member_number,
+            install_address:that.state.install_address,
+            real_name:that.state.real_name,
             page: that.state.page
           }
         });
@@ -189,7 +234,17 @@ class MeterModel extends PureComponent {
         feature:command
       },
       callback:()=>{
-        message.success('发送指令成功')
+        message.success('发送指令成功');
+        that.props.dispatch({
+          type: 'meters/fetch',
+          payload: {
+            number: that.state.number,
+            member_number: that.state.member_number,
+            install_address:that.state.install_address,
+            real_name:that.state.real_name,
+            page: that.state.page
+          }
+        });
       }
     });
   }
@@ -238,8 +293,17 @@ class MeterModel extends PureComponent {
         }
       },
       {title: '水表号', width: 80, dataIndex: 'number', key: 'number', fixed: 'left',},
+
+      {
+        title: '用户名称', dataIndex: 'real_name', key: 'real_name',width: 80,render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
+      {
+        title: '户号', dataIndex: 'member_number', key: 'member_number',width: 80,render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
       {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
-      {title: '水表类型名称', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (text, record, index) => {
+      {title: '水表类型名称', width: 140, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (text, record, index) => {
         return ellipsis2(text,130)
       }},
       {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
@@ -261,6 +325,15 @@ class MeterModel extends PureComponent {
             <Badge status={val===1?"success":"error"} />{record.status_explain}
           </p>
         )},
+      {
+        title: '集中器号', dataIndex: 'concentrator_number', key: 'concentrator_number',width: 100,render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+      {
+        title: '安装地址', dataIndex: 'install_address', key: 'install_address',width: 100,render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }
+      },
       {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at'},
       {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at'},
 
@@ -364,14 +437,17 @@ class MeterModel extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} location={this.props.history.location}/>
+        <Sider changeArea={this.changeArea}
+               changeConcentrator={this.changeConcentrator}
+               siderLoadedCallback={this.siderLoadedCallback}/>
         <Content >
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '水表管理'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <DefaultSearch inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
+                    <DefaultSearch wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                                   inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
                                    clickInfo={this.showCommandInfo}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
@@ -390,7 +466,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1460,y:this.state.tableY}}
+                  scroll={{x: 1800,y:this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

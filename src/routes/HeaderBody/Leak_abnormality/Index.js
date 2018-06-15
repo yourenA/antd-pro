@@ -135,7 +135,7 @@ class Leak_abnormality extends PureComponent {
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
-      {title: '异常开始时间', dataIndex: 'date',   key: 'date', width: 150,},
+      {title: '异常时间', dataIndex: 'started_at',   key: 'started_at', width: 150,},
       {title: '安装地址', dataIndex: 'install_address',   key: 'install_address',},
       {
         title: '当天水表读数',
@@ -196,7 +196,7 @@ class Leak_abnormality extends PureComponent {
                 key={ Date.parse(new Date())}
                 title={`${this.state.member_number} 当天水量`}
                 visible={this.state.editModal}
-                onOk={this.handleEdit}
+                onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}
               >
                 <Detail meter_values={this.state.meter_values}/>

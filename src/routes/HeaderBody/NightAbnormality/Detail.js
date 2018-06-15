@@ -13,7 +13,7 @@ export default class EndpointsList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dynamic(this.props.meter_values)
+    this.dynamic(this.props.difference_values)
     window.addEventListener('resize', this.resizeChart)
   }
   componentWillUnmount() {
@@ -25,6 +25,7 @@ export default class EndpointsList extends PureComponent {
     }
   }
   dynamic = (data)=> {
+    const that=this;
     let date=[];
     for(let key in data){
       date.push(key)
@@ -59,16 +60,26 @@ export default class EndpointsList extends PureComponent {
           smooth: true,
           data:data,
           itemStyle:{
-            normal: {
-              color:'#2f4554',
+            normal:{
+              color: function(value) {
+                if(that.props.abnormality_hours.indexOf(value.dataIndex)>=0){
+                  return '#c23531'
+                } else
+                {
+                  return '#2f4554'
+                }
+              }
             }
+
+            // {
+            //   color:'#2f4554',
+            // }
           },
         },
       ]
     };
 
 
-    const that = this;
     that.myChart.setOption(option);
   }
   render() {

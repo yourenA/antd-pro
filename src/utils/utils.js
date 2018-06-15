@@ -121,7 +121,7 @@ export function converErrorCodeToMsg(error) {
     return false
   }
   if (error.response.status === 401) {
-    message.error(messageJson['token fail']);
+    // message.error(messageJson['token fail']);
     removeLoginStorage();
     // setTimeout(function () {
     //   window.location.reload()
@@ -294,7 +294,7 @@ export function renderCustomHeaders(headers,meta,page) {
   }];
   headers&&headers.forEach((item, index)=> {
     custom_width =custom_width+ item.size;
-    if(item.key==='install_address'){
+    /*if(item.key==='install_address'){
       custom_headers.push({
           title: item.display_name,
           dataIndex: item.key,
@@ -316,7 +316,8 @@ export function renderCustomHeaders(headers,meta,page) {
           return ellipsis(val,3)
         }
       })
-    }else if (item.key === 'status_explain') {
+    }else */
+    if (item.key === 'status_explain') {
       custom_headers.push({
         title: item.display_name,
         dataIndex: item.key,
@@ -357,6 +358,9 @@ export function renderCustomHeaders(headers,meta,page) {
         dataIndex: item.key,
         key: item.key,
         width: index === headers.length - 1 ? '' : item.size,
+        render: (val, record, index) => {
+          return ellipsis2(val,item.size-5)
+        }
       })
     }
   })
@@ -390,7 +394,7 @@ export function ellipsis2(val,len=150) {
     </Tooltip>
   )
 }
-
+exports.ellipsis2 = ellipsis2;
 export function searchFormItemLayout() {
   return {
     labelCol: {

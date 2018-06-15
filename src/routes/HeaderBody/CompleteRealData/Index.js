@@ -40,6 +40,7 @@ class UserMeterAnalysis extends PureComponent {
       changeModal: false,
       area: '',
       canLoadByScroll: true,
+      display_type: 'only_latest'
       // concentrator_number:''
     }
   }
@@ -74,6 +75,7 @@ class UserMeterAnalysis extends PureComponent {
             real_name: this.state.real_name,
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
+
             // area: this.state.area
           }, true, function () {
             that.setState({
@@ -107,7 +109,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   changeArea = (village_id)=> {
-    this.searchFormRef.props.form.resetFields();
+    // this.searchFormRef.props.form.resetFields();
     this.setState({
       concentrator_number: '',
       village_id: village_id
@@ -115,27 +117,29 @@ class UserMeterAnalysis extends PureComponent {
       this.changeTableY();
       this.handleSearch({
         page: 1,
-        meter_number: '',
-        member_number: '',
-        real_name: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
+        real_name: this.state.real_name,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        display_type: this.state.display_type
       })
     })
   }
   changeConcentrator = (concentrator_number, village_id)=> {
-    this.searchFormRef.props.form.resetFields()
+    // this.searchFormRef.props.form.resetFields()
     this.setState({
       village_id: '',
       concentrator_number: concentrator_number
     }, function () {
       this.handleSearch({
         page: 1,
-        meter_number: '',
-        member_number: '',
-        real_name: '',
-        started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
+        real_name: this.state.real_name,
+        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
+        display_type: this.state.display_type
 
       })
     })
@@ -149,6 +153,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      display_type: 'only_latest'
     })
   }
 
@@ -186,6 +191,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
+
       // area: this.state.area
     })
   }
@@ -214,18 +220,20 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left'},
+      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed: 'left',},
       {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
+      {title: '当前正累计流量(m³)', dataIndex: 'meter_value', key: 'meter_value', width: 160, render: (text, record, index) => {
+        return ellipsis2(record['body'].meter_value,130)
+      }},
+      ...hoursColumns,
       {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,},
       {title: '集中器类型', dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100,},
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100,},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 90,},
       {title: '采集时间', dataIndex: 'collected_at', key: 'collected_at', width: 160,},
       {title: '上传时间', dataIndex: 'uploaded_at', key: 'uploaded_at', width: 160,},
       {title: '水表序号', dataIndex: 'meter_index', key: 'meter_index', width: 80,},
-      {title: '当前正累计流量(m³)', dataIndex: 'meter_value', key: 'meter_value', width: 160, render: (text, record, index) => {
-        return ellipsis2(record['body'].meter_value,130)
-      }},
+
       {title: '当前负累积流量(m³)', dataIndex: 'meter_revalue', key: 'meter_revalue', width: 160, render: (text, record, index) => {
         return ellipsis2(record['body'].meter_revalue,130)
       }},
@@ -262,7 +270,7 @@ class UserMeterAnalysis extends PureComponent {
       {title: '0点总流量数据', dataIndex: 'point0_freeze_value', key: 'point0_freeze_value', width: 120, render: (text, record, index) => {
         return ellipsis2(record['body'].point0_freeze_value,115)
       }},
-      ...hoursColumns,
+
       {title: '1#电池电压(V)', dataIndex: 'cell_voltage_1', key: 'cell_voltage_1', width: 110, render: (text, record, index) => {
         if(record['body'].cell_voltage_1){
           return ellipsis2(record['body'].cell_voltage_1+'V',100)
