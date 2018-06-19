@@ -35,7 +35,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address: '',
       page: 1,
-      initRange: company_code==='hy'?getPreDay():[moment().add(-2, 'days'), moment().add(-1, 'days')],
+      initRange: getPreDay(),
       started_at: '',
       ended_at: '',
       village_id: '',

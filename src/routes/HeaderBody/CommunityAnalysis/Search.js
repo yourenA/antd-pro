@@ -67,10 +67,10 @@ class SearchForm extends Component {
       message.error('开始时间和结束时间不能一样');
       return false
     }
-    if(moment(value).format('YYYY-MM-DD')===moment().format('YYYY-MM-DD')){
-      message.error('今天数据还没有上传，不能统计，请选择合法的时间');
-      return false
-    }
+    // if(moment(value).format('YYYY-MM-DD')===moment().format('YYYY-MM-DD')){
+    //   message.error('今天数据还没有上传，不能统计，请选择合法的时间');
+    //   return false
+    // }
     this.onChange('endValue', value);
   }
   onChange = (field, value) => {
