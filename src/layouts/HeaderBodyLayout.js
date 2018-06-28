@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button, Badge,Popover} from 'antd';
+import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button, Badge, Popover,Tooltip} from 'antd';
 import styles from './HeaderBodyLayout.less';
 import {connect} from 'dva';
 import {Link, Route, Redirect, Switch, routerRedux} from 'dva/router';
@@ -65,6 +65,7 @@ class HeaderBodyLayout extends React.PureComponent {
 
     };
   }
+
   componentDidMount() {
     // console.log(this.menus)
     const {location} = this.props;
@@ -211,53 +212,54 @@ class HeaderBodyLayout extends React.PureComponent {
     })
 
 
-      request(`/night_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at: date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
-          that.setState({
-            night_abnormality: true
-          })
-          if (noNightNotifyDay === date) {
-            console.log('不提醒')
-          } else {
-            const args = {
-              placement: 'bottomRight',
-              message: '夜间异常流量报警',
-              duration: 15,
-              key: 'noNightNotifyDay',
-              description: <div>{data[0].meter_number} 等水表出现夜间流量异常
-                <p>
-                  <a href="javascript:;" onClick={()=> {
-                    localStorage.setItem('noNightNotifyDay', date)
-                    notification.close('noNightNotifyDay')
-                  }
-                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
-                  //notification.close(this.nightNotify)
+    request(`/night_abnormality`, {
+      method: 'get',
+      params: {
+        started_at: date,
+        ended_at: date,
+        page: 1
+      }
+    }).then((response)=> {
+      console.log(response);
+      const data = response.data.data
+      if (data.length > 0) {
+        that.setState({
+          night_abnormality: true
+        })
+        if (noNightNotifyDay === date) {
+          console.log('不提醒')
+        } else {
+          const args = {
+            placement: 'bottomRight',
+            message: '夜间异常流量报警',
+            duration: 15,
+            key: 'noNightNotifyDay',
+            description: <div>{data[0].meter_number} 等水表出现夜间流量异常
+              <p>
+                <a href="javascript:;" onClick={()=> {
+                  localStorage.setItem('noNightNotifyDay', date)
+                  notification.close('noNightNotifyDay')
                 }
-                }>查看详情</a>
-                </p>
-              </div>,
-            };
-            this.nightNotify = notification.warning(args);
-          }
+                }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+                dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
+                //notification.close(this.nightNotify)
+              }
+              }>查看详情</a>
+              </p>
+            </div>,
+          };
+          this.nightNotify = notification.warning(args);
         }
-      })
+      }
+    })
 
-    window.addEventListener('resize', throttle(this.resize,100))
+    window.addEventListener('resize', throttle(this.resize, 100))
 
   }
-  resize=()=>{
-    console.log('resize',document.documentElement.clientWidth);
-    const offsetW=document.documentElement.clientWidth;
+
+  resize = ()=> {
+    console.log('resize', document.documentElement.clientWidth);
+    const offsetW = document.documentElement.clientWidth;
     this.props.dispatch({
       type: 'global/SetMobile',
       payload: offsetW
@@ -268,16 +270,16 @@ class HeaderBodyLayout extends React.PureComponent {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       let {pathname} = nextProps.location;
       const pathArr = pathname.split('/');
-      console.log('pathArr',pathArr.length)
+      console.log('pathArr', pathArr.length)
       this.setState({
         current: pathArr[4]
       })
       const company_code = sessionStorage.getItem('company_code');
-      if(pathArr[1]!==company_code){
+      if (pathArr[1] !== company_code) {
         console.log('url code 已经改变');
         this.props.dispatch({
           type: 'login/toLoginPage',
-          payload:pathname
+          payload: pathname
         });
       }
     }
@@ -346,9 +348,9 @@ class HeaderBodyLayout extends React.PureComponent {
       }
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
-          let showBadge=false
+          let showBadge = false
           if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality || this.state.night_abnormality || this.state.zero_abnormality)) {
-            showBadge=true
+            showBadge = true
           }
           return (
             <SubMenu
@@ -357,7 +359,11 @@ class HeaderBodyLayout extends React.PureComponent {
                   <span>
                   <Icon type={item.icon}/>
                   <span>{item.name} </span>
-                    {showBadge&&<Badge status="error"/>}
+                    {showBadge && <span>
+                <Tooltip  placement="right"  title="红点表示当天存在异常报警">
+                  <span> < Badge status="error"/></span>
+                </Tooltip>
+              </span>}
                 </span>
                 ) : item.name
               }
@@ -370,17 +376,17 @@ class HeaderBodyLayout extends React.PureComponent {
       }
       const icon = item.icon && <Icon type={item.icon}/>;
       if ((intersection(permissions, item.permissions).length > 0 || !item.permissions) && (!item.showCompany || item.showCompany.indexOf(company_code) >= 0)) {
-        let showBadge=false
+        let showBadge = false
         if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality) ||
-          (item.path === 'night_abnormality' && this.state.night_abnormality)||
+          (item.path === 'night_abnormality' && this.state.night_abnormality) ||
           (item.path === 'zero_abnormality' && this.state.zero_abnormality)) {
-          showBadge=true
+          showBadge = true
         }
         return (
           <Menu.Item key={item.key || item.path}>
             <Link to={itemPath} target={item.target}>
               {icon}<span>{item.name} </span>
-              {showBadge&&<Badge status="error"/>}
+              {showBadge && < Badge status="error"/>}
             </Link>
           </Menu.Item>
         );
@@ -410,7 +416,7 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 
   render() {
-    const {login,dispatch} = this.props;
+    const {login, dispatch} = this.props;
     const {isMobile} =this.props.global;
     const company_code = sessionStorage.getItem('company_code');
     const company_name = sessionStorage.getItem('company_name');
@@ -420,7 +426,7 @@ class HeaderBodyLayout extends React.PureComponent {
     // console.log('pathArr',pathArr[1])
     // console.log('company_code',company_code)
 
-    const renderMenu=(
+    const renderMenu = (
       <Menu
         onClick={this.handleClick}
         theme="dark"
@@ -438,7 +444,7 @@ class HeaderBodyLayout extends React.PureComponent {
         </SubMenu>
       </Menu>
     )
-    const renderMobileMenu=(
+    const renderMobileMenu = (
       <Menu
         onClick={this.handleClick}
         theme="dark"
@@ -447,7 +453,7 @@ class HeaderBodyLayout extends React.PureComponent {
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
         <SubMenu title={ <span >
                       <Icon type='user'/>
-                    {login.username}
+          {login.username}
                   </span>}>
           <Menu.Item key="password"><Icon type="user"/>修改密码</Menu.Item>
           <Menu.Item key="logout"><Icon type="logout"/>退出登录</Menu.Item>
@@ -461,9 +467,9 @@ class HeaderBodyLayout extends React.PureComponent {
             <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
           </div>
           {
-            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomLeft" >
-            <Icon  className={`${styles.mobile_menu}`}   type="bars" />
-          </Popover>: renderMenu
+            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomLeft">
+              <Icon className={`${styles.mobile_menu}`} type="bars"/>
+            </Popover> : renderMenu
           }
         </div>
         <Layout className={styles.layoutContainer}>
@@ -515,6 +521,6 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 }
 export default connect(state => ({
-  global:state.global,
+  global: state.global,
   login: state.login
 }))(HeaderBodyLayout);

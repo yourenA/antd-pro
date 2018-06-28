@@ -348,7 +348,7 @@ class UserMeterAnalysis extends PureComponent {
           },
       }
     });
-    console.log('columnsWidth',columnsWidth)
+    // console.log('columnsWidth',columnsWidth)
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">

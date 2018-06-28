@@ -42,7 +42,7 @@ export default class EndpointsList extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: [ '用水量']
+        data: [ '用水量(T)']
       },
       yAxis: {
         type: 'value',
@@ -55,7 +55,7 @@ export default class EndpointsList extends PureComponent {
       },
       series: [
         {
-          name:  '用水量',
+          name:  '用水量(T)',
           type:'bar',
           smooth: true,
           data:data,
@@ -78,8 +78,6 @@ export default class EndpointsList extends PureComponent {
         },
       ]
     };
-
-
     that.myChart.setOption(option);
   }
   render() {

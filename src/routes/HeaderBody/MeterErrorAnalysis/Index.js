@@ -10,7 +10,7 @@ import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
-import {renderIndex,renderErrorData} from './../../../utils/utils'
+import {renderIndex,renderErrorData,ellipsis2} from './../../../utils/utils'
 
 const {Content} = Layout;
 @connect(state => ({
@@ -187,7 +187,9 @@ class UserMeterAnalysis extends PureComponent {
       }},
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
       {
         title: '异常类型', width: 100, dataIndex: 'status', key: 'status'
         , render: (val, record, index) => {

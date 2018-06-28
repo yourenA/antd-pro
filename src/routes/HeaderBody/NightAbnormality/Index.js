@@ -122,17 +122,17 @@ class FunctionContent extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',float:'left'},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
-      {title: '安装地址', dataIndex: 'install_address',   key: 'install_address', render: (val, record, index) => {
+      {title: '安装地址', dataIndex: 'install_address', width: 100,  key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val,100)
       }},
-      {title: '日期', dataIndex: 'date',   key: 'date', width: 150,
+      {title: '日期', dataIndex: 'date',   key: 'date', width: 100,
        },
-      {title: '异常时间', dataIndex: 'abnormality_hours',   key: 'abnormality_hours', width: 100,
+      {title: '异常时间', dataIndex: 'abnormality_hours',   key: 'abnormality_hours',
         render: (val, record, index) => {
           const parseVal=val.join(',');
           return ellipsis2(parseVal,100)
@@ -187,7 +187,7 @@ class FunctionContent extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.member_number} 当天水量 (红色表示异常时间)`}
+                title={`${this.state.member_number} 当天用水量 (红色表示异常时间)`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}

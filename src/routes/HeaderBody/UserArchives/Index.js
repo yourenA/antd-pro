@@ -10,7 +10,7 @@ import {connect} from 'dva';
 import request from "./../../../utils/request";
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
-import {renderIndex,renderRowSpan,parseRowSpanData} from './../../../utils/utils'
+import {renderIndex,renderRowSpan,parseRowSpanData,ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import './index.less'
@@ -336,7 +336,9 @@ class UserMeterAnalysis extends PureComponent {
         return renderRowSpan(children,record)
       }},
       { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
-      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number' },
+      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      } },
       { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
       { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
         return renderRowSpan(val,record)

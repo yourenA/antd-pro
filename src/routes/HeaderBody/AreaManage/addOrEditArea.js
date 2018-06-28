@@ -117,6 +117,7 @@ class AddPoliciesForm extends Component {
               initialValue: this.props.editRecord?this.props.editRecord.parent_id:'',
             })(
               <TreeSelect
+                allowClear
                 treeDefaultExpandAll={true}
               >
                 {this.renderTreeNodes(data)}

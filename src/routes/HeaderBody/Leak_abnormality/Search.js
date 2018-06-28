@@ -1,8 +1,9 @@
+
 /**
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch,Select,TreeSelect} from 'antd';
+import {Form, DatePicker, Row, Col, Input, Button,TreeSelect} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
@@ -12,18 +13,20 @@ class SearchForm extends Component {
     super(props);
     this.state = {};
   }
+  componentDidMount() {
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     const {dispatch, form} = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      console.log(fieldsValue)
+      const date = fieldsValue['date'];
       const values = {
         ...fieldsValue,
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
-      this.props.handleSearch({...values,page:1})
+      this.props.handleSearch({...values, page: 1})
     });
   }
   handleFormReset = () => {
@@ -86,22 +89,32 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem  label={"户号"}>
-            {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+          <FormItem
+            label='户号'
+          >
+            {getFieldDecorator('member_number', {
+            })(
+              <Input/>
             )}
           </FormItem>
-          <FormItem  label={"集中器编号"}>
-            {getFieldDecorator('concentrator_number')(
-              <Input placeholder="请输入"/>
+          <FormItem
+            label='集中器编号'
+          >
+            {getFieldDecorator('concentrator_number', {
+            })(
+              <Input/>
             )}
           </FormItem>
-          <FormItem  label={"水表编号"}>
-            {getFieldDecorator('meter_number')(
-              <Input placeholder="请输入"/>
+          <FormItem
+            label='水表编号'
+          >
+            {getFieldDecorator('meter_number', {
+            })(
+              <Input/>
             )}
           </FormItem>
-          <FormItem>
+
+          <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>

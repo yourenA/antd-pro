@@ -358,7 +358,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1870, y: this.state.tableY}}
+                  scroll={{x: 1900, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

@@ -13,7 +13,7 @@ export default class EndpointsList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dynamic(this.props.meter_values)
+    this.dynamic(this.props.difference_values)
     window.addEventListener('resize', this.resizeChart)
   }
   componentWillUnmount() {
@@ -25,6 +25,7 @@ export default class EndpointsList extends PureComponent {
     }
   }
   dynamic = (data)=> {
+    const that=this;
     let date=[];
     for(let key in data){
       date.push(key)
@@ -41,7 +42,7 @@ export default class EndpointsList extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: [ '用水量']
+        data: [ '用水量(T)']
       },
       yAxis: {
         type: 'value',
@@ -54,21 +55,32 @@ export default class EndpointsList extends PureComponent {
       },
       series: [
         {
-          name:  '用水量',
+          name:  '用水量(T)',
           type:'bar',
           smooth: true,
           data:data,
           itemStyle:{
-            normal: {
-              color:'#2f4554',
+            normal:{
+              color: function(value) {
+
+                if(that.props.abnormality_hours.indexOf(String(value.dataIndex))>=0){
+                  return '#c23531'
+                } else
+                {
+                  return '#2f4554'
+                }
+              }
             }
+
+            // {
+            //   color:'#2f4554',
+            // }
           },
         },
       ]
     };
 
 
-    const that = this;
     that.myChart.setOption(option);
   }
   render() {

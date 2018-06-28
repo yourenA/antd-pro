@@ -183,9 +183,9 @@ class SiderTree extends PureComponent {
           </TreeNode>
         );
       }
-      // if(item.number){
-      //   return  <TreeNode title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
-      // }
+      if(item.number){
+        return  <TreeNode title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
+      }
       return <TreeNode title={title} key={item.id} dataRef={item} className="village"/>;
     });
   }
@@ -254,7 +254,7 @@ class SiderTree extends PureComponent {
                   expandedKeys={this.state.expandedKeys}
                   showLine onSelect={this.onSelect}
                   selectedKeys={this.state.selectedKeys}
-                 autoExpandParent={this.state.autoExpandParent}
+                  autoExpandParent={this.state.autoExpandParent}
                   //defaultExpandedKeys={[data[0].id]}
                   //defaultSelectedKeys={[this.state.treeData[0].id]}
             >
