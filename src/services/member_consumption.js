@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 
 export async function query(params) {
-  return request(`/concentrators`,{
+  return request(`/member_consumption`,{
     method:'GET',
     params:{
       ...params
@@ -10,13 +10,13 @@ export async function query(params) {
   });
 }
 export async function remove({id}) {
-  return request(`/concentrators/${id}`, {
+  return request(`/members/${id}`, {
     method: 'DELETE',
   });
 }
 
 export async function add({...restParams}) {
-  return request(`/concentrators`, {
+  return request(`/members`, {
     method: 'POST',
     data: {
       ...restParams,
@@ -25,16 +25,7 @@ export async function add({...restParams}) {
 }
 
 export async function edit({id,...restParams}) {
-  return request(`/concentrators/${id}`, {
-    method: 'PUT',
-    data: {
-      ...restParams,
-    },
-  });
-}
-
-export async function editConfig({id,...restParams}) {
-  return request(`/concentrators/${id}/config`, {
+  return request(`/members/${id}`, {
     method: 'PUT',
     data: {
       ...restParams,

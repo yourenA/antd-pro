@@ -9,7 +9,7 @@ import {routerRedux} from 'dva/router';
 import moment from 'moment';
 import Detail from './../UserMeterAnalysis/Detail'
 import uuid from 'uuid/v4'
-import {renderIndex} from '../../../utils/utils'
+import {renderIndex,ellipsis2} from '../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -124,11 +124,13 @@ class FunctionContent extends PureComponent {
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表号', width: 100, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
       {title: '姓名', dataIndex: 'real_name', width: 100, key: 'real_name'},
       {title: '日期', width: 100, dataIndex: 'date', key: 'date'},
       {title: '持续时间(天)', width: 100, dataIndex: 'duration_days', key: 'duration_days'},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
+        return ellipsis2(val, 150)
+      }},
       {
         title: '查询历史状况',
         key: 'operation',

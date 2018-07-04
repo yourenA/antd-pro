@@ -2,12 +2,12 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select} from 'antd';
+import {Form, Input,  Radio, Select,Checkbox} from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+const CheckboxGroup = Checkbox.Group;
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +27,7 @@ class AddPoliciesForm extends Component {
     };
 
     const {getFieldDecorator} = this.props.form;
+    const plainOptions = ['901F', '90EF'];
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -90,9 +91,9 @@ class AddPoliciesForm extends Component {
           )}
         >
           {getFieldDecorator('protocols', {
-            initialValue: this.props.editRecord ? this.props.editRecord.protocols : '',
+            initialValue: this.props.editRecord ? this.props.editRecord.protocols.length>0?this.props.editRecord.protocols.split('|'):[] : [],
           })(
-            <Input />
+            <CheckboxGroup options={plainOptions}   />
           )}
         </FormItem>
       </Form>

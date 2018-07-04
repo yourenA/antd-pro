@@ -151,6 +151,7 @@ class Vendor extends PureComponent {
       type: 'concentrator_models/add',
       payload: {
         ...formValues,
+        protocols:formValues.protocols.join('|'),
         manufacturer_id: formValues.manufacturer_id.key,
       },
       callback: function () {

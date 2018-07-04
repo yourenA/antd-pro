@@ -1,20 +1,20 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
+import {Table, Card, Layout, message, Popconfirm, Modal, Badge} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../Sider'
-import {renderIndex,ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 const {Content} = Layout;
 @connect(state => ({
-  user_command_data:state.user_command_data,
+  user_command_data: state.user_command_data,
   meter_models: state.meter_models,
   meters: state.meters,
-  global:state.global,
+  global: state.global,
 }))
 class MeterModel extends PureComponent {
   constructor(props) {
@@ -26,19 +26,19 @@ class MeterModel extends PureComponent {
       showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       tableY: 0,
       page: 1,
-      commandPage:'',
+      commandPage: '',
       started_at: '',
       ended_at: '',
 
       number: '',
       member_number: '',
       install_address: '',
-      real_name:'',
+      real_name: '',
 
       editModal: false,
       addModal: false,
       commandModal: false,
-      canOperateMeter:localStorage.getItem('canOperateMeter')==='true'?true:false,
+      canOperateMeter: localStorage.getItem('canOperateMeter') === 'true' ? true : false,
     }
   }
 
@@ -62,6 +62,7 @@ class MeterModel extends PureComponent {
 
     // this.handleCommandSearch({page:1})
   }
+
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
@@ -71,7 +72,7 @@ class MeterModel extends PureComponent {
   changeArea = (village_id)=> {
     // this.searchFormRef.props.form.resetFields();
     this.setState({
-      concentrator_number:'',
+      concentrator_number: '',
       village_id: village_id
     }, function () {
       this.changeTableY();
@@ -80,22 +81,22 @@ class MeterModel extends PureComponent {
         number: this.state.number,
         member_number: this.state.member_number,
         install_address: this.state.install_address,
-        real_name:this.state.real_name,
+        real_name: this.state.real_name,
       })
     })
   }
-  changeConcentrator = (concentrator_number,village_id)=> {
+  changeConcentrator = (concentrator_number, village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:'',
-      concentrator_number:concentrator_number
-    }, function(){
+      village_id: '',
+      concentrator_number: concentrator_number
+    }, function () {
       this.handleSearch({
         page: 1,
         number: this.state.number,
         member_number: this.state.member_number,
         install_address: this.state.install_address,
-        real_name:this.state.real_name,
+        real_name: this.state.real_name,
       })
     })
   }
@@ -106,7 +107,7 @@ class MeterModel extends PureComponent {
       number: '',
       member_number: '',
       install_address: '',
-      real_name:'',
+      real_name: '',
     })
   }
   handleSearch = (values) => {
@@ -131,8 +132,8 @@ class MeterModel extends PureComponent {
       page: page,
       number: this.state.number,
       member_number: this.state.member_number,
-      install_address:this.state.install_address,
-      real_name:this.state.real_name,
+      install_address: this.state.install_address,
+      real_name: this.state.real_name,
     })
   }
   handleAdd = () => {
@@ -144,10 +145,10 @@ class MeterModel extends PureComponent {
       payload: {
         ...formValues,
         meter_model_id: formValues.meter_model_id.key,
-        installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
-        manufactured_at:formValues.manufactured_at?moment(formValues.manufactured_at).format('YYYY-MM-DD'):'',
-        is_valve:formValues.is_valve.key?parseInt(formValues.is_valve.key):-1,
-        valve_status:formValues.valve_status?1:-1
+        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
+        manufactured_at: formValues.manufactured_at ? moment(formValues.manufactured_at).format('YYYY-MM-DD') : '',
+        is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
+        valve_status: formValues.valve_status ? 1 : -1
       },
       callback: function () {
         message.success('添加水表成功')
@@ -159,8 +160,8 @@ class MeterModel extends PureComponent {
           payload: {
             number: that.state.number,
             member_number: that.state.member_number,
-            install_address:that.state.install_address,
-            real_name:that.state.real_name,
+            install_address: that.state.install_address,
+            real_name: that.state.real_name,
             page: that.state.page
           }
         });
@@ -177,10 +178,10 @@ class MeterModel extends PureComponent {
       payload: {
         ...formValues,
         meter_model_id: formValues.meter_model_id.key,
-        installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
-        manufactured_at:formValues.manufactured_at?moment(formValues.manufactured_at).format('YYYY-MM-DD'):'',
-        is_valve:formValues.is_valve.key?parseInt(formValues.is_valve.key):-1,
-        valve_status:formValues.valve_status?1:-1,
+        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
+        manufactured_at: formValues.manufactured_at ? moment(formValues.manufactured_at).format('YYYY-MM-DD') : '',
+        is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
+        valve_status: formValues.valve_status ? 1 : -1,
         id: this.state.editRecord.id,
       },
       callback: function () {
@@ -193,8 +194,8 @@ class MeterModel extends PureComponent {
           payload: {
             number: that.state.number,
             member_number: that.state.member_number,
-            install_address:that.state.install_address,
-            real_name:that.state.real_name,
+            install_address: that.state.install_address,
+            real_name: that.state.real_name,
             page: that.state.page
           }
         });
@@ -215,46 +216,46 @@ class MeterModel extends PureComponent {
           payload: {
             number: that.state.number,
             member_number: that.state.member_number,
-            install_address:that.state.install_address,
-            real_name:that.state.real_name,
+            install_address: that.state.install_address,
+            real_name: that.state.real_name,
             page: that.state.page
           }
         });
       }
     });
   }
-  handleCommand=(record,command)=>{
+  handleCommand = (record, command)=> {
     console.log('command ', command);
     const that = this;
     const {dispatch} = this.props;
     dispatch({
       type: 'user_command_data/add',
-      payload:{
-        meter_number:record.number,
-        feature:command
+      payload: {
+        meter_number: record.number,
+        feature: command
       },
-      callback:()=>{
+      callback: ()=> {
         message.success('发送指令成功');
         that.props.dispatch({
           type: 'meters/fetch',
           payload: {
             number: that.state.number,
             member_number: that.state.member_number,
-            install_address:that.state.install_address,
-            real_name:that.state.real_name,
+            install_address: that.state.install_address,
+            real_name: that.state.real_name,
             page: that.state.page
           }
         });
       }
     });
   }
-  showCommandInfo=()=>{
-    const that=this;
+  showCommandInfo = ()=> {
+    const that = this;
     this.handleCommandSearch({
       page: this.state.commandPage,
-    },function () {
+    }, function () {
       that.setState({
-        commandModal:true
+        commandModal: true
       })
     })
   }
@@ -263,7 +264,7 @@ class MeterModel extends PureComponent {
       page: page,
     })
   }
-  handleCommandSearch = (values,cb) => {
+  handleCommandSearch = (values, cb) => {
     const {dispatch} = this.props;
     dispatch({
       type: 'user_command_data/fetch',
@@ -274,11 +275,12 @@ class MeterModel extends PureComponent {
     this.setState({
       commandPage: values.page
     });
-    if(cb)cb()
+    if (cb)cb()
   }
+
   render() {
 
-    const {meters: {data, meta, loading}, meter_models,user_command_data} = this.props;
+    const {meters: {data, meta, loading}, meter_models, user_command_data} = this.props;
     const {isMobile} =this.props.global;
     const columns = [
       {
@@ -289,93 +291,140 @@ class MeterModel extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta, this.state.page, index)
         }
       },
-      {title: '水表号', width: 80, dataIndex: 'number', key: 'number', fixed: 'left',},
-
       {
-        title: '用户名称', dataIndex: 'real_name', key: 'real_name',width: 80,render: (text, record, index) => {
-        return ellipsis2(text,80)
-      }},
+        title: '水表号', width: 110, dataIndex: 'number', key: 'number', fixed: 'left',
+        render: (val, record, index) => {
+          return ellipsis2(val, 110)
+        }
+      },
       {
-        title: '户号', dataIndex: 'member_number', key: 'member_number',width: 80,render: (text, record, index) => {
-        return ellipsis2(text,80)
-      }},
-      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
-      {title: '水表类型名称', width: 140, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (text, record, index) => {
-        return ellipsis2(text,130)
-      }},
-      {title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
-        render:(val, record, index) => (
-          <p>
-            <Badge status={val===1?"success":"error"} />{val===1?'是':'否'}
-
-          </p>
-        )},
-      {title: '阀门状态', dataIndex: 'valve_status', key: 'valve_status', width: 80,
-        render:(val, record, index) => (
-          <p>
-            <Badge status={val===1?"success":"error"} />{record.valve_status_explain}
-          </p>
-        )},
-      {title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
-        render:(val, record, index) => (
-          <p>
-            <Badge status={val===1?"success":"error"} />{record.status_explain}
-          </p>
-        )},
-      {
-        title: '集中器号', dataIndex: 'concentrator_number', key: 'concentrator_number',width: 100,render: (text, record, index) => {
-        return ellipsis2(text,100)
-      }},
-      {
-        title: '安装地址', dataIndex: 'install_address', key: 'install_address',width: 100,render: (text, record, index) => {
-        return ellipsis2(text,100)
+        title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, render: (text, record, index) => {
+        return ellipsis2(text, 80)
       }
       },
-      {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at'},
-      {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at'},
+      {
+        title: '户号', dataIndex: 'member_number', key: 'member_number', width: 80, render: (text, record, index) => {
+        return ellipsis2(text, 80)
+      }
+      },
+      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
+      {
+        title: '水表类型名称',
+        width: 140,
+        dataIndex: 'meter_model_name',
+        key: 'meter_model_name',
+        render: (text, record, index) => {
+          return ellipsis2(text, 130)
+        }
+      },
+      {
+        title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
+        render: (val, record, index) => (
+          <p>
+            <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? '是' : '否'}
+
+          </p>
+        )
+      },
+      {
+        title: '阀门状态', dataIndex: 'valve_status', key: 'valve_status', width: 80,
+        render: (val, record, index) => (
+          <p>
+            <Badge status={val === 1 ? "success" : "error"}/>{record.valve_status_explain}
+          </p>
+        )
+      },
+      {
+        title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
+        render: (val, record, index) => (
+          <p>
+            <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
+          </p>
+        )
+      },
+      {
+        title: '集中器号',
+        dataIndex: 'concentrator_number',
+        key: 'concentrator_number',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }
+      },
+      {
+        title: '安装地址',
+        dataIndex: 'install_address',
+        key: 'install_address',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }
+      },
+      {title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '开始使用时读数', width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '停止使用日期', width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
+        return ellipsis2(text, 100)
+      }},
 
       {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100},
       {title: '条码', dataIndex: 'barcode', key: 'barcode', width: 100},
       {
-        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',width: 100,render: (text, record, index) => {
-        return ellipsis2(text,100)
-      }
+        title: '所属厂商',
+        dataIndex: 'manufacturer_name',
+        key: 'manufacturer_name',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }
       },
       {
         title: '备注', dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
-        return ellipsis2(text,100)
+        return ellipsis2(text, 100)
       }
       },
     ];
-    if(this.state.canOperateMeter){
+    if (this.state.canOperateMeter) {
       columns.push({
         title: '操作',
-        width: isMobile?90:140,
+        width: isMobile ? 90 : 140,
         fixed: 'right',
         render: (val, record, index) => (
           <p>
             {
-              (this.state.showCommandBtn && record.is_valve===1) &&
+              (this.state.showCommandBtn && record.is_valve === 1) &&
               <span>
-                {record.valve_status===-1&&
+                {record.valve_status === -1 &&
                 <Popconfirm placement="topRight" title={ `确定要开阀吗?`}
                             onConfirm={()=> {
-                              this.handleCommand(record,'open_valve')
+                              this.handleCommand(record, 'open_valve')
                             }}>
                 <span>
-                  <a href="javascript:;" >开阀</a>
+                  <a href="javascript:;">开阀</a>
                 </span>
                 </Popconfirm>}
-                {record.valve_status===1&&
+                {record.valve_status === 1 &&
                 <Popconfirm placement="topRight" title={ `确定要关阀吗?`}
                             onConfirm={()=> {
-                              this.handleCommand(record,'close_valve')
+                              this.handleCommand(record, 'close_valve')
                             }}>
                 <span>
-                   <a href="javascript:;" >关阀</a>
+                   <a href="javascript:;">关阀</a>
                 </span>
                 </Popconfirm>}
                 <span className="ant-divider"/>
@@ -415,23 +464,23 @@ class MeterModel extends PureComponent {
         width: 45,
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(user_command_data.meta,this.state.commandPage,index)
+          return renderIndex(user_command_data.meta, this.state.commandPage, index)
         }
       },
       {title: '水表号', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '功能代码', dataIndex: 'feature', key: 'feature', },
+      {title: '功能代码', dataIndex: 'feature', key: 'feature',},
       {
         title: '状态',
         dataIndex: 'status',
-        render:(val,record,index)=>{
-          return(
+        render: (val, record, index)=> {
+          return (
             <span>
-                 <Badge status={`${val===-1?"error":"success"}`} />{record.status_explain}
+                 <Badge status={`${val === -1 ? "error" : "success"}`}/>{record.status_explain}
               </span>
           )
         }
       },
-      {title: '执行回调结果', dataIndex: 'result', key: 'result', },
+      {title: '执行回调结果', dataIndex: 'result', key: 'result',},
       {title: '执行用户名', dataIndex: 'send_username', key: 'send_username'},
       {title: '创建时间', dataIndex: 'created_at', key: 'created_at',},
     ];
@@ -451,7 +500,9 @@ class MeterModel extends PureComponent {
                                    clickInfo={this.showCommandInfo}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
-                                   canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=>{this.setState({canOperateMeter:!this.state.canOperateMeter})}}
+                                   canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=> {
+                      this.setState({canOperateMeter: !this.state.canOperateMeter})
+                    }}
                     />
                   </div>
                 </div>
@@ -466,7 +517,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1800,y:this.state.tableY}}
+                  scroll={{x: 2300, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -499,7 +550,7 @@ class MeterModel extends PureComponent {
             onCancel={() => this.setState({commandModal: false})}
             footer={null}
           >
-            <div style={{overflow:'hidden'}}>
+            <div style={{overflow: 'hidden'}}>
               <Table
                 className='meter-table'
                 loading={loading}
@@ -518,6 +569,8 @@ class MeterModel extends PureComponent {
       </Layout>
     );
   }
-}
+  }
 
-export default MeterModel
+  export
+  default
+  MeterModel

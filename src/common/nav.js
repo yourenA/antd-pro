@@ -50,6 +50,7 @@ import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
+import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
 
 // const UserMeterLife = asyncComponent(() =>
 // import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
@@ -290,10 +291,16 @@ const data = [{
         component: CommunityAnalysis,
         permissions:['village_meter_data',],
       },{
-        name: '户表水量分析',
+        name: '水表水量分析',
         path: 'user_meter_analysis',
         component: UserMeterAnalysis,
         permissions:['member_meter_data'],
+      },{
+        name: '用户水量分析',
+        path: 'member_consumption',
+        component: MemberConsumption,
+        permissions:['member_consumption'],
+        noShowCompany:['hy']
       },{
         name: '户表使用年限',
         path: 'user_meter_life',
@@ -304,7 +311,7 @@ const data = [{
         path: 'complete_realData',
         component: CompleteRealData,
         permissions:['meter_status'],
-        // showCompany:['test']
+        noShowCompany:['hy']
       }
       // ,{
       //   name: '产销差分析',

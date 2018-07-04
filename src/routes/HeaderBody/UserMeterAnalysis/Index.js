@@ -171,7 +171,7 @@ class UserMeterAnalysis extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      edit_member_number: record.member_number,
+      edit_meter_number: record.meter_number,
       editModal: true
     })
   }
@@ -205,7 +205,7 @@ class UserMeterAnalysis extends PureComponent {
     custom_width+=120;
     custom_headers.push(
       {
-        title: '查询历史状况',
+        title: '水表历史状况',
         key: 'operation',
         fixed: 'right',
         width: 120,
@@ -297,7 +297,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '水表水量分析'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -343,12 +343,12 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           width="750px"
           key={ Date.parse(new Date())}
-          title={`${this.state.edit_member_number} 详细信息`}
+          title={`水表 ${this.state.edit_meter_number} 详细信息`}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <Detail member_number={this.state.edit_member_number} ended_at={this.state.ended_at}
+          <Detail meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
                   started_at={this.state.started_at}/>
         </Modal>
       </Layout>

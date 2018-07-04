@@ -61,7 +61,7 @@ class HeaderBodyLayout extends React.PureComponent {
       consumption_abnormality: false,
       zero_abnormality: false,
       night_abnormality: false,
-      leah_abnormality: false,
+      leak_abnormality: false,
 
     };
   }
@@ -140,7 +140,7 @@ class HeaderBodyLayout extends React.PureComponent {
       const data = response.data.data
       if (data.length > 0) {
         that.setState({
-          leah_abnormality: true
+          leak_abnormality: true
         })
         if (noLeakNotifyDay === date) {
           console.log('不提醒')
@@ -270,9 +270,9 @@ class HeaderBodyLayout extends React.PureComponent {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       let {pathname} = nextProps.location;
       const pathArr = pathname.split('/');
-      console.log('pathArr', pathArr.length)
+      console.log('pathArr[4]', pathArr)
       this.setState({
-        current: pathArr[4]
+        current: pathArr.length===3?pathArr[2]:pathArr[4]
       })
       const company_code = sessionStorage.getItem('company_code');
       if (pathArr[1] !== company_code) {
@@ -349,7 +349,7 @@ class HeaderBodyLayout extends React.PureComponent {
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
           let showBadge = false
-          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality || this.state.night_abnormality || this.state.zero_abnormality)) {
+          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality || this.state.night_abnormality || this.state.zero_abnormality || this.state.leak_abnormality)) {
             showBadge = true
           }
           return (
@@ -376,9 +376,13 @@ class HeaderBodyLayout extends React.PureComponent {
       }
       const icon = item.icon && <Icon type={item.icon}/>;
       if ((intersection(permissions, item.permissions).length > 0 || !item.permissions) && (!item.showCompany || item.showCompany.indexOf(company_code) >= 0)) {
+        if(item.noShowCompany && item.noShowCompany.indexOf(company_code)>=0){
+          return false
+        }
         let showBadge = false
         if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality) ||
           (item.path === 'night_abnormality' && this.state.night_abnormality) ||
+          (item.path === 'leak_abnormality' && this.state.leak_abnormality) ||
           (item.path === 'zero_abnormality' && this.state.zero_abnormality)) {
           showBadge = true
         }
@@ -425,7 +429,6 @@ class HeaderBodyLayout extends React.PureComponent {
     const pathArr = pathname.split('/');
     // console.log('pathArr',pathArr[1])
     // console.log('company_code',company_code)
-
     const renderMenu = (
       <Menu
         onClick={this.handleClick}
@@ -434,6 +437,11 @@ class HeaderBodyLayout extends React.PureComponent {
         style={{lineHeight: '64px'}}
         selectedKeys={[this.state.current]}
       >
+        {company_code==='mys'&&<Menu.Item key={'main'}>
+          <Link className={`${styles.homepage}`} to={`/${company_code}/main`} >
+            <Icon type={'home'}/><span>首页</span>
+          </Link>
+        </Menu.Item>}
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
         <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
                      <Avatar icon="user" className={styles.avatar}/>
@@ -450,6 +458,7 @@ class HeaderBodyLayout extends React.PureComponent {
         theme="dark"
         selectedKeys={[this.state.current]}
       >
+
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
         <SubMenu title={ <span >
                       <Icon type='user'/>

@@ -154,7 +154,7 @@ class UserMeterAnalysis extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '水表号', width: 100, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
       {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width:  '15%',render: (val, record, index) => {
         return ellipsis(val,3)

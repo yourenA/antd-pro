@@ -97,6 +97,7 @@ class ConcentratorModels extends PureComponent {
       type: 'concentrator_models/add',
       payload: {
         ...formValues,
+        protocols:formValues.protocols.join('|'),
         manufacturer_id: formValues.manufacturer_id.key,
       },
       callback: function () {
@@ -123,6 +124,7 @@ class ConcentratorModels extends PureComponent {
       type: 'concentrator_models/edit',
       payload: {
         ...formValues,
+        protocols:formValues.protocols.join('|'),
         manufacturer_id: formValues.manufacturer_id.key,
         id:this.state.editRecord.id,
       },

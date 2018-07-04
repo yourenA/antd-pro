@@ -185,7 +185,7 @@ class UserMeterAnalysis extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (text, record, index) => {
         return ellipsis2(text,100)

@@ -1,17 +1,19 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Badge, Tooltip} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Badge, Tooltip,Tabs} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import AddOrEditConcentrator from './AddOrEditConcentrator'
+import EditConcentratorConfig from './EditConcentratorConfig'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import Detail from './Detail'
 import find from 'lodash/find'
 // import moment from 'moment'
-import {renderIndex, ellipsis, ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis, ellipsis2,fillZero} from './../../../utils/utils'
 import './index.less'
 import ConcentratorDetail from './ConcentratorDetail'
+
 const {Content} = Layout;
 @connect(state => ({
   concentrator_models: state.concentrator_models,
@@ -40,7 +42,7 @@ class ConcentratorManage extends PureComponent {
       showArea: true,
       editRecord: null,
       refreshSider: 0,
-      canOperateConcentrator: localStorage.getItem('canOperateConcentrator') === 'true' ? true : false
+      canOperateConcentrator: localStorage.getItem('canOperateConcentrator') === 'true' ? true : false,
     }
 
   }
@@ -188,30 +190,38 @@ class ConcentratorManage extends PureComponent {
   }
   handleEdit = () => {
     const that = this;
-    const formValues = this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'concentrators/edit',
-      payload: {
-        ...formValues,
-        // server_id: formValues.server_id.key,
-        concentrator_model_id: formValues.concentrator_model_id.key,
-        village_id: formValues.village_id[formValues.village_id.length - 1],
-        is_count: formValues.is_count.key,
-        id: this.state.editRecord.id
-      },
-      callback: function () {
-        message.success('修改集中器成功')
-        that.setState({
-          editModal: false,
-          refreshSider: that.state.refreshSider + 1
-        });
-        that.handleSearch({
-          page: that.state.page,
-          query: that.state.query,
-        })
-      }
-    });
+    const state = this.editFormRef.state;
+    if(state.tabsActiveKey==='edit'){
+      const formValues = this.editFormRef.props.form.getFieldsValue();
+      console.log('formValues', formValues)
+      this.props.dispatch({
+        type: 'concentrators/edit',
+        payload: {
+          ...formValues,
+          // server_id: formValues.server_id.key,
+          concentrator_model_id: formValues.concentrator_model_id.key,
+          village_id: formValues.village_id[formValues.village_id.length - 1],
+          is_count: formValues.is_count.key,
+          id: this.state.editRecord.id
+        },
+        callback: function () {
+          message.success('修改集中器成功')
+          that.setState({
+            editModal: false,
+            refreshSider: that.state.refreshSider + 1
+          });
+          that.handleSearch({
+            page: that.state.page,
+            query: that.state.query,
+          })
+        }
+      });
+    }else if(state.tabsActiveKey==='editUpload'){
+      this.handleEditConfig()
+    }else if(state.tabsActiveKey==='editSleep'){
+      this.handleEditSleep()
+    }
+
   }
   handleRemove = (id)=> {
     const that = this;
@@ -250,7 +260,66 @@ class ConcentratorManage extends PureComponent {
       concentratorNumber: null,
     })
   }
+  handleEditConfig=()=>{
+    const that=this;
+    const formValues = this.editFormRef.state;
+    console.log('formValues', this.editFormRef.state);
+    let upload_time='';
+    switch (formValues.value) {
+      case  'monthly':
+        upload_time =`${fillZero(formValues.day)} ${fillZero(formValues.hour)}:${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+      case   'daily':
+        upload_time =`${fillZero(formValues.hour)}:${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+      case  'hourly':
+        upload_time =`${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+    }
+    console.log(this.state.editRecord.id)
+    let putData={
+      upload_cycle_unit:formValues.value,
+      id: this.state.editRecord.id
+    }
+    if(formValues.day||formValues.hour||formValues.minute||formValues.second){
+       putData.upload_time=upload_time
+    }
+    this.props.dispatch({
+      type: 'concentrators/editConfig',
+      payload: putData,
+      callback: function () {
+        message.success('修改集中器上传时间成功')
+        that.setState({
+          editModal: false,
+        });
+        that.handleSearch({
+          page: that.state.page,
+          query: that.state.query,
+        })
+      }
+    });
+  }
+  handleEditSleep=()=>{
+    const that=this;
+    const formValues = this.editFormRef.state;this.props.dispatch({
+      type: 'concentrators/editConfig',
+      payload: {
+        id: this.state.editRecord.id,
+        sleep_hours:formValues.checkedList
+      },
+      callback: function () {
+        message.success('修改集中器休眠时间成功')
+        that.setState({
+          editModal: false,
+        });
+        that.handleSearch({
+          page: that.state.page,
+          query: that.state.query,
+        })
+      }
+    });
 
+  }
   render() {
     const {concentrators: {data, meta, loading}, servers, concentrator_models, area} = this.props;
     const columns = [
@@ -320,7 +389,7 @@ class ConcentratorManage extends PureComponent {
       {
         title: '安装小区', dataIndex: 'village_name', key: 'village_name', width: 120,
         render: (val, record, index) => {
-          return ellipsis(val, 7)
+          return ellipsis2(val, 120)
         }
       },
       {
@@ -332,6 +401,22 @@ class ConcentratorManage extends PureComponent {
 
       {title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
       {title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
+      {
+        title: '上传周期', dataIndex: 'upload_cycle_unit_explain', key: 'upload_cycle_unit_explain', width: 80,
+      },
+      {
+        title: '上传时间', dataIndex: 'upload_time', key: 'upload_time', width: 100,
+      },
+      {
+        title: '睡眠时间', dataIndex: 'sleep_hours', key: 'sleep_hours', width: 100,
+        render: (val, record, index) => {
+          let transVal=val;
+          transVal.sort(function (a,b) {
+              return a - b
+          })
+          return ellipsis2(transVal.join(','), 100)
+        }
+      },
       {
         title: '上行报文（指令）', dataIndex: 'uplink_message', key: 'uplink_message', width: 150,
         render: (val, record, index) => {
@@ -366,7 +451,7 @@ class ConcentratorManage extends PureComponent {
         title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 90,
+        width: 100,
         render: (val, record, index) => {
           return (
             <p>
@@ -374,13 +459,13 @@ class ConcentratorManage extends PureComponent {
                 this.state.showAddBtn &&
                 <span>
                       <a href="javascript:;" onClick={()=> {
-                        this.setState(
-                          {
-                            editRecord: record,
-                            editModal: true
-                          }
-                        )
-                      }}>编辑</a>
+                  this.setState(
+                    {
+                      editRecord: record,
+                      editModal: true
+                    }
+                  )
+                }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
               }
@@ -439,7 +524,7 @@ class ConcentratorManage extends PureComponent {
                         rowKey={record => record.id}
                         dataSource={data}
                         columns={columns}
-                        scroll={{x: 1800, y: this.state.tableY}}
+                        scroll={{x: 2140, y: this.state.tableY}}
                         pagination={false}
                         size="small"
                       />
@@ -464,6 +549,7 @@ class ConcentratorManage extends PureComponent {
                                  concentrator_models={concentrator_models.data} servers={servers.data}/>
         </Modal>
         <Modal
+          width={650}
           key={ Date.parse(new Date())}
           title="编辑集中器"
           visible={this.state.editModal}
@@ -473,6 +559,15 @@ class ConcentratorManage extends PureComponent {
           <AddOrEditConcentrator editRecord={this.state.editRecord}
                                  wrappedComponentRef={(inst) => this.editFormRef = inst} area={area.data}
                                  concentrator_models={concentrator_models.data} servers={servers.data}/>
+        </Modal>
+        <Modal
+          key={ Date.parse(new Date())+2}
+          title="编辑集中器配置"
+          visible={this.state.editConfigModal}
+          onOk={this.handleEditConfig}
+          onCancel={() => this.setState({editConfigModal: false})}
+        >
+
         </Modal>
         <Modal
           key={ Date.parse(new Date()) + 1}

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip } from 'antd';
+import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip,Badge } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -321,30 +321,51 @@ class UserMeterAnalysis extends PureComponent {
       } },
       { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
         const children= (
-          <Tooltip title={val}>
-            <span>{val.length>3?val.substring(0,3)+'...':val}</span>
-          </Tooltip>
+          ellipsis2(val, 80)
         )
         return renderRowSpan(children,record)
       } },
-      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 150,   render: (val, record, index) => {
+      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 100,   render: (val, record, index) => {
         const children=  (
-          <Tooltip title={val}>
-            <span>{val.length>10?val.substring(0,7)+'...':val}</span>
-          </Tooltip>
+          ellipsis2(val, 100)
         )
         return renderRowSpan(children,record)
-      }},
-      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
-      { title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      } },
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
-      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
-        return renderRowSpan(val,record)
       }},
       { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
         return renderRowSpan(val,record)
+      }},
+      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
+      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
+      { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      } },
+      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
+      {
+        title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
+        render: (val, record, index) => {
+          if(val===undefined){
+            return ''
+          }
+          return (
+            <p>
+              <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
+            </p>
+          )
+        }
+      },
+      {title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '开始使用时读数', width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '停止使用日期', width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
       }},
       { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,  render: (val, record, index) => {
         return renderRowSpan(val,record)
@@ -418,7 +439,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.meter_number}
                   dataSource={resetMeterData}
                   columns={columns}
-                  scroll={{ x: 1350,y: this.state.tableY }}
+                  scroll={{ x: 1900,y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

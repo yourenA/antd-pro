@@ -10,7 +10,7 @@ import { routerRedux } from 'dva/router';
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 
 const {Content} = Layout;
 @connect(state => ({
@@ -130,14 +130,16 @@ class Consumption_abnormality extends PureComponent {
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
       {title: '日期', dataIndex: 'date', width: 120,  key: 'date',},
       {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
       {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value'},
       {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value'},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address'},
+      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
+        return ellipsis2(val, 150)
+      }},
 
     ];
     const {dispatch}=this.props;

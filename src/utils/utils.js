@@ -451,8 +451,42 @@ function parseRowSpanData(data) {
 
 exports.parseRowSpanData = parseRowSpanData;
 
+function parseRowSpanData2(data) {
+  for (let i = 0; i < data.length; i++) {
+    data[i].index = i
+  }
+  let resetMeterData = []
+  data.map((item, index)=> {
+    if(item.meters){
+      if(item.meters.length>0){
+        for (let i = 0; i < item.meters.length; i++) {
+          if (item.meters.length === 1) {
+            resetMeterData.push({...item, ...item.meters[i], meter_difference_value:item.difference_value,rowSpan: 1})
+          } else {
+            resetMeterData.push({...item, ...item.meters[i],meter_difference_value:item.difference_value, rowSpan: i === 0 ? item.meters.length : 0})
+          }
+        }
+      }else{
+        resetMeterData.push({...item,meter_difference_value:item.difference_value, rowSpan: 1})
+      }
+    }else{
+      resetMeterData.push({...item, meter_difference_value:item.difference_value,rowSpan: 1})
+    }
+  });
+  return resetMeterData
+}
+
+exports.parseRowSpanData2 = parseRowSpanData2;
+
 export function  GetQueryString(name,search){
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
   var r = search.substr(1).match(reg);
   if(r!=null)return r[2]; return null;
+}
+
+export function  fillZero(val){
+  if(Number(val)<10){
+    return '0'+val
+  }
+  return val
 }

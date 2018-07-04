@@ -244,21 +244,7 @@ class UserMeterAnalysis extends PureComponent {
           return renderIndex(meta, this.state.page, index)
         }
       },
-      {title: '水表编号', width: 100, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
-      {title: '年限', width: 100, dataIndex: 'service_life', key: 'service_life'},
-      {
-        title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',
-        render: (val, record, index) => {
-          return ellipsis2(val, 125)
-        }
-      },
-      {
-        title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',
-        render: (val, record, index) => {
-          return ellipsis2(val, 95)
-        }
-      },
       {
         title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',
         render: (val, record, index) => {
@@ -271,6 +257,26 @@ class UserMeterAnalysis extends PureComponent {
           return ellipsis2(val, 125)
         }
       },
+      {
+        title: '水表类型', width: 130, dataIndex: 'meter_model_name', key: 'meter_model_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 125)
+        }
+      },
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',
+        render: (val, record, index) => {
+          return ellipsis2(val, 110)
+        }},
+      {title: '年限', width: 100, dataIndex: 'service_life', key: 'service_life'},
+
+      {
+        title: '生产厂商', width: 100, dataIndex: 'manufacturer_name', key: 'manufacturer_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 95)
+        }
+      },
+
+
       {title: '安装时间', dataIndex: 'installed_at', key: 'installed_at',},
 
 

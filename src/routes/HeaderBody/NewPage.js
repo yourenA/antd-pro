@@ -7,16 +7,18 @@ import AreaSupplyList from './HomePage/AreaSupplyList'
 import DMArate from './HomePage/DMArate'
 import VendorConcentrator from './HomePage/VendorConcentrator'
 import DMADate from './HomePage/DMADate'
-import Guage from './HomePage/Guage'
-import { Row, Col, Card,  Icon } from 'antd';
+import MYSHomepageChart from './HomePage/MYSHomepageChart'
+import { Row, Col, Card,  Icon,TreeSelect } from 'antd';
 import { routerRedux} from 'dva/router';
 import styles from './main.less'
 import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
 import {prefix,projectName,poweredBy} from './../../common/config'
+const TreeNode = TreeSelect.TreeNode;
 import {connect} from 'dva';
 @connect(state => ({
+  sider_regions: state.sider_regions,
 }))
 class Main extends PureComponent {
   constructor(props) {
@@ -41,6 +43,23 @@ class Main extends PureComponent {
         server:response.data.server
       })
     })
+
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'sider_regions/fetch',
+      payload: {
+        return: 'all',
+      },
+      callback:()=>{
+        console.log('callback')
+        const {sider_regions:{data}}=that.props;
+        this.setState({ value:data[0].id });
+        that.onChangeArea(data[0].id)
+      }
+    });
+  }
+  onChangeArea=(value)=>{
+    console.log(value)
   }
   componentWillUnmount(){
     // clearInterval(this.setTime)
@@ -50,9 +69,22 @@ class Main extends PureComponent {
       time:moment().format('HH:mm:ss')
     })
   }
+  renderTreeNodes=(data)=>{
+    return data.map((item) => {
+      if (item.children) {
+        return (
+          <TreeNode value={item.id} title={item.name} key={item.id} >
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return  <TreeNode value={item.id}  title={item.name} key={item.id} />
+    });
+  }
   render() {
     const dispatch = this.props.dispatch;
     const company_code = sessionStorage.getItem('company_code');
+    const {sider_regions:{data}}=this.props;
     return (
       <div className={styles.main}>
         <Row gutter={16}>
@@ -108,6 +140,28 @@ class Main extends PureComponent {
               </Card>
             </Col>
           }*/}
+          {
+            prefix==='http://api.water.test.com' &&
+            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />近30天和近12个月的冷、热水各用水总量
+                 <TreeSelect
+                   value={this.state.value}
+                   style={{ width: 150,marginLeft:'10px' }}
+                   treeDefaultExpandAll={true}
+                   onChange={(value)=>{this.setState({ value });this.onChangeArea(value)}}
+                 >
+                {this.renderTreeNodes(data)}
+                </TreeSelect>
+                </span>}
+                bodyStyle={{ padding: 24 }}
+                style={{ marginBottom: 16, minHeight: 509 }}
+              >
+                <MYSHomepageChart/>
+              </Card>
+            </Col>
+          }
           {
             prefix==='http://api.water.test.com'&&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>

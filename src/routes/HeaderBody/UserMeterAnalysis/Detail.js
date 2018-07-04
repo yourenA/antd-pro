@@ -32,7 +32,7 @@ class Detail extends PureComponent {
   }
   fetch=()=>{
     const that=this;
-    request(`/member_meter_data/${this.props.member_number}`,{
+    request(`/member_meter_data/${this.props.meter_number}`,{
       method:'GET',
       params:{
         started_at:that.state.rangePickerValue[0].format("YYYY-MM-DD"),
@@ -96,7 +96,7 @@ class Detail extends PureComponent {
           position: 'left',
           axisLine: {
             lineStyle: {
-              color: '#2f4554'
+              color: '#1890ff'
             }
           },
         },
@@ -118,7 +118,7 @@ class Detail extends PureComponent {
           data:Data,
           itemStyle:{
             normal: {
-              color: '#2f4554',
+              color: '#1890ff',
             }
           }
         },
