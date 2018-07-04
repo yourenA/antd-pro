@@ -4,6 +4,7 @@ import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import AddOrEditConcentrator from './AddOrEditConcentrator'
+import AddConcentrator from './AddConcentrator'
 import EditConcentratorConfig from './EditConcentratorConfig'
 import Sider from './../Sider'
 import {connect} from 'dva';
@@ -273,6 +274,7 @@ class ConcentratorManage extends PureComponent {
         upload_time =`${fillZero(formValues.hour)}:${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
         break;
       case  'hourly':
+      case  'every_fifteen_minutes':
         upload_time =`${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
         break;
     }
@@ -402,7 +404,7 @@ class ConcentratorManage extends PureComponent {
       {title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
       {title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
       {
-        title: '上传周期', dataIndex: 'upload_cycle_unit_explain', key: 'upload_cycle_unit_explain', width: 80,
+        title: '上传周期', dataIndex: 'upload_cycle_unit_explain', key: 'upload_cycle_unit_explain', width: 100,
       },
       {
         title: '上传时间', dataIndex: 'upload_time', key: 'upload_time', width: 100,
@@ -524,7 +526,7 @@ class ConcentratorManage extends PureComponent {
                         rowKey={record => record.id}
                         dataSource={data}
                         columns={columns}
-                        scroll={{x: 2140, y: this.state.tableY}}
+                        scroll={{x: 2160, y: this.state.tableY}}
                         pagination={false}
                         size="small"
                       />
@@ -545,7 +547,7 @@ class ConcentratorManage extends PureComponent {
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal: false})}
         >
-          <AddOrEditConcentrator wrappedComponentRef={(inst) => this.formRef = inst} area={area.data}
+          <AddConcentrator wrappedComponentRef={(inst) => this.formRef = inst} area={area.data}
                                  concentrator_models={concentrator_models.data} servers={servers.data}/>
         </Modal>
         <Modal

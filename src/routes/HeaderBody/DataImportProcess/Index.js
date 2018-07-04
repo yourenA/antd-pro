@@ -8,7 +8,7 @@ import Sider from './../EmptySider'
 import AddOrEditVendor from './../VendorMange/addOrEditVendor'
 import AddOrEditArea from './../AreaManage/addOrEditArea'
 import AddOrEditConcentratorModels from './../ConcentratorModels/addOrEditConcentratorModels'
-import AddOrEditConcentrator from './../ConcentratorManage/AddOrEditConcentrator'
+import AddOrEditConcentrator from './../ConcentratorManage/AddConcentrator'
 import AddOrEditMeterModel from './../MeterModels/addOrEditMeterModels'
 import ImportArchives from './../UserArchives/ImportUserArchives'
 import request from "./../../../utils/request";

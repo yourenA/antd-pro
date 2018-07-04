@@ -1,5 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { fakeAccountLogin, fakeMobileLogin,logout } from '../services/login';
+import { message} from 'antd';
+
 import {removeLoginStorage} from './../utils/utils'
 export default {
   namespace: 'login',
@@ -55,6 +57,16 @@ export default {
       yield put(routerRedux.replace(`/login/${payload.split('/')[1]}`));
     },
     *accountSubmit({ payload,callback }, { call, put }) {
+      if(location.hostname==='124.228.9.126'&&payload.company_code!=='hy'){
+        console.log('试图在124.228.9.126登陆非衡阳用户')
+        message.error('用户名或密码错误')
+        return false
+      }
+      if(location.hostname==='182.61.56.51'&&payload.company_code==='hy'){
+        console.log('试图在182.61.56.51登陆衡阳用户')
+        message.error('用户名或密码错误')
+        return false
+      }
       const response = yield call(fakeAccountLogin, payload);
       console.log(response)
       if(response.status===200){
