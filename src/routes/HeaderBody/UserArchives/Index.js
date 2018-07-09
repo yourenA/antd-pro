@@ -384,7 +384,7 @@ class UserMeterAnalysis extends PureComponent {
         fixed: 'right',
         width: 90,
         render: (val, record, index) => {
-          return(
+          const children= (
             <p>
               {
                 this.state.showAddBtn &&
@@ -411,6 +411,7 @@ class UserMeterAnalysis extends PureComponent {
               }
             </p>
           )
+          return renderRowSpan(children,record)
         }
       })
     }

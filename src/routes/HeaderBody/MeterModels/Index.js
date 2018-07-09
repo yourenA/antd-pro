@@ -176,7 +176,8 @@ class MeterModel extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '水表类型', width: 80, dataIndex: 'type', key: 'type'},
+      {title: '类型名称', width: 80, dataIndex: 'name', key: 'name'},
+      {title: '类型类别', width: 80, dataIndex: 'type', key: 'type'},
       {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore'},
       {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (

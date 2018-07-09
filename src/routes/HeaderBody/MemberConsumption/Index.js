@@ -3,6 +3,7 @@ import {Table, Card, Popconfirm, Layout, message, Modal, Tooltip,Badge,Button  }
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import Detail from './../UserMeterAnalysis/Detail'
+import MemberDetail from './MemberDetail'
 import Search from './Search'
 import AddOREditUserArchives from './addOREditUserArchives'
 import Sider from './../Sider'
@@ -33,6 +34,7 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: '',
       village_id: '',
       editModal: false,
+      memberModal:false,
       changeModal: false,
       area: '',
     }
@@ -132,6 +134,12 @@ class UserMeterAnalysis extends PureComponent {
       editModal: true
     })
   }
+  operateMember = (record)=> {
+    this.setState({
+      edit_member_number: record.member_number,
+      memberModal: true
+    })
+  }
   render() {
     const {member_consumption: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -166,7 +174,7 @@ class UserMeterAnalysis extends PureComponent {
         )
         return renderRowSpan(children,record)
       }},
-      { title: '用户用水量', dataIndex: 'difference_value', key: 'difference_value' ,width: 90,  render: (val, record, index) => {
+      { title: '用户用水量', dataIndex: 'meter_difference_value', key: 'meter_difference_value' ,width: 90,  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }},
       { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
@@ -179,7 +187,7 @@ class UserMeterAnalysis extends PureComponent {
         return ellipsis2(val, 110)
       } },
       { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
-      { title: '水表用水量', dataIndex: 'meter_difference_value', key: 'meter_difference_value' ,width: 90,  render: (val, record, index) => {
+      { title: '水表用水量', dataIndex: 'difference_value', key: 'difference_value' ,width: 90,  render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},
       {title: '本次抄见(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
@@ -221,7 +229,7 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           const children= (
             <div>
-              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>message.info('功能开发中')}>用户详情</Button>
+              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>this.operateMember(record)}>用户详情</Button>
             </div>
           )
           return renderRowSpan(children,record)
@@ -266,6 +274,17 @@ class UserMeterAnalysis extends PureComponent {
               onCancel={() => this.setState({editModal: false})}
             >
               <Detail meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
+                      started_at={this.state.started_at}/>
+            </Modal>
+            <Modal
+              width="80%"
+              key={ Date.parse(new Date())+1}
+              title={`用户 ${this.state.edit_member_number} 详细信息`}
+              visible={this.state.memberModal}
+              onOk={this.handleEdit}
+              onCancel={() => this.setState({memberModal: false})}
+            >
+              <MemberDetail member_number={this.state.edit_member_number} ended_at={this.state.ended_at}
                       started_at={this.state.started_at}/>
             </Modal>
           </div>
