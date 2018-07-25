@@ -96,10 +96,10 @@ class UserMeterAnalysis extends PureComponent {
     })
 
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:'',
+      village_id:parent_village_id,
       concentrator_number: concentrator_number,
     },function () {
       this.handleSearch({
@@ -114,7 +114,6 @@ class UserMeterAnalysis extends PureComponent {
         display_type: this.state.display_type
       })
     })
-
   }
   handleFormReset = () => {
     this.handleSearch({
@@ -321,7 +320,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <Table
                   rowClassName={function (record, index) {
-                    if (record.status === -2) {
+                    if (record.status === -2 || record.status === -3) {
                       return 'error'
                     }
                   }}

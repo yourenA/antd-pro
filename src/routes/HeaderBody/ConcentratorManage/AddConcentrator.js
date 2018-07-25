@@ -2,13 +2,14 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Input,TreeSelect,Cascader,Tabs, Row, Col, InputNumber, Radio, Checkbox} from 'antd';
+import {Form,  Select,Input,TreeSelect,Cascader,Tabs, Row, Col, InputNumber, Radio, Checkbox,Button,Icon} from 'antd';
 import {connect} from 'dva';
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
+let uuid = 0;
 class AddConcentrator extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +63,32 @@ class AddConcentrator extends Component {
       checkedList
     });
   }
+  add = () => {
+    uuid++;
+    const {form} = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(uuid);
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  };
+  remove = (k) => {
+    const {form} = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  }
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -73,11 +100,40 @@ class AddConcentrator extends Component {
         sm: {span: 18},
       }
     };
+    const formItemLayoutWithOutLabel={
+      wrapperCol: {
+        xs: {span: 24, offset: 0},
+        sm: {span: 18, offset: 5},
+      },
+    };
     const {getFieldDecorator, getFieldValue} = this.props.form;
     // if(this.props.editRecord){
     //   const village_id=this.getParentKey(this.props.editRecord.village_id,this.props.area);
     //   console.log('village_id',village_id)
     // }
+    getFieldDecorator('keys', {initialValue: [uuid]});
+    const keys = getFieldValue('keys');
+    console.log('keys',keys)
+    const formItems = keys.map((k, index) => {
+      const layout = index === 0 ? formItemLayoutWithLabel : formItemLayoutWithOutLabel;
+      return (
+        <FormItem
+          {...layout}
+          label={index === 0 ? '安装小区' : ''}
+          required={false}
+          key={k}>
+          {getFieldDecorator(`villages-${k}`, {
+            initialValue: [],
+          })(<VillageCascader area={this.props.area}/>)}
+          <Icon
+            className="concentrator-cascader-del-btn"
+            type="minus-circle-o"
+            title="删除"
+            onClick={() => this.remove(k)}
+          />
+        </FormItem>
+      );
+    });
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -137,7 +193,7 @@ class AddConcentrator extends Component {
                 <Input  disabled={this.props.editRecord ?true:false}/>
               )}
             </FormItem>
-            <FormItem
+            {/*<FormItem
               {...formItemLayoutWithLabel}
               label={(
                 <span>
@@ -150,7 +206,13 @@ class AddConcentrator extends Component {
               })(
                 <Cascader options={this.renderTreeSelect(this.props.area)} placeholder="请选择"/>
               )}
-            </FormItem>
+            </FormItem>*/}
+          {formItems}
+          <FormItem {...formItemLayoutWithOutLabel}>
+            <Button  onClick={this.add} style={{width: '60%'}}>
+              <Icon type="plus"/> 增加安装小区
+            </Button>
+          </FormItem>
             <FormItem
               {...formItemLayoutWithLabel}
               label={(
@@ -211,6 +273,58 @@ class AddConcentrator extends Component {
           </Form>
 
     </div>
+    );
+  }
+}
+
+class VillageCascader  extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const value = this.props.value;
+    this.state = {
+      village: value || [],
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Should be a controlled component.
+    if ('value' in nextProps) {
+      const value = nextProps.value;
+      this.setState(value);
+    }
+  }
+
+  handleCurrencyChange = (village) => {
+    if (!('value' in this.props)) {
+      this.setState({village});
+    }
+    this.triggerChange({village});
+  }
+  triggerChange = (changedValue) => {
+    // Should provide an event to pass value to Form.
+    const onChange = this.props.onChange;
+    if (onChange) {
+      onChange(Object.assign({}, this.state, changedValue));
+    }
+  }
+  renderTreeSelect=(data)=>{
+    return data.map((item)=>{
+      if(item.children){
+        this.renderTreeSelect(item.children)
+      }
+      item.value=item.id;
+      item.label=item.name
+      return item
+    })
+  }
+  render() {
+    const {size} = this.props;
+    const state = this.state;
+    return (
+      <span>
+         <Cascader className="concentrator-cascader" options={this.renderTreeSelect(this.props.area)}  value={state.village}  onChange={this.handleCurrencyChange} placeholder="请选择"/>
+      </span>
     );
   }
 }

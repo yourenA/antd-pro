@@ -216,6 +216,7 @@ class Vendor extends PureComponent {
                 <Pagination meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
+
           </div>
 
           <Modal

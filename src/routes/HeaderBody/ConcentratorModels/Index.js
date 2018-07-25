@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
+import { Table, Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
@@ -29,6 +29,7 @@ class ConcentratorModels extends PureComponent {
       editModal: false,
       canOperate:localStorage.getItem('canOperateConcentratorModel')==='true'?true:false,
       addModal: false,
+      canAdd:true
     }
   }
 
@@ -90,6 +91,9 @@ class ConcentratorModels extends PureComponent {
     })
   }
   handleAdd = () => {
+    this.setState({
+      canAdd:false
+    })
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
@@ -97,7 +101,6 @@ class ConcentratorModels extends PureComponent {
       type: 'concentrator_models/add',
       payload: {
         ...formValues,
-        protocols:formValues.protocols.join('|'),
         manufacturer_id: formValues.manufacturer_id.key,
       },
       callback: function () {
@@ -105,6 +108,9 @@ class ConcentratorModels extends PureComponent {
         that.setState({
           addModal: false,
         });
+        that.setState({
+          canAdd:true
+        })
         that.props.dispatch({
           type: 'concentrator_models/fetch',
           payload: {
@@ -112,6 +118,11 @@ class ConcentratorModels extends PureComponent {
             page:that.state.page
           }
         });
+      },
+      errorCallback:function () {
+        that.setState({
+          canAdd:true
+        })
       }
     });
 
@@ -124,7 +135,6 @@ class ConcentratorModels extends PureComponent {
       type: 'concentrator_models/edit',
       payload: {
         ...formValues,
-        protocols:formValues.protocols.join('|'),
         manufacturer_id: formValues.manufacturer_id.key,
         id:this.state.editRecord.id,
       },
@@ -178,7 +188,9 @@ class ConcentratorModels extends PureComponent {
       },
       {title: '类型编码', width:  '20%', dataIndex: 'code', key: 'code'},
       {title: '类型名称', width:  '20%', dataIndex: 'name', key: 'name'},
-      {title: '协议', dataIndex: 'protocols', key: 'protocols', width:  '20%'},
+      {title: '协议', dataIndex: 'protocols', key: 'protocols', width:  '20%', render: (text, record, index) => {
+        return text.join('|')
+      }},
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
@@ -258,7 +270,13 @@ class ConcentratorModels extends PureComponent {
             title="添加集中器类型"
             visible={this.state.addModal}
             onOk={this.handleAdd}
-            onCancel={() => this.setState({addModal: false})}
+            onCancel={() => this.setState({addModal: false,canAdd:true})}
+            footer={[
+              <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+              <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
+                确认
+              </Button>,
+            ]}
           >
             <AddOrEditForm manufacturers={manufacturers.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>

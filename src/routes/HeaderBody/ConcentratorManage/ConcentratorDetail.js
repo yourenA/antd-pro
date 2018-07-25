@@ -19,7 +19,7 @@ class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
-    this.timer=null;
+    // this.timer=null;
     this.state = {
       showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       tableY: 0,
@@ -52,7 +52,7 @@ class UserMeterAnalysis extends PureComponent {
         // disabled:false
         time:new Date().getTime()
       })
-    },2000)
+    },3000)
   }
   componentWillUnmount() {
     clearInterval(this.timer)
@@ -131,9 +131,9 @@ class UserMeterAnalysis extends PureComponent {
   render() {
     const {concentrator_water: {data, meta, loading}} = this.props;
     const that=this;
-    const command=this.props.protocols.split('|');
+    // const command=this.props.protocols;
     const renderComandRecord=(record)=>{
-      const renderCommandBtn=command.map((item,index)=>{
+      const renderCommandBtn=record.protocols.map((item,index)=>{
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
@@ -198,7 +198,6 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </div>
         <Table
-          key={ Date.parse(new Date()) + 1}
           rowClassName={function (record, index) {
             if (record.description === '') {
               return 'error'
@@ -209,7 +208,7 @@ class UserMeterAnalysis extends PureComponent {
           rowKey={record => record.meter_number}
           dataSource={data}
           columns={columns}
-          scroll={isMobile?{x:900}:{y: this.state.tableY}}
+          scroll={isMobile?{x:950}:{y: this.state.tableY}}
           //scroll={{ y: this.state.tableY}}
           pagination={false}
           size="small"

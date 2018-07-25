@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal} from 'antd';
+import { Table, Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
@@ -28,6 +28,7 @@ class Vendor extends PureComponent {
       editModal: false,
       addModal: false,
       canOperate:localStorage.getItem('canOperateVendor')==='true'?true:false,
+      canAdd:true
     }
   }
 
@@ -82,6 +83,9 @@ class Vendor extends PureComponent {
     })
   }
   handleAdd = () => {
+    this.setState({
+      canAdd:false
+    })
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
@@ -95,6 +99,9 @@ class Vendor extends PureComponent {
         that.setState({
           addModal: false,
         });
+        that.setState({
+          canAdd:true
+        })
         that.props.dispatch({
           type: 'manufacturers/fetch',
           payload: {
@@ -102,6 +109,11 @@ class Vendor extends PureComponent {
             page:that.state.page
           }
         });
+      },
+      errorCallback:function () {
+        that.setState({
+          canAdd:true
+        })
       }
     });
 
@@ -247,7 +259,13 @@ class Vendor extends PureComponent {
             title="添加厂商"
             visible={this.state.addModal}
             onOk={this.handleAdd}
-            onCancel={() => this.setState({addModal: false})}
+            onCancel={() => this.setState({addModal: false,canAdd:true})}
+            footer={[
+              <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+              <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
+                确认
+              </Button>,
+            ]}
           >
             <AddOrEditVendor   wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>

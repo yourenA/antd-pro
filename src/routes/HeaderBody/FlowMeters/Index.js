@@ -54,6 +54,8 @@ class FlowMeter extends PureComponent {
       addSiteModal:false,
       changeModal: false,
       nowArea: '',
+      canAdd:true,
+      canAddSite:true
 
     }
   }
@@ -162,6 +164,9 @@ class FlowMeter extends PureComponent {
   }
 
   handleAdd = () => {
+    this.setState({
+      canAdd:false
+    })
     const that = this;
     const formValues = this.formRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
@@ -178,13 +183,24 @@ class FlowMeter extends PureComponent {
         that.setState({
           addModal: false,
         });
+        that.setState({
+          canAdd:true
+        })
         that.handleSearchSite({
           page:that.state.page
+        })
+      },
+      errorCallback:function () {
+        that.setState({
+          canAdd:true
         })
       }
     });
   }
   handleAddSite = () => {
+    this.setState({
+      canAddSite:false
+    })
     const that = this;
     const formValues = this.siteFormRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
@@ -198,8 +214,16 @@ class FlowMeter extends PureComponent {
         that.setState({
           addSiteModal: false,
         });
+        that.setState({
+          canAddSite:true
+        })
         that.handleSearchSite({
           page:that.state.page
+        })
+      },
+      errorCallback:function () {
+        that.setState({
+          canAddSite:true
         })
       }
     });
@@ -557,20 +581,30 @@ class FlowMeter extends PureComponent {
           </div>
         </Content>
         <Modal
-          destroyOnClose={true}
           title="添加流量计"
           visible={this.state.addModal}
           onOk={this.handleAdd}
-          onCancel={() => this.setState({addModal: false})}
+          onCancel={() => this.setState({addModal: false,canAdd:true})}
+          footer={[
+            <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+            <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
+              确认
+            </Button>,
+          ]}
         >
           <AddOrEditForm flow_meter_sites={allData} manufacturers={manufacturers.data} wrappedComponentRef={(inst) => this.formRef = inst}/>
         </Modal>
         <Modal
-          destroyOnClose={true}
           title="添加流量计站点"
           visible={this.state.addSiteModal}
           onOk={this.handleAddSite}
-          onCancel={() => this.setState({addSiteModal: false})}
+          onCancel={() => this.setState({addSiteModal: false,canAddSite:true})}
+          footer={[
+            <Button key="back" onClick={() => this.setState({addSiteModal:false})}>取消</Button>,
+            <Button key="submit" type="primary" disabled={!this.state.canAddSite} onClick={this.handleAddSite}>
+              确认
+            </Button>,
+          ]}
         >
           <AddOrEditSiteForm  wrappedComponentRef={(inst) => this.siteFormRef = inst}/>
         </Modal>

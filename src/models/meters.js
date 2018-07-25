@@ -1,4 +1,4 @@
-import { query,add,remove,edit } from '../services/meters';
+import { query,add,remove,edit,change } from '../services/meters';
 
 export default {
   namespace: 'meters',
@@ -46,6 +46,13 @@ export default {
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *change({ payload, callback }, { call, put }) {
+      const response = yield call(change, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();

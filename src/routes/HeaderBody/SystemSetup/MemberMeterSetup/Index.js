@@ -36,15 +36,15 @@ class EditPassword extends Component {
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '户表水量分析页面设置'}]}>
+            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表水量分析页面设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs defaultActiveKey="2" className="system-tabs" >
                   <TabPane  tab='导出CSV字段设置' key="2" >
                     <ExportCSV />
                   </TabPane>
-                {/* <TabPane tab='页面表格显示字段设置' key="1">
+                  <TabPane tab='页面表格显示字段设置' key="1">
                     <Fields />
-                  </TabPane>*/}
+                  </TabPane>
                 </Tabs>
               </Card>
             </PageHeaderLayout>

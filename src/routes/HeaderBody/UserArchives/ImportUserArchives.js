@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Input ,InputNumber,Radio,TreeSelect,Select,DatePicker,Button,Upload,Icon } from 'antd';
+import {Form,  Input ,InputNumber,Radio,TreeSelect,Select,DatePicker,Button,Upload,Icon ,Cascader} from 'antd';
 import {connect} from 'dva';
 import {download} from './../../../utils/utils'
 import request from "./../../../utils/request";
@@ -18,6 +18,7 @@ class EditUserArchives extends Component {
     super(props);
     this.state = {
       fileList: [],
+      concentrators:[]
     };
   }
   componentDidMount() {
@@ -40,6 +41,33 @@ class EditUserArchives extends Component {
   }
   downloadTemplates=()=>{
     download(`${config.prefix}/templates?type=meter`)
+  }
+  renderTreeSelect=(data)=>{
+    return data.map((item)=>{
+      if(item.children){
+        this.renderTreeSelect(item.children)
+      }
+      item.value=item.id;
+      item.label=item.name
+      return item
+    })
+  }
+  onChangeCasader=(value)=>{
+    console.log('value',value);
+    const that=this;
+    const {form} = this.props;
+    form.setFieldsValue({ concentrator_number:''}),
+    request(`/concentrators`, {
+      method: 'get',
+      params: {
+        village_id:value[value.length-1]
+      }
+    }).then((response)=> {
+      console.log(response);
+      that.setState({
+        concentrators:response.data.data
+      })
+    })
   }
   render() {
     const formItemLayoutWithLabel = {
@@ -82,6 +110,19 @@ class EditUserArchives extends Component {
           <Button type="primary" onClick={this.downloadTemplates}>下载模板</Button>
         </FormItem>
         <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              安装小区
+            </span>
+          )}>
+          {getFieldDecorator('village_id', {
+            rules: [{required: true, message: '安装小区不能为空'}],
+          })(
+            <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(this.props.sider_regions.data)} placeholder="请选择"/>
+          )}
+        </FormItem>
+        <FormItem
           label="集中器编号"
           {...formItemLayoutWithLabel}
         >
@@ -90,10 +131,11 @@ class EditUserArchives extends Component {
             rules: [{required: true, message: '集中器编号不能为空'}],
           })(
             <Select >
-              { this.props.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
+              { this.state.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
             </Select>
           )}
         </FormItem>
+
         <FormItem
           label="水表类型"
           {...formItemLayoutWithLabel}

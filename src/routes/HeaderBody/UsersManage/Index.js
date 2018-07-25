@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge,  Dropdown,
+import { Table, Card, Layout, message, Popconfirm,Modal,Switch,Badge,  Dropdown,Button,
   Menu,
   Icon,} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
@@ -32,6 +32,7 @@ class Vendor extends PureComponent {
       editModal: false,
       addModal: false,
       canOperate:localStorage.getItem('canOperateuser')==='true'?true:false,
+      canAdd:true
     }
   }
 
@@ -99,6 +100,9 @@ class Vendor extends PureComponent {
     })
   }
   handleAdd = () => {
+    this.setState({
+      canAdd:false
+    })
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
     this.formRef.props.form.validateFields({force: true},
@@ -119,6 +123,9 @@ class Vendor extends PureComponent {
               that.setState({
                 addModal: false,
               });
+              that.setState({
+                canAdd:true
+              })
               that.props.dispatch({
                 type: 'user/fetch',
                 payload: {
@@ -126,9 +133,17 @@ class Vendor extends PureComponent {
                   page:that.state.page
                 }
               });
+            },
+            errorCallback:function () {
+              that.setState({
+                canAdd:true
+              })
             }
           });
         }else{
+          that.setState({
+            canAdd:true
+          })
         }
       })
 
@@ -409,7 +424,13 @@ class Vendor extends PureComponent {
             title="添加用户"
             visible={this.state.addModal}
             onOk={this.handleAdd}
-            onCancel={() => this.setState({addModal: false})}
+            onCancel={() => this.setState({addModal: false,canAdd:true})}
+            footer={[
+              <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+              <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
+                确认
+              </Button>,
+            ]}
           >
             <AddOrEditForm   usergroup={usergroup.data}  wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>

@@ -54,6 +54,10 @@ class UserLayout extends React.PureComponent {
             this.setState({
               company_name:company_name.name
             })
+          }else{
+            this.setState({
+              company_name:''
+            })
           }
         })
       }
@@ -69,9 +73,15 @@ class UserLayout extends React.PureComponent {
         url_code='hy'
       }
       const company_name=find(this.state.company, function(o) { return o.code === url_code; });
-      this.setState({
-        company_name:company_name.name
-      })
+      if(company_name){
+        this.setState({
+          company_name:company_name.name
+        })
+      }else{
+        this.setState({
+          company_name:''
+        })
+      }
     }
   }
   getChildContext() {

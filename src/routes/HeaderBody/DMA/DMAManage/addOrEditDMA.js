@@ -70,7 +70,7 @@ class AddPoliciesForm extends Component {
             </span>
             )}>
             {getFieldDecorator('parent_id', {
-              initialValue: this.props.editRecord?this.props.editRecord.parent_id:null,
+              initialValue: this.props.editRecord?this.props.editRecord.parent_id:'',
             })(
               <TreeSelect
                 treeDefaultExpandAll={true}

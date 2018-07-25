@@ -326,6 +326,9 @@ export function renderCustomHeaders(headers,meta,page) {
         render: (val, record, index) => {
           let status='success';
           switch (record.status){
+            case -3:
+              status='default'
+              break;
             case -2:
               status='error'
               break;
@@ -336,9 +339,10 @@ export function renderCustomHeaders(headers,meta,page) {
               status='success'
           }
           return (
-            <p>
-              <Badge status={status}/>{val}
-            </p>
+          ellipsis2(<span>
+            <Badge status={status}/>{val}
+          </span>,item.size-5)
+
           )
         }
       })
@@ -434,16 +438,16 @@ function parseRowSpanData(data) {
       if(item.meters.data.length>0){
         for (let i = 0; i < item.meters.data.length; i++) {
           if (item.meters.data.length === 1) {
-            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1})
+            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1,myId:item.meter_number+String(Math.random())})
           } else {
-            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meters.data.length : 0})
+            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meters.data.length : 0,myId:item.meter_number+String(Math.random())})
           }
         }
       }else{
-        resetMeterData.push({...item, rowSpan: 1})
+        resetMeterData.push({...item, rowSpan: 1,myId:item.meter_number+String(Math.random())})
       }
     }else{
-      resetMeterData.push({...item, rowSpan: 1})
+      resetMeterData.push({...item, rowSpan: 1,myId:item.meter_number+String(Math.random())})
     }
   });
   return resetMeterData
@@ -461,16 +465,16 @@ function parseRowSpanData2(data) {
       if(item.meters.length>0){
         for (let i = 0; i < item.meters.length; i++) {
           if (item.meters.length === 1) {
-            resetMeterData.push({...item, ...item.meters[i], meter_difference_value:item.difference_value,rowSpan: 1})
+            resetMeterData.push({...item, ...item.meters[i], meter_difference_value:item.difference_value,rowSpan: 1,myId:item.meter_number+String(Math.random())})
           } else {
-            resetMeterData.push({...item, ...item.meters[i],meter_difference_value:item.difference_value, rowSpan: i === 0 ? item.meters.length : 0})
+            resetMeterData.push({...item, ...item.meters[i],meter_difference_value:item.difference_value, rowSpan: i === 0 ? item.meters.length : 0,myId:item.meter_number+String(Math.random())})
           }
         }
       }else{
-        resetMeterData.push({...item,meter_difference_value:item.difference_value, rowSpan: 1})
+        resetMeterData.push({...item,meter_difference_value:item.difference_value, rowSpan: 1,myId:item.meter_number+String(Math.random())})
       }
     }else{
-      resetMeterData.push({...item, meter_difference_value:item.difference_value,rowSpan: 1})
+      resetMeterData.push({...item, meter_difference_value:item.difference_value,rowSpan: 1,myId:item.meter_number+String(Math.random())})
     }
   });
   return resetMeterData

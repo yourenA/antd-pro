@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip,Badge } from 'antd';
+import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip,Badge,Button  } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -50,6 +50,7 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number:'',
       member_number:'',
       canOperate:localStorage.getItem('canOperateUserArchives')==='true'?true:false,
+      canImport:true
     }
   }
 
@@ -125,10 +126,10 @@ class UserMeterAnalysis extends PureComponent {
     // });
 
   }
-  changeConcentrator = (concentrator_number,village_id)=> {
+  changeConcentrator = (concentrator_number,parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:'',
+      village_id:parent_village_id,
       concentrator_number:concentrator_number,
     },function () {
       this.handleSearch({
@@ -271,18 +272,26 @@ class UserMeterAnalysis extends PureComponent {
     this.file=cb
   }
   handleImport=()=>{
+    this.setState({
+      canImport:false
+    })
     let file=this.file();
     const formValues =this.importFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     if(!formValues.file){
       message.error('请选择文件');
+      this.setState({
+        canImport:true
+      })
       return false
     }
+
     var formData = new FormData();
     formData.append("file", formValues.file.file);
     formData.append("meter_model_id", formValues.meter_model_id);
     formData.append("is_reset", formValues.is_reset.key);
     formData.append("concentrator_number", formValues.concentrator_number);
+    formData.append("village_id", formValues.village_id[formValues.village_id.length - 1]);
     const that=this;
     request(`/meter_import`, {
       method: 'POST',
@@ -295,6 +304,9 @@ class UserMeterAnalysis extends PureComponent {
           importModal:false
         })
       }
+      that.setState({
+        canImport:true
+      })
     })
   }
   render() {
@@ -403,7 +415,7 @@ class UserMeterAnalysis extends PureComponent {
               {
                 this.state.showdelBtn &&
                 <span>
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                  <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的水表也会被删除！</p></div>}
                               onConfirm={()=>this.handleRemove(record.id)}>
                   <a href="">删除</a>
                 </Popconfirm>
@@ -437,7 +449,7 @@ class UserMeterAnalysis extends PureComponent {
                 <Table
                   className='meter-table no-interval'
                   loading={loading}
-                  rowKey={record => record.meter_number}
+                  rowKey={record => record.myId}
                   dataSource={resetMeterData}
                   columns={columns}
                   scroll={{ x: 1900,y: this.state.tableY }}
@@ -456,7 +468,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal:false})}
         >
-          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
+          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}   />
         </Modal>
         <Modal
           width="650px"
@@ -466,26 +478,22 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal:false})}
         >
-          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}    editRecord={this.state.editRecord} />
         </Modal>
         <Modal
           title="批量导入用户"
           visible={this.state.importModal}
-          onOk={this.handleImport}
-          onCancel={() => this.setState({importModal:false})}
+          onCancel={() => this.setState({importModal:false,canImport:true})}
+          //onOk={this.handleImport}
+          footer={[
+            <Button key="back" onClick={() => this.setState({importModal:false})}>取消</Button>,
+            <Button key="submit" type="primary" disabled={!this.state.canImport} onClick={this.handleImport}>
+              确认
+            </Button>,
+          ]}
         >
-          <ImportArchives  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+          <ImportArchives sider_regions={sider_regions}  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
-        <Modal
-          key={ Date.parse(new Date())+2}
-          title="换表"
-          visible={this.state.changeModal}
-          onOk={this.handleChangeTable}
-          onCancel={() => this.setState({changeModal:false})}
-        >
-          <ChangeTable  wrappedComponentRef={(inst) => this.ChangeTableformRef = inst}/>
-        </Modal>
-
       </Layout>
     );
   }

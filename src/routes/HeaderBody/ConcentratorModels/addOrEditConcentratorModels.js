@@ -91,7 +91,8 @@ class AddPoliciesForm extends Component {
           )}
         >
           {getFieldDecorator('protocols', {
-            initialValue: this.props.editRecord ? this.props.editRecord.protocols.length>0?this.props.editRecord.protocols.split('|'):[] : [],
+            initialValue: this.props.editRecord ? this.props.editRecord.protocols : [],
+            rules: [{required: true, message: '协议不能为空'}],
           })(
             <CheckboxGroup options={plainOptions}   />
           )}

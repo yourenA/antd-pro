@@ -106,6 +106,12 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
           </FormItem>
+          <FormItem  label="打开操作栏" style={{float:'right'}}>
+            <Switch defaultChecked={localStorage.getItem('canOperateMeterUnusualAnalysis')==='true'?true:false} onChange={(checked)=>{
+              localStorage.setItem('canOperateMeterUnusualAnalysis',checked);
+              this.props.changeShowOperate()
+            }} />
+          </FormItem>
         </Row>
       </Form>
     )

@@ -126,10 +126,10 @@ class UserMeterAnalysis extends PureComponent {
       })
     })
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id: '',
+      village_id: parent_village_id,
       concentrator_number: concentrator_number
     }, function () {
       this.handleSearch({
@@ -191,7 +191,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-
+      display_type: this.state.display_type
       // area: this.state.area
     })
   }
@@ -222,11 +222,14 @@ class UserMeterAnalysis extends PureComponent {
       {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left'},
       {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed: 'left',},
       {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
-      {title: '当前正累计流量(m³)', dataIndex: 'meter_value', key: 'meter_value', width: 160, render: (text, record, index) => {
-        return ellipsis2(record['body'].meter_value,130)
+      {title: '当前正累计流量(m³)', dataIndex: 'value', key: 'value', width: 160, render: (text, record, index) => {
+        return ellipsis2(text,130)
       }},
       ...hoursColumns,
-      {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,},
+      {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,render: (val, record, index) => {
+
+        return ellipsis2(val.join('|'), 90)
+      }},
       {title: '集中器类型', dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100,},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100,},
       {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 90,},

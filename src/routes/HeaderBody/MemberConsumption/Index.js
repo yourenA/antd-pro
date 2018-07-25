@@ -66,10 +66,10 @@ class UserMeterAnalysis extends PureComponent {
       })
     })
   }
-  changeConcentrator = (concentrator_number,village_id)=> {
+  changeConcentrator = (concentrator_number,parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:'',
+      village_id:parent_village_id,
       concentrator_number:concentrator_number
     }, function(){
       this.handleSearch({
@@ -196,16 +196,19 @@ class UserMeterAnalysis extends PureComponent {
       {title: '上次抄见日期', dataIndex: 'previous_collected_date', key: 'previous_collected_date', width: 110},
       { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90, },
       { title: '集中器硬件编号', dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120 },
-      {title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+      { title: '集中器协议', dataIndex: 'protocols', key: 'protocols' ,width: 90 ,render: (val, record, index) => {
+        return ellipsis2(val.join('|'), 90)
+      }},
+      {title: '开始使用日期', width: 120, dataIndex: 'meter_enabled_date', key: 'meter_enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '开始使用时读数', width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
+      {title: '开始使用时读数', width: 120, dataIndex: 'meter_enabled_value', key: 'meter_enabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用日期', width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
+      {title: '停止使用日期', width: 120, dataIndex: 'meter_disabled_date', key: 'meter_disabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
+      {title: '停止使用时读数', width: 120, dataIndex: 'meter_disabled_value', key: 'meter_disabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
       {
@@ -255,10 +258,10 @@ class UserMeterAnalysis extends PureComponent {
                 <Table
                   className='meter-table no-interval'
                   loading={loading}
-                  rowKey={record => record.meter_number}
+                  rowKey={record => record.myId}
                   dataSource={resetMeterData}
                   columns={columns}
-                  scroll={{ x: 2220,y: this.state.tableY }}
+                  scroll={{ x: 2310,y: this.state.tableY }}
                   pagination={false}
                   size="small"
                 />

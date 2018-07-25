@@ -23,12 +23,13 @@ class UserMeterAnalysis extends PureComponent {
     this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
+      showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       showAddBtnByCon: false,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY: 0,
       manufacturer_id: '',
       page: 1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:  [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -38,8 +39,8 @@ class UserMeterAnalysis extends PureComponent {
       meter_number: '',
       member_number: '',
       display_type: 'all',
-
-
+      ime:new Date().getTime(),
+      canOperate: localStorage.getItem('canOperateMeterUnusualAnalysis') === 'true' ? true : false,
     }
   }
 
@@ -51,8 +52,18 @@ class UserMeterAnalysis extends PureComponent {
         return: 'all'
       },
     });
-  }
 
+    const that=this;
+    this.timer=setInterval(function () {
+      that.setState({
+        // disabled:false
+        time:new Date().getTime()
+      })
+    },5000)
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer)
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
@@ -96,11 +107,11 @@ class UserMeterAnalysis extends PureComponent {
     })
 
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
       concentrator_number: concentrator_number,
-      village_id:'',
+      village_id:parent_village_id,
       showAddBtnByCon: true,
     },function () {
       this.handleSearch({
@@ -158,7 +169,28 @@ class UserMeterAnalysis extends PureComponent {
       // area: this.state.area
     })
   }
-
+  read_single_901f=(command,meter_number)=>{
+    const company_code = sessionStorage.getItem('company_code');
+    console.log('点抄：',meter_number)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        meter_number,
+        feature:company_code==='hy'?'upload_single':'upload_single_lora',
+        protocol:command
+      },
+      callback:()=>{
+        sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
+        message.success('发送指令成功')
+      }
+    });
+  }
   render() {
     const {meter_errors: {data, meta, loading}, manufacturers,dispatch} = this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -217,10 +249,42 @@ class UserMeterAnalysis extends PureComponent {
           return renderErrorData(val)
         }
       },
-      {title: '日期', dataIndex: 'date', width: 150,  key: 'date',},
-      {title: '当日阀值', width: 80, dataIndex: 'threshold', key: 'threshold'},
-      {title: '超出阀值',dataIndex: 'beyond_threshold', key: 'beyond_threshold'},
+      {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,render: (val, record, index) => {
+
+        return ellipsis2(val.join('|'), 90)
+      }},
+      {title: '厂商名称', dataIndex: 'manufacturer_name',  key: 'manufacturer_name',width:100,render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+
+      {title: '日期', dataIndex: 'date',  key: 'date',},
     ];
+    const that=this;
+    const renderComandRecord=(record)=>{
+      const command=record.protocols;
+      const renderCommandBtn=command.map((item,index)=>{
+        const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
+        const isLoading=clickTime&&this.state.time-clickTime<10000
+        return(
+          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}点抄</Button>
+        )
+      })
+      return renderCommandBtn
+    }
+    if(this.state.canOperate){
+      columns.push( {
+        title: '操作',
+        key: 'operation',
+        width: 240,
+        render: (val, record, index) => {
+          return (
+            <div>
+              {this.state.showCommandBtn&&renderComandRecord(record)}
+            </div>
+          )
+        }
+      })
+    }
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -237,7 +301,11 @@ class UserMeterAnalysis extends PureComponent {
                             village_id={this.state.village_id}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
-                            clickAdd={()=>this.setState({addModal: true})}/>
+                            clickAdd={()=>this.setState({addModal: true})}
+                            canOperateConcentrator={this.state.canOperate} changeShowOperate={()=> {
+                      this.setState({canOperate: !this.state.canOperate})
+                    }}
+                    />
                   </div>
                 </div>
                 <Table
@@ -251,7 +319,7 @@ class UserMeterAnalysis extends PureComponent {
                   rowKey={record => record.uuidkey}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 1000,y: this.state.tableY}}
+                  scroll={{x: 1210,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

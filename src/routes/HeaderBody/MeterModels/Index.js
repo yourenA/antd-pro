@@ -7,7 +7,7 @@ import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   meter_models: state.meter_models,
@@ -176,8 +176,12 @@ class MeterModel extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '类型名称', width: 80, dataIndex: 'name', key: 'name'},
-      {title: '类型类别', width: 80, dataIndex: 'type', key: 'type'},
+      {title: '类型名称', width: 100, dataIndex: 'name', key: 'name',render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+      {title: '类型类别', width: 100, dataIndex: 'type', key: 'type',render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
       {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore'},
       {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (
@@ -257,7 +261,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 800,y: this.state.tableY}}
+                  scroll={{x: 880,y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />

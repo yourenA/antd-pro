@@ -24,6 +24,16 @@ export async function add({...restParams}) {
   });
 }
 
+export async function change({...restParams}) {
+  return request(`/meter_change_records`, {
+    method: 'POST',
+    data: {
+      ...restParams,
+    },
+  });
+}
+
+
 export async function edit({id,...restParams}) {
   return request(`/meters/${id}`, {
     method: 'PUT',

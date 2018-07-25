@@ -46,7 +46,7 @@ class SearchForm extends Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form;
-    const command=this.props.protocols.split('|');
+    const command=this.props.protocols;
 
     const renderCommandBtn=command.map((item,index)=>{
       const clickTime=sessionStorage.getItem(`concentrator_number-${item}-${this.props.concentratorNumber}`)

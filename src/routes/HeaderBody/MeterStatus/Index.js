@@ -86,10 +86,10 @@ class UserMeterAnalysis extends PureComponent {
     })
 
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id: '',
+      village_id:parent_village_id,
       concentrator_number: concentrator_number,
       showAddBtnByCon: true,
     }, function () {

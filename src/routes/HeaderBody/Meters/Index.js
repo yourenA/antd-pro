@@ -9,6 +9,7 @@ import Sider from './../Sider'
 import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
+import ChangeTable from './ChangeTable'
 const {Content} = Layout;
 @connect(state => ({
   user_command_data: state.user_command_data,
@@ -24,6 +25,7 @@ class MeterModel extends PureComponent {
       showAddBtn: find(this.permissions, {name: 'meter_model_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'meter_model_delete'}),
       showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
+      showChangeBtn: find(this.permissions, {name: 'meter_change_record_add'}),
       tableY: 0,
       page: 1,
       commandPage: '',
@@ -85,10 +87,10 @@ class MeterModel extends PureComponent {
       })
     })
   }
-  changeConcentrator = (concentrator_number, village_id)=> {
+  changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id: '',
+      village_id: parent_village_id,
       concentrator_number: concentrator_number
     }, function () {
       this.handleSearch({
@@ -188,6 +190,36 @@ class MeterModel extends PureComponent {
         message.success('修改水表成功')
         that.setState({
           editModal: false,
+        });
+        that.props.dispatch({
+          type: 'meters/fetch',
+          payload: {
+            number: that.state.number,
+            member_number: that.state.member_number,
+            install_address: that.state.install_address,
+            real_name: that.state.real_name,
+            page: that.state.page
+          }
+        });
+      }
+    });
+  }
+  handleChangeMeter = ()=> {
+    const formValues = this.changeFormRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
+    const that = this;
+    this.props.dispatch({
+      type: 'meters/change',
+      payload: {
+        ...formValues,
+        initial_water: parseFloat(formValues.initial_water),
+        meter_model_id: formValues.meter_model_id.key,
+        is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
+      },
+      callback: function () {
+        message.success('修改水表成功')
+        that.setState({
+          changeModal: false,
         });
         that.props.dispatch({
           type: 'meters/fetch',
@@ -310,6 +342,11 @@ class MeterModel extends PureComponent {
         return ellipsis2(text, 80)
       }
       },
+      {
+        title: '水表序号', dataIndex: 'index', key: 'index', width: 80, render: (text, record, index) => {
+        return ellipsis2(text, 80)
+      }
+      },
       {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
       {
         title: '水表类型名称',
@@ -363,24 +400,61 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 100)
         }
       },
-      {title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+      {
+        title: '厂商代码',
+        dataIndex: 'manufacturer_prefix',
+        key: 'manufacturer_prefix',
+        width: 80,
+        render: (text, record, index) => {
+          return ellipsis2(text, 80)
+        }
+      },
+      {
+        title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
-      }},
-      {title: '开始使用时读数', width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
-        return ellipsis2(text, 120)
-      }},
-      {title: '停止使用日期', width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
-        return ellipsis2(text, 120)
-      }},
-      {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
-        return ellipsis2(text, 120)
-      }},
-      {title: '生产日期', width: 120, dataIndex: 'manufactured_at', key: 'manufactured_at', render: (text, record, index) => {
-        return ellipsis2(text, 120)
-      }},
-      {title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
+      }
+      },
+      {
+        title: '开始使用时读数',
+        width: 120,
+        dataIndex: 'enabled_value',
+        key: 'enabled_value',
+        render: (text, record, index) => {
+          return ellipsis2(text, 120)
+        }
+      },
+      {
+        title: '停止使用日期',
+        width: 120,
+        dataIndex: 'disabled_date',
+        key: 'disabled_date',
+        render: (text, record, index) => {
+          return ellipsis2(text, 120)
+        }
+      },
+      {
+        title: '停止使用时读数',
+        width: 120,
+        dataIndex: 'disabled_value',
+        key: 'disabled_value',
+        render: (text, record, index) => {
+          return ellipsis2(text, 120)
+        }
+      },
+      {
+        title: '生产日期',
+        width: 120,
+        dataIndex: 'manufactured_at',
+        key: 'manufactured_at',
+        render: (text, record, index) => {
+          return ellipsis2(text, 120)
+        }
+      },
+      {
+        title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
         return ellipsis2(text, 100)
-      }},
+      }
+      },
 
       {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100},
       {title: '条码', dataIndex: 'barcode', key: 'barcode', width: 100},
@@ -402,7 +476,7 @@ class MeterModel extends PureComponent {
     if (this.state.canOperateMeter) {
       columns.push({
         title: '操作',
-        width: isMobile ? 90 : 140,
+        width: isMobile ? 90 : 180,
         fixed: 'right',
         render: (val, record, index) => (
           <p>
@@ -445,8 +519,22 @@ class MeterModel extends PureComponent {
                 </span>
             }
             {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+              this.state.showChangeBtn &&record.status === 1&&
+              <span>
+                      <a href="javascript:;" onClick={()=> {
+                        this.setState(
+                          {
+                            editRecord: record,
+                            changeModal: true
+                          }
+                        )
+                      }}>换表</a>
+            <span className="ant-divider"/>
+                </span>
+            }
+            {
+              this.state.showdelBtn &&record.status === 1&&
+              <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的用户也会被删除！</p></div>}
                           onConfirm={()=>this.handleRemove(record.id)}>
                 <a href="">删除</a>
               </Popconfirm>
@@ -517,7 +605,7 @@ class MeterModel extends PureComponent {
                   rowKey={record => record.id}
                   dataSource={data}
                   columns={columns}
-                  scroll={{x: 2300, y: this.state.tableY}}
+                  scroll={{x: 2530, y: this.state.tableY}}
                   pagination={false}
                   size="small"
                 />
@@ -542,6 +630,16 @@ class MeterModel extends PureComponent {
           >
             <AddOrEditForm meter_models={meter_models.data} editRecord={this.state.editRecord}
                            wrappedComponentRef={(inst) => this.editFormRef = inst}/>
+          </Modal>
+          <Modal
+            key={ Date.parse(new Date()) + 1}
+            title="更换水表"
+            visible={this.state.changeModal}
+            onOk={this.handleChangeMeter}
+            onCancel={() => this.setState({changeModal: false})}
+          >
+            <ChangeTable meter_models={meter_models.data} editRecord={this.state.editRecord}
+                         wrappedComponentRef={(inst) => this.changeFormRef = inst}/>
           </Modal>
           <Modal
             width="90%"
@@ -569,8 +667,8 @@ class MeterModel extends PureComponent {
       </Layout>
     );
   }
-  }
+}
 
-  export
-  default
-  MeterModel
+export
+default
+MeterModel

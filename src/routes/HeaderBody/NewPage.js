@@ -27,7 +27,9 @@ class Main extends PureComponent {
       time:moment().format('HH:mm:ss'),
       concentrator:{},
       meter:{},
-      server:{}
+      server:{},
+      last30day:[],
+      last12month:[]
     }
   }
   componentDidMount() {
@@ -60,6 +62,42 @@ class Main extends PureComponent {
   }
   onChangeArea=(value)=>{
     console.log(value)
+    const that=this;
+    request(`/meter_model_meter_data`,{
+      method:'GET',
+      params:{
+        village_id:value,
+        interval:'day',
+        started_at: moment().add(-29, 'days').format('YYYY-MM-DD'),
+        ended_at:moment(new Date()).format('YYYY-MM-DD')
+      }
+    }).then((response)=>{
+      console.log(response);
+      that.setState({
+        last30day:response.data
+      })
+    })
+
+    const date = new Date();
+    const year = date.getFullYear(); //获取当前日期的年份
+    const month = date.getMonth(); //获取当前日期的月份
+    const day = date.getDate(); //获取当前日期的日
+    const started_at=moment(year-1 + '-' + month + '-' + day).isBefore('2017-10-01')?'2017-10-01':moment(year-1 + '-' + month + '-' + day).format('YYYY-MM-DD')
+    console.log(moment(year-1 + '-' + month + '-' + day).format('YYYY-MM-DD'))
+    request(`/meter_model_meter_data`,{
+      method:'GET',
+      params:{
+        village_id:value,
+        interval:'month',
+        started_at:started_at,
+        ended_at:moment(new Date()).format('YYYY-MM-DD')
+      }
+    }).then((response)=>{
+      console.log(response);
+      that.setState({
+        last12month:response.data
+      })
+    })
   }
   componentWillUnmount(){
     // clearInterval(this.setTime)
@@ -140,28 +178,7 @@ class Main extends PureComponent {
               </Card>
             </Col>
           }*/}
-          {
-            prefix==='http://api.water.test.com' &&
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Card
-                bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />近30天和近12个月的冷、热水各用水总量
-                 <TreeSelect
-                   value={this.state.value}
-                   style={{ width: 150,marginLeft:'10px' }}
-                   treeDefaultExpandAll={true}
-                   onChange={(value)=>{this.setState({ value });this.onChangeArea(value)}}
-                 >
-                {this.renderTreeNodes(data)}
-                </TreeSelect>
-                </span>}
-                bodyStyle={{ padding: 24 }}
-                style={{ marginBottom: 16, minHeight: 509 }}
-              >
-                <MYSHomepageChart/>
-              </Card>
-            </Col>
-          }
+
           {
             prefix==='http://api.water.test.com'&&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -209,7 +226,25 @@ class Main extends PureComponent {
               <Proportion meter={this.state.meter}/>
             </Card>
           </Col>
-
+          <Col xl={24} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title={<span><Icon type='area-chart' style={{marginRight:'5px',color:'#1890ff'}} />近一个月和一年各水表类型用水量
+                 <TreeSelect
+                   value={this.state.value}
+                   style={{ width: 150,marginLeft:'10px' }}
+                   treeDefaultExpandAll={true}
+                   onChange={(value)=>{this.setState({ value });this.onChangeArea(value)}}
+                 >
+                {this.renderTreeNodes(data)}
+                </TreeSelect>
+                </span>}
+              bodyStyle={{ padding: 24 }}
+              style={{ marginBottom: 16, minHeight: 509 }}
+            >
+              <MYSHomepageChart last30day={this.state.last30day} last12month={this.state.last12month}/>
+            </Card>
+          </Col>
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}

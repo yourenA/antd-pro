@@ -28,11 +28,13 @@ export default {
         });
       }
     },
-    *add({ payload, callback }, { call, put }) {
+    *add({ payload, callback,errorCallback }, { call, put }) {
       const response = yield call(add, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();
+      }else{
+        if (errorCallback) errorCallback();
       }
     },
     *edit({ payload, callback }, { call, put }) {
