@@ -10,6 +10,7 @@ import moment from 'moment';
 import Detail from './../UserMeterAnalysis/Detail'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from '../../../utils/utils'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -21,6 +22,7 @@ class FunctionContent extends PureComponent {
     this.state = {
       tableY: 0,
       page: 1,
+      initPage:1,
       // initDate: moment(new Date(), 'YYYY-MM-DD'),
       initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       date: '',
@@ -28,10 +30,13 @@ class FunctionContent extends PureComponent {
       member_number:'',
       concentrator_number:'',
       meter_number:'',
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch} = this.props;
     const that = this;
     dispatch({
@@ -49,9 +54,46 @@ class FunctionContent extends PureComponent {
       // date: moment(this.state.initDate).format('YYYY-MM-DD'),
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30,
     })
   }
-
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {zero_abnormality: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            area_id: this.state.area_id,
+            page: this.state.page+1,
+            member_number:this.state.member_number,
+            concentrator_number:this.state.concentrator_number,
+            meter_number:this.state.meter_number,
+            // date: this.state.date,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at,
+            per_page:this.state.per_page,
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 +5)
@@ -67,13 +109,14 @@ class FunctionContent extends PureComponent {
       // date: moment(this.state.initDate).format('YYYY-MM-DD'),
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30
     })
   }
-  handleSearch = (values, cb) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'zero_abnormality/fetch',
+      type:fetchAndPush?'zero_abnormality/fetchAndPush': 'zero_abnormality/fetch',
       payload: {
         ...values,
       },
@@ -81,7 +124,12 @@ class FunctionContent extends PureComponent {
         that.setState({
           ...values,
         })
-        if (cb)cb()
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
       }
     });
   }
@@ -95,9 +143,22 @@ class FunctionContent extends PureComponent {
       // date: this.state.date,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
+      per_page:this.state.per_page
     })
   }
-
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      area_id: this.state.area_id,
+      page: 1,
+      member_number:this.state.member_number,
+      concentrator_number:this.state.concentrator_number,
+      meter_number:this.state.meter_number,
+      // date: this.state.date,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      per_page:per_page
+    })
+  }
   operate = (record)=> {
     this.setState({
       show_member_number: record.member_number,
@@ -119,7 +180,7 @@ class FunctionContent extends PureComponent {
         fixed: 'left',
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
@@ -160,6 +221,7 @@ class FunctionContent extends PureComponent {
                       setWarningRule={()=> {
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/zero_warning_setup`));
                       }}
+                      per_page={this.state.per_page}
                       dma={dma} handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initDate={this.state.initDate}
                       initRange={this.state.initRange}/>
@@ -175,7 +237,7 @@ class FunctionContent extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  meta={meta} handPageChange={this.handPageChange}/>
 
               </Card>
               <Modal

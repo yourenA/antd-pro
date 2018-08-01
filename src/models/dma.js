@@ -27,6 +27,8 @@ export default {
             type: 'changeLoading',
             payload: false,
           });
+          document.querySelector('.ant-table-body').scrollTop=0;
+
           if(callback)callback()
         }else{
           yield put({
@@ -40,9 +42,30 @@ export default {
             type: 'changeLoading',
             payload: false,
           });
+          document.querySelector('.ant-table-body').scrollTop=0;
           if(callback)callback()
         }
       }
+    },
+    *fetchAndPush({ payload,callback }, { call, put }) {
+      // yield put({
+      //   type: 'changeLoading',
+      //   payload: true,
+      // });
+      const response = yield call(query, payload);
+      console.log(response)
+      if(response.status===200){
+        yield put({
+          type: 'saveAndPush',
+          payload:  response.data
+        });
+        // yield put({
+        //   type: 'changeLoading',
+        //   payload: false,
+        // });
+        if (callback) callback();
+      }
+
     },
     *fetchAll({payload, callback}, {call, put}) {
       const response = yield call(query, payload);
@@ -52,6 +75,7 @@ export default {
           type: 'saveAll',
           payload: response.data
         });
+        document.querySelector('.ant-table-body').scrollTop=0;
         if (callback)callback()
       }
 
@@ -86,6 +110,18 @@ export default {
       return {
         ...state,
         data: action.payload.data,
+        meta:action.payload.meta
+      };
+    },
+    saveAndPush(state, action) {
+      // console.log('[...state.data,...action.payload.data]',[...state.data,...action.payload.data]);
+      const data=[...state.data,...action.payload.data];
+      // data.map((item,index)=>{
+      //   item.index=index
+      // })
+      return {
+        ...state,
+        data: data,
         meta:action.payload.meta
       };
     },

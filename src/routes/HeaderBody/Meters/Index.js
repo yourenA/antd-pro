@@ -10,6 +10,7 @@ import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 import ChangeTable from './ChangeTable'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   user_command_data: state.user_command_data,
@@ -28,23 +29,26 @@ class MeterModel extends PureComponent {
       showChangeBtn: find(this.permissions, {name: 'meter_change_record_add'}),
       tableY: 0,
       page: 1,
+      initPage:1,
       commandPage: '',
       started_at: '',
       ended_at: '',
-
       number: '',
       member_number: '',
       install_address: '',
       real_name: '',
-
       editModal: false,
       addModal: false,
       commandModal: false,
       canOperateMeter: localStorage.getItem('canOperateMeter') === 'true' ? true : false,
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+
     const {dispatch} = this.props;
     // dispatch({
     //   type: 'meters/fetch',
@@ -64,7 +68,41 @@ class MeterModel extends PureComponent {
 
     // this.handleCommandSearch({page:1})
   }
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {meters: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            number: this.state.number,
+            member_number: this.state.member_number,
+            install_address: this.state.install_address,
+            real_name: this.state.real_name,
+            per_page:this.state.per_page,
 
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
@@ -84,6 +122,7 @@ class MeterModel extends PureComponent {
         member_number: this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        per_page:this.state.per_page
       })
     })
   }
@@ -99,6 +138,7 @@ class MeterModel extends PureComponent {
         member_number: this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        per_page:this.state.per_page
       })
     })
   }
@@ -110,13 +150,14 @@ class MeterModel extends PureComponent {
       member_number: '',
       install_address: '',
       real_name: '',
+      per_page:30
     })
   }
-  handleSearch = (values) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const {dispatch} = this.props;
     const that = this;
     dispatch({
-      type: 'meters/fetch',
+      type:fetchAndPush?'meters/fetchAndPush': 'meters/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
@@ -126,6 +167,12 @@ class MeterModel extends PureComponent {
         that.setState({
           ...values,
         })
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
       }
     });
   }
@@ -136,6 +183,17 @@ class MeterModel extends PureComponent {
       member_number: this.state.member_number,
       install_address: this.state.install_address,
       real_name: this.state.real_name,
+      per_page:this.state.per_page
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      number: this.state.number,
+      member_number: this.state.member_number,
+      install_address: this.state.install_address,
+      real_name: this.state.real_name,
+      per_page:per_page
     })
   }
   handleAdd = () => {
@@ -157,16 +215,14 @@ class MeterModel extends PureComponent {
         that.setState({
           addModal: false,
         });
-        that.props.dispatch({
-          type: 'meters/fetch',
-          payload: {
-            number: that.state.number,
-            member_number: that.state.member_number,
-            install_address: that.state.install_address,
-            real_name: that.state.real_name,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          number: that.state.number,
+          member_number: that.state.member_number,
+          install_address: that.state.install_address,
+          real_name: that.state.real_name,
+          per_page:that.state.per_page
+        })
       }
     });
 
@@ -191,16 +247,14 @@ class MeterModel extends PureComponent {
         that.setState({
           editModal: false,
         });
-        that.props.dispatch({
-          type: 'meters/fetch',
-          payload: {
-            number: that.state.number,
-            member_number: that.state.member_number,
-            install_address: that.state.install_address,
-            real_name: that.state.real_name,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          number: that.state.number,
+          member_number: that.state.member_number,
+          install_address: that.state.install_address,
+          real_name: that.state.real_name,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -217,20 +271,18 @@ class MeterModel extends PureComponent {
         is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
       },
       callback: function () {
-        message.success('修改水表成功')
+        message.success('更换水表成功')
         that.setState({
           changeModal: false,
         });
-        that.props.dispatch({
-          type: 'meters/fetch',
-          payload: {
-            number: that.state.number,
-            member_number: that.state.member_number,
-            install_address: that.state.install_address,
-            real_name: that.state.real_name,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          number: that.state.number,
+          member_number: that.state.member_number,
+          install_address: that.state.install_address,
+          real_name: that.state.real_name,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -243,16 +295,14 @@ class MeterModel extends PureComponent {
       },
       callback: function () {
         message.success('删除水表成功')
-        that.props.dispatch({
-          type: 'meters/fetch',
-          payload: {
-            number: that.state.number,
-            member_number: that.state.member_number,
-            install_address: that.state.install_address,
-            real_name: that.state.real_name,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          number: that.state.number,
+          member_number: that.state.member_number,
+          install_address: that.state.install_address,
+          real_name: that.state.real_name,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -268,16 +318,14 @@ class MeterModel extends PureComponent {
       },
       callback: ()=> {
         message.success('发送指令成功');
-        that.props.dispatch({
-          type: 'meters/fetch',
-          payload: {
-            number: that.state.number,
-            member_number: that.state.member_number,
-            install_address: that.state.install_address,
-            real_name: that.state.real_name,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          number: that.state.number,
+          member_number: that.state.member_number,
+          install_address: that.state.install_address,
+          real_name: that.state.real_name,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -323,7 +371,7 @@ class MeterModel extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return renderIndex(meta, this.state.page, index)
+          return renderIndex(meta, this.state.initPage, index)
         }
       },
       {
@@ -586,6 +634,7 @@ class MeterModel extends PureComponent {
                     <DefaultSearch wrappedComponentRef={(inst) => this.searchFormRef = inst}
                                    inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
                                    clickInfo={this.showCommandInfo}
+                                   per_page={this.state.per_page}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
                                    canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=> {
@@ -609,7 +658,7 @@ class MeterModel extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

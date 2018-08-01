@@ -24,7 +24,7 @@ class SearchForm extends Component {
         // started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         // ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',
       };
-      this.props.handleSearch({...values, page: 1})
+      this.props.handleSearch({...values, page: 1,per_page:this.props.per_page})
     });
   }
   handleFormReset = () => {

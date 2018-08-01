@@ -36,7 +36,7 @@ class SearchForm extends Component {
       const values = {
         meter_number: fieldsValue.meter_number,
       };
-      this.props.handleSearch({...values,page:1})
+      this.props.handleSearch({...values,page:1,per_page:this.props.per_page})
     });
   }
   handleFormReset = () => {
@@ -70,7 +70,7 @@ class SearchForm extends Component {
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            {this.props.showCommandBtn&&company_code==='hy'&&renderCommandBtn}
+            {this.props.showCommandBtn&&renderCommandBtn}
           </FormItem>
           <FormItem  label="打开操作栏" style={{float:'right'}}>
             <Switch defaultChecked={localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false} onChange={(checked)=>{

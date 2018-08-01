@@ -10,6 +10,7 @@ import {connect} from 'dva';
 import find from 'lodash/find'
 import {Link, routerRedux} from 'dva/router';
 import {renderIndex} from './../../../utils/utils'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   usergroup: state.usergroup,
@@ -27,15 +28,19 @@ class Vendor extends PureComponent {
       tableY: 0,
       query: '',
       page: 1,
+      initPage: 1,
       started_at: '',
       ended_at: '',
       editModal: false,
       addModal: false,
       canOperate:localStorage.getItem('canOperateUserGroup')==='true'?true:false,
+      per_page:30,
+      canLoadByScroll: true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
@@ -47,102 +52,75 @@ class Vendor extends PureComponent {
       }
     });
   }
-
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable = ()=> {
+    console.log('scroll')
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      console.log('到达底部');
+      if (this.state.canLoadByScroll) {
+        const {usergroup: {meta}} = this.props;
+        if (this.state.page < meta.pagination.total_pages) {
+          this.setState({
+            canLoadByScroll: false,
+          })
+          this.handleSearch({
+            page: this.state.page + 1,
+            per_page:this.state.per_page,
+            // area: this.state.area
+          }, function () {
+            that.setState({
+              canLoadByScroll: true,
+            })
+          }, true)
+        }
+      }
+    }
+  }
   handleFormReset = () => {
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'user/fetch',
-      payload: {},
-    });
-
-    this.setState({
+    this.handleSearch({
       page: 1,
-      query: '',
-      started_at: '',
-      ended_at: '',
+      per_page:30,
     })
   }
-  handleSearch = (values) => {
+  handleSearch = (values, cb, fetchAndPush = false) => {
+    const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'usergroup/fetch',
+      type: fetchAndPush?'usergroup/fetchAndPush':'usergroup/fetch',
       payload: {
         ...values,
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        })
+        if (!fetchAndPush) {
+          that.setState({
+            initPage: values.page
+          })
+        }
+        if (cb)cb()
+      }
     });
-
-    this.setState({
-      query: values.query,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      query: this.state.query,
-      ended_at: this.state.ended_at,
-      started_at: this.state.started_at
+      per_page:this.state.per_page
     })
   }
-  handleAdd = () => {
-    const that = this;
-    const formValues =this.formRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
-    this.props.dispatch({
-      type: 'user/add',
-      payload: {
-        data: {
-          ...formValues,
-          is_email_notify: formValues.is_email_notify?1:-1,
-          is_sms_notify: formValues.is_sms_notify?1:-1,
-          role_id: formValues.role_id.key,
-        },
-      },
-      callback: function () {
-        message.success('添加用户成功')
-        that.setState({
-          addModal: false,
-        });
-        that.props.dispatch({
-          type: 'user/fetch',
-          payload: {
-            query:that.state.query,
-            page:that.state.page
-          }
-        });
-      }
-    });
-
-  }
-  handleEdit=()=>{
-    const formValues =this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
-    const that = this;
-    this.props.dispatch({
-      type: 'user/edit',
-      payload: {
-        data: {
-          ...formValues,
-          is_email_notify: formValues.is_email_notify?1:-1,
-          is_sms_notify: formValues.is_sms_notify?1:-1,
-          role_id: formValues.role_id?formValues.role_id.key:'',
-          id:this.state.editRecord.id
-        },
-      },
-      callback: function () {
-        message.success('修改用户成功')
-        that.setState({
-          editModal: false,
-        });
-        that.props.dispatch({
-          type: 'user/fetch',
-          payload: {
-            query:that.state.query,
-            page:that.state.page
-          }
-        });
-      }
-    });
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      per_page:per_page
+    })
   }
   handleEditStatus=(id,status)=>{
     let sendStatus=0;
@@ -162,13 +140,10 @@ class Vendor extends PureComponent {
       },
       callback: function () {
         message.success('修改状态成功')
-        that.props.dispatch({
-          type: 'usergroup/fetch',
-          payload: {
-            query:that.state.query,
-            page:that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -181,13 +156,10 @@ class Vendor extends PureComponent {
       },
       callback: function () {
         message.success('删除角色成功')
-        that.props.dispatch({
-          type: 'usergroup/fetch',
-          payload: {
-            query: that.state.query,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page:that.state.per_page
+        })
       }
     });
   }
@@ -202,7 +174,7 @@ class Vendor extends PureComponent {
         width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {
@@ -272,6 +244,7 @@ class Vendor extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="名称" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
+                                   per_page={this.state.per_page}
                                    showAddBtn={this.state.showAddBtn} clickAdd={() => dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/add`))}
                                    changeShowOperate={()=> {
                                      this.setState({canOperate: !this.state.canOperate})
@@ -291,29 +264,13 @@ class Vendor extends PureComponent {
                   size="small"
                 />
                 {
-                  meta && <Pagination meta={meta} handPageChange={this.handPageChange}/>
-
+                  meta && <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
                 }
 
               </Card>
             </PageHeaderLayout>
           </div>
 
-          <Modal
-            title="添加用户"
-            visible={this.state.addModal}
-            onOk={this.handleAdd}
-            onCancel={() => this.setState({addModal: false})}
-          >
-          </Modal>
-          <Modal
-            key={ Date.parse(new Date())}
-            title="修改用户"
-            visible={this.state.editModal}
-            onOk={this.handleEdit}
-            onCancel={() => this.setState({editModal: false})}
-          >
-          </Modal>
         </Content>
       </Layout>
     );

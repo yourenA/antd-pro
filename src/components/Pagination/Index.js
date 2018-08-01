@@ -7,13 +7,17 @@ export default class MyPagination extends PureComponent {
       this.props.onTabChange(key);
     }
   };
-
+  onShowSizeChange=(current, pageSize)=> {
+    console.log(current, pageSize);
+    this.props.handPageSizeChange(pageSize)
+  }
   render() {
     const {meta, handPageChange, initPage}=this.props
     return (
       <div>
         <Pagination
-
+          showSizeChanger onShowSizeChange={this.onShowSizeChange}
+          pageSizeOptions={['30','50','100','200']}
           showTotal={(total, range) => {
             if (initPage) {
               return meta ?`获取第${(initPage-1)*(meta.pagination.per_page)+1}-${range[1]?range[1]:''}条  总数 : ${total}`:''

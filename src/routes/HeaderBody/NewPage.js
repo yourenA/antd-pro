@@ -15,6 +15,7 @@ import moment from 'moment'
 import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
 import {prefix,projectName,poweredBy} from './../../common/config'
+import {fillZero} from './../../utils/utils'
 const TreeNode = TreeSelect.TreeNode;
 import {connect} from 'dva';
 @connect(state => ({
@@ -82,8 +83,8 @@ class Main extends PureComponent {
     const year = date.getFullYear(); //获取当前日期的年份
     const month = date.getMonth(); //获取当前日期的月份
     const day = date.getDate(); //获取当前日期的日
-    const started_at=moment(year-1 + '-' + month + '-' + day).isBefore('2017-10-01')?'2017-10-01':moment(year-1 + '-' + month + '-' + day).format('YYYY-MM-DD')
-    console.log(moment(year-1 + '-' + month + '-' + day).format('YYYY-MM-DD'))
+    const started_at=moment((year-1) + '-' + fillZero(month+1) + '-' + fillZero(day)).isBefore('2017-10-01')?'2017-10-01':moment((year-1) + '-' + fillZero(month+1) + '-' + fillZero(day)).format('YYYY-MM-DD')
+    console.log(moment((year-1) + '-' + fillZero(month+1) + '-' + fillZero(day)).format('YYYY-MM-DD'))
     request(`/meter_model_meter_data`,{
       method:'GET',
       params:{

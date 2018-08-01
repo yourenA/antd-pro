@@ -154,8 +154,8 @@ class HeaderBodyLayout extends React.PureComponent {
               <p>
                 <a href="javascript:;" onClick={()=> {
                   console.log(' this.noLeakNotifyDay', this.noLeakNotifyDay)
-                  localStorage.setItem('noConsumptionNotifyDay', date);
-                  notification.close('noConsumptionNotifyDay')
+                  localStorage.setItem('noLeakNotifyDay', date);
+                  notification.close('noLeakNotifyDay')
                 }
                 }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
                 dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/consumption_abnormality`));

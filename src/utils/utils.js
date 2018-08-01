@@ -281,42 +281,9 @@ exports.renderErrorData = renderErrorData;
 
 export function renderCustomHeaders(headers,meta,page) {
   let  custom_width=50;
-  let custom_headers=[{
-    title: '序号',
-    dataIndex: 'id',
-    key: 'id',
-    width: 50,
-    className: 'table-index',
-    fixed: 'left',
-    render: (text, record, index) => {
-      return renderIndex(meta,page,index)
-    }
-  }];
+  let custom_headers=[];
   headers&&headers.forEach((item, index)=> {
     custom_width =custom_width+ item.size;
-    /*if(item.key==='install_address'){
-      custom_headers.push({
-          title: item.display_name,
-          dataIndex: item.key,
-          key: item.key,
-          width: index === headers.length - 1 ? '' : item.size,
-          render: (val, record, index) => (
-            <Tooltip title={val}>
-              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
-            </Tooltip>
-          )
-        })
-    }else if(item.key==='real_name'){
-      custom_headers.push({
-        title: item.display_name,
-        dataIndex: item.key,
-        key: item.key,
-        width: index === headers.length - 1 ? '' : item.size,
-        render: (val, record, index) => {
-          return ellipsis(val,3)
-        }
-      })
-    }else */
     if (item.key === 'status_explain') {
       custom_headers.push({
         title: item.display_name,

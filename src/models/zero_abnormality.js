@@ -22,12 +22,23 @@ export default {
           type: 'save',
           payload: response.data
         });
+        document.querySelector('.ant-table-body').scrollTop=0;
         yield put({
           type: 'changeLoading',
           payload: false,
-
         });
         if (callback)callback()
+      }
+    },
+    *fetchAndPush({ payload,callback }, { call, put }) {
+      const response = yield call(query, payload);
+      console.log(response)
+      if(response.status===200){
+        yield put({
+          type: 'saveAndPush',
+          payload:  response.data
+        });
+        if (callback) callback();
       }
     },
     *fetchAll({payload, callback}, {call, put}) {
@@ -40,7 +51,6 @@ export default {
         });
         if (callback)callback()
       }
-
 
     },
     *add({payload, callback}, {call, put}) {
@@ -71,6 +81,18 @@ export default {
         ...state,
         data: action.payload.data,
         meta: action.payload.meta
+      };
+    },
+    saveAndPush(state, action) {
+      // console.log('[...state.data,...action.payload.data]',[...state.data,...action.payload.data]);
+      const data=[...state.data,...action.payload.data];
+      // data.map((item,index)=>{
+      //   item.index=index
+      // })
+      return {
+        ...state,
+        data: data,
+        meta:action.payload.meta
       };
     },
     saveAll(state, action) {

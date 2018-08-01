@@ -11,6 +11,7 @@ import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   concentrator_errors: state.concentrator_errors,
@@ -30,6 +31,7 @@ class UserMeterAnalysis extends PureComponent {
       manufacturer_id: '',
       concentrator_number: this.initConcentrator ? this.initConcentrator : '',
       page: 1,
+      initPage:1,
       initRange: this.initDate ? [moment(new Date(this.initDate), 'YYYY-MM-DD'), moment(new Date(this.initDate), 'YYYY-MM-DD')] : [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
@@ -37,12 +39,13 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       member_number: '',
-
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
-    console.log(this.initConcentrator)
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch} = this.props;
     dispatch({
       type: 'manufacturers/fetch',
@@ -58,9 +61,44 @@ class UserMeterAnalysis extends PureComponent {
         page: 1,
         started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        per_page:30
       })
     }
 
+  }
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {concentrator_errors: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            manufacturer_id: this.state.manufacturer_id,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at,
+            per_page:this.state.per_page,
+
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
   }
   changeTableY = ()=> {
     this.setState({
@@ -81,7 +119,7 @@ class UserMeterAnalysis extends PureComponent {
         manufacturer_id: this.state.manufacturer_id,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-
+        per_page:this.state.per_page
       })
     })
 
@@ -97,6 +135,7 @@ class UserMeterAnalysis extends PureComponent {
         manufacturer_id: this.state.manufacturer_id,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
+        per_page:this.state.per_page
       })
     })
   }
@@ -106,14 +145,15 @@ class UserMeterAnalysis extends PureComponent {
       manufacturer_id: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'concentrator_errors/fetch',
+      type:fetchAndPush?'concentrator_errors/fetchAndPush': 'concentrator_errors/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
@@ -122,9 +162,13 @@ class UserMeterAnalysis extends PureComponent {
       callback: function () {
         that.setState({
           ...values,
-          started_at: values.started_at,
-          ended_at: values.ended_at,
         })
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
       }
     });
 
@@ -135,7 +179,16 @@ class UserMeterAnalysis extends PureComponent {
       manufacturer_id: this.state.manufacturer_id,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      // area: this.state.area
+      per_page:this.state.per_page
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      manufacturer_id: this.state.manufacturer_id,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      per_page:per_page
     })
   }
   renderStatus = (code)=> {
@@ -174,7 +227,7 @@ class UserMeterAnalysis extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return renderIndex(meta, this.state.page, index)
+          return renderIndex(meta, this.state.initPage, index)
         }
       },
       {title: '集中器编号', width: 90, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
@@ -342,6 +395,7 @@ class UserMeterAnalysis extends PureComponent {
                       initRange={this.state.initRange}
                       village_id={this.state.village_id}
                       manufacturers={manufacturers.data}
+                      per_page={this.state.per_page}
                       handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                       showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                       clickAdd={()=>this.setState({addModal: true})}/>
@@ -362,7 +416,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

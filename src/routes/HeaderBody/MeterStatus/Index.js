@@ -9,6 +9,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import ChangeTable from './ChangeTable'
 import moment from 'moment'
+import debounce from 'lodash/throttle'
 import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
@@ -32,6 +33,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address: '',
       page: 1,
+      initPage:1,
       initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
@@ -39,29 +41,54 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       area: '',
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
+    this.changeTableY();
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
 
   }
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {meter_status: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            meter_number: this.state.meter_number,
+            member_number:this.state.member_number,
+            real_name:this.state.real_name,
+            install_address:this.state.install_address,
+            per_page:this.state.per_page,
 
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
-    })
-  }
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '', member_number: '', real_name: '', install_address: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
     })
   }
 
@@ -79,6 +106,7 @@ class UserMeterAnalysis extends PureComponent {
         member_number:this.state.member_number,
         real_name:this.state.real_name,
         install_address:this.state.install_address,
+        per_page:this.state.per_page
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
 
@@ -99,6 +127,7 @@ class UserMeterAnalysis extends PureComponent {
         member_number:this.state.member_number,
         real_name:this.state.real_name,
         install_address:this.state.install_address,
+        per_page:this.state.per_page
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       })
@@ -109,16 +138,17 @@ class UserMeterAnalysis extends PureComponent {
     this.handleSearch({
       page: 1,
       meter_number: '', member_number: '', real_name: '', install_address: '',
+      per_page:30
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'meter_status/fetch',
+      type:fetchAndPush?'meter_status/fetchAndPush': 'meter_status/fetch',
       payload: {
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
@@ -128,6 +158,12 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
         })
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
       }
     });
 
@@ -141,13 +177,20 @@ class UserMeterAnalysis extends PureComponent {
       member_number: that.state.member_number,
       real_name: that.state.real_name,
       install_address: that.state.install_address,
-
-      // ended_at: this.state.ended_at,
-      // started_at: this.state.started_at,
-      // area: this.state.area
+      per_page:this.state.per_page
     })
   }
-
+  handPageSizeChange = (per_page)=> {
+    const that = this;
+    this.handleSearch({
+      page: 1,
+      meter_number: that.state.meter_number,
+      member_number: that.state.member_number,
+      real_name: that.state.real_name,
+      install_address: that.state.install_address,
+      per_page:per_page
+    })
+  }
   handleAdd = () => {
     const that = this;
     const formValues = this.formRef.props.form.getFieldsValue();
@@ -218,6 +261,7 @@ class UserMeterAnalysis extends PureComponent {
           member_number: that.state.member_number,
           real_name: that.state.real_name,
           install_address: that.state.install_address,
+          per_page:that.state.per_page,
         })
       }
     });
@@ -241,7 +285,7 @@ class UserMeterAnalysis extends PureComponent {
         fixed: 'left',
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta, this.state.page, index)
+          return renderIndex(meta, this.state.initPage, index)
         }
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
@@ -293,6 +337,7 @@ class UserMeterAnalysis extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             village_id={this.state.village_id}
+                            per_page={this.state.per_page}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                             clickAdd={()=>this.setState({addModal: true})}/>
@@ -313,7 +358,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

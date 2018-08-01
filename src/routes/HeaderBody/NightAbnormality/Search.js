@@ -26,7 +26,7 @@ class SearchForm extends Component {
         started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
-      this.props.handleSearch({...values, page: 1})
+      this.props.handleSearch({...values, page: 1,per_page:this.props.per_page})
     });
   }
   handleFormReset = () => {

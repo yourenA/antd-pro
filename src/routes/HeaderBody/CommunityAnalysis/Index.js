@@ -2,19 +2,13 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip,Row,Col} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import Pagination from './../../../components/Pagination/Index'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
 import update from 'immutability-helper'
 import find from 'lodash/find'
-import uuid from 'uuid/v4'
-// import 'rsuite-table/lib/less/index.less'
 import {getPreDay, renderIndex, renderErrorData,renderIndex2} from './../../../utils/utils'
-// import './index.less'
-// import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import debounce from 'lodash/throttle'
-import DataPie from './DataPie'
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,

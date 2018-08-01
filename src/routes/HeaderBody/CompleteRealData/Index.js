@@ -39,18 +39,19 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       area: '',
+      display_type: 'only_latest',
+      per_page:30,
       canLoadByScroll: true,
-      display_type: 'only_latest'
       // concentrator_number:''
     }
   }
 
   componentDidMount() {
-    // document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
   }
 
   componentWillUnmount() {
-    // document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
 
   scrollTable = ()=> {
@@ -75,13 +76,13 @@ class UserMeterAnalysis extends PureComponent {
             real_name: this.state.real_name,
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
-
+            per_page:this.state.per_page,
             // area: this.state.area
-          }, true, function () {
+          }, function () {
             that.setState({
               canLoadByScroll: true,
             })
-          })
+          }, true)
         }
       }
     }
@@ -89,22 +90,6 @@ class UserMeterAnalysis extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
-    })
-  }
-
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      real_name: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
     })
   }
 
@@ -122,7 +107,8 @@ class UserMeterAnalysis extends PureComponent {
         real_name: this.state.real_name,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        display_type: this.state.display_type
+        display_type: this.state.display_type,
+        per_page:this.state.per_page
       })
     })
   }
@@ -139,7 +125,8 @@ class UserMeterAnalysis extends PureComponent {
         real_name: this.state.real_name,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-        display_type: this.state.display_type
+        display_type: this.state.display_type,
+        per_page:this.state.per_page
 
       })
     })
@@ -153,11 +140,12 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      display_type: 'only_latest'
+      display_type: 'only_latest',
+      per_page:30
     })
   }
 
-  handleSearch = (values, fetchAndPush = false, cb) => {
+  handleSearch = (values, cb, fetchAndPush = false) => {
     const that = this;
     const {dispatch} = this.props;
     console.log('village_id', this.state.village_id)
@@ -191,11 +179,24 @@ class UserMeterAnalysis extends PureComponent {
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      display_type: this.state.display_type
+      display_type: this.state.display_type,
+      per_page:this.state.per_page
       // area: this.state.area
     })
   }
-
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      meter_number: this.state.meter_number,
+      member_number: this.state.member_number,
+      real_name: this.state.real_name,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      display_type: this.state.display_type,
+      per_page:per_page
+      // area: this.state.area
+    })
+  }
   render() {
     const {complete_real_data: {data, meta, loading}, concentrators, meters} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -367,6 +368,7 @@ class UserMeterAnalysis extends PureComponent {
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
+                            per_page={this.state.per_page}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                             clickAdd={()=>this.setState({addModal: true})}/>
@@ -382,7 +384,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} initPage={this.state.initPage} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
 
               </Card>
             </PageHeaderLayout>

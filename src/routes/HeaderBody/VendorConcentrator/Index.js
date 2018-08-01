@@ -9,6 +9,7 @@ import Sider from './../EmptySider'
 import find from 'lodash/find'
 import {renderIndex} from './../../../utils/utils'
 import AddOrEditVendor from './addOrEditVendor'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   manufacturers:state.manufacturers,
@@ -24,26 +25,58 @@ class Vendor extends PureComponent {
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       tableY: 0,
       page: 1,
+      initPage: 1,
       started_at: '',
       ended_at: '',
       editModal: false,
       addModal: false,
+      per_page:30,
+      canLoadByScroll: true,
     }
   }
 
   componentDidMount() {
-    const {dispatch} = this.props;
-   /* dispatch({
-      type: 'manufacturers/fetch',
-      payload: {
-        return:'all'
-      }
-    });*/
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+
     this.handleSearch({
       page: 1,
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30,
     },this.changeTableY)
+  }
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable = ()=> {
+    console.log('scroll')
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      console.log('到达底部');
+      if (this.state.canLoadByScroll) {
+        const {vendor_concentrator: {meta}} = this.props;
+        if (this.state.page < meta.pagination.total_pages) {
+          this.setState({
+            canLoadByScroll: false,
+          })
+          this.handleSearch({
+            page: this.state.page + 1,
+            per_page:this.state.per_page,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at
+            // area: this.state.area
+          }, function () {
+            that.setState({
+              canLoadByScroll: true,
+            })
+          }, true)
+        }
+      }
+    }
   }
   changeTableY = ()=> {
     this.setState({
@@ -53,28 +86,44 @@ class Vendor extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
+      per_page:30,
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
-  handleSearch = (values,cb) => {
+  handleSearch = (values, cb, fetchAndPush = false) => {
+    const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'vendor_concentrator/fetch',
+      type: fetchAndPush?'vendor_concentrator/fetchAndPush':'vendor_concentrator/fetch',
       payload: {
         ...values,
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        })
+        if (!fetchAndPush) {
+          that.setState({
+            initPage: values.page
+          })
+        }
+        if (cb)cb()
+      }
     });
-    if(cb) cb()
-    this.setState({
-      started_at: values.started_at,
-      ended_at: values.ended_at,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
+      per_page:this.state.per_page,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      per_page:per_page,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at
     })
@@ -89,7 +138,7 @@ class Vendor extends PureComponent {
         width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {title: '厂商名称', width: '25%',dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
@@ -120,7 +169,8 @@ class Vendor extends PureComponent {
                <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch  handleSearch={this.handleSearch}
-                                   handleFormReset={this.handleFormReset} initRange={this.state.initRange}
+                                    per_page={this.state.per_page}
+                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                     showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
                 </div>
@@ -134,7 +184,7 @@ class Vendor extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               {/*  <Row gutter={16}>
                   <Col span={10}>
                     <Guage data={data}></Guage>

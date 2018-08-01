@@ -18,22 +18,36 @@ export default {
         }
       });
     },
-    *fetch({ payload }, { call, put }) {
+    *fetch({ payload ,callback}, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
       const response = yield call(query, payload);
       console.log(response)
-      if(response.status){
+      if(response.status===200){
         yield put({
           type: 'save',
           payload:  response.data
         });
+        document.querySelector('.ant-table-body').scrollTop=0;
+
         yield put({
           type: 'changeLoading',
           payload: false,
         });
+        if (callback) callback();
+      }
+    },
+    *fetchAndPush({ payload,callback }, { call, put }) {
+      const response = yield call(query, payload);
+      console.log(response)
+      if(response.status===200){
+        yield put({
+          type: 'saveAndPush',
+          payload:  response.data
+        });
+        if (callback) callback();
       }
     },
     *fetchOneusergroup({ payload ,callback}, { call, put }) {
@@ -88,6 +102,14 @@ export default {
       return {
         ...state,
         editRecord:action.payload
+      };
+    },
+    saveAndPush(state, action) {
+      const data=[...state.data,...action.payload.data];
+      return {
+        ...state,
+        data: data,
+        meta:action.payload.meta
       };
     },
     changeLoading(state, action) {

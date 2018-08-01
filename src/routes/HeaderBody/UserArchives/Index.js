@@ -14,6 +14,7 @@ import {renderIndex,renderRowSpan,parseRowSpanData,ellipsis2} from './../../../u
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import './index.less'
+import debounce from 'lodash/throttle'
 const { Content} = Layout;
 @connect(state => ({
   members: state.members,
@@ -36,6 +37,7 @@ class UserMeterAnalysis extends PureComponent {
       tableY:0,
       query: '',
       page: 1,
+      initPage: 1,
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at:'',
       ended_at:'',
@@ -50,11 +52,14 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number:'',
       member_number:'',
       canOperate:localStorage.getItem('canOperateUserArchives')==='true'?true:false,
-      canImport:true
+      canImport:true,
+      per_page:30,
+      canLoadByScroll: true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch}=this.props
     dispatch({
       type: 'sider_regions/fetch',
@@ -76,24 +81,45 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
   componentWillUnmount(){
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch}=this.props
     dispatch({
       type: 'concentrators/reset',
     });
   }
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      distribution_area:'',
-      statistical_forms:'',
-      meter_number:'',
-      concentrator_number:'',
-      village_id: village_id
-    })
+  scrollTable = ()=> {
+    console.log('scroll')
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      console.log('到达底部');
+      if (this.state.canLoadByScroll) {
+        const {members: {meta}} = this.props;
+        if (this.state.page < meta.pagination.total_pages) {
+          this.setState({
+            canLoadByScroll: false,
+          })
+          this.handleSearch({
+            page: this.state.page + 1,
+            meter_number:this.state.meter_number,
+            member_number:this.state.member_number,
+            install_address: this.state.install_address,
+            real_name: this.state.real_name,
+            distribution_area:this.state.distribution_area,
+            statistical_forms:this.state.statistical_forms,
+            per_page:this.state.per_page,
+
+          }, function () {
+            that.setState({
+              canLoadByScroll: true,
+            })
+          }, true)
+        }
+      }
+    }
   }
   changeTableY = ()=> {
     this.setState({
@@ -115,6 +141,7 @@ class UserMeterAnalysis extends PureComponent {
         member_number:this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        per_page:this.state.per_page,
       })
     })
     const {dispatch}=this.props
@@ -140,6 +167,7 @@ class UserMeterAnalysis extends PureComponent {
         member_number:this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        per_page:this.state.per_page,
       })
     })
 
@@ -154,25 +182,32 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       distribution_area:'',
       statistical_forms:'',
+      per_page:30,
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values, cb, fetchAndPush = false) => {
     const that=this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'members/fetch',
+      type: fetchAndPush?'members/fetchAndPush':'members/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
       },
-      callback:function () {
+      callback: function () {
         that.setState({
           ...values,
         })
+        if (!fetchAndPush) {
+          that.setState({
+            initPage: values.page
+          })
+        }
+        if (cb)cb()
       }
     });
 
@@ -187,6 +222,23 @@ class UserMeterAnalysis extends PureComponent {
       member_number: this.state.member_number,
       install_address: this.state.install_address,
       real_name: this.state.real_name,
+      per_page:this.state.per_page
+      // ended_at: this.state.ended_at,
+      // started_at: this.state.started_at,
+      // area: this.state.area
+    })
+  }
+
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      distribution_area:this.state.distribution_area,
+      statistical_forms:this.state.statistical_forms,
+      meter_number:this.state.meter_number,
+      member_number: this.state.member_number,
+      install_address: this.state.install_address,
+      real_name: this.state.real_name,
+      per_page:per_page
       // ended_at: this.state.ended_at,
       // started_at: this.state.started_at,
       // area: this.state.area
@@ -214,6 +266,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
+          per_page:that.state.per_page
           // concentrator_number:that.state.concentrator_number,
         })
       }
@@ -239,6 +292,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
+          per_page:that.state.per_page
           // concentrator_number:that.state.concentrator_number,
         })
       }
@@ -258,6 +312,7 @@ class UserMeterAnalysis extends PureComponent {
           distribution_area:that.state.distribution_area,
           statistical_forms:that.state.statistical_forms,
           meter_number:that.state.meter_number,
+          per_page:that.state.per_page
           // concentrator_number:that.state.concentrator_number,
         })
       }
@@ -303,6 +358,7 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           importModal:false
         })
+        that.handleFormReset()
       }
       that.setState({
         canImport:true
@@ -324,7 +380,7 @@ class UserMeterAnalysis extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          const children=renderIndex(meta,this.state.page,record.index)
+          const children=renderIndex(meta,this.state.initPage,record.index)
           return renderRowSpan(children,record)
         }
       },
@@ -440,6 +496,7 @@ class UserMeterAnalysis extends PureComponent {
                             village_id={this.state.village_id}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showImportBtn={this.state.showImportBtn}
+                            per_page={this.state.per_page}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}
                             clickImport={()=>{this.setState({importModal:true})}}
                             changeShowOperate={()=>{this.setState({canOperate:!this.state.canOperate})}}
@@ -456,7 +513,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
           </PageHeaderLayout>
           </div>

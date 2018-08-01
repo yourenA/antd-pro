@@ -52,13 +52,14 @@ class SiderTree extends PureComponent {
             return: 'all'
           }
         }).then((concentratorsResponse)=>{
+          console.log('concentratorsResponse',concentratorsResponse)
           if(that.props.showConcentrator!==false){
             response.data.data.unshift({id:'null',name:'全部集中器',tooltip:"列出所有的集中器号，与安装小区无关",children:[]})
             for(let i=0;i<concentratorsResponse.data.data.length;i++){
               response.data.data[0].children.push({ id:concentratorsResponse.data.data[i].id+'5', number: concentratorsResponse.data.data[i].number,parent_village_id:'' })
             }
-          }else{
           }
+
           that.setState({
             treeData:this.props.showSiderCon===false?response.data.data:that.transilate(response.data.data)
           },function () {

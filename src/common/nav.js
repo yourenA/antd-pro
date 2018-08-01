@@ -326,18 +326,16 @@ const data = [{
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
       permissions:['server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
       children: [
-        // {
-        //   name: '服务器地址',
-        //   path: 'servers_manage',
-        //   component: Servers,
-        //   permissions:['server_add_and_edit','server_status_edit','server_delete'],
-        // },
+
+      //   ,
+      //   {
+      //   name: '导入集中器',
+      //   path: 'import_concentrator',
+      //   component: ImportConcentrator,
+      //   permissions:['iot_hub_management'],
+      // }
+      // ,
         {
-        name: '导入集中器',
-        path: 'import_concentrator',
-        component: ImportConcentrator,
-        permissions:['iot_hub_management'],
-      },{
         name: '集中器管理',
         path: 'concentrator_manage',
         component: ConcentratorManage,
@@ -355,6 +353,12 @@ const data = [{
         component: UserArchives,
         permissions:['member_add_and_edit','member_delete'],
       },
+        {
+          name: '服务器地址',
+          path: 'servers_manage',
+          component: Servers,
+          permissions:['server_add_and_edit','server_status_edit','server_delete'],
+        },
         {
           name: 'DMA分区管理',
           path: 'DMA',

@@ -11,7 +11,7 @@ import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
-
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -28,6 +28,7 @@ class Consumption_abnormality extends PureComponent {
       tableY: 0,
       manufacturer_id: '',
       page: 1,
+      initPage:1,
       initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
@@ -37,11 +38,14 @@ class Consumption_abnormality extends PureComponent {
       member_number:'',
       concentrator_number:'',
       meter_number:'',
-      area_id: ''
+      area_id: '',
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch} = this.props;
     const that=this;
     dispatch({
@@ -61,9 +65,45 @@ class Consumption_abnormality extends PureComponent {
       meter_number:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30
     })
   }
-
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {consumption_abnormality: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            area_id: this.state.area_id,
+            member_number:this.state.member_number,
+            concentrator_number:this.state.concentrator_number,
+            meter_number:this.state.meter_number,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at,
+            per_page:this.state.per_page,
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop -(68 + 54 + 50 + 38 +5)
@@ -78,14 +118,15 @@ class Consumption_abnormality extends PureComponent {
       meter_number:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      per_page:30
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'consumption_abnormality/fetch',
+      type:fetchAndPush?'consumption_abnormality/fetchAndPush': 'consumption_abnormality/fetch',
       payload: {
         ...values,
       },
@@ -93,6 +134,12 @@ class Consumption_abnormality extends PureComponent {
         that.setState({
           ...values,
         })
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
       }
     });
 
@@ -107,10 +154,23 @@ class Consumption_abnormality extends PureComponent {
       meter_number:this.state.meter_number,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
+      per_page:this.state.per_page
       // area: this.state.area
     })
   }
-
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      area_id: this.state.area_id,
+      page: 1,
+      member_number:this.state.member_number,
+      concentrator_number:this.state.concentrator_number,
+      meter_number:this.state.meter_number,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      per_page:per_page
+      // area: this.state.area
+    })
+  }
   render() {
     const {consumption_abnormality: {data, meta, loading}, dma} = this.props;
     for(let i=0;i<data.length;i++){
@@ -125,7 +185,7 @@ class Consumption_abnormality extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
@@ -158,7 +218,8 @@ class Consumption_abnormality extends PureComponent {
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/unusual_water`));
                       }}
-                             dma={dma}
+                      per_page={this.state.per_page}
+                      dma={dma}
                             initRange={this.state.initRange}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                            />
@@ -179,7 +240,7 @@ class Consumption_abnormality extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

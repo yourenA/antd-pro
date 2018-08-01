@@ -137,19 +137,19 @@ class AddConcentrator extends Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-            {/* <FormItem
+            <FormItem
              label="服务器地址"
              {...formItemLayoutWithLabel}
              >
              {getFieldDecorator('server_id', {
              initialValue: this.props.editRecord?{key:this.props.editRecord.server_id,label:this.props.editRecord.server_ip}:{key:'',label:''},
-             rules: [{required: true, message: '服务器地址为空'}],
+             //rules: [{required: true, message: '服务器地址为空'}],
              })(
-             <Select labelInValue={true}>
-             { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip}</Option>) }
+             <Select labelInValue={true} allowClear={true}>
+             { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip+':'+item.port}</Option>) }
              </Select>
              )}
-             </FormItem>*/}
+             </FormItem>
             <FormItem
               label="集中器类型"
               {...formItemLayoutWithLabel}

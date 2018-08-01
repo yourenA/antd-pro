@@ -37,7 +37,7 @@ class SearchForm extends Component {
         started_at:  moment( this.state.startValue).format('YYYY-MM-DD'),
         ended_at:  moment( this.state.endValue).format('YYYY-MM-DD'),
       };
-      this.props.handleSearch({...values,page:1})
+      this.props.handleSearch({...values,page:1,per_page:this.props.per_page})
     });
   }
   handleFormReset = () => {
@@ -88,7 +88,6 @@ class SearchForm extends Component {
     return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
   }
   render() {
-    console.log('searchFormItemLayout',{...searchFormItemLayout()})
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">

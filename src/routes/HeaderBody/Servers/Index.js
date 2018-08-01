@@ -1,13 +1,15 @@
 import React, {PureComponent} from 'react';
-import {Pagination, Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
+import { Table, Card, Layout, message, Popconfirm, Modal,Badge } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './../OnlyAdd'
+import DefaultSearch from './Search'
 import {connect} from 'dva';
+import Pagination from './../../../components/Pagination/Index'
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditServers'
 import {renderIndex} from './../../../utils/utils'
 import EditStatusForm from './editStatus'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   servers: state.servers,
@@ -23,62 +25,102 @@ class MeterModel extends PureComponent {
       tableY: 0,
       query: '',
       page: 1,
+      initPage: 1,
       started_at: '',
       ended_at: '',
       editModal: false,
       addModal: false,
-      editStatusModal:false
+      editStatusModal:false,
+      canOperate:localStorage.getItem('canOperateServer')==='true'?true:false,
+      display_type: 'all',
+      per_page:30,
+      canLoadByScroll: true,
     }
   }
 
   componentDidMount() {
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'servers/fetch',
-      payload: {
-        page: 1,
-      }
-    });
-  }
-
-  handleFormReset = () => {
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'servers/fetch',
-      payload: {},
-    });
-    this.setState({
+    this.handleSearch({
       page: 1,
-      // query: '',
-      // started_at: '',
-      // ended_at: '',
+      display_type: 'all',
     })
   }
-  handleSearch = (values) => {
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable = ()=> {
+    console.log('scroll')
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      console.log('到达底部');
+      if (this.state.canLoadByScroll) {
+        const {servers: {meta}} = this.props;
+        if (this.state.page < meta.pagination.total_pages) {
+          this.setState({
+            canLoadByScroll: false,
+          })
+          this.handleSearch({
+            page: this.state.page + 1,
+            display_type: this.state.display_type,
+            per_page:this.state.per_page,
+            // area: this.state.area
+          }, function () {
+            that.setState({
+              canLoadByScroll: true,
+            })
+          }, true)
+        }
+      }
+    }
+  }
+  handleFormReset = () => {
+    this.handleSearch({
+      page: 1,
+      per_page:30,
+      display_type: 'all',
+    })
+  }
+  handleSearch = (values, cb, fetchAndPush = false) => {
+    const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'servers/fetch',
+      type: fetchAndPush?'servers/fetchAndPush':'servers/fetch',
       payload: {
         ...values,
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        })
+        if (!fetchAndPush) {
+          that.setState({
+            initPage: values.page
+          })
+        }
+        if (cb)cb()
+      }
     });
 
-    this.setState({
-      // query: values.query,
-      // started_at: values.started_at,
-      // ended_at: values.ended_at,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      // query: this.state.query,
-      // ended_at: this.state.ended_at,
-      // started_at: this.state.started_at
+      display_type:this.state.display_type,
+      per_page:this.state.per_page
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      display_type:this.state.display_type,
+      per_page:per_page
     })
   }
   handleAdd = () => {
@@ -99,7 +141,9 @@ class MeterModel extends PureComponent {
           type: 'servers/fetch',
           payload: {
             // query: that.state.query,
-            page: that.state.page
+            page: that.state.page,
+            display_type:that.state.display_type,
+            per_page:that.state.per_page
           }
         });
       }
@@ -125,7 +169,9 @@ class MeterModel extends PureComponent {
           type: 'servers/fetch',
           payload: {
             // query: that.state.query,
-            page: that.state.page
+            page: that.state.page,
+            display_type:that.state.display_type,
+            per_page:that.state.per_page
           }
         });
       }
@@ -150,7 +196,9 @@ class MeterModel extends PureComponent {
           type: 'servers/fetch',
           payload: {
             // query: that.state.query,
-            page: that.state.page
+            page: that.state.page,
+            display_type:that.state.display_type,
+            per_page:that.state.per_page
           }
         });
       }
@@ -169,7 +217,9 @@ class MeterModel extends PureComponent {
           type: 'servers/fetch',
           payload: {
             // query: that.state.query,
-            page: that.state.page
+            page: that.state.page,
+            display_type:that.state.display_type,
+            per_page:that.state.per_page
           }
         });
       }
@@ -186,7 +236,7 @@ class MeterModel extends PureComponent {
         width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {title: '服务器地址', width: '20%', dataIndex: 'ip', key: 'ip', },
@@ -199,7 +249,9 @@ class MeterModel extends PureComponent {
           </p>
         )},
       {title: '创建时间', dataIndex: 'created_at', key: 'created_at',width: '20%',},
-      {
+    ];
+    if(this.state.canOperate){
+      columns.push(  {
         title: '操作',
         width: 170,
         render: (val, record, index) => (
@@ -242,8 +294,8 @@ class MeterModel extends PureComponent {
 
           </p>
         ),
-      },
-    ];
+      })
+    }
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
@@ -255,7 +307,12 @@ class MeterModel extends PureComponent {
                   <div className='tableListForm'>
                     <DefaultSearch inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
-                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}/>
+                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
+                                   per_page={this.state.per_page}
+                                   changeShowOperate={()=> {
+                                     this.setState({canOperate: !this.state.canOperate})
+                                   }}
+                    />
                   </div>
                 </div>
                 <Table
@@ -273,9 +330,7 @@ class MeterModel extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination showQuickJumper className='pagination' total={meta.pagination.total}
-                            current={meta.pagination.current_page} pageSize={meta.pagination.per_page}
-                            style={{marginTop: '10px'}} onChange={this.handPageChange}/>
+                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>

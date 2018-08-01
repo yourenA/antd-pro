@@ -8,13 +8,12 @@ import Detail from './Detail'
 import {connect} from 'dva';
 import moment from 'moment'
 import find from 'lodash/find'
-import {renderIndex} from './../../../utils/utils'
-import forEach from "lodash/forEach";
+import debounce from 'lodash/throttle'
 import './index.less'
 import config from '../../../common/config'
 import { routerRedux } from 'dva/router';
 import uuid from 'uuid/v4'
-import {getPreDay, renderCustomHeaders,download} from './../../../utils/utils'
+import {getPreDay, renderCustomHeaders,download,renderIndex} from './../../../utils/utils'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -35,6 +34,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address: '',
       page: 1,
+      initPage:1,
       initRange: getPreDay(),
       started_at: '',
       ended_at: '',
@@ -44,36 +44,59 @@ class UserMeterAnalysis extends PureComponent {
       exportModal: false,
       edit_member_number: '',
       display_type: 'all',
-      total_difference_value:'0'
+      total_difference_value:'0',
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
-    this.changeTableY()
-  }
+    this.changeTableY();
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
 
+  }
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      concentrator_number: '',
-      real_name: '',
-      install_address: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id,
-      display_type: 'all'
-    })
+
+  scrollTable=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部');
+      if(this.state.canLoadByScroll){
+        const {member_meter_data: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          this.handleSearch({
+            page: this.state.page+1,
+            meter_number:this.state.meter_number,
+            member_number:this.state.member_number,
+            real_name: this.state.real_name,
+            install_address: this.state.install_address,
+            ended_at: this.state.ended_at,
+            started_at: this.state.started_at,
+            per_page:this.state.per_page,
+            display_type: this.state.display_type
+          },function () {
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
   }
 
   changeArea = (village_id)=> {
@@ -90,8 +113,8 @@ class UserMeterAnalysis extends PureComponent {
         install_address:this.state.install_address,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-
-        display_type: this.state.display_type
+        display_type: this.state.display_type,
+        per_page:this.state.per_page
       },this.changeTableY)
     })
 
@@ -110,7 +133,7 @@ class UserMeterAnalysis extends PureComponent {
         install_address: this.state.install_address,
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-
+        per_page:this.state.per_page,
         display_type: this.state.display_type
       })
     })
@@ -125,15 +148,16 @@ class UserMeterAnalysis extends PureComponent {
       install_address: '',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      display_type: 'all'
+      display_type: 'all',
+      per_page:30
     })
   }
 
-  handleSearch = (values,cb) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'member_meter_data/fetch',
+      type: fetchAndPush?'member_meter_data/fetchAndPush':'member_meter_data/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
@@ -142,7 +166,12 @@ class UserMeterAnalysis extends PureComponent {
       callback: function () {
         that.setState({
           ...values,
-        })
+        });
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
         if(cb) cb()
       }
     });
@@ -158,11 +187,25 @@ class UserMeterAnalysis extends PureComponent {
       real_name: this.state.real_name,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      display_type: this.state.display_type
+      display_type: this.state.display_type,
+      per_page:this.state.per_page
       // area: this.state.area
     })
   }
-
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      install_address: this.state.install_address,
+      meter_number: this.state.meter_number,
+      member_number: this.state.member_number,
+      real_name: this.state.real_name,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      display_type: this.state.display_type,
+      per_page:per_page
+      // area: this.state.area
+    })
+  }
   handleEdit = () => {
     this.setState({
       editModal: false,
@@ -202,6 +245,17 @@ class UserMeterAnalysis extends PureComponent {
     let  custom_width = parseHeader.custom_width;
     const custom_headers = parseHeader.custom_headers;
     custom_width+=120;
+    custom_headers.unshift({
+      title: '序号',
+      dataIndex: 'id',
+      key: 'id',
+      width: 50,
+      className: 'table-index',
+      fixed: 'left',
+      render: (text, record, index) => {
+        return renderIndex(meta, this.state.initPage, index)
+      }
+    })
     custom_headers.push(
       {
         title: '水表历史状况',
@@ -217,7 +271,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       }
     )
-  console.log('custom_headers',custom_headers)
+  // console.log('custom_headers',custom_headers)
   /*  const columns = [
       {
         title: '序号',
@@ -304,6 +358,7 @@ class UserMeterAnalysis extends PureComponent {
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             exportCSV={this.exportCSV}
+                             per_page={this.state.per_page}
                             export={()=> {
                               this.setState({
                                 exportModal: true
@@ -333,7 +388,7 @@ class UserMeterAnalysis extends PureComponent {
                   pagination={false}
                   size="small"
                 />
-                <Pagination meta={meta} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
 
               </Card>
             </PageHeaderLayout>

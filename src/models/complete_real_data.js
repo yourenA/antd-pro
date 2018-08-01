@@ -22,7 +22,6 @@ export default {
           type: 'save',
           payload:  response.data
         });
-        console.log('ant-table-body',document.querySelector('.ant-table-body').scrollTop)
         yield put({
           type: 'changeLoading',
           payload: false,

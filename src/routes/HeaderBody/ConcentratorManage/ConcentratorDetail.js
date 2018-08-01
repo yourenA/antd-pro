@@ -4,11 +4,12 @@ import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
 import Sider from './../Sider'
-import {renderIndex,ellipsis} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import {connect} from 'dva';
 import Detail from './Detail'
 import moment from 'moment'
 import find from 'lodash/find'
+import debounce from 'lodash/throttle'
 import './index.less'
 const {Content} = Layout;
 @connect(state => ({
@@ -25,6 +26,7 @@ class UserMeterAnalysis extends PureComponent {
       tableY: 0,
       meter_number: '',
       page: 1,
+      initPage:1,
       initRange: [moment(new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
@@ -35,17 +37,18 @@ class UserMeterAnalysis extends PureComponent {
       clickCommand:[],
       time:new Date().getTime(),
       canOperate:localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false,
+      per_page:30,
+      canLoadByScroll:true,
     }
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
-    })
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable2,200))
     this.handleSearch({
       page: 1,
       meter_number: '',
-    })
+      per_page:30,
+    },this.changeTableY)
     const that=this;
     this.timer=setInterval(function () {
       that.setState({
@@ -54,35 +57,88 @@ class UserMeterAnalysis extends PureComponent {
       })
     },3000)
   }
+  changeTableY = ()=> {
+    this.setState({
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    })
+  }
   componentWillUnmount() {
+    console.log('detail componentWillUnmount')
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable2,200))
     clearInterval(this.timer)
+  }
+  scrollTable2=()=>{
+    console.log('scroll')
+    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop',scrollTop)
+    const that=this;
+    if(scrollTop+offsetHeight>scrollHeight-300){
+      console.log('到达底部',this.state.canLoadByScroll);
+      if(this.state.canLoadByScroll){
+        const {concentrator_water: {meta}} = this.props;
+        if(this.state.page<meta.pagination.total_pages){
+          this.setState({
+            canLoadByScroll:false,
+          })
+          console.log('handle search')
+          this.handleSearch({
+            page: this.state.page+1,
+            meter_number: this.state.meter_number,
+            per_page:this.state.per_page,
+          },function () {
+            console.log('setState')
+            that.setState({
+              canLoadByScroll:true,
+            })
+          },true)
+        }
+      }
+    }
   }
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
+      per_page:30,
       meter_number: '',
     })
   }
 
-  handleSearch = (values) => {
+  handleSearch = (values,cb,fetchAndPush=false) => {
+    const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'concentrator_water/fetch',
+      type: fetchAndPush ? 'concentrator_water/fetchAndPush':'concentrator_water/fetch',
       payload: {
         ...values,
         id:this.props.concentratorId
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        });
+        if(!fetchAndPush){
+          that.setState({
+            initPage:values.page
+          })
+        }
+        if(cb) cb()
+      }
     });
-
-    this.setState({
-      meter_number: values.meter_number,
-      page: values.page,
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
       meter_number: this.state.meter_number,
+      per_page:this.state.per_page
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      meter_number: this.state.meter_number,
+      per_page:per_page
     })
   }
   read_multiple_901f=(command)=>{
@@ -115,7 +171,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'user_command_data/add',
       payload:{
         meter_number,
-        feature:company_code==='hy'?'upload_single':'upload_single_lora',
+        feature:(company_code==='hy'||company_code==='jgs'||company_code==='zz')?'upload_single':'upload_single_lora',
         protocol:command
       },
       callback:()=>{
@@ -151,19 +207,19 @@ class UserMeterAnalysis extends PureComponent {
         width: 50,
         className: 'table-index',
         render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
+          return renderIndex(meta,this.state.initPage,index)
         }
       },
       {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width:  '15%',render: (val, record, index) => {
-        return ellipsis(val,3)
+      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {
+        return ellipsis2(val,150)
       }},
-      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: '15%',render: (val, record, index) => {
-        return ellipsis(val)
+      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width:150,render: (val, record, index) => {
+        return ellipsis2(val,150)
       }},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
-        return ellipsis(val)
+        return ellipsis2(val,150)
       }}
 
     ];
@@ -190,6 +246,7 @@ class UserMeterAnalysis extends PureComponent {
             <DetailSearch protocols={this.props.protocols} concentratorNumber={this.props.concentratorNumber} wrappedComponentRef={(inst) => this.formRef = inst}
                           showCommandBtn={this.state.showCommandBtn} onBack={this.props.handleBack}
                           handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
+                          per_page={this.state.per_page}
                           read_multiple_901f={this.read_multiple_901f} initRange={this.state.initRange}
                           changeShowOperate={()=> {
                             this.setState({canOperate: !this.state.canOperate})
@@ -208,29 +265,12 @@ class UserMeterAnalysis extends PureComponent {
           rowKey={record => record.meter_number}
           dataSource={data}
           columns={columns}
-          scroll={isMobile?{x:950}:{y: this.state.tableY}}
+          scroll={isMobile?{x:950}:{x:1050,y: this.state.tableY}}
           //scroll={{ y: this.state.tableY}}
           pagination={false}
           size="small"
         />
-        <Pagination meta={meta} handPageChange={this.handPageChange}/>
-        <Modal
-          title="添加集中器"
-          visible={this.state.addModal}
-          onOk={this.handleEdit}
-          onCancel={() => this.setState({addModal: false})}
-        >
-          <AddConcentrator />
-        </Modal>
-        <Modal
-          key={ Date.parse(new Date())}
-          title="集中器指令:集中器编号"
-          visible={this.state.editModal}
-          onOk={this.handleEdit}
-          onCancel={() => this.setState({editModal: false})}
-        >
-          <Detail />
-        </Modal>
+        <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
       </div>
 
 

@@ -7,6 +7,7 @@ import Pagination from './../../../../components/Pagination/Index'
 import {connect} from 'dva';
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditDMA'
+import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
@@ -22,17 +23,18 @@ class Vendor extends PureComponent {
       tableY: 0,
       query: '',
       page: 1,
+      initPage: 1,
       editModal: false,
       addModal: false,
       canOperate:localStorage.getItem('canOperateDMA')==='true'?true:false,
-      canAdd:true
+      canAdd:true,
+      per_page:30,
+      canLoadByScroll: true,
     }
   }
 
   componentDidMount() {
-    this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
-    })
+    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch} = this.props;
     dispatch({
       type: 'dma/fetch',
@@ -44,42 +46,79 @@ class Vendor extends PureComponent {
       }
     });
   }
-
+  componentWillUnmount() {
+    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  scrollTable = ()=> {
+    console.log('scroll')
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      console.log('到达底部');
+      if (this.state.canLoadByScroll) {
+        const {dma: {meta}} = this.props;
+        if (this.state.page < meta.pagination.total_pages) {
+          this.setState({
+            canLoadByScroll: false,
+          })
+          this.handleSearch({
+            page: this.state.page + 1,
+            per_page:this.state.per_page,
+            // area: this.state.area
+          }, function () {
+            that.setState({
+              canLoadByScroll: true,
+            })
+          }, true)
+        }
+      }
+    }
+  }
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     })
   }
   handleFormReset = () => {
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'dma/fetch',
-      payload: {},
-    });
-
-    this.setState({
+    this.handleSearch({
       page: 1,
-      query: '',
+      per_page:30,
     })
   }
-  handleSearch = (values) => {
+  handleSearch =(values, cb, fetchAndPush = false) => {
+    const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: 'dma/fetch',
+      type: fetchAndPush?'dma/fetchAndPush':'dma/fetch',
       payload: {
         ...values,
       },
+      callback: function () {
+        that.setState({
+          ...values,
+        })
+        if (!fetchAndPush) {
+          that.setState({
+            initPage: values.page
+          })
+        }
+        if (cb)cb()
+      }
     });
-
-    this.setState({
-      query: values.query,
-      page: values.page
-    })
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      query: this.state.query,
+      per_page:this.state.per_page
+    })
+  }
+  handPageSizeChange = (per_page)=> {
+    this.handleSearch({
+      page: 1,
+      per_page:per_page
     })
   }
   handleAdd = () => {
@@ -102,13 +141,10 @@ class Vendor extends PureComponent {
         that.setState({
           canAdd:true
         })
-        that.props.dispatch({
-          type: 'dma/fetch',
-          payload: {
-            query: that.state.query,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page:that.state.per_page,
+        })
       },
       errorCallback:function () {
         that.setState({
@@ -133,13 +169,10 @@ class Vendor extends PureComponent {
         that.setState({
           editModal: false,
         });
-        that.props.dispatch({
-          type: 'dma/fetch',
-          payload: {
-            query: that.state.query,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page:that.state.per_page,
+        })
       }
     });
   }
@@ -152,13 +185,10 @@ class Vendor extends PureComponent {
       },
       callback: function () {
         message.success('删除DMA分区成功')
-        that.props.dispatch({
-          type: 'dma/fetch',
-          payload: {
-            query: that.state.query,
-            page: that.state.page
-          }
-        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page:that.state.per_page,
+        })
       }
     });
   }
@@ -255,7 +285,7 @@ class Vendor extends PureComponent {
               pagination={false}
               size="small"
             />
-            <Pagination meta={meta} handPageChange={this.handPageChange}/>
+            <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}   handPageChange={this.handPageChange}/>
           </Card>
         </PageHeaderLayout>
         <Modal

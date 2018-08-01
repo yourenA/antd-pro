@@ -17,7 +17,7 @@ class SearchForm extends Component {
       const values = {
         ...fieldsValue,
       };
-      this.props.handleSearch({...values, page: 1})
+      this.props.handleSearch({...values, page: 1,per_page:this.props.per_page})
     });
   }
   handleFormReset = () => {
