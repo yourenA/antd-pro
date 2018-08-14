@@ -304,11 +304,11 @@ class UserMeterAnalysis extends PureComponent {
       }},
       {title: '阀门状态', dataIndex: 'state_valve', key: 'state_valve',  width: 100,render: (text, record, index) => {
         let showText='';
-        if(record['body'].state_valve=='0'){
+        if(record['body'].state_valve==0){
           showText='开'
-        }else if(record['body'].state_valve=='1'){
+        }else if(record['body'].state_valve==1){
           showText='关'
-        }else if(record['body'].state_valve=='11'){
+        }else if(record['body'].state_valve==3){
           showText='异常'
         }
         return ellipsis2(showText,90)

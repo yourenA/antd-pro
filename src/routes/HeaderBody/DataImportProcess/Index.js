@@ -25,7 +25,8 @@ const {Content} = Layout;
   concentrators: state.concentrators,
   meter_models: state.meter_models,
   servers: state.servers,
-  sider_regions:state.sider_regions
+  sider_regions:state.sider_regions,
+  dma:state.dma
 }))
 
 class Vendor extends PureComponent {
@@ -103,6 +104,7 @@ class Vendor extends PureComponent {
 
         break;
       case 4 :
+        const company_code = sessionStorage.getItem('company_code');
         dispatch({
           type: 'meter_models/fetch',
           payload: {
@@ -121,6 +123,14 @@ class Vendor extends PureComponent {
             return: 'all'
           }
         });
+        if(company_code==='hy'){
+          dispatch({
+            type: 'dma/fetchAll',
+            payload: {
+              return: 'all'
+            },
+          });
+        }
         break;
     }
     this.setState({current});
@@ -288,6 +298,15 @@ class Vendor extends PureComponent {
             return: 'all'
           }
         });
+        const company_code = sessionStorage.getItem('company_code');
+        if(company_code==='hy'){
+          that.props.dispatch({
+            type: 'dma/fetchAll',
+            payload: {
+              return: 'all'
+            },
+          });
+        }
         that.setState({current});
       }
     });
@@ -325,7 +344,7 @@ class Vendor extends PureComponent {
   }
 
   render() {
-    const {manufacturers, concentrator_models, area, concentrators, meter_models, servers,sider_regions} = this.props;
+    const {manufacturers, concentrator_models, area, concentrators, meter_models, servers,sider_regions,dma} = this.props;
 
     const steps = [{
       title: '添加厂商',
@@ -350,7 +369,7 @@ class Vendor extends PureComponent {
                                     wrappedComponentRef={(inst) => this.MeterModelformRef = inst}/>,
     }, {
       title: '导入用户和水表数据',
-      content: <ImportArchives findChildFunc={this.findChildFunc}
+      content: <ImportArchives  dma={dma}  findChildFunc={this.findChildFunc}
                                wrappedComponentRef={(inst) => this.importFormRef = inst}
                                sider_regions={sider_regions}
                                meter_models={meter_models.data} concentrators={concentrators.data}/>,

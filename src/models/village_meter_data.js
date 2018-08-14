@@ -28,13 +28,15 @@ export default {
           type: 'save',
           payload:  response.data
         });
-        console.log('ant-table-body',document.querySelector('.ant-table-body').scrollTop)
         yield put({
           type: 'changeLoading',
           payload: false,
         });
-
-        document.querySelector('.ant-table-body').scrollTop=0;
+        if(document.querySelector('.ant-table-body')){
+          document.querySelector('.ant-table-body').scrollTop=0;
+        }else{
+          console.log('没找到表格')
+        }
         if (callback) callback();
       }
 

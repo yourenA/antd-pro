@@ -42,7 +42,11 @@ export default class EndpointsList extends PureComponent {
       return total
     },[]);
     let concentrator_offlife_count=concentrator.reduce((total,item)=>{
-      total.push(item.offlines.split(',').length)
+      if(item.offlines){
+        total.push(item.offlines.split(',').length)
+      }else{
+        total.push(0)
+      }
       return total
     },[]);
     let option = {

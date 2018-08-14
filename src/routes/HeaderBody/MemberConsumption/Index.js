@@ -243,9 +243,7 @@ class UserMeterAnalysis extends PureComponent {
       { title: '用户用水量', dataIndex: 'meter_difference_value', key: 'meter_difference_value' ,width: 90,  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
-        return renderRowSpan(val,record)
-      }},
+
       { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
         return ellipsis2(text, 80)
       }},
@@ -276,6 +274,9 @@ class UserMeterAnalysis extends PureComponent {
       }},
       {title: '停止使用时读数', width: 120, dataIndex: 'meter_disabled_value', key: 'meter_disabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
+      }},
+      { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
+        return renderRowSpan(val,record)
       }},
       {
         title: '水表历史状况',

@@ -215,11 +215,20 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-      {title: '小区名称',  dataIndex: 'village_name', key: 'village_name',width:'50%'},
-      {title: '小区总用水量(T)', dataIndex: 'total_difference_value', key: 'total_difference_value',width:'50%',
-        render: (val, record, index) => {
+      {title: '小区名称',  dataIndex: 'village_name', key: 'village_name',width:'40%'},
+      {title: '用户数量',  dataIndex: 'member_count', key: 'member_count',width:'30%',  render: (val, record, index) => {
+        // console.log('record',record)
+        // console.log('record.layer*25',record.layer+25)
         return (
-          <span style={{paddingLeft:`${record.layer*25}px`}}>{val}</span>
+          <span style={{paddingLeft:`${parseInt(record.layer)*25}px`}}>{val}</span>
+        )
+      }},
+      {title: '小区总用水量(T)', dataIndex: 'total_difference_value', key: 'total_difference_value',width:'30%',
+        render: (val, record, index) => {
+          // console.log('record',record)
+          // console.log('record.layer*25',record.layer+25)
+        return (
+          <span style={{paddingLeft:`${parseInt(record.layer)*25}px`}}>{val}</span>
         )
       }},
     ];

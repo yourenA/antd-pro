@@ -186,7 +186,9 @@ class FunctionContent extends PureComponent {
         }
       },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',float:'left'},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
       {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},

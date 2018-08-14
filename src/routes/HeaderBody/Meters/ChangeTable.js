@@ -94,6 +94,21 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
+              新水表厂商代码
+            </span>
+          )}
+        >
+          {getFieldDecorator('new_meter_manufacturer_prefix', {
+            initialValue:  this.props.editRecord.manufacturer_prefix,
+            rules: [{required: true, message: '新水表厂商代码不能为空'}],
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
               新水表集中器号&nbsp;
               <Tooltip title="如果为空则默认为旧表集中器号">
                 <Icon type="question-circle-o" />
@@ -107,7 +122,23 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              新水表集中器通道号&nbsp;
+              <Tooltip title="如果为空则默认为旧表集中器通道号">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+          )}
+        >
+          {getFieldDecorator('channel', {
+            initialValue:  this.props.editRecord.channel,
+          })(
+            <Input />
+          )}
+        </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
@@ -125,23 +156,7 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              新水表厂商代码 &nbsp;
-              <Tooltip title="如果为空则默认为旧表厂商代码">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          )}
-        >
-          {getFieldDecorator('new_meter_manufacturer_prefix', {
-            initialValue:  this.props.editRecord.manufacturer_prefix,
-          })(
-            <Input />
-          )}
-        </FormItem>
+
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

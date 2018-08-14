@@ -310,7 +310,7 @@ const data = [{
         name: '完整实时数据',
         path: 'complete_realData',
         component: CompleteRealData,
-        permissions:['meter_status'],
+        permissions:['company_visit'],
         noShowCompany:['hy']
       }
       // ,{
@@ -324,7 +324,7 @@ const data = [{
       name: '运行管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions:['server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
+      permissions:['company_visit','server_add_and_edit','server_status_edit','server_delete','concentrator_add_and_edit','concentrator_delete','member_add_and_edit','member_delete'],
       children: [
 
       //   ,
@@ -339,7 +339,7 @@ const data = [{
         name: '集中器管理',
         path: 'concentrator_manage',
         component: ConcentratorManage,
-        permissions:['concentrator_add_and_edit','concentrator_delete'],
+        permissions:['company_visit','concentrator_add_and_edit','concentrator_delete'],
       },
       //   {
       //   name: '指令和状态查看',
@@ -351,39 +351,40 @@ const data = [{
         name: '用户档案',
         path: 'user_archives',
         component: UserArchives,
-        permissions:['member_add_and_edit','member_delete'],
+        permissions:['company_visit','member_add_and_edit','member_delete'],
       },
         {
           name: '服务器地址',
           path: 'servers_manage',
           component: Servers,
-          permissions:['server_add_and_edit','server_status_edit','server_delete'],
+          permissions:['company_visit','server_add_and_edit','server_status_edit','server_delete'],
         },
         {
           name: 'DMA分区管理',
           path: 'DMA',
           component: DMA,
-          permissions:['area_add_and_edit','area_delete'],
+          permissions:['company_visit','area_add_and_edit','area_delete'],
           showCompany:['hy']
         },
         {
           name: '流量计管理',
           path: 'flow_meters',
           component: FlowMeters,
-          permissions:['flow_meter_add_and_edit','flow_meter_delete'],
+          permissions:['company_visit','flow_meter_add_and_edit','flow_meter_delete'],
           showCompany:['hy']
         },
        {
           name: '厂商-集中器统计',
           path: 'vendor_concentrator',
           component: VendorConcentrator,
+         permissions:['company_visit'],
         },
         ],
     },{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions:['member_add_and_edit','concentrator_add_and_edit','meter_delete','meter_add_and_edit','role_add_and_edit','role_status_edit','role_delete','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
+      permissions:['company_visit','member_add_and_edit','concentrator_add_and_edit','meter_delete','meter_add_and_edit','role_add_and_edit','role_status_edit','role_delete','user_add_and_edit','user_delete','concentrator_model_delete','concentrator_model_add_and_edit','meter_model_delete','meter_model_add_and_edit','manufacturer_delete','manufacturer_add_and_edit'],
       children: [
         {
           name: '账号管理',
@@ -394,28 +395,28 @@ const data = [{
         name: '厂商查询',
         path: 'vendor_manage',
         component: VendorMange,
-        permissions:['manufacturer_delete','manufacturer_add_and_edit'],
+        permissions:['company_visit','manufacturer_delete','manufacturer_add_and_edit'],
       },{
         name: '水表类型查询',
         path: 'water_meter_search',
         component: MeterModels,
-        permissions:['meter_model_delete','meter_model_add_and_edit'],
+        permissions:['company_visit','meter_model_delete','meter_model_add_and_edit'],
       },{
           name: '水表管理',
           path: 'water_meter_manage',
           component: Meters,
-          permissions:['meter_add_and_edit','meter_delete'],
+          permissions:['company_visit','meter_add_and_edit','meter_delete'],
         },{
         name: '集中器类型查询',
         path: 'concentrator_type_search',
         component: ConcentratorModels,
-        permissions:['concentrator_model_delete','concentrator_model_add_and_edit'],
+        permissions:['company_visit','concentrator_model_delete','concentrator_model_add_and_edit'],
       },
         {
           name: '区域管理',
           path: 'area_manage',
           component: AreaManage,
-          permissions:[,'village_add_and_edit','village_delete'],
+          permissions:['company_visit','village_add_and_edit','village_delete'],
         },
         {
           name: '一站添加数据',
@@ -433,7 +434,7 @@ const data = [{
       name: '异常分析',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions:['concentrator_error_analysis','meter_error_analysis','daily_error'],
+      permissions:['concentrator_error_analysis','meter_error_analysis','daily_error','consumption_abnormality','zero_abnormality','leak_abnormality','night_abnormality'],
       children: [{
         name: '集中器异常分析',
         path: 'concentrator_unusual_analysis',
@@ -453,12 +454,12 @@ const data = [{
         name: '用水量异常报警',
         path: 'consumption_abnormality',
         component: Consumption_abnormality,
-        permissions:['company_visit'],
+        permissions:['consumption_abnormality'],
       },{
         name: '零流量异常报警',
         path: 'zero_abnormality',
         component: ZeroAbnormality,
-        permissions:['company_visit'],
+        permissions:['zero_abnormality'],
       },{
         name: '漏水异常报警',
         path: 'leak_abnormality',
@@ -468,7 +469,7 @@ const data = [{
         name: '夜间异常流量报警',
         path: 'night_abnormality',
         component: NightAbnormality,
-        permissions:['company_visit'],
+        permissions:['night_abnormality'],
       }],
     }],
 },

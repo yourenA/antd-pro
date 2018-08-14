@@ -32,7 +32,11 @@ export default {
           type: 'save',
           payload:  response.data
         });
-        document.querySelector('.ant-table-body').scrollTop=0;
+        if(document.querySelector('.ant-table-body')){
+          document.querySelector('.ant-table-body').scrollTop=0;
+        }else{
+          console.log('没找到表格')
+        }
         yield put({
           type: 'changeLoading',
           payload: false,

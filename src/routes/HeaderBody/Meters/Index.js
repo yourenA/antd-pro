@@ -440,6 +440,15 @@ class MeterModel extends PureComponent {
         }
       },
       {
+        title: '通道号',
+        dataIndex: 'channel',
+        key: 'channel',
+        width: 80,
+        render: (text, record, index) => {
+          return ellipsis2(text, 80)
+        }
+      },
+      {
         title: '安装地址',
         dataIndex: 'install_address',
         key: 'install_address',

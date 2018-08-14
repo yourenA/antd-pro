@@ -171,7 +171,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'user_command_data/add',
       payload:{
         meter_number,
-        feature:(company_code==='hy'||company_code==='jgs'||company_code==='zz')?'upload_single':'upload_single_lora',
+        feature:'upload_single',
         protocol:command
       },
       callback:()=>{
@@ -189,6 +189,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     // const command=this.props.protocols;
     const renderComandRecord=(record)=>{
+      if(!record.protocols) return '';
       const renderCommandBtn=record.protocols.map((item,index)=>{
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000

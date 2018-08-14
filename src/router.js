@@ -5,6 +5,7 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import BasicLayout from './layouts/BasicLayout';
 import UserLayout from './layouts/UserLayout';
 import TestLayout from './layouts/TestLayout';
+import About from './layouts/About';
 import HeaderBodyLayout from './layouts/HeaderBodyLayout';
 import Maintain from './routes/Exception/Maintain';
 import {inWorking} from './common/config'
@@ -23,6 +24,7 @@ function RouterConfig({ history }) {
             :
             <Switch>
               <Route path="/login" component={UserLayout} />
+              <Route path="/about" component={About} />
               {/*<Route path="/:code/test" component={TestLayout} />*/}
               <Route path="/:code/main" component={HeaderBodyLayout} />
               <Route path="/:code/" component={BasicLayout} />

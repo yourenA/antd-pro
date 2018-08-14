@@ -196,7 +196,9 @@ class Consumption_abnormality extends PureComponent {
       {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
       {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value'},
       {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},

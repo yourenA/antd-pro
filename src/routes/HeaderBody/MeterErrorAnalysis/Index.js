@@ -221,7 +221,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'user_command_data/add',
       payload:{
         meter_number,
-        feature:(company_code==='hy'||company_code==='jgs'||company_code==='zz')?'upload_single':'upload_single_lora',
+        feature:'upload_single',
         protocol:command
       },
       callback:()=>{
@@ -293,8 +293,11 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,render: (val, record, index) => {
-
-        return ellipsis2(val.join('|'), 90)
+        if(val){
+          return ellipsis2(val.join('|'), 90)
+        }else{
+          return ''
+        }
       }},
       {title: '厂商名称', dataIndex: 'manufacturer_name',  key: 'manufacturer_name',width:100,render: (text, record, index) => {
         return ellipsis2(text,100)
@@ -305,6 +308,7 @@ class UserMeterAnalysis extends PureComponent {
     const that=this;
     const renderComandRecord=(record)=>{
       const command=record.protocols;
+      if(!command) return '';
       const renderCommandBtn=command.map((item,index)=>{
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000

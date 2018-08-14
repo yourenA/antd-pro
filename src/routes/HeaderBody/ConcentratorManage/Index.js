@@ -451,8 +451,11 @@ class ConcentratorManage extends PureComponent {
       },
       {
         title: '支持协议', width: 100, dataIndex: 'protocols', key: 'protocols', render: (val, record, index) => {
-
-        return ellipsis2(val.join('|'), 100)
+        if(val){
+          return ellipsis2(val.join('|'), 90)
+        }else{
+          return ''
+        }
       }
       },
       {title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number', width: 100,

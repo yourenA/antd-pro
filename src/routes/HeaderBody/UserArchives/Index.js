@@ -22,7 +22,7 @@ const { Content} = Layout;
   meters: state.meters,
   meter_models: state.meter_models,
   sider_regions: state.sider_regions,
-
+  dma:state.dma
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -79,6 +79,16 @@ class UserMeterAnalysis extends PureComponent {
         return: 'all'
       }
     });
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code==='hy'){
+      dispatch({
+        type: 'dma/fetchAll',
+        payload: {
+          return: 'all'
+        },
+      });
+    }
+
   }
   componentWillUnmount(){
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
@@ -366,7 +376,7 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   render() {
-    const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models} = this.props;
+    const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models,dma} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
@@ -435,12 +445,13 @@ class UserMeterAnalysis extends PureComponent {
       {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,  render: (val, record, index) => {
-        return renderRowSpan(val,record)
-      }},
+
       // { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 90},
       // { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
       { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at',  render: (val, record, index) => {
+        return renderRowSpan(val,record)
+      }},
+      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }}
 
@@ -549,7 +560,7 @@ class UserMeterAnalysis extends PureComponent {
             </Button>,
           ]}
         >
-          <ImportArchives sider_regions={sider_regions}  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+          <ImportArchives dma={dma} sider_regions={sider_regions}  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
       </Layout>
     );

@@ -161,7 +161,7 @@ class FunctionContent extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      show_member_number: record.member_number,
+      show_meter_number: record.meter_number,
       editModal: true
     })
   }
@@ -186,7 +186,9 @@ class FunctionContent extends PureComponent {
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
       {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '姓名', dataIndex: 'real_name', width: 100, key: 'real_name'},
+      {title: '姓名', dataIndex: 'real_name', width: 100, key: 'real_name', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '日期', width: 100, dataIndex: 'date', key: 'date'},
       {title: '持续时间(天)', width: 100, dataIndex: 'duration_days', key: 'duration_days'},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
@@ -243,12 +245,12 @@ class FunctionContent extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.show_member_number} 详细信息`}
+                title={`${this.state.show_meter_number} 详细信息`}
                 visible={this.state.editModal}
                 onOk={this.handleEdit}
                 onCancel={() => this.setState({editModal: false})}
               >
-                <Detail member_number={this.state.show_member_number} ended_at={this.state.ended_at}
+                <Detail meter_number={this.state.show_meter_number} ended_at={this.state.ended_at}
                         started_at={this.state.started_at}/>
               </Modal>
             </PageHeaderLayout>

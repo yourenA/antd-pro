@@ -69,6 +69,18 @@ class EditUserArchives extends Component {
       })
     })
   }
+  renderDMATreeNodes=(data)=>{
+    return data.map((item) => {
+      if (item.children&&item.children.length>0) {
+        return (
+          <TreeNode value={item.id}  title={item.name} key={item.id}>
+            {this.renderDMATreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode value={item.id} title={item.name} key={item.id}/>
+    });
+  }
   render() {
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -100,6 +112,7 @@ class EditUserArchives extends Component {
       fileList: this.state.fileList,
     };
     const {getFieldDecorator, getFieldValue} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -109,6 +122,22 @@ class EditUserArchives extends Component {
         >
           <Button type="primary" onClick={this.downloadTemplates}>下载模板</Button>
         </FormItem>
+        {
+          company_code==='hy'&&
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label='DMA分区'>
+            {getFieldDecorator('area_id', {
+              rules: [{required: true, message: 'DMA分区不能为空'}],
+            })(
+              <TreeSelect
+                allowClear
+              >
+                {this.renderDMATreeNodes(this.props.dma.allData)}
+              </TreeSelect>
+            )}
+          </FormItem>
+        }
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
