@@ -1,14 +1,15 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
+import { Tooltip , Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditConcentratorModels'
 import debounce from 'lodash/throttle'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 const {Content} = Layout;
 @connect(state => ({
   concentrator_models: state.concentrator_models,
@@ -66,14 +67,11 @@ class ConcentratorModels extends PureComponent {
     })
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {concentrator_models: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -219,24 +217,39 @@ class ConcentratorModels extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '类型编码', width:  '20%', dataIndex: 'code', key: 'code'},
-      {title: '类型名称', width:  '20%', dataIndex: 'name', key: 'name'},
-      {title: '协议', dataIndex: 'protocols', key: 'protocols', width:  '20%', render: (text, record, index) => {
-        return text.join('|')
+      {title: '类型名称', width:  200, dataIndex: 'name', key: 'name',
+        fixed: 'left',
+        render: (val, record, index) => {
+          return ellipsis2(val,200)
+        }},
+      {title: '类型编码', width:  200, dataIndex: 'code', key: 'code',
+        render: (val, record, index) => {
+          return ellipsis2(val,200)
+        }},
+
+      {title: '协议', dataIndex: 'protocols', key: 'protocols', width: 200, render: (text, record, index) => {
+        return ellipsis2(text.join('|'),200)
       }},
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
+        render: (val, record, index) => {
+          return  <Tooltip
+            placement="topLeft"
+            title={val}>
+            <p >{val}</p>
+          </Tooltip>
+        }
       },
     ];
-    if(this.state.canOperate){
-      columns.push( {
-        title: '操作',
-        width: 100,
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showAddBtn &&
-              <span>
+    const operate ={
+      title: '操作',
+      width: 100,
+      fixed:'right',
+      render: (val, record, index) => (
+        <p>
+          {
+            this.state.showAddBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -247,18 +260,20 @@ class ConcentratorModels extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+          }
+          {
+            this.state.showdelBtn &&
+            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">删除</a>
+            </Popconfirm>
+          }
 
-          </p>
-        ),
-      })
+        </p>
+      ),
+    }
+    if(this.state.canOperate){
+      columns.push(operate )
     }
     const {isMobile} =this.props.global;
     return (
@@ -279,7 +294,14 @@ class ConcentratorModels extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{x:1200,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                />
+               {/* <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -293,7 +315,7 @@ class ConcentratorModels extends PureComponent {
                   scroll={isMobile?{x:700}:{y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

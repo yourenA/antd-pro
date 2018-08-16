@@ -1,11 +1,11 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Badge, Tooltip, Tabs,Button } from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Badge, Tooltip, Tabs, Button} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import AddOrEditConcentrator from './AddOrEditConcentrator'
 import AddConcentrator from './AddConcentrator'
-
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import Detail from './Detail'
@@ -34,7 +34,7 @@ class ConcentratorManage extends PureComponent {
       tableY: 0,
       query: '',
       page: 1,
-      initPage:1,
+      initPage: 1,
       // initRange:[moment(new Date().getFullYear()+'-'+new  Date().getMonth()+1+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       // started_at:'',
       // ended_at:'',
@@ -46,9 +46,9 @@ class ConcentratorManage extends PureComponent {
       editRecord: null,
       refreshSider: 0,
       canOperateConcentrator: localStorage.getItem('canOperateConcentrator') === 'true' ? true : false,
-      canAdd:true,
-      per_page:30,
-      canLoadByScroll:true,
+      canAdd: true,
+      per_page: 30,
+      canLoadByScroll: true,
     }
 
   }
@@ -57,7 +57,7 @@ class ConcentratorManage extends PureComponent {
     // this.setState({
     //   tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     // })
-    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+    document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
     const {dispatch}=this.props
     dispatch({
       type: 'concentrator_models/fetch',
@@ -68,7 +68,7 @@ class ConcentratorManage extends PureComponent {
     dispatch({
       type: 'servers/fetch',
       payload: {
-        display_type:'only_enabled',
+        display_type: 'only_enabled',
         return: 'all'
       }
     });
@@ -79,38 +79,40 @@ class ConcentratorManage extends PureComponent {
       }
     });
   }
+
   componentWillUnmount() {
     console.log('componentWillUnmount')
-    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
   }
+
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
-  scrollTable=()=>{
+  scrollTable = ()=> {
     console.log('scroll')
-    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
-    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
-    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
-    const that=this;
-    if(scrollTop+offsetHeight>scrollHeight-300){
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    console.log('scrollTop', scrollTop)
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
       console.log('到达底部');
-      if(this.state.canLoadByScroll){
+      if (this.state.canLoadByScroll) {
         const {concentrators: {meta}} = this.props;
-        if(this.state.page<meta.pagination.total_pages){
+        if (this.state.page < meta.pagination.total_pages) {
           this.setState({
-            canLoadByScroll:false,
+            canLoadByScroll: false,
           })
           this.handleSearch({
-            page: this.state.page+1,
-            per_page:this.state.per_page,
-          },function () {
+            page: this.state.page + 1,
+            per_page: this.state.per_page,
+          }, function () {
             that.setState({
-              canLoadByScroll:true,
+              canLoadByScroll: true,
             })
-          },true)
+          }, true)
         }
       }
     }
@@ -125,7 +127,7 @@ class ConcentratorManage extends PureComponent {
       this.changeTableY();
       this.handleSearch({
         page: 1,
-        per_page:this.state.per_page,
+        per_page: this.state.per_page,
       })
     })
   }
@@ -137,7 +139,7 @@ class ConcentratorManage extends PureComponent {
     }, function () {
       this.handleSearch({
         page: 1,
-        per_page:this.state.per_page,
+        per_page: this.state.per_page,
       })
     })
 
@@ -145,18 +147,18 @@ class ConcentratorManage extends PureComponent {
   handleFormReset = () => {
     this.handleSearch({
       page: 1,
-      per_page:30,
+      per_page: 30,
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
   }
 
-  handleSearch = (values,cb,fetchAndPush=false) => {
-    console.log('handleSearch',values)
+  handleSearch = (values, cb, fetchAndPush = false) => {
+    console.log('handleSearch', values)
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: fetchAndPush?'concentrators/fetchAndPush':'concentrators/fetch',
+      type: fetchAndPush ? 'concentrators/fetchAndPush' : 'concentrators/fetch',
       payload: {
         query: this.state.query ? this.state.query : '',
         village_id: this.state.village_id ? this.state.village_id : '',
@@ -167,25 +169,25 @@ class ConcentratorManage extends PureComponent {
         that.setState({
           ...values,
         });
-        if(!fetchAndPush){
+        if (!fetchAndPush) {
           that.setState({
-            initPage:values.page
+            initPage: values.page
           })
         }
-        if(cb) cb()
+        if (cb) cb()
       }
     });
   }
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      per_page:this.state.per_page
+      per_page: this.state.per_page
     })
   }
   handPageSizeChange = (per_page)=> {
     this.handleSearch({
       page: 1,
-      per_page:per_page
+      per_page: per_page
     })
   }
   operate = (record)=> {
@@ -197,23 +199,23 @@ class ConcentratorManage extends PureComponent {
   }
   handleAdd = () => {
     this.setState({
-      canAdd:false
+      canAdd: false
     })
     const that = this;
     const formValues = this.formRef.props.form.getFieldsValue();
-    formValues.villages=[];
+    formValues.villages = [];
     for (let k in formValues) {
       if (k.indexOf('villages-') >= 0) {
         if (formValues.hasOwnProperty(k)) {
           if (formValues[k].village === undefined) {
             message.error('安装小区 不能为空');
             this.setState({
-              canAdd:true
+              canAdd: true
             })
             return false
-          }else{
-            const village=formValues[k].village
-            formValues.villages.push(village[village.length-1])
+          } else {
+            const village = formValues[k].village
+            formValues.villages.push(village[village.length - 1])
           }
         }
       }
@@ -225,7 +227,7 @@ class ConcentratorManage extends PureComponent {
         ...formValues,
         // village_id: formValues.village_id[formValues.village_id.length - 1],
         village_ids: formValues.villages,
-        server_id:formValues.server_id?formValues.server_id.key:'',
+        server_id: formValues.server_id ? formValues.server_id.key : '',
         concentrator_model_id: formValues.concentrator_model_id.key,
         is_count: formValues.is_count.key,
       },
@@ -236,7 +238,7 @@ class ConcentratorManage extends PureComponent {
           refreshSider: that.state.refreshSider + 1
         });
         that.setState({
-          canAdd:true
+          canAdd: true
         })
         // that.handleSearch({
         //   page: that.state.page,
@@ -245,9 +247,9 @@ class ConcentratorManage extends PureComponent {
         // })
         // this.reload()
       },
-      errorCallback:function () {
+      errorCallback: function () {
         that.setState({
-          canAdd:true
+          canAdd: true
         })
       }
     });
@@ -261,16 +263,16 @@ class ConcentratorManage extends PureComponent {
     if (state.tabsActiveKey === 'edit') {
       const formValues = this.editFormRef.props.form.getFieldsValue();
       console.log('formValues', formValues)
-      formValues.villages=[];
+      formValues.villages = [];
       for (let k in formValues) {
         if (k.indexOf('villages-') >= 0) {
           if (formValues.hasOwnProperty(k)) {
             if (formValues[k].village === undefined) {
               message.error('安装小区 不能为空')
               return false
-            }else{
-              const village=formValues[k].village
-              formValues.villages.push(village[village.length-1])
+            } else {
+              const village = formValues[k].village
+              formValues.villages.push(village[village.length - 1])
             }
           }
         }
@@ -279,7 +281,7 @@ class ConcentratorManage extends PureComponent {
         type: 'concentrators/edit',
         payload: {
           ...formValues,
-          server_id:formValues.server_id?formValues.server_id.key:'',
+          server_id: formValues.server_id ? formValues.server_id.key : '',
           concentrator_model_id: formValues.concentrator_model_id.key,
           // village_id: formValues.village_id[formValues.village_id.length - 1],
           village_ids: formValues.villages,
@@ -342,8 +344,8 @@ class ConcentratorManage extends PureComponent {
     this.setState({
       showArea: true,
       concentratorNumber: null,
-    },function () {
-      document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+    }, function () {
+      document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
     })
   }
   handleEditConfig = ()=> {
@@ -384,7 +386,7 @@ class ConcentratorManage extends PureComponent {
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
-          per_page:that.state.per_page,
+          per_page: that.state.per_page,
         })
       }
     });
@@ -406,11 +408,14 @@ class ConcentratorManage extends PureComponent {
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
-          per_page:that.state.per_page,
+          per_page: that.state.per_page,
         })
       }
     });
 
+  }
+  changeShowOperate = ()=> {
+    this.setState({canOperateConcentrator: !this.state.canOperateConcentrator})
   }
 
   render() {
@@ -451,17 +456,19 @@ class ConcentratorManage extends PureComponent {
       },
       {
         title: '支持协议', width: 100, dataIndex: 'protocols', key: 'protocols', render: (val, record, index) => {
-        if(val){
+        if (val) {
           return ellipsis2(val.join('|'), 90)
-        }else{
+        } else {
           return ''
         }
       }
       },
-      {title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number', width: 100,
+      {
+        title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
-        }},
+        }
+      },
       {title: '水表总数', dataIndex: 'meter_count', key: 'meter_count', width: 80},
       {
         title: '在线状态', dataIndex: 'is_online', key: 'is_online', width: 80,
@@ -492,7 +499,7 @@ class ConcentratorManage extends PureComponent {
       {
         title: '安装小区', dataIndex: 'villages', key: 'villages', width: 120,
         render: (val, record, index) => {
-          let transVal=val.map((item,index)=>{
+          let transVal = val.map((item, index)=> {
             return <span key={index}>{ellipsis2(item.name, 110)}<br/></span>
 
           })
@@ -547,23 +554,23 @@ class ConcentratorManage extends PureComponent {
       },
       {
         title: '备注', dataIndex: 'remark', key: 'remark', render: (val, record, index) => {
-        return ellipsis(val, 8)
+        return ellipsis2(val)
       }
       },
 
     ];
-    if (this.state.canOperateConcentrator) {
-      columns.push({
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 100,
-        render: (val, record, index) => {
-          return (
-            <p>
-              {
-                this.state.showAddBtn &&
-                <span>
+    const operate={
+      title: '操作',
+      key: 'operation',
+      fixed: 'right',
+      className:'operation',
+      width: 100,
+      render: (val, record, index) => {
+        return (
+          <p>
+            {
+              this.state.showAddBtn &&
+              <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -574,20 +581,22 @@ class ConcentratorManage extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-              }
-              {
-                this.state.showdelBtn &&
-                <span>
+            }
+            {
+              this.state.showdelBtn &&
+              <span>
                   <Popconfirm placement="topRight" title={ `确定要删除吗?`}
                               onConfirm={()=>this.handleRemove(record.id)}>
                   <a href="">删除</a>
                 </Popconfirm>
                 </span>
-              }
-            </p>
-          )
-        }
-      })
+            }
+          </p>
+        )
+      }
+    }
+    if (this.state.canOperateConcentrator) {
+      columns.push(operate)
     }
     let breadcrumb = this.state.concentratorNumber ? [{name: '运行管理'}, {
       name: '集中器管理',
@@ -614,32 +623,40 @@ class ConcentratorManage extends PureComponent {
                                   per_page={this.state.per_page}
                                   handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                                   showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
-                                  canOperateConcentrator={this.state.canOperateConcentrator} changeShowOperate={()=> {
-                            this.setState({canOperateConcentrator: !this.state.canOperateConcentrator})
-                          }}
+                                  canOperateConcentrator={this.state.canOperateConcentrator}
+                                  changeShowOperate={this.changeShowOperate}
                           />
                         </div>
                       </div>
-                      <Table
-                        rowClassName={function (record, index) {
-                          if (record.description === '') {
-                            return 'error'
-                          }
-                        }}
-                        className='meter-table'
-                        loading={loading}
-                        rowKey={record => record.uuidkey}
-                        dataSource={data}
-                        columns={columns}
-                        scroll={{x: 2050, y: this.state.tableY}}
-                        pagination={false}
-                        size="small"
-                      />
-                      <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
+                      <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                       dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                       scroll={{x: 2500, y: this.state.tableY}}
+                                       history={this.props.history}
+                                       canOperate={this.state.canOperateConcentrator}
+                                       operate={operate}
+                                       showConcentrator={this.showConcentrator}/>
+                      {/*  <Table
+                       rowClassName={function (record, index) {
+                       if (record.description === '') {
+                       return 'error'
+                       }
+                       }}
+                       className='meter-table'
+                       loading={loading}
+                       rowKey={record => record.uuidkey}
+                       dataSource={data}
+                       columns={columns}
+                       scroll={{x: 2050, y: this.state.tableY}}
+                       pagination={false}
+                       size="small"
+                       />*/}
+                      <Pagination meta={meta} initPage={this.state.initPage}
+                                  handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
                     </div>
                     :
                     <ConcentratorDetail protocols={this.state.protocols} concentratorId={this.state.concentratorId}
                                         concentratorNumber={this.state.concentratorNumber}
+                                        history={this.props.history}
                                         handleBack={this.handleBack}/>
                 }
               </Card>
@@ -650,9 +667,9 @@ class ConcentratorManage extends PureComponent {
           title="添加集中器"
           visible={this.state.addModal}
           //onOk={this.handleAdd}
-          onCancel={() => this.setState({addModal: false,canAdd:true})}
+          onCancel={() => this.setState({addModal: false, canAdd: true})}
           footer={[
-            <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({addModal: false})}>取消</Button>,
             <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
               确认
             </Button>,
@@ -671,8 +688,8 @@ class ConcentratorManage extends PureComponent {
         >
           <AddOrEditConcentrator
             editRecord={this.state.editRecord}
-                                 wrappedComponentRef={(inst) => this.editFormRef = inst} area={area.data}
-                                 concentrator_models={concentrator_models.data} servers={servers.data}/>
+            wrappedComponentRef={(inst) => this.editFormRef = inst} area={area.data}
+            concentrator_models={concentrator_models.data} servers={servers.data}/>
         </Modal>
         <Modal
           key={ Date.parse(new Date()) + 1}

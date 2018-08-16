@@ -7,7 +7,9 @@ import Pagination from './../../../components/Pagination/Index'
 import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditServers'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 import EditStatusForm from './editStatus'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
@@ -52,14 +54,11 @@ class MeterModel extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {servers: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -239,26 +238,33 @@ class MeterModel extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '服务器地址', width: '20%', dataIndex: 'ip', key: 'ip', },
-      {title: '服务器端口',  dataIndex: 'port', key: 'port',width: '15%',},
-      {title: '状态', dataIndex: 'status', key: 'status',
+      {title: '服务器地址', width: 200, dataIndex: 'ip', key: 'ip',
+        render: (val, record, index) => {
+          return ellipsis2(val,200)
+        }},
+      {title: '服务器端口',  dataIndex: 'port', key: 'port',width:150,
+        render: (val, record, index) => {
+          return ellipsis2(val,150)
+        }},
+      {title: '状态', dataIndex: 'status', key: 'status',width:150,
         render:(val, record, index) => (
           <p>
             <Badge status={val===1?"success":"error"} />{record.status_explain}
 
           </p>
         )},
-      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',width: '20%',},
+      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',
+      },
     ];
-    if(this.state.canOperate){
-      columns.push(  {
-        title: '操作',
-        width: 170,
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showStatusBtn &&
-              <span>
+    let operate={
+      title: '操作',
+      width: 170,
+      fixed:'right',
+      render: (val, record, index) => (
+        <p>
+          {
+            this.state.showStatusBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -269,10 +275,10 @@ class MeterModel extends PureComponent {
                       }}>修改状态</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showAddBtn &&
-              <span>
+          }
+          {
+            this.state.showAddBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -283,18 +289,20 @@ class MeterModel extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+          }
+          {
+            this.state.showdelBtn &&
+            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">删除</a>
+            </Popconfirm>
+          }
 
-          </p>
-        ),
-      })
+        </p>
+      ),
+    }
+    if(this.state.canOperate){
+      columns.push(operate)
     }
     return (
       <Layout className="layout">
@@ -315,7 +323,14 @@ class MeterModel extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{ y: this.state.tableY}}
+                                 history={this.props.history}
+                                 canOperate={this.state.canOperate}
+                                 operate={operate}
+                />
+              {/*  <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -329,7 +344,7 @@ class MeterModel extends PureComponent {
                   //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

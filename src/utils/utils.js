@@ -354,8 +354,9 @@ export function ellipsis(val,len=8) {
 export function ellipsis2(val,len=150) {
   if(val!==undefined){
     return (
-      <Tooltip arrowPointAtCenter
-               title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
+      <Tooltip
+        placement="topLeft"
+        title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
         <p style={{
           display:'inline-block',
           width: `${len-15}px`,

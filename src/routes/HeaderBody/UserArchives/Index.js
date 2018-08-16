@@ -8,7 +8,7 @@ import ImportArchives from './ImportUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import request from "./../../../utils/request";
-import ChangeTable from './ChangeTable'
+import ResizeableTable from './../../../components/ResizeableTitle/RowSpanIndex'
 import moment from 'moment'
 import {renderIndex,renderRowSpan,parseRowSpanData,ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
@@ -98,14 +98,11 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {members: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -395,7 +392,10 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
-        return renderRowSpan(val,record)
+        const children= (
+          ellipsis2(val, 80)
+        )
+        return renderRowSpan(children,record)
       } },
       { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
         const children= (
@@ -410,10 +410,16 @@ class UserMeterAnalysis extends PureComponent {
         return renderRowSpan(children,record)
       }},
       { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
-        return renderRowSpan(val,record)
+        const children=  (
+          ellipsis2(val, 170)
+        )
+        return renderRowSpan(children,record)
       }},
       { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
-        return renderRowSpan(val,record)
+        const children=  (
+          ellipsis2(val, 130)
+        )
+        return renderRowSpan(children,record)
       }},
       { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
       { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
@@ -448,26 +454,28 @@ class UserMeterAnalysis extends PureComponent {
 
       // { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 90},
       // { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
-      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at',  render: (val, record, index) => {
-        return renderRowSpan(val,record)
+      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at', width: 150, render: (val, record, index) => {
+        const children= (
+          ellipsis2(val, 150)
+        )
+        return renderRowSpan(children,record)
       }},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',width: 120,  render: (val, record, index) => {
+      { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }}
 
     ];
-    if(this.state.canOperate){
-      columns.push( {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        width: 90,
-        render: (val, record, index) => {
-          const children= (
-            <p>
-              {
-                this.state.showAddBtn &&
-                <span>
+    const operate={
+      title: '操作',
+      key: 'operation',
+      fixed: 'right',
+      width: 90,
+      render: (val, record, index) => {
+        const children= (
+          <p>
+            {
+              this.state.showAddBtn &&
+              <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -478,21 +486,23 @@ class UserMeterAnalysis extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-              }
-              {
-                this.state.showdelBtn &&
-                <span>
+            }
+            {
+              this.state.showdelBtn &&
+              <span>
                   <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的水表也会被删除！</p></div>}
                               onConfirm={()=>this.handleRemove(record.id)}>
                   <a href="">删除</a>
                 </Popconfirm>
                 </span>
-              }
-            </p>
-          )
-          return renderRowSpan(children,record)
-        }
-      })
+            }
+          </p>
+        )
+        return renderRowSpan(children,record)
+      }
+    }
+    if(this.state.canOperate){
+      columns.push(operate)
     }
     return (
       <Layout className="layout">
@@ -514,7 +524,15 @@ class UserMeterAnalysis extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
+                                 scroll={{x: 2500, y: this.state.tableY}}
+                                 history={this.props.history}
+                                 canOperate={this.state.canOperate}
+                                 operate={operate}
+                                 className={'meter-table no-interval'}
+                                 />
+               {/* <Table
                   className='meter-table no-interval'
                   loading={loading}
                   rowKey={record => record.myId}
@@ -523,7 +541,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{ x: 1900,y: this.state.tableY }}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
           </PageHeaderLayout>

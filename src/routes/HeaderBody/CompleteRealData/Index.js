@@ -6,6 +6,8 @@ import Pagination from './../../../components/Pagination/Index'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 // import 'rsuite-table/lib/less/index.less'
@@ -55,14 +57,11 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {complete_real_data: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -220,23 +219,41 @@ class UserMeterAnalysis extends PureComponent {
           return renderIndex(meta, this.state.initPage, index)
         }
       },
-      {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left'},
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed: 'left',},
-      {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left',},
+      {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left', render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
+      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed: 'left', render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
+      {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', render: (text, record, index) => {
+        return ellipsis2(text,80)
+      },},
       {title: '当前正累计流量(m³)', dataIndex: 'value', key: 'value', width: 160, render: (text, record, index) => {
-        return ellipsis2(text,130)
+        return ellipsis2(text,160)
       }},
       ...hoursColumns,
       {title: '集中器协议', dataIndex: 'protocols', key: 'protocols', width: 90,render: (val, record, index) => {
 
         return ellipsis2(val.join('|'), 90)
       }},
-      {title: '集中器类型', dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100,},
-      {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100,},
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 90,},
-      {title: '采集时间', dataIndex: 'collected_at', key: 'collected_at', width: 160,},
-      {title: '上传时间', dataIndex: 'uploaded_at', key: 'uploaded_at', width: 160,},
-      {title: '水表序号', dataIndex: 'meter_index', key: 'meter_index', width: 80,},
+      {title: '集中器类型', dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100, render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+      {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100, render: (text, record, index) => {
+        return ellipsis2(text,100)
+      },},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 90, render: (text, record, index) => {
+        return ellipsis2(text,90)
+      },},
+      {title: '采集时间', dataIndex: 'collected_at', key: 'collected_at', width: 160, render: (text, record, index) => {
+        return ellipsis2(text,160)
+      },},
+      {title: '上传时间', dataIndex: 'uploaded_at', key: 'uploaded_at', width: 160, render: (text, record, index) => {
+        return ellipsis2(text,160)
+      },},
+      {title: '水表序号', dataIndex: 'meter_index', key: 'meter_index', width: 80, render: (text, record, index) => {
+        return ellipsis2(text,80)
+      },},
 
       {title: '当前负累积流量(m³)', dataIndex: 'meter_revalue', key: 'meter_revalue', width: 160, render: (text, record, index) => {
         return ellipsis2(record['body'].meter_revalue,130)
@@ -374,7 +391,13 @@ class UserMeterAnalysis extends PureComponent {
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x: columnsWidth+600, y: isMobile ? document.body.offsetHeight - 200 : this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table'}
+                />
+               {/* <Table
                   className='meter-table'
                   loading={loading}
                   rowKey={record => record.uuidkey}
@@ -383,31 +406,13 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{x: columnsWidth+100, y: isMobile ? document.body.offsetHeight - 200 : this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
 
               </Card>
             </PageHeaderLayout>
           </div>
         </Content>
-        {/*  <Modal
-         key={ Date.parse(new Date())}
-         title="添加用户档案"
-         visible={this.state.addModal}
-         onOk={this.handleAdd}
-         onCancel={() => this.setState({addModal:false})}
-         >
-         <AddOREditUserArchives  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}  />
-         </Modal>
-         <Modal
-         key={ Date.parse(new Date())+1}
-         title="编辑用户档案"
-         visible={this.state.editModal}
-         onOk={this.handleEdit}
-         onCancel={() => this.setState({editModal:false})}
-         >
-         <AddOREditUserArchives  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
-         </Modal>*/}
 
       </Layout>
     );

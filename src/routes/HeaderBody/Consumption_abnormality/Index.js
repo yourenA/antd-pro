@@ -11,6 +11,7 @@ import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -188,20 +189,31 @@ class Consumption_abnormality extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
-      {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
-      {title: '日期', dataIndex: 'date', width: 120,  key: 'date',},
-      {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value'},
-      {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value'},
-      {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '日期', dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
+        return ellipsis2(val, 120)
+      }},
+      {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value', render: (val, record, index) => {
+        return ellipsis2(val, 120)
+      }},
+      {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value', render: (val, record, index) => {
+        return ellipsis2(val, 120)
+      }},
+      {title: '用水量', width: 100,dataIndex: 'difference_value', key: 'difference_value', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '安装地址', dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
+      {title: '用户名称',  dataIndex: 'real_name', key: 'real_name'},
 
     ];
     const {dispatch}=this.props;
@@ -227,7 +239,13 @@ class Consumption_abnormality extends PureComponent {
                            />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:1800,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table'}
+                />
+               {/* <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -241,7 +259,7 @@ class Consumption_abnormality extends PureComponent {
                   scroll={{x: 1250,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

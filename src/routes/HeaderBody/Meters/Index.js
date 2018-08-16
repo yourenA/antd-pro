@@ -10,6 +10,7 @@ import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 import ChangeTable from './ChangeTable'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -65,21 +66,16 @@ class MeterModel extends PureComponent {
         return: 'all'
       }
     });
-
-    // this.handleCommandSearch({page:1})
   }
   componentWillUnmount() {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {meters: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -395,14 +391,16 @@ class MeterModel extends PureComponent {
         return ellipsis2(text, 80)
       }
       },
-      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water'},
+      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water', render: (text, record, index) => {
+        return ellipsis2(text, 80)
+      }},
       {
         title: '水表类型名称',
         width: 140,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
         render: (text, record, index) => {
-          return ellipsis2(text, 130)
+          return ellipsis2(text, 140)
         }
       },
       {
@@ -509,12 +507,14 @@ class MeterModel extends PureComponent {
       },
       {
         title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
-        return ellipsis2(text, 100)
+        return ellipsis2(text, 120)
       }
       },
 
-      {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100},
-      {title: '条码', dataIndex: 'barcode', key: 'barcode', width: 100},
+      {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }},
       {
         title: '所属厂商',
         dataIndex: 'manufacturer_name',
@@ -525,21 +525,22 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '备注', dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
+        title: '备注', dataIndex: 'remark', key: 'remark',  width: 100,render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
+      {title: '条码', dataIndex: 'barcode', key: 'barcode'},
+
     ];
-    if (this.state.canOperateMeter) {
-      columns.push({
-        title: '操作',
-        width: isMobile ? 90 : 180,
-        fixed: 'right',
-        render: (val, record, index) => (
-          <p>
-            {
-              (this.state.showCommandBtn && record.is_valve === 1) &&
-              <span>
+    const operate={
+      title: '操作',
+      width: isMobile ? 90 : 180,
+      fixed: 'right',
+      render: (val, record, index) => (
+        <p>
+          {
+            (this.state.showCommandBtn && record.is_valve === 1) &&
+            <span>
                 {record.valve_status === -1 &&
                 <Popconfirm placement="topRight" title={ `确定要开阀吗?`}
                             onConfirm={()=> {
@@ -549,21 +550,21 @@ class MeterModel extends PureComponent {
                   <a href="javascript:;">开阀</a>
                 </span>
                 </Popconfirm>}
-                {record.valve_status === 1 &&
-                <Popconfirm placement="topRight" title={ `确定要关阀吗?`}
-                            onConfirm={()=> {
-                              this.handleCommand(record, 'close_valve')
-                            }}>
+              {record.valve_status === 1 &&
+              <Popconfirm placement="topRight" title={ `确定要关阀吗?`}
+                          onConfirm={()=> {
+                            this.handleCommand(record, 'close_valve')
+                          }}>
                 <span>
                    <a href="javascript:;">关阀</a>
                 </span>
-                </Popconfirm>}
-                <span className="ant-divider"/>
+              </Popconfirm>}
+              <span className="ant-divider"/>
               </span>
-            }
-            {
-              this.state.showAddBtn &&
-              <span>
+          }
+          {
+            this.state.showAddBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -574,10 +575,10 @@ class MeterModel extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showChangeBtn &&record.status === 1&&
-              <span>
+          }
+          {
+            this.state.showChangeBtn &&record.status === 1&&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -588,18 +589,20 @@ class MeterModel extends PureComponent {
                       }}>换表</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&record.status === 1&&
-              <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的用户也会被删除！</p></div>}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+          }
+          {
+            this.state.showdelBtn &&record.status === 1&&
+            <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的用户也会被删除！</p></div>}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">删除</a>
+            </Popconfirm>
+          }
 
-          </p>
-        ),
-      })
+        </p>
+      ),
+    }
+    if (this.state.canOperateMeter) {
+      columns.push(operate)
     }
     const commandColumns = [
       {
@@ -652,7 +655,14 @@ class MeterModel extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{x:3000,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperateMeter}
+                />
+               {/* <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -666,7 +676,7 @@ class MeterModel extends PureComponent {
                   scroll={{x: 2530, y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
@@ -699,7 +709,7 @@ class MeterModel extends PureComponent {
             <ChangeTable meter_models={meter_models.data} editRecord={this.state.editRecord}
                          wrappedComponentRef={(inst) => this.changeFormRef = inst}/>
           </Modal>
-          <Modal
+         {/* <Modal
             width="90%"
             title="开/关阀信息"
             visible={this.state.commandModal}
@@ -719,7 +729,7 @@ class MeterModel extends PureComponent {
               <Pagination meta={user_command_data.meta} handPageChange={this.handCommandPageChange}/>
             </div>
 
-          </Modal>
+          </Modal>*/}
 
         </Content>
       </Layout>

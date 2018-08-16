@@ -6,7 +6,8 @@ import DefaultSearch from './ConcentratorErrorSearch'
 import { routerRedux} from 'dva/router';
 import {connect} from 'dva';
 import moment from 'moment';
-import {renderIndex} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ConcentratorOfflife from './ConcentratorOfflife'
 import uuid from 'uuid/v4'
 @connect(state => ({
@@ -96,14 +97,23 @@ class FunctionContent extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '离线时间',  dataIndex: 'offlines', key: 'offlines'},
+      {title: '离线时间',width:150,  dataIndex: 'offlines', key: 'offlines',
+        render: (val, record, index) => {
+          return ellipsis2(val, 150)
+        }},
       {title: '错误类型', dataIndex: 'status', key: 'status' ,width:80,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
         </p>
       )},
-      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
-      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }},
+      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 80)
+        }},
       {
         title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
         render: (val, record, index) => {
@@ -111,9 +121,12 @@ class FunctionContent extends PureComponent {
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
         }
       },
-      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 110)
+        }},
       {
-        title: '正常读值率', width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
+        title: '正常读值率', dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
         render: (val, record, index) => {
           return parseFloat(val) ?
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
@@ -132,7 +145,13 @@ class FunctionContent extends PureComponent {
                                  handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
                 </div>
               </div>
-              <Table
+              <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                               dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                               scroll={{x:1200,y: this.state.tableY}}
+                               history={this.props.history}
+                               className={'meter-table padding-6'}
+              />
+              {/*<Table
                 className='meter-table padding-6'
                 loading={loading}
                 rowKey={record => record.uuidkey}
@@ -142,7 +161,7 @@ class FunctionContent extends PureComponent {
                 //scroll={{y: this.state.tableY}}
                 pagination={false}
                 size="small"
-              />
+              />*/}
               <Pagination meta={meta} handPageChange={this.handPageChange}/>
             </Col>
             <Col  md={24} lg={10} >

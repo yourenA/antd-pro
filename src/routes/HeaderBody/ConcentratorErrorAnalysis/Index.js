@@ -12,6 +12,7 @@ import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
 import debounce from 'lodash/throttle'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 const {Content} = Layout;
 @connect(state => ({
   concentrator_errors: state.concentrator_errors,
@@ -70,14 +71,11 @@ class UserMeterAnalysis extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {concentrator_errors: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -230,7 +228,10 @@ class UserMeterAnalysis extends PureComponent {
           return renderIndex(meta, this.state.initPage, index)
         }
       },
-      {title: '集中器编号', width: 90, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',},
+      {title: '集中器编号', width: 90, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',
+        render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }},
       {title: '生产厂商', width: 90, dataIndex: 'manufacturer_name', key: 'manufacturer_name',render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},
@@ -240,9 +241,18 @@ class UserMeterAnalysis extends PureComponent {
           return ellipsis2(val, 130)
         }
       },
-      {title: '日期', dataIndex: 'date', key: 'date'},
-      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count'},
-      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count'},
+      {title: '日期', dataIndex: 'date', key: 'date', width: 120,
+        render: (val, record, index) => {
+          return ellipsis2(val, 120)
+        }},
+      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }},
+      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 80)
+        }},
       {
         title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
         render: (val, record, index) => {
@@ -250,7 +260,10 @@ class UserMeterAnalysis extends PureComponent {
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
         }
       },
-      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count'},
+      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
+        render: (val, record, index) => {
+          return ellipsis2(val, 110)
+        }},
       {
         title: '正常读值率', width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
         render: (val, record, index) => {
@@ -259,122 +272,122 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '0', dataIndex: 'address', key: '0', width: 40, render: (val, record, index) => {
+        title: '0', dataIndex: 'hours_status', key: '0', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[0])
       }
       },
       {
-        title: '1', dataIndex: 'address', key: '1', width: 40, render: (val, record, index) => {
+        title: '1', dataIndex: 'hours_status', key: '1', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[1])
       }
       },
       {
-        title: '2', dataIndex: 'address', key: '2', width: 40, render: (val, record, index) => {
+        title: '2', dataIndex: 'hours_status', key: '2', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[2])
       }
       },
       {
-        title: '3', dataIndex: 'address', key: '3', width: 40, render: (val, record, index) => {
+        title: '3', dataIndex: 'hours_status', key: '3', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[3])
       }
       },
       {
-        title: '4', dataIndex: 'address', key: '4', width: 40, render: (val, record, index) => {
+        title: '4', dataIndex: 'hours_status', key: '4', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[4])
       }
       },
       {
-        title: '5', dataIndex: 'address', key: '5', width: 40, render: (val, record, index) => {
+        title: '5', dataIndex: 'hours_status', key: '5', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[5])
       }
       },
       {
-        title: '6', dataIndex: 'address', key: '6', width: 40, render: (val, record, index) => {
+        title: '6', dataIndex: 'hours_status', key: '6', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[6])
       }
       },
       {
-        title: '7', dataIndex: 'address', key: '7', width: 40, render: (val, record, index) => {
+        title: '7', dataIndex: 'hours_status', key: '7', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[7])
       }
       },
       {
-        title: '8', dataIndex: 'address', key: '8', width: 40, render: (val, record, index) => {
+        title: '8', dataIndex: 'hours_status', key: '8', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[8])
       }
       },
       {
-        title: '9', dataIndex: 'address', key: '9', width: 40, render: (val, record, index) => {
+        title: '9', dataIndex: 'hours_status', key: '9', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[9])
       }
       },
       {
-        title: '10', dataIndex: 'address', key: '10', width: 40, render: (val, record, index) => {
+        title: '10', dataIndex: 'hours_status', key: '10', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[10])
       }
       },
       {
-        title: '11', dataIndex: 'address', key: '11', width: 40, render: (val, record, index) => {
+        title: '11', dataIndex: 'hours_status', key: '11', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[11])
       }
       },
       {
-        title: '12', dataIndex: 'address', key: '12', width: 40, render: (val, record, index) => {
+        title: '12', dataIndex: 'hours_status', key: '12', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[12])
       }
       },
       {
-        title: '13', dataIndex: 'address', key: '13', width: 40, render: (val, record, index) => {
+        title: '13', dataIndex: 'hours_status', key: '13', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[13])
       }
       },
       {
-        title: '14', dataIndex: 'address', key: '14', width: 40, render: (val, record, index) => {
+        title: '14', dataIndex: 'hours_status', key: '14', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[14])
       }
       },
       {
-        title: '15', dataIndex: 'address', key: '15', width: 40, render: (val, record, index) => {
+        title: '15', dataIndex: 'hours_status', key: '15', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[15])
       }
       },
       {
-        title: '16', dataIndex: 'address', key: '16', width: 40, render: (val, record, index) => {
+        title: '16', dataIndex: 'hours_status', key: '16', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[16])
       }
       },
       {
-        title: '17', dataIndex: 'address', key: '17', width: 40, render: (val, record, index) => {
+        title: '17', dataIndex: 'hours_status', key: '17', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[17])
       }
       },
       {
-        title: '18', dataIndex: 'address', key: '18', width: 40, render: (val, record, index) => {
+        title: '18', dataIndex: 'hours_status', key: '18', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[18])
       }
       },
       {
-        title: '19', dataIndex: 'address', key: '19', width: 40, render: (val, record, index) => {
+        title: '19', dataIndex: 'hours_status', key: '19', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[19])
       }
       },
       {
-        title: '20', dataIndex: 'address', key: '20', width: 40, render: (val, record, index) => {
+        title: '20', dataIndex: 'hours_status', key: '20', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[20])
       }
       },
       {
-        title: '21', dataIndex: 'address', key: '21', width: 40, render: (val, record, index) => {
+        title: '21', dataIndex: 'hours_status', key: '21', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[21])
       }
       },
       {
-        title: '22', dataIndex: 'address', key: '22', width: 40, render: (val, record, index) => {
+        title: '22', dataIndex: 'hours_status', key: '22', width: 40, render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[22])
       }
       },
       {
-        title: '23', dataIndex: 'address', key: '23', width: 40, render: (val, record, index) => {
+        title: '23', dataIndex: 'hours_status', key: '23', render: (val, record, index) => {
         return this.renderStatus(record.is_onlines[23])
       }
       },
@@ -401,7 +414,13 @@ class UserMeterAnalysis extends PureComponent {
                       clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:2300,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table error-analysis padding-6'}
+               />
+               {/*  <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -415,7 +434,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{x: 1900, y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

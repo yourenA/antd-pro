@@ -4,9 +4,10 @@ import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import moment from 'moment'
 import { routerRedux} from 'dva/router';
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 @connect(state => ({
   meter_daily_errors: state.meter_daily_errors,
@@ -161,7 +162,7 @@ class FunctionContent extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '集中器编号', width: '20%', dataIndex: 'concentrator_number', key: 'concentrator_number'
+      {title: '集中器编号', width:200, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (
           <p  className="link" onClick={()=>{
@@ -169,9 +170,14 @@ class FunctionContent extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '户号', width:  '20%', dataIndex: 'member_number', key: 'member_number'},
-      {title: '水表编号', width:  '20%', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '水表序号', width:  '20%', dataIndex: 'meter_index', key: 'meter_index'},
+      {title: '户号', width: 200, dataIndex: 'member_number', key: 'member_number',
+        render: (val, record, index) => {
+          return ellipsis2(val, 200)
+        }},
+      {title: '水表编号', width: 200, dataIndex: 'meter_number', key: 'meter_number',
+        render: (val, record, index) => {
+          return ellipsis2(val, 200)
+        }},
       {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>
           <Badge status={val===-1?"warning":"error"} />{record.status_explain}
@@ -188,7 +194,13 @@ class FunctionContent extends PureComponent {
                              per_page={this.state.per_page}   handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
             </div>
           </div>
-          <Table
+          <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                           dataSource={data} columns={columns} rowKey={record => record.meter_number}
+                           scroll={isMobile?{x:600}:{y: this.state.tableY}}
+                           history={this.props.history}
+                           className={'meter-table padding-6'}
+          />
+       {/*   <Table
             rowClassName={function (record, index) {
               if (record.description === '') {
                 return 'error'
@@ -203,7 +215,7 @@ class FunctionContent extends PureComponent {
             //scroll={{y: this.state.tableY}}
             pagination={false}
             size="small"
-          />
+          />*/}
           <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  meta={meta} handPageChange={this.handPageChange}/>
 
         </Card>

@@ -142,7 +142,7 @@ class EditUserArchives extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              安装小区
+              采集范围
             </span>
           )}>
           {getFieldDecorator('village_id', {

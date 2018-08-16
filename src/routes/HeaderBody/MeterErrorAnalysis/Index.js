@@ -12,6 +12,7 @@ import './index.less'
 import uuid from 'uuid/v4'
 import debounce from 'lodash/throttle'
 import {renderIndex,renderErrorData,ellipsis2} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 
 const {Content} = Layout;
 @connect(state => ({
@@ -76,14 +77,11 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {meter_errors: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -260,9 +258,17 @@ class UserMeterAnalysis extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (text, record, index) => {
+        return ellipsis2(text,110)
+      }},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (text, record, index) => {
+        return ellipsis2(text,100)
+      }},
+      {title: '日期', dataIndex: 'date',  key: 'date',width:100,render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
       {
@@ -287,6 +293,7 @@ class UserMeterAnalysis extends PureComponent {
           )
       }
       },
+
       {title: '用水量', width: 80, dataIndex: 'consumption', key: 'consumption',
         render: (val, record, index) => {
           return renderErrorData(val)
@@ -299,11 +306,9 @@ class UserMeterAnalysis extends PureComponent {
           return ''
         }
       }},
-      {title: '厂商名称', dataIndex: 'manufacturer_name',  key: 'manufacturer_name',width:100,render: (text, record, index) => {
-        return ellipsis2(text,100)
-      }},
+      {title: '厂商名称', dataIndex: 'manufacturer_name',  key: 'manufacturer_name'},
 
-      {title: '日期', dataIndex: 'date',  key: 'date',},
+
     ];
     const that=this;
     const renderComandRecord=(record)=>{
@@ -318,20 +323,21 @@ class UserMeterAnalysis extends PureComponent {
       })
       return renderCommandBtn
     }
+    const operate={
+      title: '操作',
+      key: 'operation',
+      width: 240,
+      fixed: 'right',
+      render: (val, record, index) => {
+        return (
+          <div>
+            {this.state.showCommandBtn&&renderComandRecord(record)}
+          </div>
+        )
+      }
+    }
     if(this.state.canOperate){
-      columns.push( {
-        title: '操作',
-        key: 'operation',
-        width: 240,
-        fixed: 'right',
-        render: (val, record, index) => {
-          return (
-            <div>
-              {this.state.showCommandBtn&&renderComandRecord(record)}
-            </div>
-          )
-        }
-      })
+      columns.push(operate)
     }
     return (
       <Layout className="layout">
@@ -357,7 +363,19 @@ class UserMeterAnalysis extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:1600,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                                 rowClassName={function (record, index) {
+                                   if (record.status === -2) {
+                                     return 'error'
+                                   }
+                                 }}
+                />
+               {/* <Table
                   rowClassName={function (record, index) {
                     if (record.status === -2) {
                       return 'error'
@@ -371,7 +389,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{x: 1210,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination  meta={meta} handPageChange={this.handPageChange}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}/>
               </Card>
             </PageHeaderLayout>

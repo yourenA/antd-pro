@@ -17,7 +17,7 @@ export default class MyPagination extends PureComponent {
       <div>
         <Pagination
           showSizeChanger onShowSizeChange={this.onShowSizeChange}
-          pageSizeOptions={['30','50','100','200']}
+          pageSizeOptions={['30','50','100','200','500']}
           showTotal={(total, range) => {
             if (initPage) {
               return meta ?`获取第${(initPage-1)*(meta.pagination.per_page)+1}-${range[1]?range[1]:''}条  总数 : ${total}`:''

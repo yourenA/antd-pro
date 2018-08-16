@@ -9,7 +9,9 @@ import DefaultSearch from './Search'
 import {connect} from 'dva';
 import find from 'lodash/find'
 import {Link, routerRedux} from 'dva/router';
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -56,14 +58,11 @@ class Vendor extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {usergroup: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -181,18 +180,17 @@ class Vendor extends PureComponent {
         title: '名称',
         dataIndex: 'display_name',
         key:'display_name',
-        width: '25%',
+        width:150,
+        render: (val, record, index) => {
+          return ellipsis2(val,150)
+        }
       },{
         title: '描述',
         dataIndex: 'description',
         key:'description',
-        width: '25%',
+        width: 200,
         render: (val, record, index) => {
-          return (
-            <Tooltip  title={val}>
-              {(val && val.length > 20) ? val.substring(0, 20) + '...' : val}
-            </Tooltip>
-          )
+          return ellipsis2(val,200)
         }
       },
       {
@@ -207,30 +205,31 @@ class Vendor extends PureComponent {
         }
       },
     ];
+    const operate=  {
+      title: '操作',
+      width:150,
+      render: (val, record, index) => (
+        <p>
+          <a href="javascript:;" onClick={()=>{
+            dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/${record.id}`))
+
+          }}>编辑</a>
+          <span className="ant-divider" />
+          <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+                      onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
+            <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
+          </Popconfirm>
+          <span className="ant-divider" />
+          <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                      onConfirm={()=>this.handleRemove(record.id)}>
+            <a href="">删除</a>
+          </Popconfirm>
+
+        </p>
+      ),
+    }
     if(this.state.canOperate){
-      columns.push(   {
-        title: '操作',
-        width:150,
-        render: (val, record, index) => (
-          <p>
-            <a href="javascript:;" onClick={()=>{
-              dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/${record.id}`))
-
-            }}>编辑</a>
-            <span className="ant-divider" />
-            <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
-                        onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
-              <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
-            </Popconfirm>
-            <span className="ant-divider" />
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                        onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
-            </Popconfirm>
-
-          </p>
-        ),
-      })
+      columns.push(operate )
     }
     const {isMobile} =this.props.global;
     return (
@@ -252,7 +251,14 @@ class Vendor extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                />
+              {/*  <Table
                   className='meter-table'
                   loading={loading}
                   rowKey={record => record.id}
@@ -262,7 +268,7 @@ class Vendor extends PureComponent {
                   //scroll={{ y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 {
                   meta && <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
                 }

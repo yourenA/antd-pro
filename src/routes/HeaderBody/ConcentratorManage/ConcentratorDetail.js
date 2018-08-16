@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Button, Layout, message, Modal} from 'antd';
+import { Table, Tooltip, Button, Layout, message, Modal} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
@@ -11,6 +11,8 @@ import moment from 'moment'
 import find from 'lodash/find'
 import debounce from 'lodash/throttle'
 import './index.less'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 const {Content} = Layout;
 @connect(state => ({
   concentrator_water: state.concentrator_water,
@@ -63,32 +65,26 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   componentWillUnmount() {
-    console.log('detail componentWillUnmount')
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable2,200))
     clearInterval(this.timer)
   }
   scrollTable2=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部',this.state.canLoadByScroll);
       if(this.state.canLoadByScroll){
         const {concentrator_water: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
           this.setState({
             canLoadByScroll:false,
           })
-          console.log('handle search')
           this.handleSearch({
             page: this.state.page+1,
             meter_number: this.state.meter_number,
             per_page:this.state.per_page,
           },function () {
-            console.log('setState')
             that.setState({
               canLoadByScroll:true,
             })
@@ -205,13 +201,14 @@ class UserMeterAnalysis extends PureComponent {
         title: '序号',
         dataIndex: 'id',
         key: 'id',
+        fixed:'left',
         width: 50,
         className: 'table-index',
         render: (text, record, index) => {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '水表号', width: 110, fixed:'left', dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
       {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {
         return ellipsis2(val,150)
@@ -220,23 +217,29 @@ class UserMeterAnalysis extends PureComponent {
         return ellipsis2(val,150)
       }},
       {title: '安装地址', dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
-        return ellipsis2(val,150)
+        return   <Tooltip
+          placement="topLeft"
+          title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
+          <p >{val}</p>
+        </Tooltip>
       }}
 
     ];
-    if(this.state.canOperate){
-      columns.push( {
-        title: '操作',
-        key: 'operation',
-        width: 300,
-        render: (val, record, index) => {
-          return (
-            <div>
-              {this.state.showCommandBtn&&renderComandRecord(record)}
-            </div>
-          )
-        }
-      })
+    const operate={
+      title: '操作',
+      key: 'operation',
+      fixed:'right',
+      width: 300,
+      render: (val, record, index) => {
+        return (
+          <div>
+            {this.state.showCommandBtn&&renderComandRecord(record)}
+          </div>
+        )
+      }
+    }
+    if (this.state.canOperate) {
+      columns.push(operate)
     }
     const {isMobile} =this.props.global;
     return (
@@ -255,7 +258,14 @@ class UserMeterAnalysis extends PureComponent {
             />
           </div>
         </div>
-        <Table
+        <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                         dataSource={data}  columns={columns} rowKey={record => record.meter_number}
+                         scroll={isMobile?{x:950}:{x:1500,y: this.state.tableY}}
+                         canOperate={this.state.canOperate}
+                         operate={operate}
+                         history={this.props.history}
+                        />
+     {/*   <Table
           rowClassName={function (record, index) {
             if (record.description === '') {
               return 'error'
@@ -270,7 +280,7 @@ class UserMeterAnalysis extends PureComponent {
           //scroll={{ y: this.state.tableY}}
           pagination={false}
           size="small"
-        />
+        />*/}
         <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
       </div>
 

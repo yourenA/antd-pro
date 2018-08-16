@@ -11,6 +11,8 @@ import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import Detail from './Detail'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -194,23 +196,29 @@ class Leak_abnormality extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',float:'left'},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',float:'left',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',},
-      {title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index',},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '安装地址', dataIndex: 'install_address',   key: 'install_address', width: 100, render: (val, record, index) => {
         return ellipsis2(val,100)
       }},
-      {title: '日期', dataIndex: 'date',   key: 'date', width: 100,
-      },
-      {title: '异常时间', dataIndex: 'abnormality_hours',   key: 'abnormality_hours',
+      {title: '异常时间', dataIndex: 'abnormality_hours',  width: 150,  key: 'abnormality_hours',
         render: (val, record, index) => {
           const parseVal=val.join(',');
           return ellipsis2(parseVal,150)
         }},
+      {title: '日期', dataIndex: 'date',   key: 'date',
+      },
+
       {
         title: '当天水表读数',
         key: 'operation',
@@ -246,7 +254,13 @@ class Leak_abnormality extends PureComponent {
                       handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:1400,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table'}
+                />
+              {/*  <Table
                   className='meter-table'
                   rowKey={record => record.uuidkey}
                   loading={loading}
@@ -255,7 +269,7 @@ class Leak_abnormality extends PureComponent {
                   scroll={{x: 1050,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
 
               </Card>

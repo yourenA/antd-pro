@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Popconfirm, Layout, message, Modal, Tooltip} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
-
 import Search from './Search'
 import AddOREditUserArchives from './addOREditUserArchives'
 import Sider from './../Sider'
@@ -14,6 +13,8 @@ import {renderIndex, ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 const {Content} = Layout;
 @connect(state => ({
   meter_status: state.meter_status,
@@ -343,7 +344,11 @@ class UserMeterAnalysis extends PureComponent {
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data}  columns={columns} rowKey={record => record.uuidkey}
+                                 history={this.props.history}
+                                 scroll={{x: 1560, y: this.state.tableY}}/>
+            {/*    <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -357,7 +362,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{x: 1000, y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

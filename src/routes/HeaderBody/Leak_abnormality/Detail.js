@@ -62,8 +62,7 @@ export default class EndpointsList extends PureComponent {
           itemStyle:{
             normal:{
               color: function(value) {
-
-                if(that.props.abnormality_hours.indexOf(String(value.dataIndex))>=0){
+                if(that.props.abnormality_hours.indexOf(value.dataIndex)>=0){
                   return '#c23531'
                 } else
                 {

@@ -7,9 +7,11 @@ import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../EmptySider'
 import find from 'lodash/find'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import AddOrEditVendor from './addOrEditVendor'
 import debounce from 'lodash/throttle'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 const {Content} = Layout;
 @connect(state => ({
   manufacturers:state.manufacturers,
@@ -49,14 +51,11 @@ class Vendor extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {vendor_concentrator: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -141,7 +140,10 @@ class Vendor extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '厂商名称', width: '25%',dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
+      {title: '厂商名称', width: 200,dataIndex: 'manufacturer_name', key: 'manufacturer_name'
+        , render: (val, record, index) => {
+        return ellipsis2(val,200)
+      }},
       {title: '集中器优良率', dataIndex: 'concentrator_excellent_rate', key: 'concentrator_excellent_rate',
         render:(val,record)=>{
           const parserVal=parseFloat(val)
@@ -174,7 +176,13 @@ class Vendor extends PureComponent {
                                     showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal:true})}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.manufacturer_id}
+                                 scroll={{ y: this.state.tableY}}
+                                 history={this.props.history}
+                                 canOperate={this.state.canOperate}
+                />
+               {/* <Table
                   className='meter-table'
                   loading={loading}
                   rowKey={record => record.manufacturer_id}
@@ -183,7 +191,7 @@ class Vendor extends PureComponent {
                   scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               {/*  <Row gutter={16}>
                   <Col span={10}>

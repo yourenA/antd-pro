@@ -1,14 +1,15 @@
 import React, {PureComponent} from 'react';
-import { Table, Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
+import { Tooltip, Card, Layout, message, Popconfirm,Modal,Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditVendor from './addOrEditVendor'
 import debounce from 'lodash/throttle'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
@@ -54,14 +55,11 @@ class Vendor extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {manufacturers: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -204,29 +202,55 @@ class Vendor extends PureComponent {
         dataIndex: 'id',
         key: 'id',
         width: 50,
+        fixed:'left',
+
         className: 'table-index',
         render: (text, record, index) => {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '厂商编号', width: '10%', dataIndex: 'code', key: 'code'},
-      {title: '厂商名称', width: '15%', dataIndex: 'name', key: 'name'},
-      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count', width: '12%'},
-      {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: '12%'},
-      {title: '厂商电话', dataIndex: 'phone', key: 'phone', width: '15%'},
+      {title: '厂商编号', width: 100, dataIndex: 'code', key: 'code',
+        fixed:'left',
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }},
+      {title: '厂商名称', width: 150, dataIndex: 'name', key: 'name',
+        render: (val, record, index) => {
+          return ellipsis2(val,150)
+        }},
+      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count',
+        render: (val, record, index) => {
+          return ellipsis2(val,120)
+        },width: 120},
+      {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: 120,
+        render: (val, record, index) => {
+          return ellipsis2(val,120)
+        }},
+      {title: '厂商电话', dataIndex: 'phone', key: 'phone', width: 150,
+        render: (val, record, index) => {
+
+          return ellipsis2(val,150)
+        }},
       {
         title: '联系人', dataIndex: 'contact', key: 'contact',
+        render: (val, record, index) => {
+          return  <Tooltip
+            placement="topLeft"
+            title={val}>
+            <p >{val}</p>
+          </Tooltip>
+        }
       },
     ];
-    if(this.state.canOperate){
-      columns.push({
-        title: '操作',
-        width: 100,
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showAddBtn &&
-              <span>
+    const operate={
+      title: '操作',
+      width: 100,
+      fixed:'right',
+      render: (val, record, index) => (
+        <p>
+          {
+            this.state.showAddBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -237,18 +261,20 @@ class Vendor extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+          }
+          {
+            this.state.showdelBtn &&
+            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">删除</a>
+            </Popconfirm>
+          }
 
-          </p>
-        ),
-      })
+        </p>
+      ),
+    }
+    if(this.state.canOperate){
+      columns.push(operate)
     }
     const {isMobile} =this.props.global;
     return (
@@ -269,7 +295,14 @@ class Vendor extends PureComponent {
                                    }}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{x:1200,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                />
+               {/* <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -284,7 +317,7 @@ class Vendor extends PureComponent {
                   //scroll={{y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

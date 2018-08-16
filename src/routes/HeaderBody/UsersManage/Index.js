@@ -6,11 +6,12 @@ import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
 import {connect} from 'dva';
-import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMember'
-import {renderIndex} from './../../../utils/utils'
+import {renderIndex,ellipsis2} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 const {Content} = Layout;
 @connect(state => ({
   user: state.user,
@@ -68,14 +69,11 @@ class Vendor extends PureComponent {
     });
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {user: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -307,10 +305,22 @@ class Vendor extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '账号', width: 100, dataIndex: 'username', key: 'username', fixed: 'left',},
-      {title: '名字', width: 100, dataIndex: 'real_name', key: 'real_name'},
-      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: 150},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: 150},
+      {title: '账号', width: 100, dataIndex: 'username', key: 'username', fixed: 'left',
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }},
+      {title: '名字', width: 100, dataIndex: 'real_name', key: 'real_name',
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }},
+      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val,150)
+        }},
+      {title: '邮箱', dataIndex: 'email', key: 'email', width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val,150)
+        }},
       {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: 100,
         render: (val, record, index) => (
           <Switch checked={record.is_sms_notify===1?true:false}  />
@@ -322,7 +332,10 @@ class Vendor extends PureComponent {
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,},
+      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }},
       {
         title: '状态',
         dataIndex: 'status',
@@ -336,20 +349,19 @@ class Vendor extends PureComponent {
         }
       },
     ];
-    if(this.state.canOperate){
-      columns.push(  {
-        title: '操作',
-        width: 150,
-        fixed:'right',
-        render: (val, record, index) =>{
-          if(record.lock===1){
-            return null
-          }else if(record.lock===2){
-            return (
-              <p>
-                {
-                  this.state.showAddBtn &&
-                  <span>
+    const operate={
+      title: '操作',
+      width: 150,
+      fixed:'right',
+      render: (val, record, index) =>{
+        if(record.lock===1){
+          return null
+        }else if(record.lock===2){
+          return (
+            <p>
+              {
+                this.state.showAddBtn &&
+                <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -359,16 +371,16 @@ class Vendor extends PureComponent {
                         )
                       }}>编辑</a>
                 </span>
-                }
+              }
 
-              </p>
-            )
-          }else{
-            return (
-              <p>
-                {
-                  this.state.showAddBtn &&
-                  <span>
+            </p>
+          )
+        }else{
+          return (
+            <p>
+              {
+                this.state.showAddBtn &&
+                <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -379,39 +391,41 @@ class Vendor extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-                }
-                {
-                  this.state.showStatusBtn &&
-                  <span>
+              }
+              {
+                this.state.showStatusBtn &&
+                <span>
                      <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
                                  onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
               <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
             </Popconfirm>
             <span className="ant-divider"/>
                 </span>
-                }
-                {
-                  (this.state.showdelBtn || this.state.showPasswordBtn)?
-                    <Dropdown onVisibleChange={(visible)=>{
-                      if(visible){
-                        this.setState({
-                          editRecord:record,
-                        })
-                      }else{
-                        this.setState({
-                          editRecord:{},
-                        })
-                      }
+              }
+              {
+                (this.state.showdelBtn || this.state.showPasswordBtn)?
+                  <Dropdown onVisibleChange={(visible)=>{
+                    if(visible){
+                      this.setState({
+                        editRecord:record,
+                      })
+                    }else{
+                      this.setState({
+                        editRecord:{},
+                      })
+                    }
 
-                    }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
-                    :null
-                }
+                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
+                  :null
+              }
 
-              </p>
-            )
-          }
+            </p>
+          )
         }
-      })
+      }
+    }
+    if(this.state.canOperate){
+      columns.push(operate )
     }
     return (
       <Layout className="layout">
@@ -430,7 +444,14 @@ class Vendor extends PureComponent {
                                    }}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{x: 1400,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                />
+                {/*<Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -444,7 +465,7 @@ class Vendor extends PureComponent {
                   scroll={{x: 1100,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

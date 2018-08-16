@@ -10,6 +10,7 @@ import moment from 'moment';
 import Detail from './../UserMeterAnalysis/Detail'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from '../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -183,20 +184,29 @@ class FunctionContent extends PureComponent {
           return renderIndex(meta,this.state.initPage,index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number'},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'},
-      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number'},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
       {title: '姓名', dataIndex: 'real_name', width: 100, key: 'real_name', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '日期', width: 100, dataIndex: 'date', key: 'date'},
-      {title: '持续时间(天)', width: 100, dataIndex: 'duration_days', key: 'duration_days'},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address', render: (val, record, index) => {
+      {title: '日期', width: 100, dataIndex: 'date', key: 'date', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '安装地址', dataIndex: 'install_address',width: 150,  key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
+      {title: '持续时间(天)', dataIndex: 'duration_days', key: 'duration_days'},
       {
         title: '查询历史状况',
         key: 'operation',
+        fixed:'right',
         width: 110,
         render: (val, record, index) => {
           return (
@@ -229,7 +239,13 @@ class FunctionContent extends PureComponent {
                       initRange={this.state.initRange}/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:1800,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table'}
+                />
+                {/*<Table
                   className='meter-table'
                   rowKey={record => record.uuidkey}
                   dataSource={data}
@@ -238,7 +254,7 @@ class FunctionContent extends PureComponent {
                   scroll={{x:1000,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  meta={meta} handPageChange={this.handPageChange}/>
 
               </Card>

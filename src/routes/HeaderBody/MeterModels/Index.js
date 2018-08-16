@@ -8,6 +8,7 @@ import Sider from './../EmptySider'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -59,14 +60,11 @@ class MeterModel extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {meter_models: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -216,7 +214,9 @@ class MeterModel extends PureComponent {
       {title: '类型类别', width: 100, dataIndex: 'type', key: 'type',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
-      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore'},
+      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore',render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
       {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (
         <p>
@@ -224,25 +224,33 @@ class MeterModel extends PureComponent {
 
         </p>
       )},
-      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: 100},
-      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width:80},
+      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text,100)
+        }},
+      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width:80,
+        render: (text, record, index) => {
+          return ellipsis2(text,80)
+        }},
       {
-        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width: 100
+        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text,100)
+        }
       },
       {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
     ];
-    if(this.state.canOperate){
-      columns.push( {
-        title: '操作',
-        width: 100,
-        fixed: 'right',
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showAddBtn &&
-              <span>
+    const operate={
+      title: '操作',
+      width: 100,
+      fixed: 'right',
+      render: (val, record, index) => (
+        <p>
+          {
+            this.state.showAddBtn &&
+            <span>
                       <a href="javascript:;" onClick={()=> {
                         this.setState(
                           {
@@ -253,18 +261,20 @@ class MeterModel extends PureComponent {
                       }}>编辑</a>
             <span className="ant-divider"/>
                 </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight" title={ `确定要删除吗?`}
-                          onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">删除</a>
-              </Popconfirm>
-            }
+          }
+          {
+            this.state.showdelBtn &&
+            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">删除</a>
+            </Popconfirm>
+          }
 
-          </p>
-        ),
-      })
+        </p>
+      ),
+    }
+    if(this.state.canOperate){
+      columns.push(operate)
     }
     return (
       <Layout className="layout">
@@ -284,7 +294,14 @@ class MeterModel extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 scroll={{x:1200,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 operate={operate}
+                                 canOperate={this.state.canOperate}
+                />
+             {/*   <Table
                   rowClassName={function (record, index) {
                     if (record.description === '') {
                       return 'error'
@@ -298,7 +315,7 @@ class MeterModel extends PureComponent {
                   scroll={{x: 880,y: this.state.tableY}}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
