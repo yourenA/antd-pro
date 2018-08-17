@@ -1,7 +1,7 @@
 import {Table, Badge, Switch, Progress} from 'antd';
 import React, {PureComponent} from 'react';
 import {Resizable} from 'react-resizable';
-import {renderIndex, ellipsis2} from './../../utils/utils'
+import {renderIndex, ellipsis2,renderErrorData} from './../../utils/utils'
 
 const ResizeableTitle = (props) => {
   const {onResize, width, ...restProps} = props;
@@ -29,6 +29,11 @@ export default class Demo extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if(this.props.columns!=nextProps.columns){
+      this.setState({
+        columns: nextProps.columns
+      })
+    }
     if (this.props.canOperate !== undefined && nextProps.canOperate !== this.props.canOperate) {
       if (nextProps.canOperate) {
         this.state.columns.push(this.props.operate)
@@ -467,6 +472,136 @@ export default class Demo extends React.Component {
                 };
             }
             break;
+          case 'complete_realData':
+            switch (nextColumns[index].dataIndex) {
+              case 'fmv':
+              case 'meter_revalue':
+              case 'meter_time':
+              case 'flow_up':
+              case 'flow_up_time':
+              case 'temp_up':
+              case 'temp_up_time':
+              case 'cover_is_opened':
+              case 'empty_pipe_alarm':
+              case 'low_voltage':
+              case 'reflow_up':
+              case 'reflow_up_time':
+              case 'point0_freeze_value':
+              case 'signal':
+              case 'water_temperature':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    return ellipsis2(record['body'][nextColumns[index].key],size.width)
+                  }
+                };
+                break;
+              case 'cell_voltage_1':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    if(record['body'].cell_voltage_1){
+                      return ellipsis2(record['body'].cell_voltage_1+'V',size.width)
+                    }else{
+                      return ''
+                    }
+                  }
+                };
+                break;
+              case 'cell_voltage_2':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    if(record['body'].cell_voltage_2){
+                      return ellipsis2(record['body'].cell_voltage_2+'V',size.width)
+                    }else{
+                      return ''
+                    }
+                  }
+                };
+                break;
+              case 'cell_voltage_lora':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    if(record['body'].cell_voltage_lora){
+                      return ellipsis2(record['body'].cell_voltage_lora+'V',size.width)
+                    }else{
+                      return ''
+                    }
+                  }
+                };
+                break;
+              case 'state_valve':
+              case 'state_voltage_level':
+              case 'state_temperature_sensor':
+              case 'state_elock':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                };
+                break;
+              case 'protocols':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    return ellipsis2(val.join('|'),  size.width)
+                  }
+                };
+                break;
+              default:
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: nextColumns[index].render ? (val, record, index) => {
+                    return ellipsis2(val, size.width)
+
+                  } : (val, record, index) => {
+                    return (
+                    {val}
+                    )
+                  }
+                };
+            }
+            break;
+          case 'user_meter_analysis':
+            switch (nextColumns[index].dataIndex) {
+              case 'latest_value':
+              case 'previous_value':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render:  (val, record) => {
+                    return ellipsis2(renderErrorData(val), size.width)
+                  }
+                };
+                break;
+              case 'status':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                };
+                break;
+              default:
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: nextColumns[index].render ? (val, record, index) => {
+                    return ellipsis2(val, size.width)
+
+                  } : (val, record, index) => {
+                    return (
+                    {val}
+                    )
+                  }
+                };
+            }
+            break;
           default:
             nextColumns[index] = {
               ...nextColumns[index],
@@ -481,8 +616,7 @@ export default class Demo extends React.Component {
               }
             };
         }
-
-      }
+       }
       return {columns: nextColumns};
     });
   };

@@ -42,9 +42,9 @@ class EditPassword extends Component {
                   <TabPane  tab='导出CSV字段设置' key="2" >
                     <ExportCSV />
                   </TabPane>
-                  <TabPane tab='页面表格显示字段设置' key="1">
+                  {/*<TabPane tab='页面表格显示字段设置' key="1">
                     <Fields />
-                  </TabPane>
+                  </TabPane>*/}
                 </Tabs>
               </Card>
             </PageHeaderLayout>

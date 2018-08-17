@@ -203,7 +203,7 @@ class UserMeterAnalysis extends PureComponent {
     }
     let hoursColumns=[];
     for(let i=0;i<24;i++){
-      hoursColumns.push({title: `${i}点使用量(m³)`, dataIndex: `fmv${i}`, key:`fmv${i}`, width: 130, render: (text, record, index) => {
+      hoursColumns.push({title: `${i}点使用量(m³)`, dataIndex: `fmv`, key:`fmv${i}`, width: 130, render: (text, record, index) => {
         return ellipsis2(record['body'][`fmv${i}`],120)
       }})
     }
@@ -393,7 +393,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x: columnsWidth+600, y: isMobile ? document.body.offsetHeight - 200 : this.state.tableY}}
+                                 scroll={{x: columnsWidth+1000, y: isMobile ? document.body.offsetHeight - 200 : this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
                 />

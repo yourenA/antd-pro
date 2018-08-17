@@ -65,14 +65,11 @@ class FunctionContent extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {night_abnormality: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){

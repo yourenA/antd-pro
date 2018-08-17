@@ -119,7 +119,47 @@ export default class Demo extends React.Component {
                 };
             }
             break;
+          case 'member_consumption':
+            switch(nextColumns[index].dataIndex){
+              case 'member_number':
+              case 'real_name':
+              case 'install_address':
+              case 'meter_difference_value':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    const children= (
+                      ellipsis2(val, size.width)
+                    )
+                    return renderRowSpan(children,record)
+                  }
+                };
+                break;
+              case 'protocols':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    return ellipsis2(val.join('|'), size.width)
+                  }
+                };
+                break;
+              default:
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: nextColumns[index].render? (val, record, index) => {
+                    return ellipsis2(val, size.width)
 
+                  } : (val, record, index) => {
+                    return (
+                    {val}
+                    )
+                  }
+                };
+            }
+            break;
           default:
               nextColumns[index] = {
                 ...nextColumns[index],

@@ -13,7 +13,9 @@ import './index.less'
 import config from '../../../common/config'
 import { routerRedux } from 'dva/router';
 import uuid from 'uuid/v4'
-import {getPreDay, renderCustomHeaders,download,renderIndex} from './../../../utils/utils'
+import {getPreDay, ellipsis2,download,renderIndex,renderErrorData} from './../../../utils/utils'
+import ResizeableTable from './../../../components/ResizeableTitle/Index'
+
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -65,14 +67,11 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {member_meter_data: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -241,7 +240,7 @@ class UserMeterAnalysis extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const parseHeader = renderCustomHeaders(meta.custom_headers,meta,this.state.page)
+    /*const parseHeader = renderCustomHeaders(meta.custom_headers,meta,this.state.page)
     let  custom_width = parseHeader.custom_width;
     const custom_headers = parseHeader.custom_headers;
     custom_width+=120;
@@ -270,9 +269,9 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       }
-    )
+    )*/
   // console.log('custom_headers',custom_headers)
-  /*  const columns = [
+   const columns = [
       {
         title: '序号',
         dataIndex: 'id',
@@ -281,29 +280,38 @@ class UserMeterAnalysis extends PureComponent {
         className: 'table-index',
         fixed: 'left',
         render: (text, record, index) => {
-          return (
-            <span>
-                {index + 1}
-            </span>
-          )
+          return renderIndex(meta, this.state.initPage, index)
         }
       },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',},
-      {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', width: 100,},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name'},
+     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 100,render: (val, record, index) => {
+       return ellipsis2(val, 100)
+     }},
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+
+      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,
         render: (val, record, index) => {
-          return (
-            <Tooltip title={val}>
-              <span>{val.length>10?val.substring(0,7)+'...':val}</span>
-            </Tooltip>
-          )
+          return ellipsis2(val, 130)
         }},
-      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value', width: 80},
-      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
-      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150},
-      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
-      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150},
+      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value', width: 80,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
+      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
+        return ellipsis2(renderErrorData(val), 100)
+      }},
+      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150,render: (val, record, index) => {
+        return ellipsis2(val, 150)
+      }},
+      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100,render: (val, record, index) => {
+        return ellipsis2(renderErrorData(val), 100)
+      }},
+      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150,render: (val, record, index) => {
+        return ellipsis2(val, 150)
+      }},
       {
         title: '状态', dataIndex: 'status', key: 'status', width: 70,
         render: (val, record, index) => {
@@ -325,8 +333,12 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,},
-      {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,},
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,render: (val, record, index) => {
+        return ellipsis2(val, 90)
+      }},
       {title: '抄表员', dataIndex: 'reader', key: 'reader',},
       {
         title: '查询历史状况',
@@ -341,7 +353,7 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-    ];*/
+    ];
     const {dispatch} =this.props;
     const company_code = sessionStorage.getItem('company_code');
     return (
@@ -373,7 +385,18 @@ class UserMeterAnalysis extends PureComponent {
                              total_difference_value={meta.aggregator.total_difference_value }/>
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 scroll={{x:2000,y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table'}
+                                 rowClassName={function (record, index) {
+                                   if (record.status === -2 || record.status === -3) {
+                                     return 'error'
+                                   }
+                                 }}
+                />
+            {/*    <Table
                   rowClassName={function (record, index) {
                     if (record.status === -2 || record.status === -3) {
                       return 'error'
@@ -387,7 +410,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{x: custom_width,y: this.state.tableY}}//, y: this.state.tableY
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
 
               </Card>

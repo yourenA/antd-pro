@@ -5,11 +5,10 @@ import Pagination from './../../../components/Pagination/Index'
 import Detail from './../UserMeterAnalysis/Detail'
 import MemberDetail from './MemberDetail'
 import Search from './Search'
-import AddOREditUserArchives from './addOREditUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
-import ChangeTable from './ChangeTable'
 import moment from 'moment'
+import ResizeableTable from './../../../components/ResizeableTitle/RowSpanIndex'
 import debounce from 'lodash/throttle'
 import {renderIndex, ellipsis2,renderRowSpan,parseRowSpanData2,getPreDay} from './../../../utils/utils'
 import find from 'lodash/find'
@@ -241,7 +240,10 @@ class UserMeterAnalysis extends PureComponent {
         return renderRowSpan(children,record)
       }},
       { title: '用户用水量', dataIndex: 'meter_difference_value', key: 'meter_difference_value' ,width: 90,  render: (val, record, index) => {
-        return renderRowSpan(val,record)
+        const children= (
+          ellipsis2(val, 90)
+        )
+        return renderRowSpan(children,record)
       }},
 
       { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
@@ -250,16 +252,30 @@ class UserMeterAnalysis extends PureComponent {
       { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
       } },
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' },
+      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
       { title: '水表用水量', dataIndex: 'difference_value', key: 'difference_value' ,width: 90,  render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},
-      {title: '本次抄见(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,},
-      {title: '本次抄见日期', dataIndex: 'latest_collected_date', key: 'latest_collected_date', width: 110},
-      {title: '上次抄见(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,},
-      {title: '上次抄见日期', dataIndex: 'previous_collected_date', key: 'previous_collected_date', width: 110},
-      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90, },
-      { title: '集中器硬件编号', dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120 },
+      {title: '本次抄见(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '本次抄见日期', dataIndex: 'latest_collected_date', key: 'latest_collected_date', width: 110,render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
+      {title: '上次抄见(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '上次抄见日期', dataIndex: 'previous_collected_date', key: 'previous_collected_date', width: 110,render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
+      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90,render: (val, record, index) => {
+        return ellipsis2(val, 90)
+      } },
+      { title: '集中器硬件编号', dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120,render: (val, record, index) => {
+        return ellipsis2(val, 120)
+      } },
       { title: '集中器协议', dataIndex: 'protocols', key: 'protocols' ,width: 90 ,render: (val, record, index) => {
         return ellipsis2(val.join('|'), 90)
       }},
@@ -323,7 +339,13 @@ class UserMeterAnalysis extends PureComponent {
                     />
                   </div>
                 </div>
-                <Table
+                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
+                                 scroll={{x: 3000, y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table no-interval'}
+                />
+               {/* <Table
                   className='meter-table no-interval'
                   loading={loading}
                   rowKey={record => record.myId}
@@ -332,7 +354,7 @@ class UserMeterAnalysis extends PureComponent {
                   scroll={{ x: 2310,y: this.state.tableY }}
                   pagination={false}
                   size="small"
-                />
+                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
