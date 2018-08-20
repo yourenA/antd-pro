@@ -157,6 +157,8 @@ import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
 
 import Consumption_abnormality from '../routes/HeaderBody/Consumption_abnormality/Index'
 import Leak_abnormality from '../routes/HeaderBody/Leak_abnormality/Index'
+import ValveStatusAbnormality from '../routes/HeaderBody/Valve_status_abnormality/Index'
+import VoltageStatusAbnormality from '../routes/HeaderBody/VoltageStatusAbnormality/Index'
 
 // const StatisticsDaily = asyncComponent(() =>
 // import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
@@ -471,7 +473,18 @@ const data = [{
         path: 'night_abnormality',
         component: NightAbnormality,
         permissions:['night_abnormality'],
-      }],
+      },{
+        name: '水表阀控异常报警',
+        path: 'valve_status_abnormality',
+        component: ValveStatusAbnormality,
+        permissions:['valve_status_abnormality'],
+      }
+        ,{
+          name: '水表电池电压异常报警',
+          path: 'voltage_status_abnormality',
+          component: VoltageStatusAbnormality,
+          permissions:['voltage_status_abnormality'],
+        }],
     }],
 },
   {

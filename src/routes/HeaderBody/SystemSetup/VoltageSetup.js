@@ -16,37 +16,31 @@ class EditPassword extends Component {
     super(props);
     this.format = 'HH:mm';
     this.state = {
+      disabled: false,
       data: [],
-      leak_abnormality_is_open: {},
-      leak_abnormality_value: {},
-      leak_abnormality_hours: {}
+      voltage_status_abnormality_is_open: {},
     }
   }
 
   componentDidMount() {
     const that = this;
-    request(`/configs?groups[]=leak_abnormality`, {
+    request(`/configs?groups[]=voltage_status_abnormality`, {
       method: 'GET',
       query: {}
     }).then((response)=> {
       console.log(response);
       that.setState({
         data: response.data.data,
-        leak_abnormality_is_open: find(response.data.data, function (o) {
-          return o.name === 'leak_abnormality_is_open'
-        }),
-        leak_abnormality_value: find(response.data.data, function (o) {
-          return o.name === 'leak_abnormality_value'
-        }),
-        leak_abnormality_hours: find(response.data.data, function (o) {
-          return o.name === 'leak_abnormality_hours'
+        voltage_status_abnormality_is_open: find(response.data.data, function (o) {
+          return o.name === 'voltage_status_abnormality_is_open'
         }),
       },function () {
         const {form} = that.props;
+        that.setState({
+          disabled: that.state.voltage_status_abnormality_is_open.value==='1'?false:true,
+        })
         form.setFieldsValue({
-          leak_abnormality_is_open: that.state.leak_abnormality_is_open.value==='1'?true:false,
-          leak_abnormality_hours: that.state.leak_abnormality_hours.value,
-          leak_abnormality_value: that.state.leak_abnormality_value.value,
+          voltage_status_abnormality_is_open: that.state.voltage_status_abnormality_is_open.value==='1'?true:false,
         });
       })
 
@@ -58,9 +52,7 @@ class EditPassword extends Component {
     const that=this;
     // form.resetFields();
     form.setFieldsValue({
-      leak_abnormality_is_open: that.state.leak_abnormality_is_open.value==='1'?true:false,
-      leak_abnormality_hours: that.state.leak_abnormality_hours.value,
-      leak_abnormality_value: that.state.leak_abnormality_value.value,
+      voltage_status_abnormality_is_open: that.state.voltage_status_abnormality_is_open.value==='1'?true:false,
     });
   }
   handleSubmit=()=>{
@@ -71,14 +63,12 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              leak_abnormality_is_open:values.leak_abnormality_is_open?'1':'-1',
-              leak_abnormality_hours:values.leak_abnormality_hours,
-              leak_abnormality_value:values.leak_abnormality_value
+              voltage_status_abnormality_is_open:values.voltage_status_abnormality_is_open?'1':'-1',
             }
           }).then((response)=> {
             console.log(response);
             if(response.status===200){
-              message.success('修改漏水异常报警成功')
+              message.success('修改水表电池电压异常报警成功')
             }
           })
         }
@@ -102,34 +92,17 @@ class EditPassword extends Component {
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '漏水异常报警设置'}]}>
+            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表电池电压异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Form style={{maxWidth: '500px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
+                <Form style={{maxWidth: '500px', margin: '0 auto'}} >
 
                   <FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.leak_abnormality_is_open.display_name}
+                    label={this.state.voltage_status_abnormality_is_open.display_name}
 
                   >
-                    {getFieldDecorator('leak_abnormality_is_open', {valuePropName: 'checked'})(
+                    {getFieldDecorator('voltage_status_abnormality_is_open', {valuePropName: 'checked'})(
                       <Switch />
-                    )}
-                  </FormItem>
-
-                  <FormItem
-                    label={this.state.leak_abnormality_value.display_name}
-                    {...formItemLayoutWithLabel}
-                  >
-                    {getFieldDecorator('leak_abnormality_value', {})(
-                      <Input />
-                    )}
-                  </FormItem>
-                  <FormItem
-                    label={this.state.leak_abnormality_hours.display_name}
-                    {...formItemLayoutWithLabel}
-                  >
-                    {getFieldDecorator('leak_abnormality_hours', {})(
-                      <Input  />
                     )}
                   </FormItem>
                   <FormItem

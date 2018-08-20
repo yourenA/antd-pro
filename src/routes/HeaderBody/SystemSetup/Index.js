@@ -10,6 +10,9 @@ import ZeroWarningSetup from './ZeroWarningSetup'
 import Unusual_water from './Unusual_water'
 import MemberMeterSetup from './MemberMeterSetup/Index'
 import LeakWarningSetup from './LeakWarningSetup'
+import VoltageSetup from './VoltageSetup'
+import ValveStatusSetup from './ValveStatusSetup'
+import ConcentratorOfflineSetup from './ConcentratorOfflineSetup'
 import SystemName from './SystemName'
 import SmsNotice from './SmsNotice'
 import EmailNotice from './EmailNotice'
@@ -50,6 +53,18 @@ class UserMeterLife extends PureComponent {
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/leak_warning_setup`}
                 component={LeakWarningSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/voltage_status_setup`}
+                component={VoltageSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/valve_status_setup`}
+                component={ValveStatusSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/concentrator_offline_setup`}
+                component={ConcentratorOfflineSetup}
               />
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/member_meter_setup`}

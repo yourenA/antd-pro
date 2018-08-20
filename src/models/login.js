@@ -134,7 +134,7 @@ export default {
       console.log(response);
       const company_code = sessionStorage.getItem('company_code');
       yield put(routerRedux.push(`/login/${company_code}`));
-      removeLoginStorage()
+      removeLoginStorage(company_code)
       location.reload();
     },
   },

@@ -65,10 +65,13 @@ class HeaderBodyLayout extends React.PureComponent {
       request_zero_abnormality: find(this.permissions, {name: 'zero_abnormality'}),
       request_night_abnormality: find(this.permissions, {name: 'night_abnormality'}),
       request_leak_abnormality: find(this.permissions, {name: 'leak_abnormality'}),
-      consumption_abnormality: false,
-      zero_abnormality: false,
-      night_abnormality: false,
-      leak_abnormality: false,
+      consumption_abnormality_count: false,
+      zero_abnormality_count: false,
+      night_abnormality_count: false,
+      leak_abnormality_count: false,
+      valve_status_abnormality_count: false,
+      voltage_status_abnormality_count: false,
+      concentrator_offline_abnormality_count: false,
 
     };
   }
@@ -85,193 +88,73 @@ class HeaderBodyLayout extends React.PureComponent {
       type: 'login/checkLoginState',
       payload: pathname
     });
-    const date = moment(new Date()).format('YYYY-MM-DD');
+
+
+
+
+
     const noZeroNotifyDay = localStorage.getItem('noZeroNotifyDay');
     const noNightNotifyDay = localStorage.getItem('noNightNotifyDay');
     const noLeakNotifyDay = localStorage.getItem('noLeakNotifyDay');
     const noConsumptionNotifyDay = localStorage.getItem('noConsumptionNotifyDay');
-    const dispatch = this.props.dispatch;
-    const company_code = sessionStorage.getItem('company_code');
+
     const that = this;
-    if(this.state.request_consumption_abnormality){
-      request(`/consumption_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at: date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
-          that.setState({
-            consumption_abnormality: true
-          })
-          if (noConsumptionNotifyDay === date) {
-            console.log('不提醒')
-          } else {
-            const args = {
-              placement: 'bottomRight',
-              message: '用水量异常报警',
-              duration: 15,
-              key: 'noConsumptionNotifyDay',
-              description: <div>{data[0].meter_number} 等水表出现用水量异常报警
-                <p>
-                  <a href="javascript:;" onClick={()=> {
-                    console.log(' this.noConsumptionNotifyDay', this.noConsumptionNotifyDay)
-                    localStorage.setItem('noConsumptionNotifyDay', date);
-                    notification.close('noConsumptionNotifyDay')
-                  }
-                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/consumption_abnormality`));
-                }
-                }>查看详情</a>
-                </p>
-              </div>,
-            };
-            this.noConsumptionNotifyDay = notification.warning(args);
-          }
-        }
-      })
+    const notificationText={
+      consumption_abnormality_count:{title:'用水量异常报警',text:'个水表今天出现用水量异常',urlSuffix:'consumption_abnormality'},
+      zero_abnormality_count:{title:'零流量异常报警',text:'个水表今天出现零流量异常',urlSuffix:'zero_abnormality'},
+      night_abnormality_count:{title:'夜间流量异常报警',text:'个水表今天出现夜间流量异常',urlSuffix:'night_abnormality'},
+      leak_abnormality_count:{title:'漏水异常报警',text:'个水表今天出现漏水异常报警',urlSuffix:'leak_abnormality'},
+      valve_status_abnormality_count:{title:'水表阀控异常报警',text:'个水表今天出现阀控异常报警',urlSuffix:'valve_status_abnormality'},
+      voltage_status_abnormality_count:{title:'水表电池电压异常报警',text:'个水表今天出现电池电压异常报警',urlSuffix:'voltage_status_abnormality'},
+      concentrator_offline_abnormality_count:{title:'集中器离线异常报警',text:'个集中器今天出现离线异常',urlSuffix:'statistics_daily/concentrator_error'},
     }
-
-    if(this.state.request_leak_abnormality){
-      request(`/leak_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at: date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
-          that.setState({
-            leak_abnormality: true
-          })
-          if (noLeakNotifyDay === date) {
-            console.log('不提醒')
-          } else {
-            const args = {
-              placement: 'bottomRight',
-              message: '漏水异常报警',
-              duration: 15,
-              key: 'noLeakNotifyDay',
-              description: <div>{data[0].meter_number} 等水表漏水异常报警
-                <p>
-                  <a href="javascript:;" onClick={()=> {
-                    console.log(' this.noLeakNotifyDay', this.noLeakNotifyDay)
-                    localStorage.setItem('noLeakNotifyDay', date);
-                    notification.close('noLeakNotifyDay')
-                  }
-                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/consumption_abnormality`));
-                }
-                }>查看详情</a>
-                </p>
-              </div>,
-            };
-            this.noLeakNotifyDay = notification.warning(args);
-          }
-        }
-      })
-    }
-
-    if(this.state.request_zero_abnormality){
-      request(`/zero_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at: date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
-          that.setState({
-            zero_abnormality: true
-          })
-          if (noZeroNotifyDay === date) {
-            console.log('不提醒')
-          } else {
-            const args = {
-              placement: 'bottomRight',
-              message: '零流量异常报警',
-              duration: 15,
-              key: 'zeroNotify',
-              description: <div>{data[0].meter_number} 等水表出现零流量异常
-                <p>
-                  <a href="javascript:;" onClick={()=> {
-                    localStorage.setItem('noZeroNotifyDay', date);
-                    notification.close('zeroNotify')
-                  }
-                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/zero_abnormality`));
-                  //notification.close(this.zeroNotify)
-                }
-                }>查看详情</a>
-                </p>
-              </div>,
-            };
-            this.zeroNotify = notification.warning(args);
-          }
-
-        }
-      })
-    }
-
-
-    if(this.state.request_night_abnormality) {
-      request(`/night_abnormality`, {
-        method: 'get',
-        params: {
-          started_at: date,
-          ended_at: date,
-          page: 1
-        }
-      }).then((response)=> {
-        console.log(response);
-        const data = response.data.data
-        if (data.length > 0) {
-          that.setState({
-            night_abnormality: true
-          })
-          if (noNightNotifyDay === date) {
-            console.log('不提醒')
-          } else {
-            const args = {
-              placement: 'bottomRight',
-              message: '夜间异常流量报警',
-              duration: 15,
-              key: 'noNightNotifyDay',
-              description: <div>{data[0].meter_number} 等水表出现夜间流量异常
-                <p>
-                  <a href="javascript:;" onClick={()=> {
-                    localStorage.setItem('noNightNotifyDay', date)
-                    notification.close('noNightNotifyDay')
-                  }
-                  }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-                  dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/night_abnormality`));
-                  //notification.close(this.nightNotify)
-                }
-                }>查看详情</a>
-                </p>
-              </div>,
-            };
-            this.nightNotify = notification.warning(args);
-          }
-        }
-      })
-    }
+    request(`/summary_abnormality`, {
+      method: 'get',
+    }).then((response)=> {
+      console.log(response)
+      for(let i in response.data){
+        that.renderNotification(i,response.data[i],notificationText[i].title,notificationText[i].text,notificationText[i].urlSuffix)
+      }
+    })
     window.addEventListener('resize', throttle(this.resize, 100))
 
   }
+  renderNotification=(key,count,title,text,urlSuffix)=>{
+    const company_code = sessionStorage.getItem('company_code');
+    const NotifyDay = localStorage.getItem(company_code+key);
+    const dispatch = this.props.dispatch;
+    const date = moment(new Date()).format('YYYY-MM-DD');
+    if(count!==0){
+      this.setState({
+        [key]:true
+      })
+    }
+    if (NotifyDay === date || count===0) {
+      console.log('用水量异常报警没数据或不提醒')
+    }else{
+      const args = {
+        placement: 'bottomRight',
+        message: title,
+        duration: 15,
+        key: key,
+        description: <div>{count} {text}
+          <p>
+            <a href="javascript:;" onClick={()=> {
+              localStorage.setItem(company_code+key, date);
+              notification.close(key)
+            }
+            }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/${urlSuffix}`));
+          }
+          }>查看详情</a>
+          </p>
+        </div>,
+      };
+      this[key] = notification.warning(args);
+    }
 
+  }
   resize = ()=> {
-    console.log('resize', document.documentElement.clientWidth);
     const offsetW = document.documentElement.clientWidth;
     this.props.dispatch({
       type: 'global/SetMobile',
@@ -363,7 +246,8 @@ class HeaderBodyLayout extends React.PureComponent {
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
           let showBadge = false
-          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality || this.state.night_abnormality || this.state.zero_abnormality || this.state.leak_abnormality)) {
+          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality_count || this.state.zero_abnormality_count || this.state.night_abnormality_count || this.state.leak_abnormality_count
+            || this.state.valve_status_abnormality_count || this.state.voltage_status_abnormality_count )) {
             showBadge = true
           }
           return (
@@ -394,10 +278,12 @@ class HeaderBodyLayout extends React.PureComponent {
           return false
         }
         let showBadge = false
-        if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality) ||
-          (item.path === 'night_abnormality' && this.state.night_abnormality) ||
-          (item.path === 'leak_abnormality' && this.state.leak_abnormality) ||
-          (item.path === 'zero_abnormality' && this.state.zero_abnormality)) {
+        if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality_count) ||
+          (item.path === 'night_abnormality' && this.state.night_abnormality_count) ||
+          (item.path === 'valve_status_abnormality' && this.state.valve_status_abnormality_count) ||
+          (item.path === 'voltage_status_abnormality' && this.state.voltage_status_abnormality_count) ||
+          (item.path === 'leak_abnormality' && this.state.leak_abnormality_count) ||
+          (item.path === 'zero_abnormality' && this.state.zero_abnormality_count)) {
           showBadge = true
         }
         return (

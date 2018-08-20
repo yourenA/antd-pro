@@ -16,7 +16,6 @@ class EditPassword extends Component {
     super(props);
     this.format = 'HH:mm';
     this.state = {
-      disabled: false,
       data: [],
       night_abnormality_is_open: {},
       night_abnormality_started_at: {},
@@ -48,9 +47,9 @@ class EditPassword extends Component {
         }),
       },function () {
         const {form} = that.props;
-        that.setState({
-          disabled: that.state.night_abnormality_is_open.value==='1'?false:true,
-        })
+        // that.setState({
+        //   disabled: that.state.night_abnormality_is_open.value==='1'?false:true,
+        // })
         form.setFieldsValue({
           night_abnormality_is_open: that.state.night_abnormality_is_open.value==='1'?true:false,
           night_abnormality_started_at: moment(that.state.night_abnormality_started_at.value, that.format),
@@ -73,27 +72,6 @@ class EditPassword extends Component {
       night_abnormality_value: that.state.night_abnormality_value.value,
     });
   }
-  changeOpen = (value)=> {
-    console.log('open', value)
-    request(`/configs`, {
-      method: 'PATCH',
-      data: {
-        night_abnormality_is_open:value?'1':'-1'
-      }
-    }).then((response)=> {
-      console.log(response);
-      if(response.status===200){
-        if(value){
-          message.success('开启夜间异常流量报警成功')
-        }else{
-          message.success('关闭夜间异常流量报警成功')
-        }
-        this.setState({
-          disabled:!value
-        })
-      }
-    })
-  }
   handleSubmit=()=>{
     this.props.form.validateFields({ force: true },
       (err, values) => {
@@ -102,6 +80,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
+              night_abnormality_is_open:values.night_abnormality_is_open?'1':'-1',
               night_abnormality_started_at:moment( values.night_abnormality_started_at).format(this.format),
               night_abnormality_ended_at:moment( values.night_abnormality_ended_at).format(this.format),
               night_abnormality_value:values.night_abnormality_value
@@ -147,21 +126,21 @@ class EditPassword extends Component {
 
                   >
                     {getFieldDecorator('night_abnormality_is_open', {valuePropName: 'checked'})(
-                      <Switch onChange={this.changeOpen}/>
+                      <Switch />
                     )}
                   </FormItem>
                   <FormItem
                     {...formItemLayoutWithLabel}
                     label={this.state.night_abnormality_started_at.display_name}>
                     {getFieldDecorator('night_abnormality_started_at', {})(
-                      <TimePicker format={this.format}  disabledMinutes={()=>{return arr;}} disabled={this.state.disabled}/>
+                      <TimePicker format={this.format}  disabledMinutes={()=>{return arr;}}/>
                     )}
                   </FormItem>
                   <FormItem
                     {...formItemLayoutWithLabel}
                     label={this.state.night_abnormality_ended_at.display_name}>
                     {getFieldDecorator('night_abnormality_ended_at', {})(
-                      <TimePicker format={this.format} disabledMinutes={()=>{return arr;}} disabled={this.state.disabled}/>
+                      <TimePicker format={this.format} disabledMinutes={()=>{return arr;}}/>
                     )}
                   </FormItem>
 
@@ -170,15 +149,15 @@ class EditPassword extends Component {
                     {...formItemLayoutWithLabel}
                   >
                     {getFieldDecorator('night_abnormality_value', {})(
-                      <Input  disabled={this.state.disabled}/>
+                      <Input  />
                     )}
                   </FormItem>
                   <FormItem
                     wrapperCol={ {
                       offset: 10,
                     }}>
-                    <Button onClick={this.handleFormReset}  disabled={this.state.disabled}>重置</Button>
-                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit}  disabled={this.state.disabled}>确定</Button>
+                    <Button onClick={this.handleFormReset} >重置</Button>
+                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >确定</Button>
                   </FormItem>
                 </Form>
               </Card>

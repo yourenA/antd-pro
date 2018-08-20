@@ -29,11 +29,11 @@ export default class Demo extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.columns!=nextProps.columns){
+  /*  if(this.props.columns!=nextProps.columns){
       this.setState({
         columns: nextProps.columns
       })
-    }
+    }*/
     if (this.props.canOperate !== undefined && nextProps.canOperate !== this.props.canOperate) {
       if (nextProps.canOperate) {
         this.state.columns.push(this.props.operate)
@@ -258,36 +258,12 @@ export default class Demo extends React.Component {
           case 'water_meter_manage':
             switch (nextColumns[index].dataIndex) {
               case 'is_valve':
-                nextColumns[index] = {
-                  ...nextColumns[index],
-                  width: size.width,
-                  render: (val, record, index) => (
-                    <p>
-                      <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? '是' : '否'}
-                    </p>
-                  )
-                };
-                break;
               case 'valve_status':
-                nextColumns[index] = {
-                  ...nextColumns[index],
-                  width: size.width,
-                  render: (val, record, index) => (
-                    <p>
-                      <Badge status={val === 1 ? "success" : "error"}/>{record.valve_status_explain}
-                    </p>
-                  )
-                };
-                break;
               case 'status':
+              case 'voltage_status':
                 nextColumns[index] = {
                   ...nextColumns[index],
                   width: size.width,
-                  render: (val, record, index) => (
-                    <p>
-                      <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
-                    </p>
-                  )
                 };
                 break;
               default:

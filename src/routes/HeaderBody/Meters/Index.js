@@ -429,6 +429,14 @@ class MeterModel extends PureComponent {
         )
       },
       {
+        title: '电池电压状态', dataIndex: 'voltage_status', key: 'voltage_status', width: 100,
+        render: (val, record, index) => (
+          <p>
+            <Badge status={val === 1 ? "success" : "error"}/>{record.voltage_status_explain}
+          </p>
+        )
+      },
+      {
         title: '集中器号',
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
@@ -604,7 +612,7 @@ class MeterModel extends PureComponent {
     if (this.state.canOperateMeter) {
       columns.push(operate)
     }
-    const commandColumns = [
+  /*  const commandColumns = [
       {
         title: '序号',
         dataIndex: 'id',
@@ -631,7 +639,7 @@ class MeterModel extends PureComponent {
       {title: '执行回调结果', dataIndex: 'result', key: 'result',},
       {title: '执行用户名', dataIndex: 'send_username', key: 'send_username'},
       {title: '创建时间', dataIndex: 'created_at', key: 'created_at',},
-    ];
+    ];*/
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -657,7 +665,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:3000,y: this.state.tableY}}
+                                 scroll={{x:3100,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}

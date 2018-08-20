@@ -16,7 +16,6 @@ class EditPassword extends Component {
     super(props);
     this.format = 'HH:mm';
     this.state = {
-      disabled: false,
       data: [],
       zero_abnormality_is_open: {},
       zero_abnormality_days: {}
@@ -40,9 +39,6 @@ class EditPassword extends Component {
         }),
       },function () {
         const {form} = that.props;
-        that.setState({
-          disabled: that.state.zero_abnormality_is_open.value==='1'?false:true,
-        })
         form.setFieldsValue({
           zero_abnormality_is_open: that.state.zero_abnormality_is_open.value==='1'?true:false,
           zero_abnormality_days: that.state.zero_abnormality_days.value,
@@ -61,27 +57,6 @@ class EditPassword extends Component {
       zero_abnormality_days: that.state.zero_abnormality_days.value,
     });
   }
-  changeOpen = (value)=> {
-    console.log('open', value)
-    request(`/configs`, {
-      method: 'PATCH',
-      data: {
-        zero_abnormality_is_open:value?'1':'-1'
-      }
-    }).then((response)=> {
-      console.log(response);
-      if(response.status===200){
-        if(value){
-          message.success('开启零流量异常流量报警成功')
-        }else{
-          message.success('关闭零流量异常流量报警成功')
-        }
-        this.setState({
-          disabled:!value
-        })
-      }
-    })
-  }
   handleSubmit=()=>{
     this.props.form.validateFields({ force: true },
       (err, values) => {
@@ -90,6 +65,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
+              zero_abnormality_is_open:values.zero_abnormality_is_open?'1':'-1',
               zero_abnormality_days:values.zero_abnormality_days
             }
           }).then((response)=> {
@@ -129,7 +105,7 @@ class EditPassword extends Component {
 
                   >
                     {getFieldDecorator('zero_abnormality_is_open', {valuePropName: 'checked'})(
-                      <Switch onChange={this.changeOpen}/>
+                      <Switch/>
                     )}
                   </FormItem>
 
@@ -138,15 +114,15 @@ class EditPassword extends Component {
                     {...formItemLayoutWithLabel}
                   >
                     {getFieldDecorator('zero_abnormality_days', {})(
-                      <Input  disabled={this.state.disabled}/>
+                      <Input />
                     )}
                   </FormItem>
                   <FormItem
                     wrapperCol={ {
                       offset: 10,
                     }}>
-                    <Button onClick={this.handleFormReset}  disabled={this.state.disabled}>重置</Button>
-                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit}  disabled={this.state.disabled}>确定</Button>
+                    <Button onClick={this.handleFormReset} >重置</Button>
+                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >确定</Button>
                   </FormItem>
                 </Form>
               </Card>

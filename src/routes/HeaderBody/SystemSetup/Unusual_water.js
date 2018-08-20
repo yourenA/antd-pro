@@ -24,7 +24,7 @@ class EditPassword extends Component {
     super(props);
     this.format = 'HH:mm';
     this.state = {
-      disabled: false,
+      consumption_abnormality_is_open: {},
       consumption_abnormality_normal_meter_value: {},
       consumption_abnormality_meter_models: {},
       consumption_abnormality_special_meters:{},
@@ -50,6 +50,9 @@ class EditPassword extends Component {
       console.log(response);
       this.changeTableY()
       that.setState({
+        consumption_abnormality_is_open: find(response.data.data, function (o) {
+          return o.name === 'consumption_abnormality_is_open'
+        }),
         consumption_abnormality_normal_meter_value: find(response.data.data, function (o) {
           return o.name === 'consumption_abnormality_normal_meter_value'
         }),
@@ -61,10 +64,8 @@ class EditPassword extends Component {
         }),
       },function () {
         const {form} = that.props;
-        // that.setState({
-        //   disabled: that.state.night_abnormality_is_open.value==='1'?false:true,
-        // })
         form.setFieldsValue({
+          consumption_abnormality_is_open: that.state.consumption_abnormality_is_open.value==='1'?true:false,
           consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
         });
       })
@@ -80,6 +81,7 @@ class EditPassword extends Component {
     const {form} = this.props;
     const that=this;
     form.setFieldsValue({
+      consumption_abnormality_is_open: that.state.consumption_abnormality_is_open.value==='1'?true:false,
       consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
     });
   }
@@ -90,6 +92,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
+              consumption_abnormality_is_open:values.consumption_abnormality_is_open?'1':'-1',
               consumption_abnormality_normal_meter_value:values.consumption_abnormality_normal_meter_value
             }
           }).then((response)=> {
@@ -324,11 +327,20 @@ class EditPassword extends Component {
                   <TabPane tab={this.state.consumption_abnormality_normal_meter_value.display_name} key="1">
                     <Form style={{maxWidth: '500px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
                       <FormItem
+                        {...formItemLayoutWithLabel}
+                        label={this.state.consumption_abnormality_is_open.display_name}
+
+                      >
+                        {getFieldDecorator('consumption_abnormality_is_open', {valuePropName: 'checked'})(
+                          <Switch />
+                        )}
+                      </FormItem>
+                      <FormItem
                         label={this.state.consumption_abnormality_normal_meter_value.display_name}
                         {...formItemLayoutWithLabel}
                       >
                         {getFieldDecorator('consumption_abnormality_normal_meter_value', {})(
-                          <Input  />
+                          <Input />
                         )}
                       </FormItem>
                       <FormItem
@@ -340,7 +352,7 @@ class EditPassword extends Component {
                       </FormItem>
                     </Form>
                   </TabPane>
-                  <TabPane  tab={this.state.consumption_abnormality_meter_models.display_name} key="2">
+                  <TabPane tab={this.state.consumption_abnormality_meter_models.display_name} key="2">
                     <div>
                       <div style={{margin:'0 0 16px 12px'}}>
                         <Button onClick={() =>{

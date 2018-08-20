@@ -99,7 +99,7 @@ export function digitUppercase(n) {
   return s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整');
 }
 
-const removeLoginStorage = () => {
+const removeLoginStorage = (company_code) => {
   sessionStorage.removeItem('username');
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('permissions');

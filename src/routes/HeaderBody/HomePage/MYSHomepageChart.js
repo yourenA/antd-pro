@@ -86,7 +86,7 @@ export default class MYSHomepageChart extends PureComponent {
       legend: {
         data: lengendData,
         x: 'center',
-        bottom:10
+        top:'90%'
       },
       xAxis: [
         {
@@ -160,7 +160,7 @@ export default class MYSHomepageChart extends PureComponent {
       legend: {
         data: lengendData,
         x: 'center',
-        bottom:10
+        top:'90%'
       },
       xAxis: [
         {
