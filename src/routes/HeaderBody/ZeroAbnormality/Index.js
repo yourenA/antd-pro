@@ -25,7 +25,7 @@ class FunctionContent extends PureComponent {
       page: 1,
       initPage:1,
       // initDate: moment(new Date(), 'YYYY-MM-DD'),
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:  [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       date: '',
       area_id: '',
       member_number:'',

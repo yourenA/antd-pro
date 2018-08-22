@@ -15,7 +15,9 @@ class SiderNav extends PureComponent {
       collapsed: isMobile,
       siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'},
         {name: '漏水异常报警设置', url: 'leak_warning_setup'}, {name: '水表阀控异常报警设置', url: 'valve_status_setup'},  {name: '水表电池电压报警设置', url: 'voltage_status_setup'},
-        {name: '集中器离线异常报警设置', url: 'concentrator_offline_setup'},{name: '水表水量分析页面设置', url: 'member_meter_setup'},
+        {name: '集中器离线异常报警设置', url: 'concentrator_offline_setup'},
+        {name: '导出设置', url: 'export_setup'},
+        //{name: '水表水量分析页面设置', url: 'member_meter_setup'},
         // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
         //           {name: '邮件通知设置', url: 'email_notice' }
                   ],

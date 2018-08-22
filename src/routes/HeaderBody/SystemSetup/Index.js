@@ -8,14 +8,15 @@ import Working from '../../Exception/working';
 import NightWarningSetup from './NightWarningSetup'
 import ZeroWarningSetup from './ZeroWarningSetup'
 import Unusual_water from './Unusual_water'
-import MemberMeterSetup from './MemberMeterSetup/Index'
+// import MemberMeterSetup from './MemberMeterSetup/Index'
 import LeakWarningSetup from './LeakWarningSetup'
 import VoltageSetup from './VoltageSetup'
 import ValveStatusSetup from './ValveStatusSetup'
+import ExportSetup from './ExportSetup/Index'
 import ConcentratorOfflineSetup from './ConcentratorOfflineSetup'
-import SystemName from './SystemName'
-import SmsNotice from './SmsNotice'
-import EmailNotice from './EmailNotice'
+// import SystemName from './SystemName'
+// import SmsNotice from './SmsNotice'
+// import EmailNotice from './EmailNotice'
 const { Content} = Layout;
 @connect(state => ({
   endpoints: state.endpoints,
@@ -67,6 +68,10 @@ class UserMeterLife extends PureComponent {
                 component={ConcentratorOfflineSetup}
               />
               <Route
+                path={`/${company_code}/main/system_manage/system_setup/export_setup`}
+                component={ExportSetup}
+              />
+           {/*   <Route
                 path={`/${company_code}/main/system_manage/system_setup/member_meter_setup`}
                 component={MemberMeterSetup}
               />
@@ -81,7 +86,7 @@ class UserMeterLife extends PureComponent {
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/email_notice`}
                 component={Working}
-              />
+              />*/}
               <Redirect  from={`/${company_code}/main/system_manage/system_setup`} to={`/${company_code}/main/system_manage/system_setup/night_warning_setup`} />
             </Switch>
           </div>

@@ -31,7 +31,7 @@ class Leak_abnormality extends PureComponent {
       manufacturer_id: '',
       page: 1,
       initPage:1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:  [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -173,7 +173,7 @@ class Leak_abnormality extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      member_number:record.member_number,
+      show_member_number:record.member_number,
       abnormality_hours: record.abnormality_hours,
       difference_values: record.difference_values,
       editModal: true
@@ -276,7 +276,7 @@ class Leak_abnormality extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.member_number} 当天用水量 (红色表示异常时间)`}
+                title={`${this.state.show_member_number} 当天用水量 (红色表示异常时间)`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}

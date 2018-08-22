@@ -1,4 +1,4 @@
-import { query,add,remove,edit } from '../services/members';
+import { query,add,remove,edit,exportCSV } from '../services/members';
 
 export default {
   namespace: 'members',
@@ -73,6 +73,13 @@ export default {
       const response = yield call(remove, payload);
       if(response.status===200){
         if (callback) callback();
+      }
+    },
+    *exportCSV({ payload, callback }, { call, put }) {
+      const response = yield call(exportCSV, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback(response.data.download_key);
       }
     },
   },

@@ -30,7 +30,7 @@ class Leak_abnormality extends PureComponent {
       manufacturer_id: '',
       page: 1,
       initPage:1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:  [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
       village_id: '',

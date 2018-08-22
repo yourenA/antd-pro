@@ -211,12 +211,15 @@ class MeterModel extends PureComponent {
       {title: '类型名称', width: 100, dataIndex: 'name', key: 'name',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
-      {title: '类型类别', width: 100, dataIndex: 'type', key: 'type',render: (text, record, index) => {
-        return ellipsis2(text,100)
-      }},
-      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore',render: (text, record, index) => {
+      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
         return ellipsis2(text,80)
-      }},
+      }
+      },
+      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
+        return ellipsis2(text,110)
+      }
+      },
+
       {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (
         <p>
@@ -224,6 +227,9 @@ class MeterModel extends PureComponent {
 
         </p>
       )},
+      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore',render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
       {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: 100,
         render: (text, record, index) => {
           return ellipsis2(text,100)
@@ -296,31 +302,17 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:1200,y: this.state.tableY}}
+                                 scroll={{x:1550,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}
                 />
-             {/*   <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{x: 880,y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>
           </div>
           <Modal
+            width="700px"
             title="添加水表类型"
             visible={this.state.addModal}
             onOk={this.handleAdd}
@@ -329,6 +321,7 @@ class MeterModel extends PureComponent {
             <AddOrEditForm manufacturers={manufacturers.data} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
+            width="700px"
             key={ Date.parse(new Date())}
             title="修改水表类型"
             visible={this.state.editModal}

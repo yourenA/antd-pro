@@ -47,6 +47,7 @@ import DistributionGraph from './../routes/Application/DistributionGraph'
 // import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
 // )
 import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
+import MapDemo from './../routes/HeaderBody/MapDemo/Index'
 // const UserMeterAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
@@ -289,6 +290,11 @@ const data = [{
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
       permissions:['village_difference_consumption','meter_status','village_meter_data','member_meter_data'],
       children: [{
+        name: '地图展示',
+        path: 'map_demo',
+        component: MapDemo,
+        permissions:['village_meter_data',],
+      },{
         name: '小区水量分析',
         path: 'community_analysis',
         component: CommunityAnalysis,

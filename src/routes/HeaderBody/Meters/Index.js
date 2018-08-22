@@ -403,6 +403,14 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 140)
         }
       },
+      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }
+      },
+      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
+        return ellipsis2(text,110)
+      }
+      },
       {
         title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
         render: (val, record, index) => (
@@ -665,7 +673,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:3100,y: this.state.tableY}}
+                                 scroll={{x:3300,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}

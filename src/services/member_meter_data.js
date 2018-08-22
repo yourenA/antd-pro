@@ -19,8 +19,8 @@ export async function queryOne({member_number,...restParams}) {
 }
 
 export async function exportCSV(params) {
-  return request(`/member_meter_data`,{
-    method:'POST',
+  return request(`/meter_data_files`,{
+    method:'GET',
     params:{
       ...params
     }

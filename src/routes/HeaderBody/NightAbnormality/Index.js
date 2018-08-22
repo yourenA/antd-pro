@@ -25,7 +25,7 @@ class FunctionContent extends PureComponent {
       tableY: 0,
       page: 1,
       initPage:1,
-      initRange: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      initRange:  [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       date: '',
       area_id: '',
       concentrator_number: '',
@@ -160,7 +160,7 @@ class FunctionContent extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      member_number:record.member_number,
+      show_member_number:record.member_number,
       abnormality_hours: record.abnormality_hours,
       difference_values: record.difference_values,
       editModal: true
@@ -264,7 +264,7 @@ class FunctionContent extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.member_number} 当天用水量 (红色表示异常时间)`}
+                title={`${this.state.show_member_number} 当天用水量 (红色表示异常时间)`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}

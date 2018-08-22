@@ -7,10 +7,12 @@ import AddOREditUserArchives from './addOREditUserArchives'
 import ImportArchives from './ImportUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
+import config from '../../../common/config'
+import { routerRedux } from 'dva/router';
 import request from "./../../../utils/request";
 import ResizeableTable from './../../../components/ResizeableTitle/RowSpanIndex'
 import moment from 'moment'
-import {renderIndex,renderRowSpan,parseRowSpanData,ellipsis2} from './../../../utils/utils'
+import {renderIndex,renderRowSpan,parseRowSpanData,ellipsis2,download} from './../../../utils/utils'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import './index.less'
@@ -34,6 +36,8 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtnByCon:true,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       showImportBtn: find(this.permissions, {name: 'member_delete'}),
+      showExportBtn: find(this.permissions, {name: 'member_export'}),
+      showConfigBtn: find(this.permissions, {name: 'config_edit'}),
       tableY:0,
       query: '',
       page: 1,
@@ -372,6 +376,17 @@ class UserMeterAnalysis extends PureComponent {
       })
     })
   }
+  exportCSV = ()=> {
+    const that = this;
+    this.props.dispatch({
+      type: 'members/exportCSV',
+      payload: {
+      },
+      callback: function (download_key) {
+        download(`${config.prefix}/download?download_key=${download_key}`)
+      }
+    });
+  }
   render() {
     const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models,dma} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -504,6 +519,8 @@ class UserMeterAnalysis extends PureComponent {
     if(this.state.canOperate){
       columns.push(operate)
     }
+    const {dispatch} =this.props;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
@@ -518,6 +535,12 @@ class UserMeterAnalysis extends PureComponent {
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showImportBtn={this.state.showImportBtn}
                             per_page={this.state.per_page}
+                            exportCSV={this.exportCSV}
+                            setExport={()=>{
+                              dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup?type=2`));
+                            }}
+                            showConfigBtn={this.state.showConfigBtn}
+                            showExportBtn={this.state.showExportBtn}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}
                             clickImport={()=>{this.setState({importModal:true})}}
                             changeShowOperate={()=>{this.setState({canOperate:!this.state.canOperate})}}

@@ -152,8 +152,8 @@ class SearchForm extends Component {
           <FormItem>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()}>导出到CSV</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置CSV格式</Button>
+            {this.props.showExportBtn&&<Button type="primary" className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()}  icon='export'>导出水表读数</Button>}
+            {this.props.showConfigBtn&&<Button type="primary"  className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出格式</Button>}
             {/*<Button  type="primary" style={{marginLeft: 8}} onClick={()=>message.info('暂未开通该功能')}>导出到Oracle</Button>*/}
           </FormItem>
           <FormItem label="总用水量">

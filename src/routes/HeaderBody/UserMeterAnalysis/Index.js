@@ -15,7 +15,7 @@ import { routerRedux } from 'dva/router';
 import uuid from 'uuid/v4'
 import {getPreDay, ellipsis2,download,renderIndex,renderErrorData} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import ExportForm from './ExportForm'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -26,9 +26,9 @@ class UserMeterAnalysis extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     const company_code = sessionStorage.getItem('company_code');
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
+      showExportBtn: find(this.permissions, {name: 'meter_data_export'}),
       showAddBtnByCon: false,
-      showdelBtn: find(this.permissions, {name: 'member_delete'}),
+      showConfigBtn: find(this.permissions, {name: 'config_edit'}),
       tableY: 0,
       meter_number: '',
       concentrator_number: '',
@@ -218,12 +218,14 @@ class UserMeterAnalysis extends PureComponent {
   }
   exportCSV = ()=> {
     const that = this;
+    const formValues =this.ExportformRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
     this.props.dispatch({
       type: 'member_meter_data/exportCSV',
       payload: {
-        village_id: this.state.village_id,
-        ended_at: that.state.ended_at,
-        started_at: that.state.started_at,
+        started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
+        ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+
       },
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)
@@ -369,18 +371,18 @@ class UserMeterAnalysis extends PureComponent {
                     <Search  wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
-                            exportCSV={this.exportCSV}
-                             per_page={this.state.per_page}
-                            export={()=> {
+                            exportCSV={()=> {
                               this.setState({
                                 exportModal: true
                               })
                             }}
+                             per_page={this.state.per_page}
                             setExport={()=>{
-                              dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/member_meter_setup`));
+                              dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup`));
                             }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
+                             showConfigBtn={this.state.showConfigBtn}
+                             showExportBtn={this.state.showExportBtn}
                             clickAdd={()=>this.setState({addModal: true})}
                              total_difference_value={meta.aggregator.total_difference_value }/>
                   </div>
@@ -427,6 +429,14 @@ class UserMeterAnalysis extends PureComponent {
         >
           <Detail meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
                   started_at={this.state.started_at}/>
+        </Modal>
+        <Modal
+          title={`导出`}
+          visible={this.state.exportModal}
+          onOk={this.exportCSV}
+          onCancel={() => this.setState({exportModal: false})}
+        >
+          <ExportForm  wrappedComponentRef={(inst) => this.ExportformRef = inst}/>
         </Modal>
       </Layout>
     );

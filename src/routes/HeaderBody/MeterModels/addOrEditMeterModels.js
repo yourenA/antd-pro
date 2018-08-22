@@ -7,7 +7,6 @@ import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -49,19 +48,19 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              类别
-            </span>
-          )}
+          label="输出类型"
         >
-          {getFieldDecorator('type', {
-            initialValue: this.props.editRecord ? this.props.editRecord.type : '',
-            rules: [{required: true, message: '类别不能为空'}],
+          {getFieldDecorator('output_type',{
+            initialValue: this.props.editRecord ? this.props.editRecord.output_type.toString() : '1',
+            rules: [{required: true, message: '输出类型不能为空'}],
           })(
-            <Input />
+            <RadioGroup>
+              <Radio value="1">有线</Radio>
+              <Radio value="2">无线</Radio>
+            </RadioGroup>
           )}
         </FormItem>
+
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
@@ -86,16 +85,17 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              口径
-            </span>
-          )}
+          label="温度介质类型"
         >
-          {getFieldDecorator('bore', {
-            initialValue: this.props.editRecord ? this.props.editRecord.bore : '',
+          {getFieldDecorator('temperature_type',{
+            initialValue: this.props.editRecord ? this.props.editRecord.temperature_type.toString() : '1',
+            rules: [{required: true, message: '温度介质类型不能为空'}],
+
           })(
-            <InputNumber  />
+            <RadioGroup>
+              <Radio value="1">冷水表</Radio>
+              <Radio value="2">热水表</Radio>
+            </RadioGroup>
           )}
         </FormItem>
         <FormItem
@@ -108,6 +108,7 @@ class AddPoliciesForm extends Component {
           )}>
           {getFieldDecorator('is_control', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.is_control.toString(),label:this.props.editRecord.is_control_explain}:{key:'',label:''},
+            rules: [{required: true, message: '是否阀控不能为空'}],
           })(
             <Select labelInValue={true} >
               { [{key:1,label:'是'},{key:-1,label:'否'}].map((item, key) => {
@@ -118,6 +119,22 @@ class AddPoliciesForm extends Component {
             </Select>
           )}
         </FormItem>
+        <FormItem
+          style={{width:'50%',display:'inline-block'}}
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              口径
+            </span>
+          )}
+        >
+          {getFieldDecorator('bore', {
+            initialValue: this.props.editRecord ? this.props.editRecord.bore : '',
+          })(
+            <InputNumber  />
+          )}
+        </FormItem>
+
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}

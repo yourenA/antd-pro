@@ -32,3 +32,11 @@ export async function edit({id,...restParams}) {
     },
   });
 }
+export async function exportCSV(params) {
+  return request(`/member_files`,{
+    method:'GET',
+    params:{
+      ...params
+    }
+  });
+}
