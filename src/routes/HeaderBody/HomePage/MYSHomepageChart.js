@@ -65,7 +65,12 @@ export default class MYSHomepageChart extends PureComponent {
         },
         name: data[i].meter_model_name,
         type: 'bar',
-        data:diffrentValvue
+        data:diffrentValvue,
+        itemStyle:{
+          normal: {
+            color: i===0?'#2f4554':'#c23531',
+          }
+        }
       } )
     }
     console.log('seriesData',seriesData)
@@ -139,7 +144,12 @@ export default class MYSHomepageChart extends PureComponent {
           ]
         },
         type: 'bar',
-        data:diffrentValvue
+        data:diffrentValvue,
+        itemStyle:{
+          normal: {
+            color: i===0?'#2f4554':'#c23531',
+          }
+        }
       } )
     }
     console.log('seriesData',seriesData)

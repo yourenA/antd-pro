@@ -25,20 +25,20 @@ class UserMeterLife extends PureComponent {
         <Content style={{background:'#fff'}}>
           <Switch>
             <Route
-              path={`/${company_code}/main/run_manage/DMA/DMA_show`}
+              path={`/${company_code}/main/system_manage/DMA/DMA_show`}
               component={DMAShow}
             />
             <Route
               exact
-              path={`/${company_code}/main/run_manage/DMA/DMA_manage`}
+              path={`/${company_code}/main/system_manage/DMA/DMA_manage`}
               component={DMAManage}
             />
             <Route
               exact
-              path={`/${company_code}/main/run_manage/DMA/DMA_data`}
+              path={`/${company_code}/main/system_manage/DMA/DMA_data`}
               component={DMAData}
             />
-            <Redirect  from={`/${company_code}/main/run_manage/DMA`} to={`/${company_code}/main/run_manage/DMA/DMA_data`} />
+            <Redirect  from={`/${company_code}/main/system_manage/DMA`} to={`/${company_code}/main/system_manage/DMA/DMA_data`} />
           </Switch>
         </Content>
       </Layout>

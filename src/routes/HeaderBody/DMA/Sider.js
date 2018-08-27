@@ -40,7 +40,7 @@ class SiderNav extends PureComponent {
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
       return (
         <div onClick={()=>that.changeNavIndex(item.url)} key={index} className={that.state.activeNav===item.url?"siderNav-item siderNav-item-active":"siderNav-item"}>
-          <Link to={`/${company_code}/main/run_manage/DMA/${item.url}`}>{item.name}</Link>
+          <Link to={`/${company_code}/main/system_manage/DMA/${item.url}`}>{item.name}</Link>
         </div>
       )
     })

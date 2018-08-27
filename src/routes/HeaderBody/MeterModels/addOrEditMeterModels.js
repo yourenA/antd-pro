@@ -48,19 +48,18 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label="输出类型"
+          label="尺寸类型"
         >
-          {getFieldDecorator('output_type',{
-            initialValue: this.props.editRecord ? this.props.editRecord.output_type.toString() : '1',
-            rules: [{required: true, message: '输出类型不能为空'}],
+          {getFieldDecorator('size_type',{
+            initialValue: this.props.editRecord ? this.props.editRecord.size_type.toString() : '1',
+            rules: [{required: true, message: '尺寸类型不能为空'}],
           })(
             <RadioGroup>
-              <Radio value="1">有线</Radio>
-              <Radio value="2">无线</Radio>
+              <Radio value="1">小表</Radio>
+              <Radio value="2">大表</Radio>
             </RadioGroup>
           )}
         </FormItem>
-
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
@@ -85,16 +84,15 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label="温度介质类型"
+          label="输出类型"
         >
-          {getFieldDecorator('temperature_type',{
-            initialValue: this.props.editRecord ? this.props.editRecord.temperature_type.toString() : '1',
-            rules: [{required: true, message: '温度介质类型不能为空'}],
-
+          {getFieldDecorator('output_type',{
+            initialValue: this.props.editRecord ? this.props.editRecord.output_type.toString() : '1',
+            rules: [{required: true, message: '输出类型不能为空'}],
           })(
             <RadioGroup>
-              <Radio value="1">冷水表</Radio>
-              <Radio value="2">热水表</Radio>
+              <Radio value="1">有线</Radio>
+              <Radio value="2">无线</Radio>
             </RadioGroup>
           )}
         </FormItem>
@@ -119,6 +117,24 @@ class AddPoliciesForm extends Component {
             </Select>
           )}
         </FormItem>
+
+        <FormItem
+          style={{width:'50%',display:'inline-block'}}
+          {...formItemLayoutWithLabel}
+          label="温度介质类型"
+        >
+          {getFieldDecorator('temperature_type',{
+            initialValue: this.props.editRecord ? this.props.editRecord.temperature_type.toString() : '1',
+            rules: [{required: true, message: '温度介质类型不能为空'}],
+
+          })(
+            <RadioGroup>
+              <Radio value="1">冷水表</Radio>
+              <Radio value="2">热水表</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}

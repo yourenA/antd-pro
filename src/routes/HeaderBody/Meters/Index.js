@@ -387,6 +387,15 @@ class MeterModel extends PureComponent {
       }
       },
       {
+        title: '安装地址',
+        dataIndex: 'install_address',
+        key: 'install_address',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }
+      },
+      {
         title: '水表序号', dataIndex: 'index', key: 'index', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
@@ -396,13 +405,16 @@ class MeterModel extends PureComponent {
       }},
       {
         title: '水表类型名称',
-        width: 140,
+        width: 100,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
         render: (text, record, index) => {
-          return ellipsis2(text, 140)
+          return ellipsis2(text, 100)
         }
       },
+      {title: '尺寸类型', dataIndex: 'size_type_explain', key: 'size_type_explain', width: 80,render: (text, record, index) => {
+        return ellipsis2(text,80)
+      } },
       {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
         return ellipsis2(text,80)
       }
@@ -462,15 +474,7 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 80)
         }
       },
-      {
-        title: '安装地址',
-        dataIndex: 'install_address',
-        key: 'install_address',
-        width: 100,
-        render: (text, record, index) => {
-          return ellipsis2(text, 100)
-        }
-      },
+
       {
         title: '厂商代码',
         dataIndex: 'manufacturer_prefix',
@@ -673,7 +677,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:3300,y: this.state.tableY}}
+                                 scroll={{x:3350,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}

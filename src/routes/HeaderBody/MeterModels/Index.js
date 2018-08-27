@@ -208,7 +208,10 @@ class MeterModel extends PureComponent {
           return renderIndex(meta,this.state.page,index)
         }
       },
-      {title: '类型名称', width: 100, dataIndex: 'name', key: 'name',render: (text, record, index) => {
+      {title: '类型名称', width: 80, dataIndex: 'name', key: 'name',render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
+      {title: '尺寸类型', width: 100, dataIndex: 'size_type_explain', key: 'size_type_explain',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
       {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
@@ -302,7 +305,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:1550,y: this.state.tableY}}
+                                 scroll={{x:1600,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}
