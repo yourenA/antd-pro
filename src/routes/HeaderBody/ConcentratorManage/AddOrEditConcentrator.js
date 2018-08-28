@@ -266,6 +266,34 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
+              SIM卡号码
+            </span>
+              )}
+            >
+              {getFieldDecorator('sim_number', {
+                initialValue: this.props.editRecord ? this.props.editRecord.sim_number : '',
+              })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
+              SIM卡运营商
+            </span>
+              )}
+            >
+              {getFieldDecorator('sim_operator', {
+                initialValue: this.props.editRecord ? this.props.editRecord.sim_operator : '',
+              })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
               安装地址
             </span>
               )}

@@ -113,7 +113,6 @@ class AddConcentrator extends Component {
     // }
     getFieldDecorator('keys', {initialValue: [uuid]});
     const keys = getFieldValue('keys');
-    console.log('keys',keys)
     const formItems = keys.map((k, index) => {
       const layout = index === 0 ? formItemLayoutWithLabel : formItemLayoutWithOutLabel;
       return (
@@ -212,6 +211,34 @@ class AddConcentrator extends Component {
             <Button  onClick={this.add} style={{width: '60%'}}>
               <Icon type="plus"/> 增加安装小区
             </Button>
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              SIM卡号码
+            </span>
+            )}
+          >
+            {getFieldDecorator('sim_number', {
+              initialValue: this.props.editRecord ? this.props.editRecord.sim_number : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              SIM卡运营商
+            </span>
+            )}
+          >
+            {getFieldDecorator('sim_operator', {
+              initialValue: this.props.editRecord ? this.props.editRecord.sim_operator : '',
+            })(
+              <Input />
+            )}
           </FormItem>
             <FormItem
               {...formItemLayoutWithLabel}

@@ -91,14 +91,11 @@ class ConcentratorManage extends PureComponent {
     })
   }
   scrollTable = ()=> {
-    console.log('scroll')
     const scrollTop = document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
       if (this.state.canLoadByScroll) {
         const {concentrators: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
@@ -524,6 +521,18 @@ class ConcentratorManage extends PureComponent {
           return ellipsis2(val, 80)
         }
       },
+      {
+        title: 'SIM卡号码', dataIndex: 'sim_number', key: 'sim_number', width: 90,
+        render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }
+      },
+      {
+        title: 'SIM卡运营商', dataIndex: 'sim_operator', key: 'sim_operator', width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
       {title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
       {title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
       {
@@ -630,7 +639,7 @@ class ConcentratorManage extends PureComponent {
                       </div>
                       <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                        dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                       scroll={{x: 2500, y: this.state.tableY}}
+                                       scroll={{x: 2650, y: this.state.tableY}}
                                        history={this.props.history}
                                        canOperate={this.state.canOperateConcentrator}
                                        operate={operate}
