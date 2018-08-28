@@ -446,6 +446,9 @@ class UserMeterAnalysis extends PureComponent {
       { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
+      { title: '水表口径', width: 80, dataIndex: 'bore', key: 'bore' ,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
       {
         title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
         render: (val, record, index) => {
@@ -554,7 +557,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
-                                 scroll={{x: 2500, y: this.state.tableY}}
+                                 scroll={{x: 2580, y: this.state.tableY}}
                                  history={this.props.history}
                                  canOperate={this.state.canOperate}
                                  operate={operate}

@@ -207,7 +207,7 @@ class AddConcentrator extends Component {
                 initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
                 rules: [{required: true, message: '集中器类型不能为空'}],
               })(
-                <Select labelInValue={true}  disabled={this.props.editRecord ?true:false}>
+                <Select labelInValue={true} >
                   { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
                 </Select>
               )}
@@ -224,7 +224,7 @@ class AddConcentrator extends Component {
                 initialValue: this.props.editRecord ? this.props.editRecord.number : '',
                 rules: [{required: true, message: '集中器编号不能为空'}],
               })(
-                <Input disabled={this.props.editRecord ?true:false}/>
+                <Input />
               )}
             </FormItem>
             <FormItem
@@ -239,7 +239,7 @@ class AddConcentrator extends Component {
                 initialValue: this.props.editRecord ? this.props.editRecord.serial_number : '',
                 rules: [{required: true, message: '硬件编号不能为空'}],
               })(
-                <Input  disabled={this.props.editRecord ?true:false}/>
+                <Input />
               )}
             </FormItem>
             {/*<FormItem
