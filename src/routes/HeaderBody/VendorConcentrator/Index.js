@@ -130,16 +130,16 @@ class Vendor extends PureComponent {
   render() {
     let {vendor_concentrator: {data, meta, loading}} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '厂商名称', width: 200,dataIndex: 'manufacturer_name', key: 'manufacturer_name'
         , render: (val, record, index) => {
         return ellipsis2(val,200)
@@ -166,7 +166,7 @@ class Vendor extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '运行管理 '}, {name: '厂商-集中器统计'}]}>
+            <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '数据分析 '}, {name: '厂商-集中器统计'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                <div className='tableList'>
                   <div className='tableListForm'>

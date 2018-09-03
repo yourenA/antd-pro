@@ -13,7 +13,7 @@ export default class Proportion extends PureComponent {
     window.addEventListener('resize',this.resizeChart)
   }
   componentWillReceiveProps(nextProps){
-    if((nextProps.meter.total_count !== this.props.meter.total_count) && nextProps.meter.total_count){
+    if((nextProps.meter !== this.props.meter) && nextProps.meter.total_count){
       this.dynamic(nextProps.meter);
     }
   }

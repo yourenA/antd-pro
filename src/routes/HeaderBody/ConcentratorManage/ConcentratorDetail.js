@@ -197,17 +197,17 @@ class UserMeterAnalysis extends PureComponent {
     }
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        fixed:'left',
-        width: 50,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   fixed:'left',
+      //   width: 50,
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '水表号', width: 110, fixed:'left', dataIndex: 'meter_number', key: 'meter_number'},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
       {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {

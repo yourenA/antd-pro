@@ -52,14 +52,11 @@ class UserMeterAnalysis extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {member_consumption: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -212,18 +209,18 @@ class UserMeterAnalysis extends PureComponent {
     }
     const resetMeterData=parseRowSpanData2(data)
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          const children=renderIndex(meta, this.state.initPage, record.index)
-          return renderRowSpan(children,record)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     const children=renderIndex(meta, this.state.initPage, record.index)
+      //     return renderRowSpan(children,record)
+      //   }
+      // },
       { title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number',  fixed: 'left',  render: (val, record, index) => {
         return renderRowSpan(val,record)
       } },
@@ -327,7 +324,7 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '用户水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '用户水量分析'}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

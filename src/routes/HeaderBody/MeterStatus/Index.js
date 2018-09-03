@@ -56,14 +56,11 @@ class UserMeterAnalysis extends PureComponent {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
   scrollTable=()=>{
-    console.log('scroll')
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
     const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
     const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop',scrollTop)
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
-      console.log('到达底部');
       if(this.state.canLoadByScroll){
         const {meter_status: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
@@ -192,103 +189,14 @@ class UserMeterAnalysis extends PureComponent {
       per_page:per_page
     })
   }
-  handleAdd = () => {
-    const that = this;
-    const formValues = this.formRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'meter_status/add',
-      payload: {
-        ...formValues,
-        is_change: formValues.is_change.key,
-        installed_at: formValues.installed_at ? moment(formValues.installed_at).format('YYYY-MM-DD') : '',
-        village_id: this.state.village_id,
-        concentrator_number: this.state.concentrator_number
-      },
-      callback: function () {
-        message.success('添加用户成功')
-        that.setState({
-          addModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          member_number: that.state.member_number,
-          real_name: that.state.real_name,
-          install_address: that.state.install_address,
-        })
-      }
-    });
-  }
-  handleEdit = () => {
-    const that = this;
-    const formValues = this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    this.props.dispatch({
-      type: 'meter_status/edit',
-      payload: {
-        ...formValues,
-        village_id: this.state.village_id,
-        id: this.state.editRecord.id
-      },
-      callback: function () {
-        message.success('修改用户成功')
-        that.setState({
-          editModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          member_number: that.state.member_number,
-          real_name: that.state.real_name,
-          install_address: that.state.install_address,
-
-        })
-      }
-    });
-  }
-  handleRemove = (id)=> {
-    const that = this;
-    this.props.dispatch({
-      type: 'meter_status/remove',
-      payload: {
-        id: id,
-      },
-      callback: function () {
-        message.success('删除用户成功')
-        that.handleSearch({
-          page: that.state.page,
-          meter_number: that.state.meter_number,
-          member_number: that.state.member_number,
-          real_name: that.state.real_name,
-          install_address: that.state.install_address,
-          per_page:that.state.per_page,
-        })
-      }
-    });
-  }
-  handleChangeTable = ()=> {
-    const formValues = this.ChangeTableformRef.props.form.getFieldsValue();
-    console.log(formValues)
-  }
 
   render() {
-    const {meter_status: {data, meta, loading}, concentrators, meters} = this.props;
+    const {meter_status: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        fixed: 'left',
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta, this.state.initPage, index)
-        }
-      },
+
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',},
       {
         title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',
@@ -332,7 +240,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '户表使用年限'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '户表使用年限'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

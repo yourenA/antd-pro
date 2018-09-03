@@ -68,8 +68,10 @@ class SearchForm extends Component {
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            {/*{this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
+            {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}
             {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>批量导入</Button>}
+          </FormItem>
+          <FormItem >
             {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()} icon='export'>导出用户信息</Button>}
             {this.props.showConfigBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出格式</Button>}
           </FormItem>

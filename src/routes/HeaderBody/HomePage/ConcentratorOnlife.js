@@ -12,7 +12,7 @@ export default class EndpointsList extends PureComponent {
     window.addEventListener('resize', this.resizeChart)
   }
   componentWillReceiveProps(nextProps){
-    if((nextProps.concentrator.total_count !== this.props.concentrator.total_count) && nextProps.concentrator.total_count){
+    if((nextProps.concentrator !== this.props.concentrator) && nextProps.concentrator.total_count){
       this.dynamic(nextProps.concentrator);
     }
   }

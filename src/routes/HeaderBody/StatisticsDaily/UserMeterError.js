@@ -151,17 +151,17 @@ class FunctionContent extends PureComponent {
     const {meter_daily_errors: {data, meta, loading},dispatch} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '集中器编号', width:200, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (

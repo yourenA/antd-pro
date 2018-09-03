@@ -274,17 +274,17 @@ class UserMeterAnalysis extends PureComponent {
     )*/
   // console.log('custom_headers',custom_headers)
    const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return renderIndex(meta, this.state.initPage, index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta, this.state.initPage, index)
+      //   }
+      // },
      {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 100,render: (val, record, index) => {
        return ellipsis2(val, 100)
      }},
@@ -364,7 +364,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '水表水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '水表水量分析'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

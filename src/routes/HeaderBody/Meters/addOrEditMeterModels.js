@@ -43,7 +43,7 @@ class AddPoliciesForm extends Component {
             initialValue: this.props.editRecord ? this.props.editRecord.number : '',
             rules: [{required: true, message: '水表号不能为空'}],
           })(
-            <Input disabled={this.props.editRecord ? true : false}/>
+            <Input />
           )}
         </FormItem>
         <FormItem

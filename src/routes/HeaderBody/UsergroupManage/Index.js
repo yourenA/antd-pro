@@ -166,16 +166,16 @@ class Vendor extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const {usergroup: {data, meta, loading},dispatch} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {
         title: '名称',
         dataIndex: 'display_name',

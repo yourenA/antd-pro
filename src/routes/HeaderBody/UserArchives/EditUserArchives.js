@@ -52,7 +52,7 @@ class EditUserArchives extends Component {
             initialValue: this.props.editRecord ? this.props.editRecord.number : '',
             rules: [{required: true, message: '户号不能为空'}],
           })(
-            <Input  disabled={this.props.editRecord ?true:false}/>
+            <Input  />
           )}
         </FormItem>
         <FormItem

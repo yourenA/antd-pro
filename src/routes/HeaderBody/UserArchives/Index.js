@@ -3,7 +3,8 @@ import { Table , Card, Popconfirm , Layout,message,Modal,Tooltip,Badge,Button  }
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import AddOREditUserArchives from './addOREditUserArchives'
+import EditUserArchives from './EditUserArchives'
+import AddUserArchives from './AddUserArchives'
 import ImportArchives from './ImportUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
@@ -260,12 +261,35 @@ class UserMeterAnalysis extends PureComponent {
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
+    let meterskey=[]
+    for(let i in formValues){
+      let splitKey=i.split('-')
+      let len=splitKey.length;
+      if(len>=2){
+        if(meterskey.indexOf(splitKey[1])<0){
+          meterskey.push(splitKey[1])
+        }
+      }
+    }
+    const metersArr=[]
+    for(let i=0;i<meterskey.length;i++){
+      metersArr.push({
+        concentrator_number:formValues[`concentrator_number-${meterskey[i]}`],
+        channel:formValues[`channel-${meterskey[i]}`],
+        meter_index:formValues[`meter_index-${meterskey[i]}`],
+        manufacturer_prefix:formValues[`manufacturer_prefix-${meterskey[i]}`],
+        meter_number:formValues[`meter_number-${meterskey[i]}`],
+        meter_model_id:formValues[`meter_model_id-${meterskey[i]}`],
+        initial_water:formValues[`initial_water-${meterskey[i]}`],
+      })
+    }
+    console.log('metersArr',metersArr)
     this.props.dispatch({
       type: 'members/add',
       payload: {
         ...formValues,
-        is_change:formValues.is_change.key,
         installed_at:formValues.installed_at?moment(formValues.installed_at).format('YYYY-MM-DD'):'',
+        meters:metersArr
       },
       callback: function () {
         message.success('添加用户成功')
@@ -394,18 +418,18 @@ class UserMeterAnalysis extends PureComponent {
     }
     const resetMeterData=parseRowSpanData(data)
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          const children=renderIndex(meta,this.state.initPage,record.index)
-          return renderRowSpan(children,record)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     const children=renderIndex(meta,this.state.initPage,record.index)
+      //     return renderRowSpan(children,record)
+      //   }
+      // },
       { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
         const children= (
           ellipsis2(val, 80)
@@ -534,7 +558,7 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '运行管理'}, {name: '用户档案'}]}>
+            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '系统管理'}, {name: '用户档案'}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -579,13 +603,13 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </Content>
         <Modal
-          width="650px"
+          width="80%"
           title="添加用户档案"
           visible={this.state.addModal}
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal:false})}
         >
-          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst} concentrators={concentrators.data} meters={meters.data}   />
+          <AddUserArchives  dma={dma} sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.formRef = inst}  meter_models={meter_models.data}  concentrators={concentrators.data} meters={meters.data}   />
         </Modal>
         <Modal
           width="650px"
@@ -595,7 +619,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal:false})}
         >
-          <AddOREditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}    editRecord={this.state.editRecord} />
+          <EditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}    editRecord={this.state.editRecord} />
         </Modal>
         <Modal
           title="批量导入用户"

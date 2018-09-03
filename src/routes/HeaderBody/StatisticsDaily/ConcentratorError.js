@@ -78,17 +78,17 @@ class FunctionContent extends PureComponent {
     }
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.page,index)
+      //   }
+      // },
       {title: '集中器编号', width:100, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (
@@ -145,7 +145,7 @@ class FunctionContent extends PureComponent {
                                  handleFormReset={this.handleFormReset} initDate={this.state.initDate}/>
                 </div>
               </div>
-              <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+              <ResizeableTable loading={loading} meta={meta} initPage={this.state.page}
                                dataSource={data} columns={columns} rowKey={record => record.uuidkey}
                                scroll={{x:1200,y: this.state.tableY}}
                                history={this.props.history}

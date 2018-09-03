@@ -228,16 +228,16 @@ class MeterModel extends PureComponent {
   render() {
     const {servers: {data, meta, loading}} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '服务器地址', width: 200, dataIndex: 'ip', key: 'ip',
         render: (val, record, index) => {
           return ellipsis2(val,200)
@@ -309,7 +309,7 @@ class MeterModel extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '运行管理 '}, {name: '服务器地址'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '服务器地址'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

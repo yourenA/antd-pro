@@ -242,7 +242,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '小区水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '小区水量分析'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                   <div className='tableList'>
                     <div className='tableListForm'>

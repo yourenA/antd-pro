@@ -19,7 +19,21 @@ const ResizeableTitle = (props) => {
 
 export default class Demo extends React.Component {
   state = {
-    columns: this.props.columns,
+    columns: [
+      {
+        title: '序号',
+        dataIndex: 'id',
+        key: 'id',
+        width: 50,
+        className: 'table-index',
+        fixed: 'left',
+        render: (text, record, index) => {
+          const children=renderIndex(this.props.meta, this.props.initPage, record.index)
+          return renderRowSpan(children,record)
+        }
+      },
+      ...this.props.columns
+    ]
   };
 
   components = {

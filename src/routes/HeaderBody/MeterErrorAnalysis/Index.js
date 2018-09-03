@@ -239,17 +239,17 @@ class UserMeterAnalysis extends PureComponent {
       data[i].uuidkey=uuid()
     }
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (

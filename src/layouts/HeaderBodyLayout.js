@@ -100,13 +100,13 @@ class HeaderBodyLayout extends React.PureComponent {
 
     const that = this;
     const notificationText={
-      consumption_abnormality_count:{title:'用水量异常报警',text:'个水表今天出现用水量异常',urlSuffix:'consumption_abnormality'},
-      zero_abnormality_count:{title:'零流量异常报警',text:'个水表今天出现零流量异常',urlSuffix:'zero_abnormality'},
-      night_abnormality_count:{title:'夜间流量异常报警',text:'个水表今天出现夜间流量异常',urlSuffix:'night_abnormality'},
-      leak_abnormality_count:{title:'漏水异常报警',text:'个水表今天出现漏水异常报警',urlSuffix:'leak_abnormality'},
-      valve_status_abnormality_count:{title:'水表阀控异常报警',text:'个水表今天出现阀控异常报警',urlSuffix:'valve_status_abnormality'},
-      voltage_status_abnormality_count:{title:'水表电池电压异常报警',text:'个水表今天出现电池电压异常报警',urlSuffix:'voltage_status_abnormality'},
-      concentrator_offline_abnormality_count:{title:'集中器离线异常报警',text:'个集中器今天出现离线异常',urlSuffix:'statistics_daily/concentrator_error'},
+      consumption_abnormality_count:{title:'用水量异常报警',text:'个水表出现用水量异常',urlSuffix:'consumption_abnormality'},
+      zero_abnormality_count:{title:'零流量异常报警',text:'个水表出现零流量异常',urlSuffix:'zero_abnormality'},
+      night_abnormality_count:{title:'夜间流量异常报警',text:'个水表出现夜间流量异常',urlSuffix:'night_abnormality'},
+      leak_abnormality_count:{title:'漏水异常报警',text:'个水表出现漏水异常报警',urlSuffix:'leak_abnormality'},
+      valve_status_abnormality_count:{title:'水表阀控异常报警',text:'个水表出现阀控异常报警',urlSuffix:'valve_status_abnormality'},
+      voltage_status_abnormality_count:{title:'水表电池电压异常报警',text:'个水表出现电池电压异常报警',urlSuffix:'voltage_status_abnormality'},
+      concentrator_offline_abnormality_count:{title:'集中器离线异常报警',text:'个集中器出现离线异常',urlSuffix:'statistics_daily/concentrator_error'},
     }
     request(`/summary_abnormality`, {
       method: 'get',

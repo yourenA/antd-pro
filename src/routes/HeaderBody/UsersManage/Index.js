@@ -294,17 +294,17 @@ class Vendor extends PureComponent {
       </Menu>
     );
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        fixed: 'left',
-        width: 50,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   fixed: 'left',
+      //   width: 50,
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '账号', width: 100, dataIndex: 'username', key: 'username', fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val,100)

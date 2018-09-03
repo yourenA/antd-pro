@@ -206,17 +206,17 @@ class ConcentratorModels extends PureComponent {
   render() {
     const {concentrator_models: {data, meta, loading},manufacturers} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        className: 'table-index',
-        fixed: 'left',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.page,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   className: 'table-index',
+      //   fixed: 'left',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.page,index)
+      //   }
+      // },
       {title: '类型名称', width:  200, dataIndex: 'name', key: 'name',
         fixed: 'left',
         render: (val, record, index) => {
@@ -281,7 +281,7 @@ class ConcentratorModels extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '集中器类型查询'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '集中器类型查询'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

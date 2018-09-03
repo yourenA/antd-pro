@@ -209,16 +209,16 @@ class UserMeterAnalysis extends PureComponent {
     }
     let columnsWidth = 0;
     const columnsData = [
-      {
-        title: '序号',
-        dataIndex: 'index',
-        width: 50,
-        fixed: 'left',
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta, this.state.initPage, index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'index',
+      //   width: 50,
+      //   fixed: 'left',
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta, this.state.initPage, index)
+      //   }
+      // },
       {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left', render: (text, record, index) => {
         return ellipsis2(text,80)
       }},
@@ -378,7 +378,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '完整实时数据'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '完整实时数据'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

@@ -173,17 +173,17 @@ class FunctionContent extends PureComponent {
       data[i].uuidkey = uuid()
     }
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        fixed: 'left',
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   fixed: 'left',
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},

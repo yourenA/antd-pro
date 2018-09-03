@@ -197,18 +197,18 @@ class Vendor extends PureComponent {
   render() {
     const {manufacturers: {data, meta, loading}} = this.props;
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-        fixed:'left',
-
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(meta,this.state.initPage,index)
-        }
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: 50,
+      //   fixed:'left',
+      //
+      //   className: 'table-index',
+      //   render: (text, record, index) => {
+      //     return renderIndex(meta,this.state.initPage,index)
+      //   }
+      // },
       {title: '厂商编号', width: 100, dataIndex: 'code', key: 'code',
         fixed:'left',
         render: (val, record, index) => {
