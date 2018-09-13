@@ -1,7 +1,7 @@
-import { query,add,remove,edit,exportCSV,exportConcentratorCSV } from '../services/members';
+import { query,add,remove,edit,change } from '../services/temperature';
 
 export default {
-  namespace: 'members',
+  namespace: 'temperature',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -18,28 +18,43 @@ export default {
       const response = yield call(query, payload);
       console.log(response)
       if(response.status===200){
-        yield put({
-          type: 'save',
-          payload:  response.data
-        });
-        if(document.querySelector('.ant-table-body')){
-          document.querySelector('.ant-table-body').scrollTop=0;
+        if(response.data.meta){
+          yield put({
+            type: 'save',
+            payload:  response.data
+          });
+          if(document.querySelector('.ant-table-body')){
+            document.querySelector('.ant-table-body').scrollTop=0;
+          }else{
+            console.log('没找到表格')
+          }
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
         }else{
-          console.log('没找到表格')
+          yield put({
+            type: 'save',
+            payload:  {
+              data:response.data.data,
+              meta: {pagination: {total: 0, per_page: 0}},
+            }
+          });
+          if(document.querySelector('.ant-table-body')){
+            document.querySelector('.ant-table-body').scrollTop=0;
+          }else{
+            console.log('没找到表格')
+          }
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
         }
-        yield put({
-          type: 'changeLoading',
-          payload: false,
-        });
-          if (callback) callback();
+        if(callback) callback()
       }
 
     },
     *fetchAndPush({ payload,callback }, { call, put }) {
-      // yield put({
-      //   type: 'changeLoading',
-      //   payload: true,
-      // });
       const response = yield call(query, payload);
       console.log(response)
       if(response.status===200){
@@ -47,16 +62,18 @@ export default {
           type: 'saveAndPush',
           payload:  response.data
         });
-        // yield put({
-        //   type: 'changeLoading',
-        //   payload: false,
-        // });
         if (callback) callback();
       }
-
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+    *change({ payload, callback }, { call, put }) {
+      const response = yield call(change, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();
@@ -73,20 +90,6 @@ export default {
       const response = yield call(remove, payload);
       if(response.status===200){
         if (callback) callback();
-      }
-    },
-    *exportCSV({ payload, callback }, { call, put }) {
-      const response = yield call(exportCSV, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback(response.data.download_key);
-      }
-    },
-    *exportConcentratorCSV({ payload, callback }, { call, put }) {
-      const response = yield call(exportConcentratorCSV, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback(response.data.download_key);
       }
     },
   },

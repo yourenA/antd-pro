@@ -1,7 +1,7 @@
-import { query,add,remove,edit,exportCSV,exportConcentratorCSV } from '../services/members';
+import { query,add,remove,edit } from '../services/pressure_analysis';
 
 export default {
-  namespace: 'members',
+  namespace: 'pressure_analysis',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -35,11 +35,8 @@ export default {
       }
 
     },
+
     *fetchAndPush({ payload,callback }, { call, put }) {
-      // yield put({
-      //   type: 'changeLoading',
-      //   payload: true,
-      // });
       const response = yield call(query, payload);
       console.log(response)
       if(response.status===200){
@@ -47,48 +44,10 @@ export default {
           type: 'saveAndPush',
           payload:  response.data
         });
-        // yield put({
-        //   type: 'changeLoading',
-        //   payload: false,
-        // });
         if (callback) callback();
       }
+    },
 
-    },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(add, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *edit({ payload, callback }, { call, put }) {
-      const response = yield call(edit, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(remove, payload);
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *exportCSV({ payload, callback }, { call, put }) {
-      const response = yield call(exportCSV, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback(response.data.download_key);
-      }
-    },
-    *exportConcentratorCSV({ payload, callback }, { call, put }) {
-      const response = yield call(exportConcentratorCSV, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback(response.data.download_key);
-      }
-    },
   },
 
   reducers: {

@@ -32,6 +32,7 @@ const {Content} = Layout;
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
+    this.BMap = window.BMap;
     this.file = ()=> {
     }
     this.state = {
@@ -252,6 +253,29 @@ class Vendor extends PureComponent {
         }
       }
     }
+    formValues.longitude='0';
+    formValues.latitude='0';
+    if(formValues.install_address){
+      let myGeo = new this.BMap.Geocoder();
+      myGeo.getPoint(formValues.install_address, function(point){
+        if (point) {
+          console.log(point)
+          formValues.longitude=point.lng.toString();
+          formValues.latitude=point.lat.toString();
+          that.addConcerntorRequest(formValues,current)
+        }else{
+          console.log("您选择地址没有解析到结果!");
+          that.addConcerntorRequest(formValues,current)
+
+        }
+      });
+    }else{
+      that.addConcerntorRequest(formValues,current)
+
+    }
+  }
+  addConcerntorRequest=(formValues,current)=>{
+    const that=this;
     this.props.dispatch({
       type: 'concentrators/add',
       payload: {

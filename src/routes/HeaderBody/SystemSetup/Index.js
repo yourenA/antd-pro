@@ -4,7 +4,7 @@ import Sider from './Sider'
 import {connect} from 'dva';
 import { Link, Route, Redirect, Switch,} from 'dva/router';
 import './index.less'
-import Working from '../../Exception/working';
+// import Working from '../../Exception/working';
 import NightWarningSetup from './NightWarningSetup'
 import ZeroWarningSetup from './ZeroWarningSetup'
 import Unusual_water from './Unusual_water'
@@ -14,6 +14,7 @@ import VoltageSetup from './VoltageSetup'
 import ValveStatusSetup from './ValveStatusSetup'
 import ExportSetup from './ExportSetup/Index'
 import ConcentratorOfflineSetup from './ConcentratorOfflineSetup'
+import PressureTemperatureSetup from './PressureTemperatureSetup/Index'
 // import SystemName from './SystemName'
 // import SmsNotice from './SmsNotice'
 // import EmailNotice from './EmailNotice'
@@ -66,6 +67,10 @@ class UserMeterLife extends PureComponent {
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/concentrator_offline_setup`}
                 component={ConcentratorOfflineSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/pressure_temperature_setup`}
+                component={PressureTemperatureSetup}
               />
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/export_setup`}

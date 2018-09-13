@@ -223,9 +223,9 @@ class UserMeterAnalysis extends PureComponent {
     this.props.dispatch({
       type: 'member_meter_data/exportCSV',
       payload: {
+        village_id:formValues.village_id==='all'?'':formValues.village_id,
         started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
         ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
-
       },
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)
@@ -372,9 +372,21 @@ class UserMeterAnalysis extends PureComponent {
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             exportCSV={()=> {
+                              company_code!=='mys'?
                               this.setState({
                                 exportModal: true
-                              })
+                              }):
+                                this.props.dispatch({
+                                  type: 'member_meter_data/exportCSV',
+                                  payload: {
+                                    started_at: moment().format('YYYY-MM-DD'),
+                                    ended_at: moment().format('YYYY-MM-DD'),
+
+                                  },
+                                  callback: function (download_key) {
+                                    download(`${config.prefix}/download?download_key=${download_key}`)
+                                  }
+                                });
                             }}
                              per_page={this.state.per_page}
                             setExport={()=>{

@@ -6,6 +6,7 @@ import Search from './Search'
 import EditUserArchives from './EditUserArchives'
 import AddUserArchives from './AddUserArchives'
 import ImportArchives from './ImportUserArchives'
+import ExportArchives from './ExportUserArchives'
 import Sider from './../Sider'
 import {connect} from 'dva';
 import config from '../../../common/config'
@@ -50,6 +51,7 @@ class UserMeterAnalysis extends PureComponent {
       editModal:false,
       changeModal:false,
       importModal:false,
+      exportModal:false,
       area: '',
       distribution_area:'',
       statistical_forms:'',
@@ -400,6 +402,20 @@ class UserMeterAnalysis extends PureComponent {
       })
     })
   }
+  handleExportConcentrator=()=>{
+    const formValues =this.exportFormRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    this.props.dispatch({
+      type: 'members/exportConcentratorCSV',
+      payload: {
+        ...formValues,
+        village_id: formValues.village_id[formValues.village_id.length - 1]
+      },
+      callback: function (download_key) {
+        download(`${config.prefix}/download?download_key=${download_key}`)
+      }
+    });
+  }
   exportCSV = ()=> {
     const that = this;
     this.props.dispatch({
@@ -568,6 +584,11 @@ class UserMeterAnalysis extends PureComponent {
                             showImportBtn={this.state.showImportBtn}
                             per_page={this.state.per_page}
                             exportCSV={this.exportCSV}
+                            exportConcentratorCSV={()=>{
+                              this.setState({
+                                exportModal:true
+                              })
+                            }}
                             setExport={()=>{
                               dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup?type=2`));
                             }}
@@ -587,16 +608,6 @@ class UserMeterAnalysis extends PureComponent {
                                  operate={operate}
                                  className={'meter-table no-interval'}
                                  />
-               {/* <Table
-                  className='meter-table no-interval'
-                  loading={loading}
-                  rowKey={record => record.myId}
-                  dataSource={resetMeterData}
-                  columns={columns}
-                  scroll={{ x: 1900,y: this.state.tableY }}
-                  pagination={false}
-                  size="small"
-                />*/}
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
           </PageHeaderLayout>
@@ -634,6 +645,20 @@ class UserMeterAnalysis extends PureComponent {
           ]}
         >
           <ImportArchives dma={dma} sider_regions={sider_regions}  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
+        </Modal>
+        <Modal
+          title="导出单个集中器信息"
+          visible={this.state.exportModal}
+          onCancel={() => this.setState({exportModal:false})}
+          //onOk={this.handleImport}
+          footer={[
+            <Button key="back" onClick={() => this.setState({exportModal:false})}>取消</Button>,
+            <Button key="submit" type="primary"  onClick={this.handleExportConcentrator}>
+              确认
+            </Button>,
+          ]}
+        >
+          <ExportArchives dma={dma} sider_regions={sider_regions}   wrappedComponentRef={(inst) => this.exportFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data}   />
         </Modal>
       </Layout>
     );

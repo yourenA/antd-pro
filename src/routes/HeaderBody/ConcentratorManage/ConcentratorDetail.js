@@ -208,8 +208,12 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '水表号', width: 110, fixed:'left', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150, },
+      {title: '水表号', width: 110, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val,110)
+      }},
+      {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150,render: (val, record, index) => {
+      return ellipsis2(val,150)
+    } },
       {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {
         return ellipsis2(val,150)
       }},

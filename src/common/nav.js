@@ -52,12 +52,14 @@ import MapDemo from './../routes/HeaderBody/MapDemo/Index'
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
+import PressureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
+import TemperatureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
 import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
 
 // const UserMeterLife = asyncComponent(() =>
 // import(/* webpackChunkName: "UserMeterLife" */ "./../routes/HeaderBody/MeterStatus/Index")
 // )
-import UserMeterLife from './../routes/HeaderBody/MeterStatus/Index'
+// import UserMeterLife from './../routes/HeaderBody/MeterStatus/Index'
 import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'
 
 // const ProductionMarketingAnalysis = asyncComponent(() =>
@@ -116,6 +118,8 @@ import MeterModels from './../routes/HeaderBody/MeterModels/Index'
 // import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
 // )
 import Meters from './../routes/HeaderBody/Meters/Index'
+import Pressure from './../routes/HeaderBody/Pressure/Index'
+import Temperature from './../routes/HeaderBody/Temperature/Index'
 
 // const ConcentratorModels = asyncComponent(() =>
 // import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
@@ -313,12 +317,30 @@ const data = [{
           component: MemberConsumption,
           permissions: ['member_consumption'],
           noShowCompany: ['hy']
-        }, {
-          name: '户表使用年限',
-          path: 'user_meter_life',
-          component: UserMeterLife,
-          permissions: ['meter_status'],
-        }, {
+        },
+        {
+          name: '压力传感器历史分析',
+          path: 'pressure_analysis',
+          component: PressureAnalysis,
+          permissions: ['member_consumption'],
+          showCompany: ['amwares']
+
+        },
+        {
+          name: '温度传感器历史分析',
+          path: 'temperature_analysis',
+          component: TemperatureAnalysis,
+          permissions: ['member_consumption'],
+          showCompany: ['amwares']
+
+        },
+        // {
+        //   name: '户表使用年限',
+        //   path: 'user_meter_life',
+        //   component: UserMeterLife,
+        //   permissions: ['meter_status'],
+        // },
+        {
           name: '完整实时数据',
           path: 'complete_realData',
           component: CompleteRealData,
@@ -375,6 +397,20 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: ['company_visit', 'meter_model_delete', 'meter_model_add_and_edit'],
+        },
+        {
+          name: '压力传感器管理',
+          path: 'pressure_sensors',
+          component: Pressure,
+          permissions: ['company_visit', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
+          showCompany: ['amwares']
+        },
+        {
+          name: '温度传感器管理',
+          path: 'temperature_sensors',
+          component: Temperature,
+          permissions: ['company_visit', 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
+          showCompany: ['amwares']
         },
         //   {
         //   name: '指令和状态查看',

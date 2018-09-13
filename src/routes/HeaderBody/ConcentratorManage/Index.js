@@ -27,6 +27,7 @@ class ConcentratorManage extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
+    this.BMap = window.BMap;
     this.state = {
       showAddBtn: find(this.permissions, {name: 'concentrator_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'concentrator_delete'}),
@@ -217,7 +218,31 @@ class ConcentratorManage extends PureComponent {
         }
       }
     }
+    formValues.longitude='0';
+    formValues.latitude='0';
     console.log('formValues', formValues);
+    if(formValues.install_address){
+      let myGeo = new this.BMap.Geocoder();
+      myGeo.getPoint(formValues.install_address, function(point){
+        if (point) {
+          console.log(point)
+          formValues.longitude=point.lng.toString();
+          formValues.latitude=point.lat.toString();
+          that.addRequest(formValues)
+        }else{
+          console.log("您选择地址没有解析到结果!");
+          that.addRequest(formValues)
+
+        }
+      });
+    }else{
+      that.addRequest(formValues)
+
+    }
+
+  }
+  addRequest=(formValues)=>{
+    const that=this;
     this.props.dispatch({
       type: 'concentrators/add',
       payload: {
@@ -274,36 +299,59 @@ class ConcentratorManage extends PureComponent {
           }
         }
       }
-      this.props.dispatch({
-        type: 'concentrators/edit',
-        payload: {
-          ...formValues,
-          server_id: formValues.server_id ? formValues.server_id.key : '',
-          concentrator_model_id: formValues.concentrator_model_id.key,
-          // village_id: formValues.village_id[formValues.village_id.length - 1],
-          village_ids: formValues.villages,
-          is_count: formValues.is_count.key,
-          id: this.state.editRecord.id
-        },
-        callback: function () {
-          message.success('修改集中器成功')
-          that.setState({
-            editModal: false,
-            refreshSider: that.state.refreshSider + 1
-          });
-          // that.handleSearch({
-          //   page: that.state.page,
-          //   query: that.state.query,
-          //   per_page:that.state.per_page,
-          // })
-        }
-      });
+
+      formValues.longitude='0';
+      formValues.latitude='0';
+      if(formValues.install_address){
+        let myGeo = new this.BMap.Geocoder();
+        myGeo.getPoint(formValues.install_address, function(point){
+          if (point) {
+            console.log(point)
+            formValues.longitude=point.lng.toString();
+            formValues.latitude=point.lat.toString();
+            that.editRequest(formValues)
+          }else{
+            console.log("您选择地址没有解析到结果!");
+            that.editRequest(formValues)
+          }
+        });
+      }else{
+        this.editRequest(formValues)
+      }
+
     } else if (state.tabsActiveKey === 'editUpload') {
       this.handleEditConfig()
     } else if (state.tabsActiveKey === 'editSleep') {
       this.handleEditSleep()
     }
 
+  }
+  editRequest=(formValues)=>{
+    const that=this;
+    this.props.dispatch({
+      type: 'concentrators/edit',
+      payload: {
+        ...formValues,
+        server_id: formValues.server_id ? formValues.server_id.key : '',
+        concentrator_model_id: formValues.concentrator_model_id.key,
+        // village_id: formValues.village_id[formValues.village_id.length - 1],
+        village_ids: formValues.villages,
+        is_count: formValues.is_count.key,
+        id: this.state.editRecord.id
+      },
+      callback: function () {
+        message.success('修改集中器成功')
+        that.setState({
+          editModal: false,
+          refreshSider: that.state.refreshSider + 1
+        });
+        // that.handleSearch({
+        //   page: that.state.page,
+        //   query: that.state.query,
+        //   per_page:that.state.per_page,
+        // })
+      }
+    });
   }
   handleRemove = (id)=> {
     const that = this;
@@ -367,11 +415,12 @@ class ConcentratorManage extends PureComponent {
     console.log(this.state.editRecord.id)
     let putData = {
       upload_cycle_unit: formValues.value,
-      id: this.state.editRecord.id
+      id: this.state.editRecord.id,
+        upload_time : upload_time
     }
-    if (formValues.day || formValues.hour || formValues.minute || formValues.second) {
-      putData.upload_time = upload_time
-    }
+    // if (formValues.day || formValues.hour || formValues.minute || formValues.second) {
+    //   putData.upload_time = upload_time
+    // }
     this.props.dispatch({
       type: 'concentrators/editConfig',
       payload: putData,
@@ -431,7 +480,6 @@ class ConcentratorManage extends PureComponent {
       //   render: (text, record, index) => {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
-      // },
       {
         title: '集中器编号', width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (text, record, index) => {

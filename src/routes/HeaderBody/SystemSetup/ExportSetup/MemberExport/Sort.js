@@ -74,7 +74,6 @@ class Container extends Component {
   }
 
   changeTableY = ()=> {
-    console.log(document.querySelector('.card-container').offsetTop  )
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.card-container').offsetTop - (68 + 240)
     })

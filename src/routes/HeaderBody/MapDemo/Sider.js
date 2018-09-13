@@ -16,6 +16,7 @@ class SiderTree extends PureComponent {
     this.dataList=[];
     this.mapData=[];
     const {isMobile} =this.props.global;
+    this.timer=null;
     this.state = {
       collapsed: isMobile,
       treeData: [
@@ -30,14 +31,13 @@ class SiderTree extends PureComponent {
   componentDidMount() {
     const {dispatch}=this.props;
     this.queryVillages(true);
+    // this.timer=setInterval(this.queryVillages,2000)
   }
-  componentWillReceiveProps = (nextProps)=> {
-    if (nextProps.refreshSider !== this.props.refreshSider) {
-      console.log('刷新sider');
-      this.queryVillages(true);
-    }
+  componentWillUnmount() {
+    clearInterval(this.queryVillages)
   }
   queryVillages=(initial)=>{
+    console.log('获取')
     const that=this;
     request(`/villages`,{
       method:'GET',
@@ -56,15 +56,12 @@ class SiderTree extends PureComponent {
           if(that.props.showConcentrator!==false){
             response.data.data.unshift({id:'null',name:'全部集中器',tooltip:"列出所有的集中器号，与安装小区无关",children:[]})
             for(let i=0;i<concentratorsResponse.data.data.length;i++){
-              concentratorsResponse.data.data[i].map={
-                lng: 112.159141 + parseFloat(Math.random().toFixed(2)),
-                lat: 26.269442 + parseFloat(Math.random().toFixed(2)),
-              }
               response.data.data[0].children.push({ data:concentratorsResponse.data.data[i],id:concentratorsResponse.data.data[i].id+'5', number: concentratorsResponse.data.data[i].number,parent_village_id:'' })
             }
           }
           this.mapData=concentratorsResponse.data.data;
-          this.props.renderMap(concentratorsResponse.data.data)
+          this.props.saveConcentrators(concentratorsResponse.data.data)
+          // this.props.getPoint(initial)
           that.setState({
             treeData:that.transilate(response.data.data)
           },function () {
@@ -72,8 +69,6 @@ class SiderTree extends PureComponent {
             // console.log(that.dataList)
           })
         })
-
-
 
     })
   }
@@ -136,6 +131,7 @@ class SiderTree extends PureComponent {
     });
   }
   onSelect = (selectedKeys, info) => {
+    console.log('info',info)
     if(info.selected===false){
       return false
     }
