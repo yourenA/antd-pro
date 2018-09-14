@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Table, Card, Popconfirm, Layout, message, Row, Col} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import Pagination from './../../../components/Pagination/Index'
 import Search from './Search'
 import Sider from './../Sider'
 import {connect} from 'dva';
@@ -12,6 +11,8 @@ import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import PressureChart from './PressureChart.js'
+import request from '../../../utils/request';
+
 const {Content} = Layout;
 @connect(state => ({
   pressure_analysis: state.pressure_analysis,
@@ -42,37 +43,31 @@ class UserMeterAnalysis extends PureComponent {
       area: '',
       per_page: 30,
       canLoadByScroll: true,
-      data:[]
+      data:[],
+      minimum_pressure_value:0,
+      maximum_pressure_value:0
     }
   }
 
   componentDidMount() {
     this.changeTableY();
     document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
-    const data=[{
-      pressure_sensor_number:'123111',
-      concentrator_number:'123111',
-      date:'2018-09-06',
-      uploaded_at:'2018-09-09 02:50:45',
-    },{
-      pressure_sensor_number:'123123211',
-      concentrator_number:'123123211',
-      date:'2018-09-06',
-      uploaded_at:'2018-09-09 02:50:45',
-    }]
-    for(let i=0;i<data.length;i++){
-      data[i].values=[];
-      data[i].uuidkey = uuid()
-      for(let j=0;j<(24*4);j++){
-        data[i].values.push(Math.floor(Math.random()*10+1))
-      }
-    }
-    const that=this
-    setTimeout(function () {
+    const that = this;
+    request(`/configs?groups[]=pressure_sensor_abnormality`, {
+      method: 'GET',
+      query: {}
+    }).then((response)=> {
+      console.log(response);
       that.setState({
-        data
+        minimum_pressure_value: find(response.data.data, function (o) {
+          return o.name === 'minimum_pressure_value'
+        }).value,
+        maximum_pressure_value: find(response.data.data, function (o) {
+          return o.name === 'maximum_pressure_value'
+        }).value,
       })
-    },1000)
+
+    })
 
   }
 
@@ -206,18 +201,17 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   render() {
-    const {pressure_analysis: { meta, loading}} = this.props;
-    // for (let i = 0; i < data.length; i++) {
-    //   data[i].uuidkey = uuid()
-    // }
-    const {data}=this.state
+    const {pressure_analysis: { data,meta, loading}} = this.props;
+    for (let i = 0; i < data.length; i++) {
+      data[i].uuidkey = uuid()
+    }
     const columns = [
       {title: '压力传感器编号', width: 150, dataIndex: 'pressure_sensor_number', key: 'pressure_sensor_number',
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }},
-      {title: '当前数据日期', width: 150, dataIndex: 'date', key: 'date',},
       {title: '集中器号', width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number',},
+      {title: '当前数据日期', width: 150, dataIndex: 'date', key: 'date',},
       {
         title: '传感器上传时间', dataIndex: 'uploaded_at', key: 'uploaded_at',
       },
@@ -243,13 +237,13 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <Row >
                   <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                    <ResizeableTable loading={loading} customIndex={true}  initPage={this.state.initPage}
                                      dataSource={data} columns={columns} rowKey={record => record.uuidkey}
                                      history={this.props.history}
                                      scroll={{ y: this.state.tableY}}/>
                   </Col>
                   <Col  xs={24} sm={24} md={24} lg={24}  xl={24}>
-                    <PressureChart data={data}/>
+                    <PressureChart data={data} maximum_pressure_value={this.state.maximum_pressure_value} minimum_pressure_value={this.state.minimum_pressure_value}/>
                   </Col>
                 </Row>
               </Card>

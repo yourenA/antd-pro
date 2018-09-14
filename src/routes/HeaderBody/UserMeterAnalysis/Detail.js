@@ -41,7 +41,7 @@ class Detail extends PureComponent {
       }
     }).then((response)=>{
       console.log(response);
-      that.dynamic(response.data.data)
+      that.dynamic(response.data)
     });
   }
   dynamic=(data)=>{

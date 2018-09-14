@@ -42,18 +42,18 @@ class UserMeterAnalysis extends PureComponent {
       render: (val, record, index) => {
         return ellipsis2(val, 70)
       },
-      key: 'name',
+      key: 'number',
     }, {
         title: '上传时间',
         dataIndex: 'created_at',
-        key: 'addres2s',
+        key: 'created_at',
         width:130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }
       }, {
       title: '压力传感器号',
-      dataIndex: 'number',
+      dataIndex: 'pressure_number',
       width:80,
       render: (val, record, index) => {
         let text=''
@@ -62,22 +62,34 @@ class UserMeterAnalysis extends PureComponent {
         }
         return ellipsis2(text, 80)
       },
-      key: 'age',
+      key: 'pressure_number',
     },{
       title: '压力值',
-      dataIndex: 'number',
-      width:80,
+      dataIndex: 'pressure_value',
+      width:50,
       render: (val, record, index) => {
         let text=''
         if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
           text=record.pressure_sensors_analysis[0].pressure_value
         }
-        return ellipsis2(text, 80)
+        return ellipsis2(text, 50)
       },
-      key: 'ag2e',
+      key: 'pressure_value',
     }, {
+        title: '压力状态',
+        dataIndex: 'pressure_status',
+        width:60,
+        render: (val, record, index) => {
+          let text=''
+          if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
+            text=record.pressure_sensors_analysis[0].pressure_value_status===-1?'异常':'正常'
+          }
+          return ellipsis2(text, 60)
+        },
+        key: 'pressure_status',
+      },{
       title: '温度传感器号',
-      dataIndex: 'number',
+      dataIndex: 'temperature_number',
       width:80,
       render: (val, record, index) => {
         let text=''
@@ -86,19 +98,31 @@ class UserMeterAnalysis extends PureComponent {
         }
         return ellipsis2(text, 80)
       },
-      key: 'address',
+      key: 'temperature_number',
     },{
       title: '温度',
-      dataIndex: 'number',
+        width:60,
+        dataIndex: 'temperature_value',
       render: (val, record, index) => {
         let text=''
         if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
           text=record.temperature_sensors_analysis[0].temperature_value
         }
-        return ellipsis2(text, 80)
+        return ellipsis2(text, 60)
       },
-      key: 'ag3e1',
-    },];
+      key: 'temperature_value',
+    },{
+        title: '温度状态',
+        dataIndex: 'temperature_status',
+        render: (val, record, index) => {
+          let text=''
+          if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
+            text=record.temperature_sensors_analysis[0].pressure_value_status===-1?'异常':'正常'
+          }
+          return ellipsis2(text, 80)
+        },
+        key: 'temperature_status',
+      }];
     const that=this;
     return (
       <div>
@@ -108,12 +132,11 @@ class UserMeterAnalysis extends PureComponent {
           className={'meter-table'}
           rowKey={record => record.number}
           size="small"
-          scroll={{x:1230,y:213}}
+          scroll={{x:1000,y:213}}
           pagination={false}
           meta={this.props.meta}
           history={this.props.history}
           rowClassName={function (record, index) {
-            console.log('record',record)
             if(record.pressure_sensors_analysis && record.pressure_sensors_analysis.length>0 && record.pressure_sensors_analysis[0].pressure_value_status===-1){
               return 'error'
             }

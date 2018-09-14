@@ -68,6 +68,11 @@ class UserMeterAnalysis extends PureComponent {
 
     this.map = new this.BMap.Map("mapData");          // 创建地图实例
     this.map.centerAndZoom(new BMap.Point(112.159141, 26.269442), 5);
+    this.map.addControl(new BMap.MapTypeControl({
+      mapTypes:[
+        BMAP_NORMAL_MAP,
+        BMAP_HYBRID_MAP
+      ]}));
     this.map.enableScrollWheelZoom();
 
   }
@@ -171,7 +176,7 @@ class UserMeterAnalysis extends PureComponent {
 
   showInfo = (point)=> {
     let dot = new this.BMap.Point(point.longitude, point.latitude);
-    let content = `
+    let content = `<div class="table-content">
 <table class="custom-table">
                     <thead> <tr><th class="table-header-1">集 中 器 信 息&nbsp&nbsp&nbsp</th><th  ></th></tr></thead>
                     <tbody>
@@ -204,6 +209,7 @@ class UserMeterAnalysis extends PureComponent {
                     </table>
                     `)
     }
+    content=content.concat(`</div>`)
     let infoWindow = new this.BMap.InfoWindow(content, {title: point.number});  // 创建信息窗口对象
     let info = this.map.openInfoWindow(infoWindow, dot); //开启信息窗口
   }

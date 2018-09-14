@@ -11,9 +11,11 @@ export default class DMArate extends PureComponent {
   componentDidMount() {
     const that = this;
     window.addEventListener('resize', this.resizeChart)
+
   }
   componentWillReceiveProps(nextProps){
     if((nextProps.data !== this.props.data) && nextProps.data){
+      console.log('重新渲染')
       this.dynamic(nextProps.data);
     }
   }
@@ -28,10 +30,14 @@ export default class DMArate extends PureComponent {
   }
   dynamic = (data)=> {
     console.log('data',data)
+    if(this.myChart){
+      this.myChart.clear();
+    }
     this.myChart = this.echarts.init(document.querySelector('.PressureLineChart'));
     let series=[];
     let legend=[];
     let xAxis=[];
+    let textColor='#eee'
     for(let j=0;j<(24*4);j++){
       let hour=Math.floor((j * 15) / 60);
       let min=(j * 15) % 60;
@@ -39,22 +45,92 @@ export default class DMArate extends PureComponent {
 
     }
     for(let i=0;i<data.length;i++){
-      legend.push(data[i].pressure_sensor_number)
-      series.push(
-        {
-          name:data[i].pressure_sensor_number,
-          type:'line',
-          smooth: true,
-          data:data[i].values
-        }
-      )
+      legend.push(data[i].pressure_sensor_number);
+      if(i===0){
+        series.push(
+          {
+            name:data[i].pressure_sensor_number,
+            type:'line',
+            smooth: true,
+            data:data[i].values,
+            markArea: {
+              data: [
+                [{
+                  yAxis:this.props.minimum_pressure_value,
+                  itemStyle: {
+                    normal: {
+                      color: 'rgba(183,234,209,0.7)'
+                    }
+                  }
+                }, {
+                  yAxis: this.props.maximum_pressure_value
+                }],
+              ]
+            },
+          }
+        )
+      }else{
+        series.push(
+          {
+            name:data[i].pressure_sensor_number,
+            type:'line',
+            smooth: true,
+            data:data[i].values,
+          }
+        )
+      }
     }
+    series.push( {
+      name:'平行于x轴的趋势线1',
+      type:'line',
+      markLine: {
+        lineStyle:{
+          normal: {
+            color: textColor
+          }
+        },
+        label: {
+          normal: {
+            formatter: '最小有效\n压力值: '+this.props.minimum_pressure_value,
+          }
+        },
+        data: [
+          {
+            yAxis: this.props.minimum_pressure_value
+          },
+        ]
+      }
+    }, {
+      name:'平行于x轴的趋势线2',
+      type:'line',
+      markLine: {
+        lineStyle:{
+          normal: {
+            color: textColor
+          }
+        },
+        label: {
+          normal: {
+            formatter: '最大有效\n压力值: '+this.props.maximum_pressure_value,
+          }
+        },
+        data: [
+          {
+            yAxis: this.props.maximum_pressure_value
+          },
+        ]
+      }
+    })
     let option =  {
+      color: ['#c23531', '#d48265', '#FF69B4', '#ca8622'],
       title : {
         text: '压力传感器曲线图',
         x:'left',
+        textStyle: {
+          color: textColor
+        }
       },
-      backgroundColor: '#eee',
+      backgroundColor: '#404a59',
       tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -62,13 +138,27 @@ export default class DMArate extends PureComponent {
         }
       },
       legend: {
-        data:legend
+        data:legend,
+        textStyle:{
+          color: textColor
+        }
       },
       dataZoom: [
         {
           type: 'slider',
           show: true,
           xAxisIndex: [0],
+          textStyle:{
+            color: textColor
+          },
+          dataBackground:{
+            lineStyle:{
+              color:'#fff'
+            },
+            areaStyle:{
+              color:'#fff'
+            }
+          }
         },
         {
           type: 'inside',
@@ -76,6 +166,11 @@ export default class DMArate extends PureComponent {
         },
       ],
       toolbox: {
+        iconStyle:{
+          normal: {
+            color: textColor
+          }
+        },
         feature: {
           saveAsImage: {},
           dataView:{}
@@ -84,12 +179,21 @@ export default class DMArate extends PureComponent {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        name: '时间',
-        data: xAxis
+        data: xAxis,
+        axisLine: {
+          lineStyle: {
+            color: textColor
+          }
+        },
       },
       yAxis: {
         type: 'value',
         name: '单位:KPa',
+        axisLine: {
+          lineStyle: {
+            color:textColor
+          }
+        },
       },
       series: series
     };

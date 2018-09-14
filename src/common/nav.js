@@ -292,15 +292,8 @@ const data = [{
       name: '数据分析',            // 页面名称，会展示在菜单栏中
       path: 'real_time_data',   // 匹配的路由
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
-      permissions: ['village_difference_consumption', 'meter_status', 'village_meter_data', 'member_meter_data'],
+      permissions: ['village_difference_consumption', 'meter_status','concentrator_real_time_data','pressure_sensor_historical_data', 'village_meter_data', 'member_meter_data'],
       children: [
-        {
-          name: '地图展示',
-          path: 'map_demo',
-          component: MapDemo,
-          permissions: ['village_meter_data',],
-          showCompany: ['amwares']
-        },
         {
           name: '小区水量分析',
           path: 'community_analysis',
@@ -319,21 +312,28 @@ const data = [{
           noShowCompany: ['hy']
         },
         {
+          name: '压力/温度实时地图',
+          path: 'map_demo',
+          component: MapDemo,
+          permissions: ['concentrator_real_time_data',],
+          showCompany: ['amwares','zhsgy']
+        },
+        {
           name: '压力传感器历史分析',
           path: 'pressure_analysis',
           component: PressureAnalysis,
-          permissions: ['member_consumption'],
-          showCompany: ['amwares']
+          permissions: ['pressure_sensor_historical_data'],
+          showCompany: ['amwares','zhsgy']
 
         },
-        {
-          name: '温度传感器历史分析',
-          path: 'temperature_analysis',
-          component: TemperatureAnalysis,
-          permissions: ['member_consumption'],
-          showCompany: ['amwares']
-
-        },
+        // {
+        //   name: '温度传感器历史分析',
+        //   path: 'temperature_analysis',
+        //   component: TemperatureAnalysis,
+        //   permissions: ['pressure_sensor_historical_data'],
+        //   showCompany: ['amwares','zhsgy']
+        //
+        // },
         // {
         //   name: '户表使用年限',
         //   path: 'user_meter_life',
@@ -364,7 +364,7 @@ const data = [{
       name: '设备管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions: ['company_visit', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
+      permissions: ['company_visit', 'temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
       children: [
 
         //   ,
@@ -403,14 +403,14 @@ const data = [{
           path: 'pressure_sensors',
           component: Pressure,
           permissions: ['company_visit', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['amwares']
+          showCompany: ['amwares','zhsgy']
         },
         {
           name: '温度传感器管理',
           path: 'temperature_sensors',
           component: Temperature,
           permissions: ['company_visit', 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
-          showCompany: ['amwares']
+          showCompany: ['amwares','zhsgy']
         },
         //   {
         //   name: '指令和状态查看',

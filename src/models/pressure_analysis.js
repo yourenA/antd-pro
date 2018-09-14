@@ -55,7 +55,7 @@ export default {
       return {
         ...state,
         data: action.payload.data,
-        meta:action.payload.meta
+        // meta:action.payload.meta
       };
     },
     saveAndPush(state, action) {
@@ -67,7 +67,7 @@ export default {
       return {
         ...state,
         data: data,
-        meta:action.payload.meta
+        // meta:action.payload.meta
       };
     },
     changeLoading(state, action) {

@@ -591,6 +591,101 @@ export default class Demo extends React.Component {
                 };
             }
             break;
+          case 'map_demo':
+            switch (nextColumns[index].dataIndex) {
+              case 'pressure_number':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
+                      text=record.pressure_sensors_analysis[0].pressure_sensor_number
+                    }
+                    return ellipsis2(text, size.width)
+                  },
+                };
+                break;
+              case 'pressure_value':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
+                      text=record.pressure_sensors_analysis[0].pressure_value
+                    }
+                    return ellipsis2(text, size.width)
+                  },
+                };
+                break;
+              case 'pressure_status':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
+                      text=record.pressure_sensors_analysis[0].pressure_value_status===-1?'异常':'正常'
+                    }
+                    return ellipsis2(text, 60)
+                  },
+                };
+                break;
+              case 'temperature_number':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
+                      text=record.temperature_sensors_analysis[0].temperature_sensor_number
+                    }
+                    return ellipsis2(text, size.width)
+                  },
+                };
+                break;
+              case 'temperature_value':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
+                      text=record.temperature_sensors_analysis[0].temperature_value
+                    }
+                    return ellipsis2(text, size.width)
+                  },
+                };
+                break;
+              case 'temperature_status':
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: (val, record, index) => {
+                    let text=''
+                    if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
+                      text=record.temperature_sensors_analysis[0].pressure_value_status===-1?'异常':'正常'
+                    }
+                    return ellipsis2(text, 60)
+                  },
+                };
+                break;
+              default:
+                nextColumns[index] = {
+                  ...nextColumns[index],
+                  width: size.width,
+                  render: nextColumns[index].render ? (val, record, index) => {
+                    return ellipsis2(val, size.width)
+
+                  } : (val, record, index) => {
+                    return (
+                    {val}
+                    )
+                  }
+                };
+            }
+            break;
           default:
             nextColumns[index] = {
               ...nextColumns[index],

@@ -49,8 +49,11 @@ class Main extends PureComponent {
       callback: ()=> {
         console.log('callback')
         const {sider_regions:{data}}=that.props;
-        this.setState({value: data[0].id});
-        that.onChangeArea(data[0].id)
+        if(data.length>0){
+          this.setState({value: data[0].id});
+          that.onChangeArea(data[0].id)
+        }
+
       }
     });
   }

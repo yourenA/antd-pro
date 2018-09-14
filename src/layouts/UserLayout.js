@@ -100,7 +100,7 @@ class UserLayout extends React.PureComponent {
               <div className={styles.header}>
               <span>
                 <img alt="" className={styles.logo} src={prefix.indexOf('182.61.56.51:8081')>=0?zhuhuaLogo:waterLogo} />
-                <span className={styles.title}>{this.state.company_name+'水务远程水表监控系统'}</span>
+                <span className={styles.title}>{this.state.company_name+'远传水表监控系统'}</span>
               </span>
               </div>
               <p className={styles.desc}></p>
