@@ -54,13 +54,13 @@ class UserMeterAnalysis extends PureComponent {
       }, {
       title: '压力传感器号',
       dataIndex: 'pressure_number',
-      width:80,
+      width:90,
       render: (val, record, index) => {
         let text=''
         if(record.pressure_sensors_analysis&&record.pressure_sensors_analysis.length>0){
           text=record.pressure_sensors_analysis[0].pressure_sensor_number
         }
-        return ellipsis2(text, 80)
+        return ellipsis2(text, 90)
       },
       key: 'pressure_number',
     },{
@@ -90,13 +90,13 @@ class UserMeterAnalysis extends PureComponent {
       },{
       title: '温度传感器号',
       dataIndex: 'temperature_number',
-      width:80,
+      width:90,
       render: (val, record, index) => {
         let text=''
         if(record.temperature_sensors_analysis && record.temperature_sensors_analysis.length>0){
           text=record.temperature_sensors_analysis[0].temperature_sensor_number
         }
-        return ellipsis2(text, 80)
+        return ellipsis2(text, 90)
       },
       key: 'temperature_number',
     },{

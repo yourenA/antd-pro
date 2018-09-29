@@ -17,7 +17,8 @@ import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
-  leak_abnormality: state.leak_abnormality
+  leak_abnormality: state.leak_abnormality,
+  global: state.global,
 }))
 class Leak_abnormality extends PureComponent {
   constructor(props) {
@@ -184,6 +185,7 @@ class Leak_abnormality extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const {isMobile} =this.props.global;
     const columns = [
       // {
       //   title: '序号',
@@ -249,6 +251,7 @@ class Leak_abnormality extends PureComponent {
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/leak_warning_setup`));
                       }}
+                      isMobile={isMobile}
                       per_page={this.state.per_page}
                       dma={dma} handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>

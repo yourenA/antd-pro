@@ -16,7 +16,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
-  voltage_status_abnormality: state.voltage_status_abnormality
+  voltage_status_abnormality: state.voltage_status_abnormality,
+  global: state.global,
 }))
 class Leak_abnormality extends PureComponent {
   constructor(props) {
@@ -174,6 +175,7 @@ class Leak_abnormality extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const {isMobile} =this.props.global;
     const columns = [
       // {
       //   title: '序号',
@@ -221,6 +223,7 @@ class Leak_abnormality extends PureComponent {
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/voltage_status_setup`));
                       }}
+                      isMobile={isMobile}
                       per_page={this.state.per_page}
                       handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>

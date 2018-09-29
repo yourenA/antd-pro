@@ -53,7 +53,7 @@ class SearchForm extends Component {
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {(this.props.showAddBtn)?<Button  style={{marginLeft: 8}}   type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
           </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}>
+          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateServer')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateServer',checked);
               this.props.changeShowOperate()

@@ -18,7 +18,7 @@ class SearchForm extends Component {
             <Button type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>
           </FormItem>
           }
-          <FormItem  label="打开操作栏" style={{float:'right'}}>
+          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateMeterModel')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateMeterModel',checked);
               this.props.changeShowOperate()

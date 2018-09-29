@@ -3,11 +3,24 @@
 .content {
   margin: 16px 16px 0;
   :global{
+
     .ant-card-wider-padding .ant-card-body, .ant-card-body{
       padding: 16px;
     }
+    .screen-xs{
+      .ant-card-wider-padding .ant-card-body, .ant-card-body{
+        padding: 0 !important;
+      }
+    }
   }
 
+}
+:global{
+  .screen-xs{
+    .ant-card-wider-padding .ant-card-body, .ant-card-body{
+      padding: 0 !important;
+    }
+  }
 }
 
 //@media screen and (max-width: @screen-sm) {

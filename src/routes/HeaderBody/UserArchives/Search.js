@@ -76,7 +76,7 @@ class SearchForm extends Component {
             {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()} icon='export'>导出用户信息</Button>}
             {this.props.showConfigBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出用户格式</Button>}
           </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}>
+          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateUserArchives')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateUserArchives',checked);
               this.props.changeShowOperate()

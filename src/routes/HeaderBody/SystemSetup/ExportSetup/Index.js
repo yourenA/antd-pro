@@ -17,8 +17,9 @@ class EditPassword extends Component {
   constructor(props) {
     super(props);
     this.format = 'HH:mm';
+    const company_code = sessionStorage.getItem('company_code');
     this.state = {
-      activeKey:'1',
+      activeKey:company_code==='hy'?'2':'1',
       tableY:0
     }
   }
@@ -42,6 +43,7 @@ class EditPassword extends Component {
     })
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
@@ -49,9 +51,11 @@ class EditPassword extends Component {
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '导出设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" >
-                  <TabPane tab=' 水表读数信息导出' key="1">
-                    <MeterDataExport />
-                  </TabPane>
+                  {
+                    company_code!=='hy'&&<TabPane tab=' 水表读数信息导出' key="1">
+                      <MeterDataExport />
+                    </TabPane>
+                  }
                   <TabPane  tab='用户信息导出' key="2" >
                     <MemberExport />
                   </TabPane>

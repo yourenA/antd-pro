@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch,Select,TreeSelect} from 'antd';
+import {Form,DatePicker,Row,message,Input,Button,Switch,Icon,TreeSelect} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
@@ -10,7 +10,14 @@ const TreeNode = TreeSelect.TreeNode;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      expand: this.props.isMobile ? false : true,
+    };
+  }
+
+  toggle = () => {
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -46,6 +53,7 @@ class SearchForm extends Component {
   render() {
     const company_code = sessionStorage.getItem('company_code');
     const {getFieldDecorator} = this.props.form;
+    const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
@@ -86,22 +94,25 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="户号">
+          <FormItem label="户号" style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('member_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label="集中器编号">
+          <FormItem label="集中器编号" style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('concentrator_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label="水表编号">
+          <FormItem label="水表编号"  style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
           <FormItem>
+            {this.props.isMobile && <Button type="primary" onClick={this.toggle} style={{marginRight: 8}}>
+              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'}/>
+            </Button>}
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>

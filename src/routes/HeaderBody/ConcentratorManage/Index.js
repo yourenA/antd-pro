@@ -218,31 +218,35 @@ class ConcentratorManage extends PureComponent {
         }
       }
     }
-    formValues.longitude='0';
-    formValues.latitude='0';
+    formValues.longitude='113.131695';
+    formValues.latitude='27.827433';
     console.log('formValues', formValues);
-    if(formValues.install_address){
+    if (formValues.latitude_longitude) {
+      let latitude_longitude = formValues.latitude_longitude
+      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
+      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+      that.addRequest(formValues)
+    } else if (formValues.install_address) {
       let myGeo = new this.BMap.Geocoder();
-      myGeo.getPoint(formValues.install_address, function(point){
+      myGeo.getPoint(formValues.install_address, function (point) {
         if (point) {
           console.log(point)
-          formValues.longitude=point.lng.toString();
-          formValues.latitude=point.lat.toString();
+          formValues.longitude = point.lng.toString();
+          formValues.latitude = point.lat.toString();
           that.addRequest(formValues)
-        }else{
+        } else {
           console.log("您选择地址没有解析到结果!");
           that.addRequest(formValues)
 
         }
       });
-    }else{
+    } else {
       that.addRequest(formValues)
-
     }
 
   }
-  addRequest=(formValues)=>{
-    const that=this;
+  addRequest = (formValues)=> {
+    const that = this;
     this.props.dispatch({
       type: 'concentrators/add',
       payload: {
@@ -300,22 +304,27 @@ class ConcentratorManage extends PureComponent {
         }
       }
 
-      formValues.longitude='0';
-      formValues.latitude='0';
-      if(formValues.install_address){
+      formValues.longitude='113.131695';
+      formValues.latitude='27.827433';
+      if (formValues.latitude_longitude) {
+        let latitude_longitude = formValues.latitude_longitude
+        formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
+        formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+        that.editRequest(formValues)
+      } else if (formValues.install_address) {
         let myGeo = new this.BMap.Geocoder();
-        myGeo.getPoint(formValues.install_address, function(point){
+        myGeo.getPoint(formValues.install_address, function (point) {
           if (point) {
             console.log(point)
-            formValues.longitude=point.lng.toString();
-            formValues.latitude=point.lat.toString();
+            formValues.longitude = point.lng.toString();
+            formValues.latitude = point.lat.toString();
             that.editRequest(formValues)
-          }else{
+          } else {
             console.log("您选择地址没有解析到结果!");
             that.editRequest(formValues)
           }
         });
-      }else{
+      } else {
         this.editRequest(formValues)
       }
 
@@ -326,8 +335,8 @@ class ConcentratorManage extends PureComponent {
     }
 
   }
-  editRequest=(formValues)=>{
-    const that=this;
+  editRequest = (formValues)=> {
+    const that = this;
     this.props.dispatch({
       type: 'concentrators/edit',
       payload: {
@@ -416,7 +425,7 @@ class ConcentratorManage extends PureComponent {
     let putData = {
       upload_cycle_unit: formValues.value,
       id: this.state.editRecord.id,
-        upload_time : upload_time
+      upload_time: upload_time
     }
     // if (formValues.day || formValues.hour || formValues.minute || formValues.second) {
     //   putData.upload_time = upload_time
@@ -616,11 +625,11 @@ class ConcentratorManage extends PureComponent {
       },
 
     ];
-    const operate={
+    const operate = {
       title: '操作',
       key: 'operation',
       fixed: 'right',
-      className:'operation',
+      className: 'operation',
       width: 100,
       render: (val, record, index) => {
         return (

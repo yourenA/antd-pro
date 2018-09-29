@@ -2,13 +2,19 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, Row, Input, Button, Switch} from 'antd';
+import {Form, Row, Input, Button, Switch,Icon} from 'antd';
 const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      expand: this.props.isMobile?false:true,
+    };
   }
-
+  toggle = () => {
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     const {dispatch, form} = this.props;
@@ -27,6 +33,7 @@ class SearchForm extends Component {
   }
 
   render() {
+    const {expand}=this.state
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline" style={{overflow: 'hidden'}}>
@@ -36,28 +43,34 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label={"用户名称"}>
+          <FormItem label={"用户名称"}
+                    style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('real_name')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label={"户号"}>
+          <FormItem label={"户号"}
+                    style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('member_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label={"安装地址"}>
+          <FormItem label={"安装地址"}
+                    style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('install_address')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
           <FormItem >
+            {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
+              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'} />
+            </Button>}
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {/*{this.props.showAddBtn &&
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
           </FormItem>
-          <FormItem label="打开操作栏" style={{float: 'right'}}>
+          <FormItem label="打开操作栏" style={{float: 'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateMeter') === 'true' ? true : false}
                     onChange={(checked)=> {
                       localStorage.setItem('canOperateMeter', checked);

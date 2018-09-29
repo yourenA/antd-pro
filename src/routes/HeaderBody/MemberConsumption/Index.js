@@ -17,6 +17,8 @@ import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
   member_consumption: state.member_consumption,
+  global: state.global,
+
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -208,6 +210,7 @@ class UserMeterAnalysis extends PureComponent {
       data[i].uuidkey = uuid()
     }
     const resetMeterData=parseRowSpanData2(data)
+    const {isMobile} =this.props.global;
     const columns = [
       // {
       //   title: '序号',
@@ -221,8 +224,11 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderRowSpan(children,record)
       //   }
       // },
-      { title: '户号', width: 80, dataIndex: 'member_number', key: 'member_number',  fixed: 'left',  render: (val, record, index) => {
-        return renderRowSpan(val,record)
+      { title: '户号', width: 90, dataIndex: 'member_number', key: 'member_number',  fixed: isMobile?'':'left',  render: (val, record, index) => {
+        const children= (
+          ellipsis2(val, 90)
+        )
+        return renderRowSpan(children,record)
       } },
       { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
         const children= (
@@ -329,6 +335,7 @@ class UserMeterAnalysis extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                            isMobile={isMobile}
                             initRange={this.state.initRange}
                             per_page={this.state.per_page}
                             village_id={this.state.village_id}

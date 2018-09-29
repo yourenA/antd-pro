@@ -1,6 +1,9 @@
 import React, {PureComponent, createElement} from 'react';
 import {Pagination} from 'antd'
-
+import {connect} from 'dva';
+@connect(state => ({
+  global:state.global,
+}))
 export default class MyPagination extends PureComponent {
   onChange = (key) => {
     if (this.props.onTabChange) {
@@ -12,10 +15,12 @@ export default class MyPagination extends PureComponent {
     this.props.handPageSizeChange(pageSize)
   }
   render() {
+    const {isMobile} =this.props.global;
     const {meta, handPageChange, initPage}=this.props
     return (
       <div>
         <Pagination
+          size={isMobile?"small":""}
           showSizeChanger onShowSizeChange={this.onShowSizeChange}
           pageSizeOptions={['30','50','100','200','500']}
           showTotal={(total, range) => {

@@ -81,7 +81,6 @@ export default class DMArate extends PureComponent {
       }
     }
     series.push( {
-      name:'平行于x轴的趋势线1',
       type:'line',
       markLine: {
         lineStyle:{
@@ -101,7 +100,6 @@ export default class DMArate extends PureComponent {
         ]
       }
     }, {
-      name:'平行于x轴的趋势线2',
       type:'line',
       markLine: {
         lineStyle:{

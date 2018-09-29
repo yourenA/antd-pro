@@ -208,6 +208,7 @@ class UserMeterAnalysis extends PureComponent {
       }})
     }
     let columnsWidth = 0;
+    const {isMobile} =this.props.global;
     const columnsData = [
       // {
       //   title: '序号',
@@ -222,10 +223,10 @@ class UserMeterAnalysis extends PureComponent {
       {title: '户号', width: 80, dataIndex: 'member_number', fixed: 'left', render: (text, record, index) => {
         return ellipsis2(text,80)
       }},
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed: 'left', render: (text, record, index) => {
+      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, fixed:isMobile?'':'left', render: (text, record, index) => {
         return ellipsis2(text,80)
       }},
-      {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', render: (text, record, index) => {
+      {title: '水表编号', width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: isMobile?'':'left', render: (text, record, index) => {
         return ellipsis2(text,80)
       },},
       {title: '当前正累计流量(m³)', dataIndex: 'value', key: 'value', width: 160, render: (text, record, index) => {
@@ -370,7 +371,6 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
     // console.log('columnsWidth',columnsWidth)
-    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -386,7 +386,8 @@ class UserMeterAnalysis extends PureComponent {
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
                             per_page={this.state.per_page}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
+                            isMobile={isMobile}
+                    handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>

@@ -371,9 +371,9 @@ class MeterModel extends PureComponent {
       //   }
       // },
       {
-        title: '水表号', width: 110, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: '水表号', width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (val, record, index) => {
-          return ellipsis2(val, 110)
+          return ellipsis2(val, 90)
         }
       },
       {
@@ -405,11 +405,11 @@ class MeterModel extends PureComponent {
       }},
       {
         title: '水表类型名称',
-        width: 100,
+        width: 110,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
         render: (text, record, index) => {
-          return ellipsis2(text, 100)
+          return ellipsis2(text, 110)
         }
       },
       {title: '尺寸类型', dataIndex: 'size_type_explain', key: 'size_type_explain', width: 80,render: (text, record, index) => {
@@ -554,7 +554,7 @@ class MeterModel extends PureComponent {
     ];
     const operate={
       title: '操作',
-      width: isMobile ? 90 : 180,
+      width: isMobile ? 100 : 180,
       fixed: 'right',
       render: (val, record, index) => (
         <p>
@@ -667,6 +667,7 @@ class MeterModel extends PureComponent {
                                    inputText="水表号" dateText="发送时间" handleSearch={this.handleSearch}
                                    clickInfo={this.showCommandInfo}
                                    per_page={this.state.per_page}
+                                   isMobile={isMobile}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
                                    canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=> {

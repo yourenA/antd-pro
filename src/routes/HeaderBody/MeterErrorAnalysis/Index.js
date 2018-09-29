@@ -17,7 +17,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
-  meter_errors: state.meter_errors
+  meter_errors: state.meter_errors,
+  global: state.global,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -339,6 +340,8 @@ class UserMeterAnalysis extends PureComponent {
     if(this.state.canOperate){
       columns.push(operate)
     }
+    const {isMobile} =this.props.global;
+
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -351,6 +354,7 @@ class UserMeterAnalysis extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
+                            isMobile={isMobile}
                             manufacturers={manufacturers.data}
                             village_id={this.state.village_id}
                             per_page={this.state.per_page}

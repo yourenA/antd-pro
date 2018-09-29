@@ -17,6 +17,7 @@ const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
   night_abnormality: state.night_abnormality,
+  global: state.global,
 }))
 class FunctionContent extends PureComponent {
   constructor(props) {
@@ -172,6 +173,7 @@ class FunctionContent extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const {isMobile} =this.props.global;
     const columns = [
       // {
       //   title: '序号',
@@ -237,6 +239,7 @@ class FunctionContent extends PureComponent {
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/night_warning_setup`));
                       }}
+                      isMobile={isMobile}
                       per_page={this.state.per_page}
                       dma={dma} handleSearch={this.handleSearch}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>

@@ -253,9 +253,14 @@ class Vendor extends PureComponent {
         }
       }
     }
-    formValues.longitude='0';
-    formValues.latitude='0';
-    if(formValues.install_address){
+    formValues.longitude='113.131695';
+    formValues.latitude='27.827433';
+    if (formValues.latitude_longitude) {
+      let latitude_longitude = formValues.latitude_longitude
+      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
+      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+      that.addConcerntorRequest(formValues,current)
+    }else if(formValues.install_address){
       let myGeo = new this.BMap.Geocoder();
       myGeo.getPoint(formValues.install_address, function(point){
         if (point) {

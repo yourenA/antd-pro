@@ -325,26 +325,11 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{ y: this.state.tableY}}
+                                 scroll={{x:1600,y: this.state.tableY}}
                                  history={this.props.history}
                                  canOperate={this.state.canOperate}
                                  operate={operate}
                 />
-              {/*  <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
-                  columns={columns}
-                  //scroll={{y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />*/}
                 <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

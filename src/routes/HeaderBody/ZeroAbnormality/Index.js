@@ -16,6 +16,7 @@ const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
   zero_abnormality: state.zero_abnormality,
+  global: state.global,
 }))
 class FunctionContent extends PureComponent {
   constructor(props) {
@@ -172,6 +173,7 @@ class FunctionContent extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const {isMobile} =this.props.global;
     const columns = [
       // {
       //   title: '序号',
@@ -230,6 +232,7 @@ class FunctionContent extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch
+                      isMobile={isMobile}
                       setWarningRule={()=> {
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/zero_warning_setup`));
                       }}

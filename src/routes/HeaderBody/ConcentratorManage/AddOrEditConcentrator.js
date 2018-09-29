@@ -2,7 +2,8 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Select,Input,TreeSelect,Cascader,Tabs, Row, Col, InputNumber, Radio, Checkbox,Button,Icon} from 'antd';
+import {Form,  Select,Input,TreeSelect,Cascader,Tabs, Row, Col, InputNumber, Radio, Checkbox,Button,Icon,Modal} from 'antd';
+import ShowMap from './ShowMap'
 import {connect} from 'dva';
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
@@ -13,8 +14,11 @@ class AddConcentrator extends Component {
   constructor(props) {
     super(props);
     this.uuid=this.props.editRecord.village_ids.length-1;
+    this.BMap = window.BMap;
+    this.findChildPoi = ()=> {
+    }
     this.state = {
-
+      mapModal: false,
       tabsActiveKey:'edit',
       value: this.props.editRecord.upload_cycle_unit,
       checkedList:this.props.editRecord.sleep_hours,
@@ -123,6 +127,28 @@ class AddConcentrator extends Component {
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
+  }
+  showMap = ()=> {
+    this.setState({
+      mapModal: true
+    })
+  }
+  findChildFunc = (cb)=> {
+    this.findChildPoi = cb
+  }
+  getPoint = ()=> {
+    let point = this.findChildPoi();
+    console.log('fu', point)
+    const {form}=this.props;
+    form.setFieldsValue({latitude_longitude: `${point.lng}/${point.lat}`})
+    let geoc = new this.BMap.Geocoder();
+    geoc.getLocation(point, function (rs) {
+      var addComp = rs.addressComponents;
+      form.setFieldsValue({install_address: `${addComp.province}${addComp.city}${addComp.district}${addComp.street}${addComp.streetNumber}`});
+    });
+    this.setState({
+      mapModal: false
+    })
   }
   render() {
     const formItemLayoutWithLabel = {
@@ -301,9 +327,15 @@ class AddConcentrator extends Component {
               {getFieldDecorator('install_address', {
                 initialValue: this.props.editRecord ? this.props.editRecord.install_address : '',
               })(
-                <Input />
+                <Input style={{width: '70%'}}/>
               )}
+              <Button type="primary" onClick={this.showMap}>手动选点</Button>
             </FormItem>
+            {getFieldDecorator('latitude_longitude', {})(
+              <div>
+                <Input type={'hidden'}/>
+              </div>
+            )}
             <FormItem
               {...formItemLayoutWithLabel}
               label={(
@@ -396,6 +428,15 @@ class AddConcentrator extends Component {
           </Form></TabPane>
         </Tabs>
 
+        <Modal
+          width="60%"
+          title={`拖动红点选择地址`}
+          visible={this.state.mapModal}
+          onOk={this.getPoint}
+          onCancel={() => this.setState({mapModal: false})}
+        >
+          <ShowMap findChildFunc={this.findChildFunc}/>
+        </Modal>
     </div>
     );
   }

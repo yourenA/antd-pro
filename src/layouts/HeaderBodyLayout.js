@@ -72,10 +72,18 @@ class HeaderBodyLayout extends React.PureComponent {
       valve_status_abnormality_count: false,
       voltage_status_abnormality_count: false,
       concentrator_offline_abnormality_count: false,
-
+      mobileVisible: false,
     };
   }
+  hide = () => {
+    this.setState({
+      mobileVisible: false,
+    });
+  }
 
+  handleVisibleChange = (mobileVisible) => {
+    this.setState({ mobileVisible });
+  }
   componentDidMount() {
     // console.log(this.menus)
     const {location} = this.props;
@@ -88,9 +96,6 @@ class HeaderBodyLayout extends React.PureComponent {
       type: 'login/checkLoginState',
       payload: pathname
     });
-
-
-
 
 
     const noZeroNotifyDay = localStorage.getItem('noZeroNotifyDay');
@@ -184,7 +189,6 @@ class HeaderBodyLayout extends React.PureComponent {
     notification.destroy();
     window.removeEventListener('resize', this.resize)
   }
-
   getPageTitle() {
     const {location} = this.props;
     let {pathname} = location;
@@ -202,7 +206,6 @@ class HeaderBodyLayout extends React.PureComponent {
     });
     return title;
   }
-
   handleClick = (e) => {
     console.log('click ', e);
     if (e.key === 'logout') {
@@ -217,10 +220,12 @@ class HeaderBodyLayout extends React.PureComponent {
         current: e.key,
       });
     }
+    this.setState({
+      mobileVisible: false,
+    });
 
 
   }
-
   getNavMenuItems(menusData, parentPath = '') {
     let permissions = (localStorage.getItem('permissions') ? JSON.parse(localStorage.getItem('permissions'))
       : sessionStorage.getItem('permissions') ? JSON.parse(sessionStorage.getItem('permissions')) : []).map((item, index)=> {
@@ -298,7 +303,6 @@ class HeaderBodyLayout extends React.PureComponent {
 
     });
   }
-
   handleEditPassword = ()=> {
     const that = this;
     const formValues = this.editFormRef.props.form.getFieldsValue();
@@ -361,7 +365,9 @@ class HeaderBodyLayout extends React.PureComponent {
       <Menu
         onClick={this.handleClick}
         theme="dark"
+        mode="inline"
         selectedKeys={[this.state.current]}
+        style={{width:'calc(100vw - 32px)'}}
       >
 
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
@@ -381,7 +387,10 @@ class HeaderBodyLayout extends React.PureComponent {
             <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
           </div>
           {
-            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomLeft">
+            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click"  placement="bottomRight"
+                                visible={this.state.mobileVisible}
+                                onVisibleChange={this.handleVisibleChange}
+            >
               <Icon className={`${styles.mobile_menu}`} type="bars"/>
             </Popover> : renderMenu
           }

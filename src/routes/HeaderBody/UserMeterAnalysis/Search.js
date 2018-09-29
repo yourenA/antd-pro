@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch,Radio} from 'antd';
+import {Form,DatePicker,Row,message,Input,Button,Icon,Radio} from 'antd';
 import moment from 'moment'
 import {disabledDate,searchFormItemLayout} from './../../../utils/utils'
 const RangePicker = DatePicker.RangePicker;
@@ -15,6 +15,7 @@ class SearchForm extends Component {
     this.state = {
       startValue: this.props.initRange[0],
       endValue: this.props.initRange[1],
+      expand: this.props.isMobile?false:true,
     };
   }
   handleSubmit = (e) => {
@@ -87,8 +88,14 @@ class SearchForm extends Component {
     }
     return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
   }
+  toggle = () => {
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
+  }
   render() {
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
+    const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
@@ -112,7 +119,10 @@ class SearchForm extends Component {
               format="YYYY-MM-DD"
             />
           </FormItem>
-          <FormItem label="户号">
+
+          <FormItem label="户号"
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
             {getFieldDecorator('member_number')(
               <Input placeholder="请输入"/>
             )}
@@ -122,23 +132,31 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-            <FormItem label="水表编号">
+            <FormItem label="水表编号"
+                      style={{ display: expand ? 'inline-block' : 'none' }}
+            >
               {getFieldDecorator('meter_number')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-            <FormItem label="用户名称">
+            <FormItem label="用户名称"
+                      style={{ display: expand ? 'inline-block' : 'none' }}
+            >
               {getFieldDecorator('real_name')(
                 <Input placeholder="请输入"/>
               )}
             </FormItem>
-          <FormItem label="安装地址">
+          <FormItem label="安装地址"
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
             {getFieldDecorator('install_address')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
 
-          <FormItem label="显示">
+          <FormItem label="显示"
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
             {getFieldDecorator('display_type',{
               initialValue:  'all',
             })(
@@ -150,10 +168,13 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem>
+            {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
+              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'} />
+            </Button>}
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {this.props.showExportBtn&&<Button type="primary" className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()}  icon='export'>导出水表读数</Button>}
-            {this.props.showConfigBtn&&<Button type="primary"  className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出格式</Button>}
+            {this.props.showConfigBtn&&company_code!=='hy'&&<Button type="primary"  className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出格式</Button>}
             {/*<Button  type="primary" style={{marginLeft: 8}} onClick={()=>message.info('暂未开通该功能')}>导出到Oracle</Button>*/}
           </FormItem>
           <FormItem label="总用水量">

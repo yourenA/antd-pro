@@ -101,6 +101,9 @@ class UserMeterAnalysis extends PureComponent {
       marker.addEventListener("mouseover", function (e) {
         that.showInfo(data[i])
       });
+      marker.addEventListener("click", function (e) {
+        that.showInfo(data[i])
+      });
       let label = new this.BMap.Label(data[i].number, {offset: new BMap.Size(-20, 28)});
       marker.setLabel(label);
       this.markers.push(marker);

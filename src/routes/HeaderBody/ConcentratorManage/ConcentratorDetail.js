@@ -190,7 +190,7 @@ class UserMeterAnalysis extends PureComponent {
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
-          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{isLoading?'正在':''}{item.toUpperCase()}点抄</Button>
+          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8,marginBottom:(index===0||record.protocols.length>1)?5:0}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{isLoading?'正在':''}{item.toUpperCase()}点抄</Button>
         )
       })
       return renderCommandBtn
@@ -208,8 +208,8 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '水表号', width: 110, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
-        return ellipsis2(val,110)
+      {title: '水表号', width: 90, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val,90)
       }},
       {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150,render: (val, record, index) => {
       return ellipsis2(val,150)
@@ -229,11 +229,12 @@ class UserMeterAnalysis extends PureComponent {
       }}
 
     ];
+    const {isMobile} =this.props.global;
     const operate={
       title: '操作',
       key: 'operation',
       fixed:'right',
-      width: 300,
+      width: isMobile?150:300,
       render: (val, record, index) => {
         return (
           <div>
@@ -245,7 +246,7 @@ class UserMeterAnalysis extends PureComponent {
     if (this.state.canOperate) {
       columns.push(operate)
     }
-    const {isMobile} =this.props.global;
+
     return (
 
       <div>
@@ -264,7 +265,7 @@ class UserMeterAnalysis extends PureComponent {
         </div>
         <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                          dataSource={data}  columns={columns} rowKey={record => record.meter_number}
-                         scroll={isMobile?{x:950}:{x:1500,y: this.state.tableY}}
+                         scroll={isMobile?{x:950,y: this.state.tableY}:{x:1500,y: this.state.tableY}}
                          canOperate={this.state.canOperate}
                          operate={operate}
                          history={this.props.history}

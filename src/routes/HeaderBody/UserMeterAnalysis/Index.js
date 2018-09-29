@@ -19,6 +19,7 @@ import ExportForm from './ExportForm'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
+  global: state.global,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -285,10 +286,10 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 100,render: (val, record, index) => {
-       return ellipsis2(val, 100)
+     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 90,render: (val, record, index) => {
+       return ellipsis2(val, 90)
      }},
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', fixed: 'left',render: (val, record, index) => {
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
 
@@ -357,6 +358,7 @@ class UserMeterAnalysis extends PureComponent {
       },
     ];
     const {dispatch} =this.props;
+    const {isMobile} =this.props.global;
     const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
@@ -371,6 +373,7 @@ class UserMeterAnalysis extends PureComponent {
                     <Search  wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
+                             isMobile={isMobile}
                             exportCSV={()=> {
                               company_code!=='mys'?
                               this.setState({

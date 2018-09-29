@@ -279,7 +279,7 @@ class Main extends PureComponent {
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>近一个月和一年各水表类型用水量
+              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>各水表类型用水量
                  <TreeSelect
                    value={this.state.value}
                    style={{width: 150, marginLeft: '10px'}}

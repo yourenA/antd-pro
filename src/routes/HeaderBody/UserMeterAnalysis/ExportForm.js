@@ -54,6 +54,8 @@ class AddPoliciesForm extends Component {
       data.unshift({id:'all',name:'全部小区'})
     }
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
+
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -78,7 +80,7 @@ class AddPoliciesForm extends Component {
         <FormItem label={ '开始时间'}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('started_at', {
-            initialValue: moment(),
+            initialValue: company_code==='hy'?moment().add(-1, 'days'):moment(),
 
           })(
             <DatePicker

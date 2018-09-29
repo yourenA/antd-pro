@@ -39,7 +39,7 @@ class SearchForm extends Component {
               {/*<Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
               {this.props.showAddBtn&&<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>}
             </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}>
+          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateUserGroup')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateUserGroup',checked);
               this.props.changeShowOperate()

@@ -16,7 +16,8 @@ import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   dma: state.dma,
-  consumption_abnormality: state.consumption_abnormality
+  consumption_abnormality: state.consumption_abnormality,
+  global: state.global,
 }))
 class Consumption_abnormality extends PureComponent {
   constructor(props) {
@@ -219,6 +220,7 @@ class Consumption_abnormality extends PureComponent {
     ];
     const {dispatch}=this.props;
     const company_code = sessionStorage.getItem('company_code');
+    const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -233,6 +235,7 @@ class Consumption_abnormality extends PureComponent {
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/unusual_water`));
                       }}
+                      isMobile={isMobile}
                       per_page={this.state.per_page}
                       dma={dma}
                             initRange={this.state.initRange}
