@@ -27,4 +27,13 @@ export async function exportCSV(params) {
   });
 }
 
+export async function uploadLl(params) {
+  return request(`/liling_meter_data`,{
+    method:'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 

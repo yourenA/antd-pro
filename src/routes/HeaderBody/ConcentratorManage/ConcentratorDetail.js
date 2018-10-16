@@ -180,6 +180,26 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
+  valveCommand=(command)=>{
+    console.log(command,this.props.concentratorNumber)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        concentrator_number:this.props.concentratorNumber,
+        feature: command
+      },
+      callback:()=>{
+        sessionStorage.setItem(`${command}-${this.props.concentratorNumber}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
+        message.success('发送指令成功')
+      }
+    });
+  }
   render() {
     const {concentrator_water: {data, meta, loading}} = this.props;
     const that=this;
@@ -257,6 +277,7 @@ class UserMeterAnalysis extends PureComponent {
                           handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                           per_page={this.state.per_page}
                           read_multiple_901f={this.read_multiple_901f} initRange={this.state.initRange}
+                          valveCommand={this.valveCommand}
                           changeShowOperate={()=> {
                             this.setState({canOperate: !this.state.canOperate})
                           }}

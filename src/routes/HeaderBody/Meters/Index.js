@@ -412,6 +412,10 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 110)
         }
       },
+      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
+        return ellipsis2(text,110)
+      }
+      },
       {title: '尺寸类型', dataIndex: 'size_type_explain', key: 'size_type_explain', width: 80,render: (text, record, index) => {
         return ellipsis2(text,80)
       } },
@@ -419,10 +423,7 @@ class MeterModel extends PureComponent {
         return ellipsis2(text,80)
       }
       },
-      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
-        return ellipsis2(text,110)
-      }
-      },
+
       {
         title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
         render: (val, record, index) => (
@@ -549,7 +550,12 @@ class MeterModel extends PureComponent {
         return ellipsis2(text, 100)
       }
       },
-      {title: '条码', dataIndex: 'barcode', key: 'barcode'},
+      {title: '条码', dataIndex: 'barcode', key: 'barcode',width: 100,render: (text, record, index) => {
+        return ellipsis2(text, 100)
+      }},
+      {
+        title:'排序号', dataIndex: 'sort_number', key: 'sort_number'
+      }
 
     ];
     const operate={
@@ -624,34 +630,6 @@ class MeterModel extends PureComponent {
     if (this.state.canOperateMeter) {
       columns.push(operate)
     }
-  /*  const commandColumns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id',
-        width: 45,
-        className: 'table-index',
-        render: (text, record, index) => {
-          return renderIndex(user_command_data.meta, this.state.commandPage, index)
-        }
-      },
-      {title: '水表号', dataIndex: 'meter_number', key: 'meter_number'},
-      {title: '功能代码', dataIndex: 'feature', key: 'feature',},
-      {
-        title: '状态',
-        dataIndex: 'status',
-        render: (val, record, index)=> {
-          return (
-            <span>
-                 <Badge status={`${val === -1 ? "error" : "success"}`}/>{record.status_explain}
-              </span>
-          )
-        }
-      },
-      {title: '执行回调结果', dataIndex: 'result', key: 'result',},
-      {title: '执行用户名', dataIndex: 'send_username', key: 'send_username'},
-      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',},
-    ];*/
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -678,26 +656,11 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:3350,y: this.state.tableY}}
+                                 scroll={{x:3450,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
                 />
-               {/* <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{x: 2530, y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
             </PageHeaderLayout>

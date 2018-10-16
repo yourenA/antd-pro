@@ -192,7 +192,9 @@ class MeterModel extends PureComponent {
       }
     });
   }
-
+  handleTableChange=(pagination, filters, sorter)=>{
+    console.log('sorter', sorter)
+  }
   render() {
     const {meter_models: {data, meta, loading}, manufacturers} = this.props;
     console.log('this.state.initPage',this.state.initPage);
@@ -208,14 +210,14 @@ class MeterModel extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '类型名称', width: 80, dataIndex: 'name', key: 'name',render: (text, record, index) => {
-        return ellipsis2(text,80)
+      {title: '类型名称', width: 120, dataIndex: 'name', key: 'name',render: (text, record, index) => {
+        return ellipsis2(text,120)
       }},
       {title: '尺寸类型', width: 100, dataIndex: 'size_type_explain', key: 'size_type_explain',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
-      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
-        return ellipsis2(text,80)
+      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 100,render: (text, record, index) => {
+        return ellipsis2(text,100)
       }
       },
       {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
@@ -309,6 +311,7 @@ class MeterModel extends PureComponent {
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}
+                                 onChange={this.handleTableChange}
                 />
                 <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}  handPageChange={this.handPageChange}/>
               </Card>

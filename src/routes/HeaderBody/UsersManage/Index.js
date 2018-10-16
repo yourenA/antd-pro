@@ -432,7 +432,7 @@ class Vendor extends PureComponent {
         {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '},{name: '账号管理'}, {name: '用户管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '},{name: '账号管理'}, {name: '用户账号管理'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

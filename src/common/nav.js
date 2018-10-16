@@ -344,14 +344,14 @@ const data = [{
           name: '完整实时数据',
           path: 'complete_realData',
           component: CompleteRealData,
-          permissions: ['company_visit'],
+          permissions: ['complete_meter_data'],
           noShowCompany: ['hy']
         },
         {
           name: '厂商-集中器统计',
           path: 'vendor_concentrator',
           component: VendorConcentrator,
-          permissions: ['company_visit'],
+          permissions: ['manufacturer_status'],
         }
         // ,{
         //   name: '产销差分析',
@@ -364,7 +364,7 @@ const data = [{
       name: '设备管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions: ['company_visit', 'temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
+      permissions: ['temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
       children: [
 
         //   ,
@@ -379,37 +379,37 @@ const data = [{
           name: '集中器管理',
           path: 'concentrator_manage',
           component: ConcentratorManage,
-          permissions: ['company_visit', 'concentrator_add_and_edit', 'concentrator_delete'],
+          permissions: [ 'concentrator_add_and_edit', 'concentrator_delete'],
         },
         {
           name: '集中器类型管理',
           path: 'concentrator_type_search',
           component: ConcentratorModels,
-          permissions: ['company_visit', 'concentrator_model_delete', 'concentrator_model_add_and_edit'],
+          permissions: [ 'concentrator_model_delete', 'concentrator_model_add_and_edit'],
         }, {
           name: '水表管理',
           path: 'water_meter_manage',
           component: Meters,
-          permissions: ['company_visit', 'meter_add_and_edit', 'meter_delete'],
+          permissions: [ 'meter_add_and_edit', 'meter_delete'],
         },
         {
           name: '水表类型管理',
           path: 'water_meter_search',
           component: MeterModels,
-          permissions: ['company_visit', 'meter_model_delete', 'meter_model_add_and_edit'],
+          permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
         },
         {
           name: '压力传感器管理',
           path: 'pressure_sensors',
           component: Pressure,
-          permissions: ['company_visit', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
+          permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
           showCompany: ['amwares','zhsgy']
         },
         {
           name: '温度传感器管理',
           path: 'temperature_sensors',
           component: Temperature,
-          permissions: ['company_visit', 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
+          permissions: [ 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
           showCompany: ['amwares','zhsgy']
         },
         //   {
@@ -422,7 +422,7 @@ const data = [{
           name: '流量计管理',
           path: 'flow_meters',
           component: FlowMeters,
-          permissions: ['company_visit', 'flow_meter_add_and_edit', 'flow_meter_delete'],
+          permissions: [ 'flow_meter_add_and_edit', 'flow_meter_delete'],
           showCompany: ['hy']
         }
 
@@ -431,7 +431,7 @@ const data = [{
       name: '系统管理',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
-      permissions: ['company_visit', 'area_add_and_edit', 'area_delete', 'server_add_and_edit', 'server_status_edit', 'server_delete', 'member_add_and_edit', 'member_delete', 'concentrator_add_and_edit', 'role_add_and_edit', 'role_status_edit', 'role_delete', 'user_add_and_edit', 'user_delete', 'manufacturer_delete', 'manufacturer_add_and_edit'],
+      permissions: ['config_edit', 'area_add_and_edit', 'area_delete', 'server_add_and_edit', 'server_status_edit', 'server_delete', 'member_add_and_edit', 'member_delete', 'concentrator_add_and_edit', 'role_add_and_edit', 'role_status_edit', 'role_delete', 'user_add_and_edit', 'user_delete', 'manufacturer_delete', 'manufacturer_add_and_edit'],
       children: [
         {
           name: '系统设置',
@@ -443,32 +443,32 @@ const data = [{
           name: '用户档案',
           path: 'user_archives',
           component: UserArchives,
-          permissions: ['company_visit', 'member_add_and_edit', 'member_delete'],
+          permissions: ['member_add_and_edit', 'member_delete'],
         },
         {
           name: '厂商管理',
           path: 'vendor_manage',
           component: VendorMange,
-          permissions: ['company_visit', 'manufacturer_delete', 'manufacturer_add_and_edit'],
+          permissions: [ 'manufacturer_delete', 'manufacturer_add_and_edit'],
         },
         {
           name: '区域管理',
           path: 'area_manage',
           component: AreaManage,
-          permissions: ['company_visit', 'village_add_and_edit', 'village_delete'],
+          permissions: [ 'village_add_and_edit', 'village_delete'],
         },
 
         {
           name: '服务器地址',
           path: 'servers_manage',
           component: Servers,
-          permissions: ['company_visit', 'server_add_and_edit', 'server_status_edit', 'server_delete'],
+          permissions: [ 'server_add_and_edit', 'server_status_edit', 'server_delete'],
         },
         {
           name: 'DMA分区管理',
           path: 'DMA',
           component: DMA,
-          permissions: ['company_visit', 'area_add_and_edit', 'area_delete'],
+          permissions: [ 'area_add_and_edit', 'area_delete'],
           showCompany: ['hy']
         },
 

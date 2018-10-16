@@ -4,8 +4,8 @@
 import React, {Component} from 'react';
 import {Form, DatePicker, Row, Col, Input, Button, Icon} from 'antd';
 import moment from 'moment'
+import find from 'lodash/find'
 import {disabledDate} from './../../../utils/utils'
-const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
@@ -41,7 +41,12 @@ class SearchForm extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {expand}=this.state
-
+    const hot_difference_value=this.props.meta.aggregator?find(this.props.meta.aggregator.temperature_type_difference_values,function (o) {
+      return o.name==='热水表'
+    }).difference_value:0;
+    const cold_difference_value=this.props.meta.aggregator?find(this.props.meta.aggregator.temperature_type_difference_values,function (o) {
+      return o.name==='冷水表'
+    }).difference_value:0;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
@@ -109,6 +114,12 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {/* {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
+          </FormItem>
+          <FormItem label="冷水表用水量">
+            <Input value={cold_difference_value} style={{width:'173px'}} readOnly addonAfter="吨" />
+          </FormItem>
+          <FormItem label="热水表用水量">
+            <Input value={hot_difference_value} style={{width:'173px'}} readOnly addonAfter="吨" />
           </FormItem>
         </Row>
       </Form>

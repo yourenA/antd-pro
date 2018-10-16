@@ -56,12 +56,14 @@ class Detail extends PureComponent {
     let series=[]
     for(let i=0;i<data.length;i++){
       date.push(data[i].date);
-      for(let j=0;j<data[i].meter_models.length;j++){
-        if(legend.indexOf(data[i].meter_models[j].meter_model_name)<0){
-          legend.push(data[i].meter_models[j].meter_model_name)
-        }
+
+    }
+    for(let j=0;j<data[0].temperature_types.length;j++){
+      if(data[0].temperature_types[j]){
+        legend.push(data[0].temperature_types[j].name)
       }
     }
+    console.log('legend',legend)
     for(let k=0;k<legend.length;k++){
       series.push({
         name:legend[k],
@@ -69,15 +71,12 @@ class Detail extends PureComponent {
         data:[]
       })
       for(let m=0;m<data.length;m++){
-        const meter_models=data[m].meter_models;
-        const model_value=find(meter_models, function(o) { return o.meter_model_name === legend[k]; });
-        if(model_value){
-          series[k].data.push(model_value.difference_value)
-        }
+          series[k].data.push(data[m].temperature_types[k].difference_value)
       }
     }
     this.myChart = this.echarts.init(document.querySelector('.member-analysis'));
     let option = {
+      color:['#2f4554','#c23531'],
       backgroundColor: '#eee',
       title: {
         text: '各水表类型用水量',
@@ -91,6 +90,17 @@ class Detail extends PureComponent {
           }
         }
       },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+        },
+      ],
       legend: {
         data: legend
       },
@@ -123,7 +133,6 @@ class Detail extends PureComponent {
   isActive(type) {
     const {rangePickerValue} = this.state;
     const value = getTimeDistance(type);
-    console.log('value',value)
     if (!rangePickerValue[0] || !rangePickerValue[1]) {
       return false;
     }
@@ -192,7 +201,7 @@ class Detail extends PureComponent {
           />*/}
         </div>
         <div className="member-analysis"></div>
-        <MemberRate data={this.state.data}/>
+      {/*  <MemberRate data={this.state.data}/>*/}
       </div>
      /* <Tabs defaultActiveKey="month-analysis" onChange={this.changeTab}>
         <TabPane tab="历史水量分析(每月)" key="month-analysis">

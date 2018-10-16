@@ -12,7 +12,7 @@ class SiderNav extends PureComponent {
     const {isMobile} =this.props.global;
     this.state = {
       collapsed: isMobile,
-      siderNav: [{name: '用户管理', url: 'user_manage'}, {name: '角色管理', url: 'user_group_manage'}],
+      siderNav: [{name: '用户账号管理', url: 'user_manage'}, {name: '角色管理', url: 'user_group_manage'}],
       activeNav:this.props.location.pathname.indexOf('user_group_manage')>=0?'user_group_manage':this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }
   }

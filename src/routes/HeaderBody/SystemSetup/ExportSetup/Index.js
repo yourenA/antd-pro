@@ -6,7 +6,7 @@ import {Form, Select, Layout, Card, Button, Input, message, TimePicker, Switch,L
 import {connect} from "dva";
 import PageHeaderLayout from "../../../../layouts/PageHeaderLayout";
 import MemberExport from './MemberExport/Sort'
-import MeterDataExport from './MeterDataExport/Sort'
+import MeterDataExportIndex from './MeterDataExportIndex'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 const {Content} = Layout;
@@ -50,10 +50,10 @@ class EditPassword extends Component {
           <div className="content">
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '导出设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" >
+                <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" type="card">
                   {
                     company_code!=='hy'&&<TabPane tab=' 水表读数信息导出' key="1">
-                      <MeterDataExport />
+                      <MeterDataExportIndex />
                     </TabPane>
                   }
                   <TabPane  tab='用户信息导出' key="2" >

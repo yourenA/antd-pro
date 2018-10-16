@@ -72,7 +72,7 @@ class SearchForm extends Component {
             {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>批量导入</Button>}
           </FormItem>
           <FormItem >
-            {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportConcentratorCSV()} icon='export'>导出单个集中器信息</Button>}
+            {this.props.showConcentratorExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportConcentratorCSV()} icon='export'>导出单个集中器信息</Button>}
             {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()} icon='export'>导出用户信息</Button>}
             {this.props.showConfigBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出用户格式</Button>}
           </FormItem>

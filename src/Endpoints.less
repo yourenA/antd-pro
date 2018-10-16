@@ -336,22 +336,6 @@
         font-size: 20px;
         line-height: 45px;
       }
-      .showToggle {
-        transition:width 0.3s;
-        transition-duration:0.3s;
-        cursor: pointer;
-        position: absolute;
-        bottom: 0;
-        left: 100%;
-        height: 45px;
-        width: 45px;
-        background: #002140;
-        text-align: center;
-        color: white;
-        font-size: 20px;
-        line-height: 45px;
-        z-index: 999;
-      }
       .screen-xs{
         .showToggle {
           opacity: 0.5 !important;
@@ -381,13 +365,30 @@
       }
     }
   }
+  .showToggle {
+    transition:width 0.3s;
+    transition-duration:0.3s;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    height: 45px;
+    width: 45px;
+    background: #002140;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    line-height: 45px;
+    z-index: 999;
+  }
   .realData{
     position: fixed;
     width: 420px;
     height: 250px;
     right: 0;
     bottom:0;
-    overflow-y: auto;
+    transition: right ease 0.3s;
+    //overflow-y: auto;
     background: #ffffff;
     border-left: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
@@ -401,15 +402,28 @@
       padding:3px !important; ;
       font-size: 12px;
     }
+    .showToggle {
+      left:-45px;
+      bottom: 0;
+    }
+  }
+  .realData-collapsed{
+    right: -420px;
   }
   .screen-lg{
     .realData {
       width: 500px;
     }
+    .realData-collapsed{
+      right: -500px;
+    }
   }
   .screen-xl{
     .realData {
       width: 550px;
+    }
+    .realData-collapsed{
+      right: -550px;
     }
   }
   .ant-modal .ant-form-item {

@@ -1,4 +1,4 @@
-import { query,add,remove,edit ,queryOne,exportCSV,downloadCSV} from '../services/member_meter_data';
+import { query,add,remove,edit ,queryOne,exportCSV,downloadCSV,uploadLl} from '../services/member_meter_data';
 
 export default {
   namespace: 'member_meter_data',
@@ -97,6 +97,14 @@ export default {
         if (callback) callback(response.data.download_key);
       }
     },
+    *uploadLl({ payload, callback }, { call, put }) {
+      const response = yield call(uploadLl, payload);
+      console.log(response)
+      if(response.status===200){
+        if (callback) callback();
+      }
+    },
+
   },
 
   reducers: {

@@ -37,8 +37,9 @@ class UserMeterAnalysis extends PureComponent {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon:true,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
-      showImportBtn: find(this.permissions, {name: 'member_delete'}),
+      showImportBtn: find(this.permissions, {name: 'meter_import'}),
       showExportBtn: find(this.permissions, {name: 'member_export'}),
+      showConcentratorExportBtn:find(this.permissions, {name: 'concentrator_export'}),
       showConfigBtn: find(this.permissions, {name: 'config_edit'}),
       tableY:0,
       query: '',
@@ -283,6 +284,7 @@ class UserMeterAnalysis extends PureComponent {
         meter_number:formValues[`meter_number-${meterskey[i]}`],
         meter_model_id:formValues[`meter_model_id-${meterskey[i]}`],
         initial_water:formValues[`initial_water-${meterskey[i]}`],
+        sort_number:formValues[`sort_number-${meterskey[i]}`],
       })
     }
     console.log('metersArr',metersArr)
@@ -479,14 +481,17 @@ class UserMeterAnalysis extends PureComponent {
       { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
       { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
-      } },
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
-        return ellipsis2(val, 80)
       }},
       { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
+      { title: '温度介质类型', width: 110, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
       { title: '水表口径', width: 80, dataIndex: 'bore', key: 'bore' ,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
+      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
       {
@@ -594,6 +599,7 @@ class UserMeterAnalysis extends PureComponent {
                             }}
                             showConfigBtn={this.state.showConfigBtn}
                             showExportBtn={this.state.showExportBtn}
+                            showConcentratorExportBtn={this.state.showConcentratorExportBtn}
                             showAddBtn={this.state.showAddBtn&&this.state.showAddBtnByCon} clickAdd={()=>this.setState({addModal:true})}
                             clickImport={()=>{this.setState({importModal:true})}}
                             changeShowOperate={()=>{this.setState({canOperate:!this.state.canOperate})}}
@@ -602,7 +608,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
-                                 scroll={{x: 2580, y: this.state.tableY}}
+                                 scroll={{x: 2650, y: this.state.tableY}}
                                  history={this.props.history}
                                  canOperate={this.state.canOperate}
                                  operate={operate}

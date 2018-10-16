@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form,  Input ,InputNumber,Radio,TreeSelect,Select,Collapse,Button,message} from 'antd';
+import {Form,  Input ,InputNumber,Radio,TreeSelect,Select,Collapse,Button,message,Tooltip,Icon} from 'antd';
 import {connect} from 'dva';
 import moment from 'moment'
 const TreeNode = TreeSelect.TreeNode;
@@ -85,6 +85,8 @@ class EditUserArchives extends Component {
     };
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const {sider_regions:{data}}=this.props;
+    const company_code = sessionStorage.getItem('company_code');
+
     const meterForms=this.state.meterArr.map((item,index)=>{
       return (
         <Panel showArrow={false}
@@ -185,13 +187,30 @@ class EditUserArchives extends Component {
                 <InputNumber />
               )}
             </FormItem>
-
+            {
+              (company_code==='hy'||company_code==='amwares')&&
+              <FormItem
+                style={{width:'33%',display:'inline-block'}}
+                {...formItemLayoutWithLabel}
+                label={(
+                  <span>
+              排序号 <Tooltip title="请输入数字或'N','N'表示不指定排序">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+                )}
+              >
+                {getFieldDecorator(`sort_number-${item}`, {
+                })(
+                  <Input />
+                )}
+              </FormItem>
+            }
 
           </Form>
         </Panel>
       )
     })
-    const company_code = sessionStorage.getItem('company_code');
     return (
       <div>
 

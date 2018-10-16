@@ -16,6 +16,7 @@ import uuid from 'uuid/v4'
 import {getPreDay, ellipsis2,download,renderIndex,renderErrorData} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import ExportForm from './ExportForm'
+import LilingForm from './LilingForm'
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -45,6 +46,7 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       exportModal: false,
+      uploadLlModal:false,
       edit_member_number: '',
       display_type: 'all',
       total_difference_value:'0',
@@ -237,7 +239,23 @@ class UserMeterAnalysis extends PureComponent {
   findChildFunc = (cb)=> {
     this.cards = cb
   }
-
+  uploadLl=()=>{
+    const that = this;
+    const formValues =this.uploadLlformRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    this.props.dispatch({
+      type: 'member_meter_data/uploadLl',
+      payload: {
+        date: moment(formValues.date).format('YYYY-MM-DD'),
+      },
+      callback: function () {
+        message.success('上传读数成功');
+        that.setState({
+          uploadLlModal:false
+        })
+      }
+    });
+  }
   render() {
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -300,6 +318,12 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }},
+     {title: '水表类型', width: 105, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (val, record, index) => {
+       return ellipsis2(val, 105)
+     }},
+     {title: '温度介质类型', width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
+       return ellipsis2(val, 100)
+     }},
       {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value', width: 80,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
@@ -392,6 +416,11 @@ class UserMeterAnalysis extends PureComponent {
                                 });
                             }}
                              per_page={this.state.per_page}
+                             uploadLl={()=>{
+                               this.setState({
+                                 uploadLlModal:true
+                               })
+                             }}
                             setExport={()=>{
                               dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup`));
                             }}
@@ -404,7 +433,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:2000,y: this.state.tableY}}
+                                 scroll={{x:2200,y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
                                  rowClassName={function (record, index) {
@@ -452,6 +481,14 @@ class UserMeterAnalysis extends PureComponent {
           onCancel={() => this.setState({exportModal: false})}
         >
           <ExportForm  wrappedComponentRef={(inst) => this.ExportformRef = inst}/>
+        </Modal>
+        <Modal
+          title={`上传读数`}
+          visible={this.state.uploadLlModal}
+          onOk={this.uploadLl}
+          onCancel={() => this.setState({uploadLlModal: false})}
+        >
+          <LilingForm  wrappedComponentRef={(inst) => this.uploadLlformRef = inst}/>
         </Modal>
       </Layout>
     );

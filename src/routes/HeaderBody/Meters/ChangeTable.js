@@ -2,11 +2,9 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select,InputNumber,DatePicker,Switch,Tooltip,Icon } from 'antd';
+import {Form, Input,  Radio, Select,InputNumber,Tooltip,Icon } from 'antd';
 import {connect} from 'dva';
-import moment from 'moment'
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
 class AddPoliciesForm extends Component {
@@ -28,6 +26,8 @@ class AddPoliciesForm extends Component {
     };
 
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
+
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -195,6 +195,24 @@ class AddPoliciesForm extends Component {
             </Select>
           )}
         </FormItem>
+        {
+          (company_code === 'hy' || company_code === 'amwares') && <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              新水表排序号  <Tooltip title="请输入数字或'N','N'表示不指定排序">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+            )}
+          >
+            {getFieldDecorator('sort_number', {
+              initialValue: this.props.editRecord ? this.props.editRecord.sort_number : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+        }
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

@@ -283,8 +283,8 @@ class UserMeterAnalysis extends PureComponent {
       {title: '电池低电压报警时间', dataIndex: 'low_voltage', key: 'low_voltage', width: 160, render: (text, record, index) => {
         return ellipsis2(record['body'].low_voltage,160)
       }},
-      {title: '反向流量曾达到值(m³)', dataIndex: 'reflow_up', key: 'reflow_up', width: 170, render: (text, record, index) => {
-        return ellipsis2(record['body'].reflow_up,150)
+      {title: '反向流量曾达到值(m³/h)', dataIndex: 'reflow_up', key: 'reflow_up', width: 180, render: (text, record, index) => {
+        return ellipsis2(record['body'].reflow_up,170)
       }},
       {title: '反向流量报警时间', dataIndex: 'reflow_up_time', key: 'reflow_up_time', width: 145, render: (text, record, index) => {
         return ellipsis2(record['body'].reflow_up_time,145)

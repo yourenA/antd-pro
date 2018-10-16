@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col} from 'antd';
+import { Layout, Icon,} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Sider from './Sider'
 import {connect} from 'dva';
@@ -20,9 +20,11 @@ class UserMeterAnalysis extends PureComponent {
     this.markers = [];
     this.windowInfo = null;
     this.timer=null;
+
     const company_code = sessionStorage.getItem('company_code');
     this.BMap = window.BMap;
     this.state = {
+      collapsed:false,
       data:[],
       meta: {pagination: {total: 0, per_page: 0}},
       minimum_pressure_value:0,
@@ -33,6 +35,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
+
     const that = this;
     request(`/configs?groups[]=pressure_sensor_abnormality`, {
       method: 'GET',
@@ -66,7 +69,22 @@ class UserMeterAnalysis extends PureComponent {
 
     })
 
-    this.map = new this.BMap.Map("mapData");          // 创建地图实例
+    this.map = new this.BMap.Map("mapData", {
+      enableMapClick : false,//兴趣点不能点击
+      mapType:BMAP_HYBRID_MAP//默认卫星图
+    });          // 创建地图实例
+   this.map.setMapStyle({
+      styleJson:[
+  {
+  "featureType": "all",
+  "elementType": "all",
+  "stylers": {
+  "lightness": 10,
+  "saturation": -100
+  }
+  }
+  ]
+    });
     this.map.centerAndZoom(new BMap.Point(112.159141, 26.269442), 5);
     this.map.addControl(new BMap.MapTypeControl({
       mapTypes:[
@@ -239,7 +257,14 @@ class UserMeterAnalysis extends PureComponent {
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '地图展示'}]}>
               <div id="mapData" className="mapData" style={{margin: '-16px'}}></div>
-              <div className="realData">
+              <div className={`realData ${this.state.collapsed?'realData-collapsed':''}`} >
+                <div className="showToggle"   onClick={()=>{
+                  this.setState({
+                    collapsed: !this.state.collapsed,
+                  });
+                }}>
+                  <Icon type={this.state.collapsed ? "left" : "right"}/>
+                </div>
                <RealDataTable meta={this.state.meta} data={this.state.data}
                                history={this.props.history}
                                changeConcentrator={this.changeConcentrator}/>

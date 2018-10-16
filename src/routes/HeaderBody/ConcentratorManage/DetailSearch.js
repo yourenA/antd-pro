@@ -47,7 +47,7 @@ class SearchForm extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const command=this.props.protocols;
-
+    const that=this;
     const renderCommandBtn=command.map((item,index)=>{
       const clickTime=sessionStorage.getItem(`concentrator_number-${item}-${this.props.concentratorNumber}`)
       const isLoading=clickTime&&this.state.time-clickTime<120000
@@ -55,6 +55,20 @@ class SearchForm extends Component {
         <Button loading={isLoading} key={index} type="primary" style={{marginLeft: 8}} onClick={()=>{this.setState({ time:new Date().getTime()});this.props.read_multiple_901f(item)}}>{isLoading?'正在':''}{item.toUpperCase()}集抄 {this.props.concentratorNumber}</Button>
       )
     })
+    const renderOpenValveBtn=function () {
+      const clickTime=sessionStorage.getItem(`open_all_valve-${that.props.concentratorNumber}`)
+      const isLoading=clickTime&&that.state.time-clickTime<12000
+      return(
+        <Button loading={isLoading}  type="primary" style={{marginLeft: 8}} onClick={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand('open_all_valve')}}>{isLoading?'正在':''}开阀 {that.props.concentratorNumber}</Button>
+      )
+    }
+    const renderCloseValveBtn=function () {
+      const clickTime=sessionStorage.getItem(`close_all_valve-${that.props.concentratorNumber}`)
+      const isLoading=clickTime&&that.state.time-clickTime<12000
+      return(
+        <Button loading={isLoading}  type="danger" style={{marginLeft: 8}} onClick={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand( 'close_all_valve')}}>{isLoading?'正在':''}关阀 {that.props.concentratorNumber}</Button>
+      )
+    }
     const company_code = sessionStorage.getItem('company_code');
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
@@ -71,6 +85,8 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {this.props.showCommandBtn&&renderCommandBtn}
+            {this.props.showCommandBtn&&renderOpenValveBtn()}
+            {this.props.showCommandBtn&&renderCloseValveBtn()}
           </FormItem>
           <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false} onChange={(checked)=>{

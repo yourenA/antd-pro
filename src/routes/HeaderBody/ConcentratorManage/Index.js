@@ -472,7 +472,9 @@ class ConcentratorManage extends PureComponent {
   changeShowOperate = ()=> {
     this.setState({canOperateConcentrator: !this.state.canOperateConcentrator})
   }
-
+  handleTableChange=(pagination, filters, sorter)=>{
+    console.log('sorter', sorter)
+  }
   render() {
     const {concentrators: {data, meta, loading}, servers, concentrator_models, area} = this.props;
     for (let i = 0; i < data.length; i++) {

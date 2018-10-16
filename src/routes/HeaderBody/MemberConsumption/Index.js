@@ -10,7 +10,7 @@ import {connect} from 'dva';
 import moment from 'moment'
 import ResizeableTable from './../../../components/ResizeableTitle/RowSpanIndex'
 import debounce from 'lodash/throttle'
-import {renderIndex, ellipsis2,renderRowSpan,parseRowSpanData2,getPreDay} from './../../../utils/utils'
+import {renderIndex, ellipsis2,renderRowSpan,parseRowSpanData2,parseRowSpanData3,getPreDay} from './../../../utils/utils'
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
@@ -205,11 +205,118 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   render() {
-    const {member_consumption: {data, meta, loading}} = this.props;
+    const {member_consumption: {data,meta,  loading}} = this.props;
+   /* const data= [
+      {
+        "village_name": "望江里",
+        "member_number": "4814056",
+        "real_name": "王文军",
+        "install_address": "望江里5号06",
+        "reader": "",
+        "temperature_types": [
+          {
+            "name": "冷水表",
+            "difference_value": 0.12,
+            "meters": [
+              {
+                "meter_number": "87281633",
+                "meter_index": 125,
+                "meter_enabled_date": "2018-07-16",
+                "meter_enabled_value": "57.59",
+                "meter_disabled_date": "",
+                "meter_disabled_value": "",
+                "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+                "meter_model_name": "有线冷水表（20mm）",
+                "is_valve": -1,
+                "is_valve_explain": "否",
+                "output_type": 1,
+                "output_type_explain": "有线",
+                "temperature_type": 1,
+                "temperature_type_explain": "冷水表",
+                "size_type": 1,
+                "size_type_explain": "小表",
+                "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+                "meter_manufacturer_name": "株洲珠华",
+                "concentrator_number": "02000016",
+                "concentrator_serial_number": "A02000016",
+                "previous_value": 57.62,
+                "previous_collected_date": "2018-07-16",
+                "latest_value": 57.71,
+                "latest_collected_date": "2018-07-17",
+                "difference_value": 0.12,
+                "protocols": [
+                  "901F",
+                  "90EF"
+                ]
+              },
+              {
+                "meter_number": "87441104",
+                "meter_index": 125,
+                "meter_enabled_date": "2018-04-09",
+                "meter_enabled_value": "28.00",
+                "meter_disabled_date": "2018-07-16",
+                "meter_disabled_value": "57.24",
+                "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+                "meter_model_name": "有线冷水表（20mm）",
+                "is_valve": -1,
+                "is_valve_explain": "否",
+                "output_type": 1,
+                "output_type_explain": "有线",
+                "temperature_type": 1,
+                "temperature_type_explain": "冷水表",
+                "size_type": 1,
+                "size_type_explain": "小表",
+                "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+                "meter_manufacturer_name": "株洲珠华",
+                "concentrator_number": "02000016",
+                "concentrator_serial_number": "A02000016",
+                "previous_value": 56.92,
+                "previous_collected_date": "2018-07-15",
+                "latest_value": 56.92,
+                "latest_collected_date": "2018-07-16",
+                "difference_value": 0,
+                "protocols": [
+                  "901F",
+                  "90EF"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "热水表",
+            "difference_value": 0,
+            "meters": []
+          }
+        ]
+      }
+    ];
+    const meta={
+      "aggregator": {
+        "temperature_type_difference_values": [
+          {
+            "name": "冷水表",
+            "difference_value": 0.12
+          },
+          {
+            "name": "热水表",
+            "difference_value": 0
+          }
+        ]
+      },
+      "pagination": {
+        "total": 1,
+        "count": 1,
+        "per_page": 30,
+        "current_page": 1,
+        "total_pages": 1,
+        "links": []
+      }
+    }*/
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const resetMeterData=parseRowSpanData2(data)
+    // const resetMeterData=parseRowSpanData2(data)
+    const resetMeterData=parseRowSpanData3(data)
     const {isMobile} =this.props.global;
     const columns = [
       // {
@@ -242,21 +349,15 @@ class UserMeterAnalysis extends PureComponent {
         )
         return renderRowSpan(children,record)
       }},
-      { title: '用户用水量', dataIndex: 'meter_difference_value', key: 'meter_difference_value' ,width: 90,  render: (val, record, index) => {
-        const children= (
-          ellipsis2(val, 90)
-        )
-        return renderRowSpan(children,record)
+      { title: '温度介质类型', width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain' , render: (text, record, index) => {
+        return ellipsis2(text, 100)
       }},
 
-      { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
-        return ellipsis2(text, 80)
-      }},
       { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
       } },
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
-        return ellipsis2(val, 80)
+      { title: '水表类型', width: 105, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
+        return ellipsis2(text, 105)
       }},
       { title: '水表用水量', dataIndex: 'difference_value', key: 'difference_value' ,width: 90,  render: (val, record, index) => {
         return ellipsis2(val, 90)
@@ -276,6 +377,9 @@ class UserMeterAnalysis extends PureComponent {
       { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90,render: (val, record, index) => {
         return ellipsis2(val, 90)
       } },
+      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
       { title: '集中器硬件编号', dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120,render: (val, record, index) => {
         return ellipsis2(val, 120)
       } },
@@ -336,6 +440,7 @@ class UserMeterAnalysis extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             isMobile={isMobile}
+                            meta={meta}
                             initRange={this.state.initRange}
                             per_page={this.state.per_page}
                             village_id={this.state.village_id}
@@ -343,6 +448,12 @@ class UserMeterAnalysis extends PureComponent {
                     />
                   </div>
                 </div>
+                {/*<ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                 dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
+                                 scroll={{x: 3000, y: this.state.tableY}}
+                                 history={this.props.history}
+                                 className={'meter-table no-interval'}
+                />*/}
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={resetMeterData} columns={columns} rowKey={record => record.myId}
                                  scroll={{x: 3000, y: this.state.tableY}}

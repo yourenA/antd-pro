@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-import {message,Badge,Tooltip} from 'antd'
+import {message, Badge, Tooltip} from 'antd'
 import messageJson from './message.json';
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -244,33 +244,33 @@ export function getPreDay() {
   return [moment().add(-1, 'days'), moment(new Date(), 'YYYY-MM-DD')]
 }
 
-const errorNumber='141414'
+const errorNumber = '141414'
 exports.errorNumber = errorNumber;
 
-function renderIndex(meta,page,index) {
-  const parseIndex=meta?String((meta.pagination.per_page*(page-1))+(index + 1)):0;
+function renderIndex(meta, page, index) {
+  const parseIndex = meta ? String((meta.pagination.per_page * (page - 1)) + (index + 1)) : 0;
   return (
-    <span title={parseIndex} >
-                {parseIndex.length>4?parseIndex.substring(0,3)+'...':parseIndex}
+    <span title={parseIndex}>
+                {parseIndex.length > 4 ? parseIndex.substring(0, 3) + '...' : parseIndex}
             </span>
   )
 }
 
 exports.renderIndex = renderIndex;
 
-function renderIndex2(meta,page,index) {
-  const parseIndex=meta?String((meta.pagination.per_page*(page-1))+(index + 1)):0;
+function renderIndex2(meta, page, index) {
+  const parseIndex = meta ? String((meta.pagination.per_page * (page - 1)) + (index + 1)) : 0;
   return (
-    <span title={parseIndex} >
-                {parseIndex.length>4?parseIndex.substring(0,3)+'...':parseIndex}
+    <span title={parseIndex}>
+                {parseIndex.length > 4 ? parseIndex.substring(0, 3) + '...' : parseIndex}
             </span>
   )
 }
 
 exports.renderIndex2 = renderIndex2;
 
-function renderErrorData(val,error=errorNumber) {
-  if(val.toString().indexOf(error)>=0){
+function renderErrorData(val, error = errorNumber) {
+  if (val.toString().indexOf(error) >= 0) {
     return '异常数据'
   }
   return val
@@ -279,11 +279,11 @@ function renderErrorData(val,error=errorNumber) {
 
 exports.renderErrorData = renderErrorData;
 
-export function renderCustomHeaders(headers,meta,page) {
-  let  custom_width=50;
-  let custom_headers=[];
-  headers&&headers.forEach((item, index)=> {
-    custom_width =custom_width+ item.size;
+export function renderCustomHeaders(headers, meta, page) {
+  let custom_width = 50;
+  let custom_headers = [];
+  headers && headers.forEach((item, index)=> {
+    custom_width = custom_width + item.size;
     if (item.key === 'status_explain') {
       custom_headers.push({
         title: item.display_name,
@@ -291,29 +291,29 @@ export function renderCustomHeaders(headers,meta,page) {
         key: item.key,
         width: index === headers.length - 1 ? '' : item.size,
         render: (val, record, index) => {
-          let status='success';
-          switch (record.status){
+          let status = 'success';
+          switch (record.status) {
             case -3:
-              status='default'
+              status = 'default'
               break;
             case -2:
-              status='error'
+              status = 'error'
               break;
             case -1:
-              status='warning'
+              status = 'warning'
               break;
             default:
-              status='success'
+              status = 'success'
           }
           return (
-          ellipsis2(<span>
+            ellipsis2(<span>
             <Badge status={status}/>{val}
-          </span>,item.size-5)
+          </span>, item.size - 5)
 
           )
         }
       })
-    }else if(item.key === 'latest_value'||item.key === 'previous_value'){
+    } else if (item.key === 'latest_value' || item.key === 'previous_value') {
       custom_headers.push({
         title: item.display_name,
         dataIndex: item.key,
@@ -330,43 +330,43 @@ export function renderCustomHeaders(headers,meta,page) {
         key: item.key,
         width: index === headers.length - 1 ? '' : item.size,
         render: (val, record, index) => {
-          return ellipsis2(val,item.size-5)
+          return ellipsis2(val, item.size - 5)
         }
       })
     }
   })
 
-  return {custom_headers,custom_width}
+  return {custom_headers, custom_width}
 }
-export function ellipsis(val,len=8) {
-  if(val){
+export function ellipsis(val, len = 8) {
+  if (val) {
     return (
       <Tooltip title={val}>
-        <span>{val.length>len?val.substring(0,len)+'...':val}</span>
+        <span>{val.length > len ? val.substring(0, len) + '...' : val}</span>
       </Tooltip>
     )
-  }else{
+  } else {
     return ''
   }
 
 }
 
-export function ellipsis2(val,len=150) {
-  if(val!==undefined){
+export function ellipsis2(val, len = 150) {
+  if (val !== undefined) {
     return (
       <Tooltip
         placement="topLeft"
         title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
         <p style={{
-          display:'inline-block',
-          width: `${len-15}px`,
+          display: 'inline-block',
+          width: `${len - 15}px`,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
         }}>{val}</p>
       </Tooltip>
     )
-  }else{
+  } else {
     return ''
   }
 
@@ -375,16 +375,16 @@ exports.ellipsis2 = ellipsis2;
 export function searchFormItemLayout() {
   return {
     labelCol: {
-      span:6
+      span: 6
     },
     wrapperCol: {
-      span:18
+      span: 18
     }
   };
 }
 
 
-function renderRowSpan(children,record) {
+function renderRowSpan(children, record) {
   const obj = {
     children: children,
     props: {},
@@ -402,20 +402,28 @@ function parseRowSpanData(data) {
   }
   let resetMeterData = []
   data.map((item, index)=> {
-    if(item.meters.data){
-      if(item.meters.data.length>0){
+    if (item.meters.data) {
+      if (item.meters.data.length > 0) {
         for (let i = 0; i < item.meters.data.length; i++) {
           if (item.meters.data.length === 1) {
-            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: 1,myId:item.meter_number+String(Math.random())})
+            resetMeterData.push({
+              ...item, ...item.meters.data[i],
+              rowSpan: 1,
+              myId: item.meter_number + String(Math.random())
+            })
           } else {
-            resetMeterData.push({...item, ...item.meters.data[i], rowSpan: i === 0 ? item.meters.data.length : 0,myId:item.meter_number+String(Math.random())})
+            resetMeterData.push({
+              ...item, ...item.meters.data[i],
+              rowSpan: i === 0 ? item.meters.data.length : 0,
+              myId: item.meter_number + String(Math.random())
+            })
           }
         }
-      }else{
-        resetMeterData.push({...item, rowSpan: 1,myId:item.meter_number+String(Math.random())})
+      } else {
+        resetMeterData.push({...item, rowSpan: 1, myId: item.meter_number + String(Math.random())})
       }
-    }else{
-      resetMeterData.push({...item, rowSpan: 1,myId:item.meter_number+String(Math.random())})
+    } else {
+      resetMeterData.push({...item, rowSpan: 1, myId: item.meter_number + String(Math.random())})
     }
   });
   return resetMeterData
@@ -429,20 +437,40 @@ function parseRowSpanData2(data) {
   }
   let resetMeterData = []
   data.map((item, index)=> {
-    if(item.meters){
-      if(item.meters.length>0){
+    if (item.meters) {
+      if (item.meters.length > 0) {
         for (let i = 0; i < item.meters.length; i++) {
           if (item.meters.length === 1) {
-            resetMeterData.push({...item, ...item.meters[i], meter_difference_value:item.difference_value,rowSpan: 1,myId:item.meter_number+String(Math.random())})
+            resetMeterData.push({
+              ...item, ...item.meters[i],
+              meter_difference_value: item.difference_value,
+              rowSpan: 1,
+              myId: item.meter_number + String(Math.random())
+            })
           } else {
-            resetMeterData.push({...item, ...item.meters[i],meter_difference_value:item.difference_value, rowSpan: i === 0 ? item.meters.length : 0,myId:item.meter_number+String(Math.random())})
+            resetMeterData.push({
+              ...item, ...item.meters[i],
+              meter_difference_value: item.difference_value,
+              rowSpan: i === 0 ? item.meters.length : 0,
+              myId: item.meter_number + String(Math.random())
+            })
           }
         }
-      }else{
-        resetMeterData.push({...item,meter_difference_value:item.difference_value, rowSpan: 1,myId:item.meter_number+String(Math.random())})
+      } else {
+        resetMeterData.push({
+          ...item,
+          meter_difference_value: item.difference_value,
+          rowSpan: 1,
+          myId: item.meter_number + String(Math.random())
+        })
       }
-    }else{
-      resetMeterData.push({...item, meter_difference_value:item.difference_value,rowSpan: 1,myId:item.meter_number+String(Math.random())})
+    } else {
+      resetMeterData.push({
+        ...item,
+        meter_difference_value: item.difference_value,
+        rowSpan: 1,
+        myId: item.meter_number + String(Math.random())
+      })
     }
   });
   return resetMeterData
@@ -450,15 +478,218 @@ function parseRowSpanData2(data) {
 
 exports.parseRowSpanData2 = parseRowSpanData2;
 
-export function  GetQueryString(name,search){
-  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+function parseRowSpanData3(data) {
+  /*const data = [
+    {
+      "village_name": "望江里",
+      "member_number": "4814056",
+      "real_name": "王文军1",
+      "install_address": "望江里5号06",
+      "reader": "",
+      "temperature_types": [
+        {
+          "name": "冷水表",
+          "difference_value": 0.12,
+          "meters": [
+            {
+              "meter_number": "87281633",
+              "meter_index": 125,
+              "meter_enabled_date": "2018-07-16",
+              "meter_enabled_value": "57.59",
+              "meter_disabled_date": "",
+              "meter_disabled_value": "",
+              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+              "meter_model_name": "有线冷水表（20mm）",
+              "is_valve": -1,
+              "is_valve_explain": "否",
+              "output_type": 1,
+              "output_type_explain": "有线",
+              "temperature_type": 1,
+              "temperature_type_explain": "冷水表",
+              "size_type": 1,
+              "size_type_explain": "小表",
+              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+              "meter_manufacturer_name": "株洲珠华",
+              "concentrator_number": "02000016",
+              "concentrator_serial_number": "A02000016",
+              "previous_value": 57.62,
+              "previous_collected_date": "2018-07-16",
+              "latest_value": 57.71,
+              "latest_collected_date": "2018-07-17",
+              "difference_value": 0.12,
+              "protocols": [
+                "901F",
+                "90EF"
+              ]
+            },
+            {
+              "meter_number": "87441104",
+              "meter_index": 125,
+              "meter_enabled_date": "2018-04-09",
+              "meter_enabled_value": "28.00",
+              "meter_disabled_date": "2018-07-16",
+              "meter_disabled_value": "57.24",
+              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+              "meter_model_name": "有线冷水表（20mm）",
+              "is_valve": -1,
+              "is_valve_explain": "否",
+              "output_type": 1,
+              "output_type_explain": "有线",
+              "temperature_type": 1,
+              "temperature_type_explain": "冷水表",
+              "size_type": 1,
+              "size_type_explain": "小表",
+              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+              "meter_manufacturer_name": "株洲珠华",
+              "concentrator_number": "02000016",
+              "concentrator_serial_number": "A02000016",
+              "previous_value": 56.92,
+              "previous_collected_date": "2018-07-15",
+              "latest_value": 56.92,
+              "latest_collected_date": "2018-07-16",
+              "difference_value": 0,
+              "protocols": [
+                "901F",
+                "90EF"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "热水表",
+          "difference_value": 0,
+          "meters": [
+            {
+              "meter_number": "874412104",
+              "meter_index": 125,
+              "meter_enabled_date": "2018-04-09",
+              "meter_enabled_value": "28.00",
+              "meter_disabled_date": "2018-07-16",
+              "meter_disabled_value": "57.24",
+              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+              "meter_model_name": "有线热水表（20mm）",
+              "is_valve": -1,
+              "is_valve_explain": "否",
+              "output_type": 1,
+              "output_type_explain": "有线",
+              "temperature_type": 1,
+              "temperature_type_explain": "热水表",
+              "size_type": 1,
+              "size_type_explain": "小表",
+              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+              "meter_manufacturer_name": "株洲珠华",
+              "concentrator_number": "02000016",
+              "concentrator_serial_number": "A02000016",
+              "previous_value": 56.92,
+              "previous_collected_date": "2018-07-15",
+              "latest_value": 56.92,
+              "latest_collected_date": "2018-07-16",
+              "difference_value": 0,
+              "protocols": [
+                "901F",
+                "90EF"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "village_name": "望江里2",
+      "member_number": "4814056",
+      "real_name": "王文军2",
+      "install_address": "望江2里5号07",
+      "reader": "",
+      "temperature_types": [
+        {
+          "name": "冷水表",
+          "difference_value": 0,
+          "meters": [
+            {
+              "meter_number": "874412104",
+              "meter_index": 125,
+              "meter_enabled_date": "2018-04-09",
+              "meter_enabled_value": "28.00",
+              "meter_disabled_date": "2018-07-16",
+              "meter_disabled_value": "57.24",
+              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
+              "meter_model_name": "有线热水表（20mm）",
+              "is_valve": -1,
+              "is_valve_explain": "否",
+              "output_type": 1,
+              "output_type_explain": "有线",
+              "temperature_type": 1,
+              "temperature_type_explain": "冷水表",
+              "size_type": 1,
+              "size_type_explain": "小表",
+              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
+              "meter_manufacturer_name": "株洲珠华",
+              "concentrator_number": "02000016",
+              "concentrator_serial_number": "A02000016",
+              "previous_value": 56.92,
+              "previous_collected_date": "2018-07-15",
+              "latest_value": 56.92,
+              "latest_collected_date": "2018-07-16",
+              "difference_value": 0,
+              "protocols": [
+                "901F",
+                "90EF"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "热水表",
+          "difference_value": 0,
+          "meters": []
+        }
+      ]
+    }
+  ];*/
+  for (let i = 0; i < data.length; i++) {
+    data[i].index = i
+  }
+  let resetMeterData = []
+  data.map((item, index)=> {
+    let allrowSpan = 0;
+    item.all_meters = []
+    for (let k = 0; k < item.temperature_types.length; k++) {
+      allrowSpan = allrowSpan + item.temperature_types[k].meters.length;
+      item.all_meters.push(...item.temperature_types[k].meters)
+    }
+    if (item.all_meters.length > 0) {
+      for (let j = 0; j < item.all_meters.length; j++) {
+        if (item.all_meters.length === 1) {
+          resetMeterData.push({
+            ...item, ...item.all_meters[j],
+            rowSpan: 1,
+            myId: item.meter_number + String(Math.random())
+          })
+        } else {
+          resetMeterData.push({
+            ...item, ...item.all_meters[j],
+            rowSpan: j === 0 ? item.all_meters.length : 0,
+            myId: item.meter_number + String(Math.random())
+          })
+
+        }
+      }
+    }
+  });
+  return resetMeterData
+}
+exports.parseRowSpanData3 = parseRowSpanData3;
+
+export function GetQueryString(name, search) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
   var r = search.substr(1).match(reg);
-  if(r!=null)return r[2]; return null;
+  if (r != null)return r[2];
+  return null;
 }
 
-export function  fillZero(val){
-  if(Number(val)<10){
-    return '0'+val
+export function fillZero(val) {
+  if (Number(val) < 10) {
+    return '0' + val
   }
   return val
 }
