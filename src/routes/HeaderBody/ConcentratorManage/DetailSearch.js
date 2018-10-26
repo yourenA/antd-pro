@@ -2,9 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,Col,Input,Button,Switch} from 'antd';
-import moment from 'moment'
-const RangePicker = DatePicker.RangePicker;
+import {Form,Row,Popconfirm ,Input,Button,Switch} from 'antd';
 const FormItem = Form.Item;
 class SearchForm extends Component {
   constructor(props) {
@@ -59,14 +57,18 @@ class SearchForm extends Component {
       const clickTime=sessionStorage.getItem(`open_all_valve-${that.props.concentratorNumber}`)
       const isLoading=clickTime&&that.state.time-clickTime<12000
       return(
-        <Button loading={isLoading}  type="primary" style={{marginLeft: 8}} onClick={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand('open_all_valve')}}>{isLoading?'正在':''}开阀 {that.props.concentratorNumber}</Button>
+      <Popconfirm title={`确定要开阀 ${that.props.concentratorNumber}`} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand('open_all_valve')}} okText="确定" cancelText="取消">
+        <Button loading={isLoading}  type="primary" style={{marginLeft: 8}}>{isLoading?'正在':''}开阀 {that.props.concentratorNumber}</Button>
+      </Popconfirm>
       )
     }
     const renderCloseValveBtn=function () {
       const clickTime=sessionStorage.getItem(`close_all_valve-${that.props.concentratorNumber}`)
       const isLoading=clickTime&&that.state.time-clickTime<12000
       return(
-        <Button loading={isLoading}  type="danger" style={{marginLeft: 8}} onClick={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand( 'close_all_valve')}}>{isLoading?'正在':''}关阀 {that.props.concentratorNumber}</Button>
+      <Popconfirm title={`确定要关阀 ${that.props.concentratorNumber}`} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand( 'close_all_valve')}} okText="确定" cancelText="取消">
+        <Button loading={isLoading}  type="danger" style={{marginLeft: 8}}>{isLoading?'正在':''}关阀 {that.props.concentratorNumber}</Button>
+      </Popconfirm>
       )
     }
     const company_code = sessionStorage.getItem('company_code');
@@ -85,8 +87,8 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             {this.props.showCommandBtn&&renderCommandBtn}
-            {this.props.showCommandBtn&&renderOpenValveBtn()}
-            {this.props.showCommandBtn&&renderCloseValveBtn()}
+            {company_code!=='hy'&&this.props.showCommandBtn&&renderOpenValveBtn()}
+            {company_code!=='hy'&&this.props.showCommandBtn&&renderCloseValveBtn()}
           </FormItem>
           <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false} onChange={(checked)=>{

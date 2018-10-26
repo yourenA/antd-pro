@@ -702,6 +702,11 @@ class ConcentratorManage extends PureComponent {
                                        history={this.props.history}
                                        canOperate={this.state.canOperateConcentrator}
                                        operate={operate}
+                                       rowClassName={function (record, index) {
+                                         if (record.is_online === -1 ) {
+                                           return 'error'
+                                         }
+                                       }}
                                        showConcentrator={this.showConcentrator}/>
                       {/*  <Table
                        rowClassName={function (record, index) {

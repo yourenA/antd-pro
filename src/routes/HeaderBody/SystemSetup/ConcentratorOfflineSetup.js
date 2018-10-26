@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from "react";
-import {Form, Select, Layout, Card, Button, Input, message, TimePicker, Switch} from "antd";
+import {Form, Select, Layout, Card, Button, Radio, message, TimePicker, Switch} from "antd";
 import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 import request from "./../../../utils/request";
@@ -10,7 +10,7 @@ import find from "lodash/find";
 import moment from 'moment'
 const {Content} = Layout;
 const FormItem = Form.Item;
-const Option = Select.Option;
+const RadioGroup = Radio.Group;
 class EditPassword extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +18,7 @@ class EditPassword extends Component {
     this.state = {
       disabled: false,
       data: [],
-      concentrator_offline_abnormality_is_open: {},
+      concentrator_offline_abnormality_alarm_level: {},
     }
   }
 
@@ -31,16 +31,16 @@ class EditPassword extends Component {
       console.log(response);
       that.setState({
         data: response.data.data,
-        concentrator_offline_abnormality_is_open: find(response.data.data, function (o) {
-          return o.name === 'concentrator_offline_abnormality_is_open'
+        concentrator_offline_abnormality_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'concentrator_offline_abnormality_alarm_level'
         }),
       },function () {
         const {form} = that.props;
         that.setState({
-          disabled: that.state.concentrator_offline_abnormality_is_open.value==='1'?false:true,
+          disabled: that.state.concentrator_offline_abnormality_alarm_level.value,
         })
         form.setFieldsValue({
-          concentrator_offline_abnormality_is_open: that.state.concentrator_offline_abnormality_is_open.value==='1'?true:false,
+          concentrator_offline_abnormality_alarm_level: that.state.concentrator_offline_abnormality_alarm_level.value,
         });
       })
 
@@ -52,7 +52,7 @@ class EditPassword extends Component {
     const that=this;
     // form.resetFields();
     form.setFieldsValue({
-      concentrator_offline_abnormality_is_open: that.state.concentrator_offline_abnormality_is_open.value==='1'?true:false,
+      concentrator_offline_abnormality_alarm_level: that.state.concentrator_offline_abnormality_alarm_level.value,
     });
   }
   handleSubmit=()=>{
@@ -63,7 +63,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              concentrator_offline_abnormality_is_open:values.concentrator_offline_abnormality_is_open?'1':'-1',
+              concentrator_offline_abnormality_alarm_level:values.concentrator_offline_abnormality_alarm_level,
             }
           }).then((response)=> {
             console.log(response);
@@ -88,21 +88,38 @@ class EditPassword extends Component {
     };
 
     const {getFieldDecorator,} = this.props.form;
+    const radioStyle = {
+      display: 'block',
+      height: '40px',
+      lineHeight: '40px',
+    };
     return (
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '集中器离线异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Form style={{maxWidth: '500px', margin: '0 auto'}} >
+                <Form style={{maxWidth: '550px', margin: '0 auto'}} >
 
-                  <FormItem
+               {/*   <FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.concentrator_offline_abnormality_is_open.display_name}
+                    label={this.state.concentrator_offline_abnormality_alarm_level.display_name}
 
                   >
-                    {getFieldDecorator('concentrator_offline_abnormality_is_open', {valuePropName: 'checked'})(
+                    {getFieldDecorator('concentrator_offline_abnormality_alarm_level', {valuePropName: 'checked'})(
                       <Switch />
+                    )}
+                  </FormItem>*/}
+                  <FormItem
+                    {...formItemLayoutWithLabel}
+                    label={this.state.concentrator_offline_abnormality_alarm_level.display_name}
+                  >
+                    {getFieldDecorator('concentrator_offline_abnormality_alarm_level')(
+                      <RadioGroup>
+                        <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
+                        <Radio style={radioStyle} value="2">导航栏提示</Radio>
+                        <Radio style={radioStyle} value="3">无</Radio>
+                      </RadioGroup>
                     )}
                   </FormItem>
                   <FormItem

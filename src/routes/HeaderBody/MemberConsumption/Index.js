@@ -476,7 +476,7 @@ class UserMeterAnalysis extends PureComponent {
             <Modal
               width="750px"
               key={ Date.parse(new Date())}
-              title={`水表 ${this.state.edit_meter_number} 详细信息`}
+              title={`水表 ${this.state.edit_meter_number} 详细信息 (红色柱状图表示当天错报,黄色表示当天漏报)`}
               visible={this.state.editModal}
               onOk={this.handleEdit}
               onCancel={() => this.setState({editModal: false})}
@@ -487,7 +487,7 @@ class UserMeterAnalysis extends PureComponent {
             <Modal
               width="80%"
               key={ Date.parse(new Date())+1}
-              title={`用户 ${this.state.edit_member_number} 详细信息`}
+              title={`用户 ${this.state.edit_member_number}`}
               visible={this.state.memberModal}
               onOk={this.handleEdit}
               onCancel={() => this.setState({memberModal: false})}

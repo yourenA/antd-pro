@@ -48,15 +48,24 @@ class Detail extends PureComponent {
     let Date=[];
     let Data=[];
     let diffData=[];
-    forEach(data,(value)=>{
+    let errDataIndex=[];
+    let warmDataIndex=[]
+    forEach(data,(value,index)=>{
       Date.push(value.date);
       if(value.value.toString().indexOf(errorNumber)>=0){
         Data.push('-')
       }else{
         Data.push(value.value)
       }
+      if(value.status===-2){
+        errDataIndex.push(index)
+      }else if(value.status===-1){
+        warmDataIndex.push(index)
+      }
       diffData.push(value.difference_value)
     })
+    console.log('errDataIndex',errDataIndex)
+    console.log('warmDataIndex',warmDataIndex)
     this.myChart = this.echarts.init(document.querySelector('.month-analysis'));
     let option = {
       tooltip: {
@@ -117,10 +126,22 @@ class Detail extends PureComponent {
           type:'bar',
           data:Data,
           itemStyle:{
-            normal: {
-              color: '#1890ff',
+            normal:{
+              color: function(value) {
+                if(errDataIndex.indexOf(value.dataIndex)>=0){
+                  return '#c23531'
+                } else if(warmDataIndex.indexOf(value.dataIndex)>=0) {
+                  return '#faad14'
+                }else{
+                  return '#1890ff'
+                }
+              }
             }
-          }
+
+            // {
+            //   color:'#2f4554',
+            // }
+          },
         },
         {
           name:'用水量',

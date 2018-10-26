@@ -2,7 +2,7 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button, Badge, Popover,Tooltip} from 'antd';
+import {Layout, Menu, Modal, Icon, Avatar, message, BackTop, notification, Button, Badge, Popover, Tooltip} from 'antd';
 import styles from './HeaderBodyLayout.less';
 import {connect} from 'dva';
 import {Link, Route, Redirect, Switch, routerRedux} from 'dva/router';
@@ -54,14 +54,14 @@ class HeaderBodyLayout extends React.PureComponent {
       return arr.concat([])
 
     }, []);
-    this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
+    this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.zeroNotify = null;
     this.nightNotify = null;
     this.noConsumptionNotifyDay = null;
     this.state = {
       current: '',
       editModal: false,
-      request_consumption_abnormality:  find(this.permissions, {name: 'consumption_abnormality'}),
+      request_consumption_abnormality: find(this.permissions, {name: 'consumption_abnormality'}),
       request_zero_abnormality: find(this.permissions, {name: 'zero_abnormality'}),
       request_night_abnormality: find(this.permissions, {name: 'night_abnormality'}),
       request_leak_abnormality: find(this.permissions, {name: 'leak_abnormality'}),
@@ -75,6 +75,7 @@ class HeaderBodyLayout extends React.PureComponent {
       mobileVisible: false,
     };
   }
+
   hide = () => {
     this.setState({
       mobileVisible: false,
@@ -82,8 +83,9 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 
   handleVisibleChange = (mobileVisible) => {
-    this.setState({ mobileVisible });
+    this.setState({mobileVisible});
   }
+
   componentDidMount() {
     // console.log(this.menus)
     const {location} = this.props;
@@ -104,52 +106,81 @@ class HeaderBodyLayout extends React.PureComponent {
     const noConsumptionNotifyDay = localStorage.getItem('noConsumptionNotifyDay');
 
     const that = this;
-    const notificationText={
-      consumption_abnormality_count:{title:'用水量异常报警',text:'个水表出现用水量异常',urlSuffix:'consumption_abnormality'},
-      zero_abnormality_count:{title:'零流量异常报警',text:'个水表出现零流量异常',urlSuffix:'zero_abnormality'},
-      night_abnormality_count:{title:'夜间流量异常报警',text:'个水表出现夜间流量异常',urlSuffix:'night_abnormality'},
-      leak_abnormality_count:{title:'漏水异常报警',text:'个水表出现漏水异常报警',urlSuffix:'leak_abnormality'},
-      valve_status_abnormality_count:{title:'水表阀控异常报警',text:'个水表出现阀控异常报警',urlSuffix:'valve_status_abnormality'},
-      voltage_status_abnormality_count:{title:'水表电池电压异常报警',text:'个水表出现电池电压异常报警',urlSuffix:'voltage_status_abnormality'},
-      concentrator_offline_abnormality_count:{title:'集中器离线异常报警',text:'个集中器出现离线异常',urlSuffix:'statistics_daily/concentrator_error'},
+    const notificationText = {
+      consumption_abnormality: {
+        name: 'consumption_abnormality',
+        title: '用水量异常报警',
+        text: '个水表出现用水量异常',
+        urlSuffix: 'consumption_abnormality'
+      },
+      zero_abnormality: {name: 'zero_abnormality', title: '零流量异常报警', text: '个水表出现零流量异常', urlSuffix: 'zero_abnormality'},
+      night_abnormality: {
+        name: 'night_abnormality',
+        title: '夜间流量异常报警',
+        text: '个水表出现夜间流量异常',
+        urlSuffix: 'night_abnormality'
+      },
+      leak_abnormality: {name: 'leak_abnormality', title: '漏水异常报警', text: '个水表出现漏水异常报警', urlSuffix: 'leak_abnormality'},
+      valve_status_abnormality: {
+        name: 'valve_status_abnormality',
+        title: '水表阀控异常报警',
+        text: '个水表出现阀控异常报警',
+        urlSuffix: 'valve_status_abnormality'
+      },
+      voltage_status_abnormality: {
+        name: 'voltage_status_abnormality',
+        title: '水表电池电压异常报警',
+        text: '个水表出现电池电压异常报警',
+        urlSuffix: 'voltage_status_abnormality'
+      },
+      concentrator_offline_abnormality: {
+        name: 'concentrator_offline_abnormality',
+        title: '集中器离线异常报警',
+        text: '个集中器出现离线异常',
+        urlSuffix: 'statistics_daily/concentrator_error'
+      },
+      error_upload: {name: 'error_upload', title: '水表错报预警', text: '个水表出现错报', urlSuffix: 'meter_unusual_analysis'},
+      missing_upload: {name: 'missing_upload', title: '水表漏报预警', text: '个水表出现漏报', urlSuffix: 'meter_unusual_analysis'},
     }
     request(`/summary_abnormality`, {
       method: 'get',
     }).then((response)=> {
       console.log(response)
-      for(let i in response.data){
-        that.renderNotification(i,response.data[i],notificationText[i].title,notificationText[i].text,notificationText[i].urlSuffix)
+      for (let i in response.data) {
+        that.renderNotification(i, response.data[i], notificationText[i])
       }
     })
     window.addEventListener('resize', throttle(this.resize, 100))
 
   }
-  renderNotification=(key,count,title,text,urlSuffix)=>{
+
+  renderNotification = (key, data, notificationText)=> {
+    console.log('key', key)
     const company_code = sessionStorage.getItem('company_code');
-    const NotifyDay = localStorage.getItem(company_code+key);
+    const NotifyDay = localStorage.getItem(company_code + key);
     const dispatch = this.props.dispatch;
     const date = moment(new Date()).format('YYYY-MM-DD');
-    if(count!==0){
+    if ((data.alarm_level === 2 || data.alarm_level === 1) && data.count !== 0) {
+      console.log('在菜单提示', data.alarm_level)
       this.setState({
-        [key]:true
+        [key]: true
       })
     }
-    if (NotifyDay === date || count===0) {
-      console.log('用水量异常报警没数据或不提醒')
-    }else{
+    if (NotifyDay === date || data.alarm_level !== 1 || data.count === 0) {
+    } else {
       const args = {
         placement: 'bottomRight',
-        message: title,
+        message: notificationText.title,
         duration: 15,
         key: key,
-        description: <div>{count} {text}
+        description: <div>{data.count} {notificationText.text}
           <p>
             <a href="javascript:;" onClick={()=> {
-              localStorage.setItem(company_code+key, date);
+              localStorage.setItem(company_code + key, date);
               notification.close(key)
             }
             }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
-            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/${urlSuffix}`));
+            dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/${notificationText.urlSuffix}`));
           }
           }>查看详情</a>
           </p>
@@ -173,7 +204,7 @@ class HeaderBodyLayout extends React.PureComponent {
       const pathArr = pathname.split('/');
       console.log('pathArr[4]', pathArr)
       this.setState({
-        current: pathArr.length===3?pathArr[2]:pathArr[4]
+        current: pathArr.length === 3 ? pathArr[2] : pathArr[4]
       })
       const company_code = sessionStorage.getItem('company_code');
       if (pathArr[1] !== company_code) {
@@ -189,6 +220,7 @@ class HeaderBodyLayout extends React.PureComponent {
     notification.destroy();
     window.removeEventListener('resize', this.resize)
   }
+
   getPageTitle() {
     const {location} = this.props;
     let {pathname} = location;
@@ -206,6 +238,7 @@ class HeaderBodyLayout extends React.PureComponent {
     });
     return title;
   }
+
   handleClick = (e) => {
     console.log('click ', e);
     if (e.key === 'logout') {
@@ -214,8 +247,8 @@ class HeaderBodyLayout extends React.PureComponent {
       });
     } else if (e.key === 'password') {
       this.setState({editModal: true})
-    }  else if (e.key === 'about') {
-    }else {
+    } else if (e.key === 'about') {
+    } else {
       this.setState({
         current: e.key,
       });
@@ -226,6 +259,7 @@ class HeaderBodyLayout extends React.PureComponent {
 
 
   }
+
   getNavMenuItems(menusData, parentPath = '') {
     let permissions = (localStorage.getItem('permissions') ? JSON.parse(localStorage.getItem('permissions'))
       : sessionStorage.getItem('permissions') ? JSON.parse(sessionStorage.getItem('permissions')) : []).map((item, index)=> {
@@ -233,8 +267,6 @@ class HeaderBodyLayout extends React.PureComponent {
     })
 
     const company_code = sessionStorage.getItem('company_code');
-
-
     if (!menusData) {
       return [];
     }
@@ -251,8 +283,9 @@ class HeaderBodyLayout extends React.PureComponent {
       if (item.children && item.children.some(child => child.name)) {
         if (intersection(permissions, item.permissions).length > 0 || !item.permissions) {
           let showBadge = false
-          if (item.path === 'unusual_analysis' && (this.state.consumption_abnormality_count || this.state.zero_abnormality_count || this.state.night_abnormality_count || this.state.leak_abnormality_count
-            || this.state.valve_status_abnormality_count || this.state.voltage_status_abnormality_count )) {
+          if (item.path === 'unusual_analysis' &&
+            (this.state.concentrator_offline_abnormality ||this.state.error_upload ||this.state.missing_upload ||this.state.consumption_abnormality || this.state.zero_abnormality || this.state.night_abnormality || this.state.leak_abnormality
+            || this.state.valve_status_abnormality || this.state.voltage_status_abnormality )) {
             showBadge = true
           }
           return (
@@ -263,7 +296,7 @@ class HeaderBodyLayout extends React.PureComponent {
                   <Icon type={item.icon}/>
                   <span>{item.name} </span>
                     {showBadge && <span>
-                <Tooltip  placement="right"  title="红点表示当天存在异常报警">
+                <Tooltip placement="right" title="红点表示当天存在异常报警">
                   <span> < Badge status="error"/></span>
                 </Tooltip>
               </span>}
@@ -279,16 +312,21 @@ class HeaderBodyLayout extends React.PureComponent {
       }
       const icon = item.icon && <Icon type={item.icon}/>;
       if ((intersection(permissions, item.permissions).length > 0 || !item.permissions) && (!item.showCompany || item.showCompany.indexOf(company_code) >= 0)) {
-        if(item.noShowCompany && item.noShowCompany.indexOf(company_code)>=0){
+        if (item.noShowCompany && item.noShowCompany.indexOf(company_code) >= 0) {
           return false
         }
         let showBadge = false
-        if ((item.path === 'consumption_abnormality' && this.state.consumption_abnormality_count) ||
-          (item.path === 'night_abnormality' && this.state.night_abnormality_count) ||
-          (item.path === 'valve_status_abnormality' && this.state.valve_status_abnormality_count) ||
-          (item.path === 'voltage_status_abnormality' && this.state.voltage_status_abnormality_count) ||
-          (item.path === 'leak_abnormality' && this.state.leak_abnormality_count) ||
-          (item.path === 'zero_abnormality' && this.state.zero_abnormality_count)) {
+        if (
+          (item.path === 'concentrator_unusual_analysis' && this.state.concentrator_offline_abnormality) ||
+          (item.path === 'meter_unusual_analysis' && this.state.error_upload) ||
+          (item.path === 'meter_unusual_analysis' && this.state.missing_upload) ||
+          (item.path === 'consumption_abnormality' && this.state.consumption_abnormality) ||
+          (item.path === 'night_abnormality' && this.state.night_abnormality) ||
+          (item.path === 'valve_status_abnormality' && this.state.valve_status_abnormality) ||
+          (item.path === 'voltage_status_abnormality' && this.state.voltage_status_abnormality) ||
+          (item.path === 'leak_abnormality' && this.state.leak_abnormality) ||
+          (item.path === 'zero_abnormality' && this.state.zero_abnormality)
+        ) {
           showBadge = true
         }
         return (
@@ -303,6 +341,7 @@ class HeaderBodyLayout extends React.PureComponent {
 
     });
   }
+
   handleEditPassword = ()=> {
     const that = this;
     const formValues = this.editFormRef.props.form.getFieldsValue();
@@ -341,8 +380,8 @@ class HeaderBodyLayout extends React.PureComponent {
         style={{lineHeight: '64px'}}
         selectedKeys={[this.state.current]}
       >
-        {company_code==='mys'&&<Menu.Item key={'main'}>
-          <Link className={`${styles.homepage}`} to={`/${company_code}/main`} >
+        {company_code === 'mys' && <Menu.Item key={'main'}>
+          <Link className={`${styles.homepage}`} to={`/${company_code}/main`}>
             <Icon type={'home'}/><span>首页</span>
           </Link>
         </Menu.Item>}
@@ -367,7 +406,7 @@ class HeaderBodyLayout extends React.PureComponent {
         theme="dark"
         mode="inline"
         selectedKeys={[this.state.current]}
-        style={{width:'calc(100vw - 32px)'}}
+        style={{width: 'calc(100vw - 32px)'}}
       >
 
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
@@ -387,7 +426,7 @@ class HeaderBodyLayout extends React.PureComponent {
             <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
           </div>
           {
-            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click"  placement="bottomRight"
+            isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomRight"
                                 visible={this.state.mobileVisible}
                                 onVisibleChange={this.handleVisibleChange}
             >

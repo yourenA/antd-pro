@@ -11,6 +11,7 @@ import Detail from './../UserMeterAnalysis/Detail'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from '../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
+import ProcessedForm from './ProcessedForm'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
@@ -34,6 +35,9 @@ class FunctionContent extends PureComponent {
       meter_number:'',
       per_page:30,
       canLoadByScroll:true,
+      display_type:'only_unprocessed',
+      processed_model:false,
+      editRecord:{}
     }
   }
 
@@ -57,6 +61,7 @@ class FunctionContent extends PureComponent {
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       per_page:30,
+      display_type:'only_unprocessed'
     })
   }
   componentWillUnmount() {
@@ -87,6 +92,7 @@ class FunctionContent extends PureComponent {
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
             per_page:this.state.per_page,
+            display_type:this.state.display_type,
           },function () {
             that.setState({
               canLoadByScroll:true,
@@ -111,7 +117,8 @@ class FunctionContent extends PureComponent {
       // date: moment(this.state.initDate).format('YYYY-MM-DD'),
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      per_page:30
+      per_page:30,
+      display_type:'only_unprocessed',
     })
   }
   handleSearch = (values,cb,fetchAndPush=false) => {
@@ -145,7 +152,8 @@ class FunctionContent extends PureComponent {
       // date: this.state.date,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      per_page:this.state.per_page
+      per_page:this.state.per_page,
+      display_type:this.state.display_type,
     })
   }
   handPageSizeChange = (per_page)=> {
@@ -158,7 +166,8 @@ class FunctionContent extends PureComponent {
       // date: this.state.date,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      per_page:per_page
+      per_page:per_page,
+      display_type:this.state.display_type,
     })
   }
   operate = (record)=> {
@@ -167,7 +176,38 @@ class FunctionContent extends PureComponent {
       editModal: true
     })
   }
-
+  processed=(abnormality_type)=>{
+    const that = this;
+    const {dispatch} = this.props;
+    const formValues =this.ProcessedForm.props.form.getFieldsValue();
+    console.log('formValues',formValues);
+    dispatch({
+      type:'zero_abnormality/processed',
+      payload: {
+        abnormality_type:abnormality_type,
+        ...formValues,
+        not_reminder_days:String(formValues.not_reminder_days)
+      },
+      callback: function () {
+        message.success("确认异常成功")
+        that.setState({
+          processed_model:false
+        })
+        that.handleSearch({
+          area_id: that.state.area_id,
+          page: that.state.page,
+          member_number:that.state.member_number,
+          concentrator_number:that.state.concentrator_number,
+          meter_number:that.state.meter_number,
+          // date: that.state.date,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
+          per_page:that.state.per_page,
+          display_type:that.state.display_type,
+        })
+      }
+    });
+  }
   render() {
     const {zero_abnormality: {data, meta, loading}, dma} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -204,16 +244,20 @@ class FunctionContent extends PureComponent {
       {title: '安装地址', dataIndex: 'install_address',width: 150,  key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
-      {title: '持续时间(天)', dataIndex: 'duration_days', key: 'duration_days'},
+      {title: '持续时间(天)', dataIndex: 'duration_days', key: 'duration_days',width: 100, render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title: '备注', dataIndex: 'remark', key: 'remark'},
       {
-        title: '查询历史状况',
+        title: '操作',
         key: 'operation',
         fixed:'right',
-        width: 110,
+        width: 170,
         render: (val, record, index) => {
           return (
             <div>
               <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>确认异常</Button>}
             </div>
           )
         }
@@ -264,13 +308,22 @@ class FunctionContent extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.show_meter_number} 详细信息`}
+                title={`${this.state.show_meter_number}  详细信息 (红色柱状图表示当天错报,黄色表示当天漏报)`}
                 visible={this.state.editModal}
                 onOk={this.handleEdit}
                 onCancel={() => this.setState({editModal: false})}
               >
                 <Detail meter_number={this.state.show_meter_number} ended_at={this.state.ended_at}
                         started_at={this.state.started_at}/>
+              </Modal>
+              <Modal
+                key={ Date.parse(new Date())+1}
+                title={`确认异常`}
+                visible={this.state.processed_model}
+                onOk={()=>this.processed('1')}
+                onCancel={() => this.setState({processed_model: false})}
+              >
+                <ProcessedForm meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
               </Modal>
             </PageHeaderLayout>
           </div>

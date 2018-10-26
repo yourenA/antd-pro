@@ -1,5 +1,5 @@
 import {query, add, remove, edit} from '../services/zero_abnormality';
-
+import {processed_request} from './../utils/utils'
 export default {
   namespace: 'zero_abnormality',
   state: {
@@ -59,6 +59,13 @@ export default {
     },
     *add({payload, callback}, {call, put}) {
       const response = yield call(add, payload);
+      console.log(response)
+      if (response.status === 200) {
+        if (callback) callback();
+      }
+    },
+    *processed({payload, callback}, {call, put}) {
+      const response = yield call(processed_request, payload);
       console.log(response)
       if (response.status === 200) {
         if (callback) callback();

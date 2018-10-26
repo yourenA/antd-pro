@@ -73,17 +73,17 @@ class UserMeterAnalysis extends PureComponent {
       enableMapClick : false,//兴趣点不能点击
       mapType:BMAP_HYBRID_MAP//默认卫星图
     });          // 创建地图实例
-   this.map.setMapStyle({
+    this.map.setMapStyle({
       styleJson:[
-  {
-  "featureType": "all",
-  "elementType": "all",
-  "stylers": {
-  "lightness": 10,
-  "saturation": -100
-  }
-  }
-  ]
+        {
+          "featureType": "all",
+          "elementType": "all",
+          "stylers": {
+            "lightness": 10,
+            "saturation": -100
+          }
+        }
+      ]
     });
     this.map.centerAndZoom(new BMap.Point(112.159141, 26.269442), 5);
     this.map.addControl(new BMap.MapTypeControl({

@@ -7,10 +7,10 @@ import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 import request from "./../../../utils/request";
 import find from "lodash/find";
+import moment from 'moment'
 const {Content} = Layout;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-const Option = Select.Option;
 class EditPassword extends Component {
   constructor(props) {
     super(props);
@@ -18,29 +18,31 @@ class EditPassword extends Component {
     this.state = {
       disabled: false,
       data: [],
-      voltage_status_abnormality_alarm_level: {},
+      error_upload_alarm_level: {},
+      missing_upload_alarm_level: {},
     }
   }
 
   componentDidMount() {
     const that = this;
-    request(`/configs?groups[]=voltage_status_abnormality`, {
+    request(`/configs?groups[]=meter_upload_abnormality`, {
       method: 'GET',
       query: {}
     }).then((response)=> {
       console.log(response);
       that.setState({
         data: response.data.data,
-        voltage_status_abnormality_alarm_level: find(response.data.data, function (o) {
-          return o.name === 'voltage_status_abnormality_alarm_level'
+        error_upload_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'error_upload_alarm_level'
+        }),
+        missing_upload_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'missing_upload_alarm_level'
         }),
       },function () {
         const {form} = that.props;
-        that.setState({
-          disabled: that.state.voltage_status_abnormality_alarm_level.value,
-        })
         form.setFieldsValue({
-          voltage_status_abnormality_alarm_level: that.state.voltage_status_abnormality_alarm_level.value,
+          error_upload_alarm_level: that.state.error_upload_alarm_level.value,
+          missing_upload_alarm_level: that.state.missing_upload_alarm_level.value,
         });
       })
 
@@ -52,7 +54,8 @@ class EditPassword extends Component {
     const that=this;
     // form.resetFields();
     form.setFieldsValue({
-      voltage_status_abnormality_alarm_level: that.state.voltage_status_abnormality_alarm_level.value,
+      error_upload_alarm_level: that.state.error_upload_alarm_level.value,
+      missing_upload_alarm_level: that.state.missing_upload_alarm_level.value,
     });
   }
   handleSubmit=()=>{
@@ -63,12 +66,13 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              voltage_status_abnormality_alarm_level:values.voltage_status_abnormality_alarm_level,
+              error_upload_alarm_level:values.error_upload_alarm_level,
+              missing_upload_alarm_level:values.missing_upload_alarm_level,
             }
           }).then((response)=> {
             console.log(response);
             if(response.status===200){
-              message.success('修改水表电池电压异常报警成功')
+              message.success('修改水表上传异常报警成功')
             }
           })
         }
@@ -96,24 +100,36 @@ class EditPassword extends Component {
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表电池电压异常报警设置'}]}>
+            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表上传异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Form style={{maxWidth: '550px', margin: '0 auto'}} >
 
-                 {/* <FormItem
+               {/*   <FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.voltage_status_abnormality_alarm_level.display_name}
+                    label={this.state.error_upload_alarm_level.display_name}
 
                   >
-                    {getFieldDecorator('voltage_status_abnormality_alarm_level', {valuePropName: 'checked'})(
+                    {getFieldDecorator('error_upload_alarm_level', {valuePropName: 'checked'})(
                       <Switch />
                     )}
                   </FormItem>*/}
                   <FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.voltage_status_abnormality_alarm_level.display_name}
+                    label={this.state.error_upload_alarm_level.display_name}
                   >
-                    {getFieldDecorator('voltage_status_abnormality_alarm_level')(
+                    {getFieldDecorator('error_upload_alarm_level')(
+                      <RadioGroup>
+                        <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
+                        <Radio style={radioStyle} value="2">导航栏提示</Radio>
+                        <Radio style={radioStyle} value="3">无</Radio>
+                      </RadioGroup>
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayoutWithLabel}
+                    label={this.state.missing_upload_alarm_level.display_name}
+                  >
+                    {getFieldDecorator('missing_upload_alarm_level')(
                       <RadioGroup>
                         <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
                         <Radio style={radioStyle} value="2">导航栏提示</Radio>

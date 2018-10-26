@@ -26,7 +26,7 @@ class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
-    const company_code = sessionStorage.getItem('company_code');
+    this.company_code = sessionStorage.getItem('company_code');
     this.state = {
       showExportBtn: find(this.permissions, {name: 'meter_data_export'}),
       showAddBtnByCon: false,
@@ -52,6 +52,8 @@ class UserMeterAnalysis extends PureComponent {
       total_difference_value:'0',
       per_page:30,
       canLoadByScroll:true,
+      sort_field:this.company_code==='hy'?'sort_number':'concentrator_number',
+      sort_direction:'asc'
     }
   }
 
@@ -90,7 +92,9 @@ class UserMeterAnalysis extends PureComponent {
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
             per_page:this.state.per_page,
-            display_type: this.state.display_type
+            display_type: this.state.display_type,
+            sort_field: this.state.sort_field,
+            sort_direction: this.state.sort_direction
           },function () {
             that.setState({
               canLoadByScroll:true,
@@ -116,7 +120,9 @@ class UserMeterAnalysis extends PureComponent {
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
         display_type: this.state.display_type,
-        per_page:this.state.per_page
+        per_page:this.state.per_page,
+        sort_field: this.state.sort_field,
+        sort_direction: this.state.sort_direction
       },this.changeTableY)
     })
 
@@ -136,7 +142,9 @@ class UserMeterAnalysis extends PureComponent {
         started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
         per_page:this.state.per_page,
-        display_type: this.state.display_type
+        display_type: this.state.display_type,
+        sort_field: this.state.sort_field,
+        sort_direction: this.state.sort_direction
       })
     })
   }
@@ -151,7 +159,9 @@ class UserMeterAnalysis extends PureComponent {
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       display_type: 'all',
-      per_page:30
+      per_page:30,
+      sort_field:this.state.sort_field,
+      sort_direction:this.state.sort_direction
     })
   }
 
@@ -190,7 +200,9 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       display_type: this.state.display_type,
-      per_page:this.state.per_page
+      per_page:this.state.per_page,
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction
       // area: this.state.area
     })
   }
@@ -204,7 +216,9 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       display_type: this.state.display_type,
-      per_page:per_page
+      per_page:per_page,
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction
       // area: this.state.area
     })
   }
@@ -256,6 +270,34 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
+  handleTableSort = (pagination, filters, sorter) => {
+    console.log('sorter',sorter);
+    let order='';
+    let columnkey=sorter.columnKey;
+    if(sorter.order==='descend'){
+      order='desc'
+    }else if(sorter.order==='ascend'){
+      order='asc'
+    }
+
+    if(sorter.columnKey==='install_address'){
+      columnkey='address'
+    }
+    this.handleSearch({
+      page: 1,
+      install_address: this.state.install_address,
+      meter_number: this.state.meter_number,
+      member_number: this.state.member_number,
+      real_name: this.state.real_name,
+      ended_at: this.state.ended_at,
+      started_at: this.state.started_at,
+      display_type: this.state.display_type,
+      per_page:this.state.per_page,
+      sort_field: columnkey,
+      sort_direction:order,
+      // area: this.state.area
+    })
+  }
   render() {
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -292,7 +334,8 @@ class UserMeterAnalysis extends PureComponent {
       }
     )*/
   // console.log('custom_headers',custom_headers)
-   const columns = [
+    const company_code = sessionStorage.getItem('company_code');
+    let columns = [
       // {
       //   title: '序号',
       //   dataIndex: 'id',
@@ -304,17 +347,17 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 90,render: (val, record, index) => {
-       return ellipsis2(val, 90)
+     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 100,sorter:true,render: (val, record, index) => {
+       return ellipsis2(val, 100)
      }},
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',render: (val, record, index) => {
+      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',sorter:true,render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
 
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '用户地址', dataIndex: 'install_address', key: 'install_address', width: 130,
+      {title: '用户地址', dataIndex: 'install_address', key: 'install_address',sorter:true, width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }},
@@ -324,8 +367,8 @@ class UserMeterAnalysis extends PureComponent {
      {title: '温度介质类型', width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
        return ellipsis2(val, 100)
      }},
-      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value', width: 80,render: (val, record, index) => {
-        return ellipsis2(val, 80)
+      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value',sorter:true, width: 100,render: (val, record, index) => {
+        return ellipsis2(val, 100)
       }},
       {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
         return ellipsis2(renderErrorData(val), 100)
@@ -360,30 +403,48 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 100,render: (val, record, index) => {
-        return ellipsis2(val, 100)
+      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 110,sorter:true,render: (val, record, index) => {
+        return ellipsis2(val, 110)
       }},
       {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},
-      {title: '抄表员', dataIndex: 'reader', key: 'reader',},
-      {
-        title: '查询历史状况',
-        key: 'operation',
-        fixed: 'right',
-        width: 110,
-        render: (val, record, index) => {
-          return (
-            <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
-            </div>
-          )
-        }
-      },
     ];
+    if(company_code==='hy'){
+      columns=[...columns,{title: '抄表员', dataIndex: 'reader', key: 'reader', width: 90,render: (val, record, index) => {
+        return ellipsis2(val, 90)
+      }},{title: '排序号', dataIndex: 'sort_number', key: 'sort_number',sorter:true,},
+        {
+          title: '查询历史状况',
+          key: 'operation',
+          fixed: 'right',
+          width: 110,
+          render: (val, record, index) => {
+            return (
+              <div>
+                <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+              </div>
+            )
+          }
+        }]
+    }else{
+      columns=[...columns,{title: '抄表员', dataIndex: 'reader', key: 'reader',},
+        {
+          title: '查询历史状况',
+          key: 'operation',
+          fixed: 'right',
+          width: 110,
+          render: (val, record, index) => {
+            return (
+              <div>
+                <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+              </div>
+            )
+          }
+        }]
+    }
     const {dispatch} =this.props;
     const {isMobile} =this.props.global;
-    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
@@ -441,6 +502,8 @@ class UserMeterAnalysis extends PureComponent {
                                      return 'error'
                                    }
                                  }}
+
+                                 onChange={this.handleTableSort}
                 />
             {/*    <Table
                   rowClassName={function (record, index) {
@@ -466,7 +529,7 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           width="750px"
           key={ Date.parse(new Date())}
-          title={`水表 ${this.state.edit_meter_number} 详细信息`}
+          title={`水表 ${this.state.edit_meter_number} 详细信息(红色柱状图表示当天错报,黄色表示当天漏报)`}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}

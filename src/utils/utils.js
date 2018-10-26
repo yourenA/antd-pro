@@ -693,3 +693,12 @@ export function fillZero(val) {
   }
   return val
 }
+import request from '../utils/request';
+export async function processed_request(params) {
+  return request(`/processed_abnormalities`,{
+    method:'POST',
+    data: {
+      ...params,
+    },
+  });
+}

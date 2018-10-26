@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from "react";
-import {Form, Select, Layout, Card, Button, Input, message, TimePicker, Switch,List,Modal ,Tabs,Icon ,InputNumber,Popconfirm  } from "antd";
+import {Form, Select, Layout, Card, Button, Input, message, Radio, Switch,List,Modal ,Tabs,Icon ,InputNumber,Popconfirm  } from "antd";
 import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 import request from "./../../../utils/request";
@@ -16,6 +16,7 @@ const {Content} = Layout;
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 @connect(state => ({
   meter_models: state.meter_models,
 }))
@@ -24,7 +25,7 @@ class EditPassword extends Component {
     super(props);
     this.format = 'HH:mm';
     this.state = {
-      consumption_abnormality_is_open: {},
+      consumption_abnormality_alarm_level: {},
       consumption_abnormality_normal_meter_value: {},
       consumption_abnormality_meter_models: {},
       consumption_abnormality_special_meters:{},
@@ -50,8 +51,8 @@ class EditPassword extends Component {
       console.log(response);
       this.changeTableY()
       that.setState({
-        consumption_abnormality_is_open: find(response.data.data, function (o) {
-          return o.name === 'consumption_abnormality_is_open'
+        consumption_abnormality_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'consumption_abnormality_alarm_level'
         }),
         consumption_abnormality_normal_meter_value: find(response.data.data, function (o) {
           return o.name === 'consumption_abnormality_normal_meter_value'
@@ -65,7 +66,7 @@ class EditPassword extends Component {
       },function () {
         const {form} = that.props;
         form.setFieldsValue({
-          consumption_abnormality_is_open: that.state.consumption_abnormality_is_open.value==='1'?true:false,
+          consumption_abnormality_alarm_level: that.state.consumption_abnormality_alarm_level.value,
           consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
         });
       })
@@ -81,7 +82,7 @@ class EditPassword extends Component {
     const {form} = this.props;
     const that=this;
     form.setFieldsValue({
-      consumption_abnormality_is_open: that.state.consumption_abnormality_is_open.value==='1'?true:false,
+      consumption_abnormality_alarm_level: that.state.consumption_abnormality_alarm_level.value,
       consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
     });
   }
@@ -92,7 +93,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              consumption_abnormality_is_open:values.consumption_abnormality_is_open?'1':'-1',
+              consumption_abnormality_alarm_level:values.consumption_abnormality_alarm_level,
               consumption_abnormality_normal_meter_value:values.consumption_abnormality_normal_meter_value
             }
           }).then((response)=> {
@@ -210,7 +211,7 @@ class EditPassword extends Component {
   handleSubmitSpecial=()=>{
     const formValues = this.specialFormRef.props.form.getFieldsValue();
     console.log(formValues)
-    if(!formValues.meter_number.key ){
+    if(!formValues.meter_number ){
       message.error(`水表号不能为空`)
       return false
     }
@@ -225,7 +226,7 @@ class EditPassword extends Component {
       request(`/configs`, {
         method: 'PATCH',
         data: {
-          consumption_abnormality_special_meters:[{number:formValues.meter_number.key,value:formValues.value},...this.state.consumption_abnormality_special_meters.value]
+          consumption_abnormality_special_meters:[{number:formValues.meter_number,value:formValues.value},...this.state.consumption_abnormality_special_meters.value]
         }
       }).then((response)=> {
         console.log(response);
@@ -315,6 +316,11 @@ class EditPassword extends Component {
         sm: {span: 12},
       }
     };
+    const radioStyle = {
+      display: 'block',
+      height: '40px',
+      lineHeight: '40px',
+    };
     const {getFieldDecorator,} = this.props.form;
     const that=this;
     return (
@@ -325,22 +331,34 @@ class EditPassword extends Component {
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs defaultActiveKey="1" className="system-tabs" >
                   <TabPane tab={this.state.consumption_abnormality_normal_meter_value.display_name} key="1">
-                    <Form style={{maxWidth: '500px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
-                      <FormItem
+                    <Form style={{maxWidth: '550px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
+                     {/* <FormItem
                         {...formItemLayoutWithLabel}
-                        label={this.state.consumption_abnormality_is_open.display_name}
+                        label={this.state.consumption_abnormality_alarm_level.display_name}
 
                       >
-                        {getFieldDecorator('consumption_abnormality_is_open', {valuePropName: 'checked'})(
+                        {getFieldDecorator('consumption_abnormality_alarm_level', {valuePropName: 'checked'})(
                           <Switch />
                         )}
-                      </FormItem>
+                      </FormItem>*/}
                       <FormItem
                         label={this.state.consumption_abnormality_normal_meter_value.display_name}
                         {...formItemLayoutWithLabel}
                       >
                         {getFieldDecorator('consumption_abnormality_normal_meter_value', {})(
                           <Input />
+                        )}
+                      </FormItem>
+                      <FormItem
+                        {...formItemLayoutWithLabel}
+                        label={this.state.consumption_abnormality_alarm_level.display_name}
+                      >
+                        {getFieldDecorator('consumption_abnormality_alarm_level')(
+                          <RadioGroup>
+                            <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
+                            <Radio style={radioStyle} value="2">导航栏提示</Radio>
+                            <Radio style={radioStyle} value="3">无</Radio>
+                          </RadioGroup>
                         )}
                       </FormItem>
                       <FormItem

@@ -3,9 +3,12 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Icon, Input, Button,TreeSelect} from 'antd';
+import {Form, DatePicker, Row, Icon, Input, Button,TreeSelect,Radio} from 'antd';
 import moment from 'moment'
+
 import {disabledDate} from './../../../utils/utils'
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
 class SearchForm extends Component {
@@ -110,6 +113,18 @@ class SearchForm extends Component {
           <FormItem label="水表编号"  style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
+            )}
+          </FormItem>
+          <FormItem label="显示"
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
+            {getFieldDecorator('display_type',{
+              initialValue:  'only_unprocessed',
+            })(
+              <RadioGroup>
+                <RadioButton value="only_unprocessed">未处理</RadioButton>
+                <RadioButton value="only_processed">已处理</RadioButton>
+              </RadioGroup>
             )}
           </FormItem>
           <FormItem>

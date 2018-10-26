@@ -2,22 +2,21 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from "react";
-import {Form, Select, Layout, Card, Button, Input, message, TimePicker, Switch} from "antd";
+import {Form, Select, Layout, Card, Button, Input, message, Radio, Switch} from "antd";
 import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 import request from "./../../../utils/request";
 import find from "lodash/find";
-import moment from 'moment'
 const {Content} = Layout;
 const FormItem = Form.Item;
-const Option = Select.Option;
+const RadioGroup = Radio.Group;
 class EditPassword extends Component {
   constructor(props) {
     super(props);
     this.format = 'HH:mm';
     this.state = {
       data: [],
-      zero_abnormality_is_open: {},
+      zero_abnormality_alarm_level: {},
       zero_abnormality_days: {}
     }
   }
@@ -31,8 +30,8 @@ class EditPassword extends Component {
       console.log(response);
       that.setState({
         data: response.data.data,
-        zero_abnormality_is_open: find(response.data.data, function (o) {
-          return o.name === 'zero_abnormality_is_open'
+        zero_abnormality_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'zero_abnormality_alarm_level'
         }),
         zero_abnormality_days: find(response.data.data, function (o) {
           return o.name === 'zero_abnormality_days'
@@ -40,7 +39,7 @@ class EditPassword extends Component {
       },function () {
         const {form} = that.props;
         form.setFieldsValue({
-          zero_abnormality_is_open: that.state.zero_abnormality_is_open.value==='1'?true:false,
+          zero_abnormality_alarm_level: that.state.zero_abnormality_alarm_level.value,
           zero_abnormality_days: that.state.zero_abnormality_days.value,
         });
       })
@@ -53,7 +52,7 @@ class EditPassword extends Component {
     const that=this;
     // form.resetFields();
     form.setFieldsValue({
-      zero_abnormality_is_open: that.state.zero_abnormality_is_open.value==='1'?true:false,
+      zero_abnormality_alarm_level: that.state.zero_abnormality_alarm_level.value,
       zero_abnormality_days: that.state.zero_abnormality_days.value,
     });
   }
@@ -65,7 +64,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              zero_abnormality_is_open:values.zero_abnormality_is_open?'1':'-1',
+              zero_abnormality_alarm_level:values.zero_abnormality_alarm_level,
               zero_abnormality_days:values.zero_abnormality_days
             }
           }).then((response)=> {
@@ -89,7 +88,11 @@ class EditPassword extends Component {
         sm: {span: 12},
       }
     };
-
+    const radioStyle = {
+      display: 'block',
+      height: '40px',
+      lineHeight: '40px',
+    };
     const {getFieldDecorator,} = this.props.form;
     return (
       <Layout className="layout">
@@ -97,17 +100,17 @@ class EditPassword extends Component {
           <div className="content">
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '零水量异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Form style={{maxWidth: '500px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
+                <Form style={{maxWidth: '550px', margin: '0 auto'}} onSubmit={this.handleSubmit}>
 
-                  <FormItem
+         {/*         <FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.zero_abnormality_is_open.display_name}
+                    label={this.state.zero_abnormality_alarm_level.display_name}
 
                   >
-                    {getFieldDecorator('zero_abnormality_is_open', {valuePropName: 'checked'})(
+                    {getFieldDecorator('zero_abnormality_alarm_level', {valuePropName: 'checked'})(
                       <Switch/>
                     )}
-                  </FormItem>
+                  </FormItem>*/}
 
                   <FormItem
                     label={this.state.zero_abnormality_days.display_name}
@@ -118,12 +121,25 @@ class EditPassword extends Component {
                     )}
                   </FormItem>
                   <FormItem
+                    {...formItemLayoutWithLabel}
+                    label={this.state.zero_abnormality_alarm_level.display_name}
+                  >
+                    {getFieldDecorator('zero_abnormality_alarm_level')(
+                      <RadioGroup>
+                        <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
+                        <Radio style={radioStyle} value="2">导航栏提示</Radio>
+                        <Radio style={radioStyle} value="3">无</Radio>
+                      </RadioGroup>
+                    )}
+                  </FormItem>
+                  <FormItem
                     wrapperCol={ {
                       offset: 10,
                     }}>
                     <Button onClick={this.handleFormReset} >重置</Button>
                     <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >确定</Button>
                   </FormItem>
+
                 </Form>
               </Card>
             </PageHeaderLayout>

@@ -9,9 +9,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-@connect(state => ({
-  meters: state.meters,
-}))
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -20,35 +17,8 @@ class AddPoliciesForm extends Component {
 
   componentDidMount() {
     const that = this;
-    const {dispatch} = this.props;
-    if (this.props.editSpecialRecord) {
-
-    } else {
-      dispatch({
-        type: 'meters/fetch',
-        payload: {
-          page: 1,
-          number: ''
-        },
-        callback: ()=> {
-        }
-      });
-    }
   }
 
-  handleChange = (value)=> {
-    console.log(value)
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'meters/fetch',
-      payload: {
-        page: 1,
-        number: value
-      },
-      callback: ()=> {
-      }
-    })
-  }
 
   render() {
     const formItemLayoutWithLabel2 = {
@@ -61,7 +31,6 @@ class AddPoliciesForm extends Component {
         sm: {span: 8},
       }
     };
-    const {meters}=this.props
     const {getFieldDecorator} = this.props.form;
     return (
       <div>
@@ -76,16 +45,10 @@ class AddPoliciesForm extends Component {
             </span>
                 )}>
                 {getFieldDecorator('meter_number', {
-                  initialValue: {key: '', label: ''},
-                  rules: [{required: true, message: '水表类型不能为空'}],
+                  initialValue: this.props.editSpecialRecord ? this.props.editSpecialRecord.meter_number : "",
+                  rules: [{required: true, message: '水表号不能为空'}],
                 })(
-                  <Select labelInValue={true} onSearch={this.handleChange} showSearch>
-                    { meters.data.map((item, key) => {
-                      return (
-                        <Option key={item.number} value={item.number.toString()}>{item.number}</Option>
-                      )
-                    }) }
-                  </Select>
+                  <Input disabled={this.props.editSpecialRecord ? true:false}   />
                 )}
               </FormItem>
           }

@@ -8,6 +8,7 @@ import {connect} from 'dva';
 import moment from 'moment'
 import { routerRedux } from 'dva/router';
 import find from 'lodash/find'
+import ProcessedForm from './../ZeroAbnormality/ProcessedForm'
 import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import Detail from './Detail'
@@ -44,6 +45,9 @@ class Leak_abnormality extends PureComponent {
       area_id: '',
       per_page:30,
       canLoadByScroll:true,
+      display_type:'only_unprocessed',
+      processed_model:false,
+      editRecord:{}
     }
   }
 
@@ -66,6 +70,7 @@ class Leak_abnormality extends PureComponent {
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       per_page:30,
+      display_type:'only_unprocessed'
     })
   }
   componentWillUnmount() {
@@ -96,6 +101,7 @@ class Leak_abnormality extends PureComponent {
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
             per_page:this.state.per_page,
+            display_type:this.state.display_type,
           },function () {
             that.setState({
               canLoadByScroll:true,
@@ -119,7 +125,8 @@ class Leak_abnormality extends PureComponent {
       meter_number:'',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      per_page:30
+      per_page:30,
+      display_type:'only_unprocessed',
     })
   }
 
@@ -155,7 +162,8 @@ class Leak_abnormality extends PureComponent {
       member_number: this.state.member_number,
       concentrator_number: this.state.concentrator_number,
       meter_number: this.state.meter_number,
-      per_page:this.state.per_page
+      per_page:this.state.per_page,
+      display_type:this.state.display_type,
       // area: this.state.area
     })
   }
@@ -169,7 +177,8 @@ class Leak_abnormality extends PureComponent {
       // date: this.state.date,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      per_page:per_page
+      per_page:per_page,
+      display_type:this.state.display_type,
     })
   }
   operate = (record)=> {
@@ -179,6 +188,38 @@ class Leak_abnormality extends PureComponent {
       difference_values: record.difference_values,
       editModal: true
     })
+  }
+  processed=(abnormality_type)=>{
+    const that = this;
+    const {dispatch} = this.props;
+    const formValues =this.ProcessedForm.props.form.getFieldsValue();
+    console.log('formValues',formValues);
+    dispatch({
+      type:'zero_abnormality/processed',
+      payload: {
+        abnormality_type:abnormality_type,
+        ...formValues,
+        not_reminder_days:String(formValues.not_reminder_days)
+      },
+      callback: function () {
+        message.success("确认异常成功")
+        that.setState({
+          processed_model:false
+        })
+        that.handleSearch({
+          area_id: that.state.area_id,
+          page: that.state.page,
+          member_number:that.state.member_number,
+          concentrator_number:that.state.concentrator_number,
+          meter_number:that.state.meter_number,
+          // date: that.state.date,
+          ended_at: that.state.ended_at,
+          started_at: that.state.started_at,
+          per_page:that.state.per_page,
+          display_type:that.state.display_type,
+        })
+      }
+    });
   }
   render() {
     const {leak_abnormality: {data, meta, loading}, dma} = this.props;
@@ -218,18 +259,21 @@ class Leak_abnormality extends PureComponent {
           const parseVal=val.join(',');
           return ellipsis2(parseVal,150)
         }},
-      {title: '日期', dataIndex: 'date',   key: 'date',
+      {title: '日期', dataIndex: 'date',   key: 'date',width: 100, render: (val, record, index) => {
+        return ellipsis2(val,100)
+      }
       },
-
+      {title: '备注', dataIndex: 'remark', key: 'remark'},
       {
-        title: '当天水表读数',
+        title: '操作',
         key: 'operation',
         fixed: 'right',
-        width: 110,
+        width: 200,
         render: (val, record, index) => {
           return (
             <div>
               <Button type="primary" size='small' onClick={()=>this.operate(record)}>当天水表读数</Button>
+              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>确认异常</Button>}
             </div>
           )
         }
@@ -285,6 +329,15 @@ class Leak_abnormality extends PureComponent {
                 onCancel={() => this.setState({editModal: false})}
               >
                 <Detail abnormality_hours={this.state.abnormality_hours} difference_values={this.state.difference_values}/>
+              </Modal>
+              <Modal
+                key={ Date.parse(new Date())+1}
+                title={`确认异常`}
+                visible={this.state.processed_model}
+                onOk={()=>this.processed('2')}
+                onCancel={() => this.setState({processed_model: false})}
+              >
+                <ProcessedForm meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
               </Modal>
             </PageHeaderLayout>
           </div>

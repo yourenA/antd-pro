@@ -2,22 +2,21 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from "react";
-import {Form, Select, Layout, Card, Button, Input, message, TimePicker, Switch} from "antd";
+import {Form, Select, Layout, Card, Button, Input, message, Radio, Switch} from "antd";
 import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 import request from "./../../../utils/request";
 import find from "lodash/find";
-import moment from 'moment'
 const {Content} = Layout;
 const FormItem = Form.Item;
-const Option = Select.Option;
+const RadioGroup = Radio.Group;
 class EditPassword extends Component {
   constructor(props) {
     super(props);
     this.format = 'HH:mm';
     this.state = {
       data: [],
-      valve_status_abnormality_is_open: {},
+      valve_status_abnormality_alarm_level: {},
     }
   }
 
@@ -30,13 +29,13 @@ class EditPassword extends Component {
       console.log(response);
       that.setState({
         data: response.data.data,
-        valve_status_abnormality_is_open: find(response.data.data, function (o) {
-          return o.name === 'valve_status_abnormality_is_open'
+        valve_status_abnormality_alarm_level: find(response.data.data, function (o) {
+          return o.name === 'valve_status_abnormality_alarm_level'
         }),
       },function () {
         const {form} = that.props;
         form.setFieldsValue({
-          valve_status_abnormality_is_open: that.state.valve_status_abnormality_is_open.value==='1'?true:false,
+          valve_status_abnormality_alarm_level: that.state.valve_status_abnormality_alarm_level.value,
         });
       })
 
@@ -48,7 +47,7 @@ class EditPassword extends Component {
     const that=this;
     // form.resetFields();
     form.setFieldsValue({
-      valve_status_abnormality_is_open: that.state.valve_status_abnormality_is_open.value==='1'?true:false,
+      valve_status_abnormality_alarm_level: that.state.valve_status_abnormality_alarm_level.value,
     });
   }
   handleSubmit=()=>{
@@ -59,7 +58,7 @@ class EditPassword extends Component {
           request(`/configs`, {
             method: 'PATCH',
             data: {
-              valve_status_abnormality_is_open:values.valve_status_abnormality_is_open?'1':'-1',
+              valve_status_abnormality_alarm_level:values.valve_status_abnormality_alarm_level,
             }
           }).then((response)=> {
             console.log(response);
@@ -82,7 +81,11 @@ class EditPassword extends Component {
         sm: {span: 12},
       }
     };
-
+    const radioStyle = {
+      display: 'block',
+      height: '40px',
+      lineHeight: '40px',
+    };
     const {getFieldDecorator,} = this.props.form;
     return (
       <Layout className="layout">
@@ -90,15 +93,27 @@ class EditPassword extends Component {
           <div className="content">
             <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表阀控异常报警设置'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Form style={{maxWidth: '500px', margin: '0 auto'}} >
+                <Form style={{maxWidth: '550px', margin: '0 auto'}} >
 
-                  <FormItem
+                  {/*<FormItem
                     {...formItemLayoutWithLabel}
-                    label={this.state.valve_status_abnormality_is_open.display_name}
+                    label={this.state.valve_status_abnormality_alarm_level.display_name}
 
                   >
-                    {getFieldDecorator('valve_status_abnormality_is_open', {valuePropName: 'checked'})(
+                    {getFieldDecorator('valve_status_abnormality_alarm_level', {valuePropName: 'checked'})(
                       <Switch />
+                    )}
+                  </FormItem>*/}
+                  <FormItem
+                    {...formItemLayoutWithLabel}
+                    label={this.state.valve_status_abnormality_alarm_level.display_name}
+                  >
+                    {getFieldDecorator('valve_status_abnormality_alarm_level')(
+                      <RadioGroup>
+                        <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
+                        <Radio style={radioStyle} value="2">导航栏提示</Radio>
+                        <Radio style={radioStyle} value="3">无</Radio>
+                      </RadioGroup>
                     )}
                   </FormItem>
                   <FormItem

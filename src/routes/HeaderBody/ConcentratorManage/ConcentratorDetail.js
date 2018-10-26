@@ -217,17 +217,6 @@ class UserMeterAnalysis extends PureComponent {
     }
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   fixed:'left',
-      //   width: 50,
-      //   className: 'table-index',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.initPage,index)
-      //   }
-      // },
       {title: '水表号', width: 90, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val,90)
       }},

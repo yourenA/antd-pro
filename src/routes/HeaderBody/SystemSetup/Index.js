@@ -14,6 +14,7 @@ import VoltageSetup from './VoltageSetup'
 import ValveStatusSetup from './ValveStatusSetup'
 import ExportSetup from './ExportSetup/Index'
 import ConcentratorOfflineSetup from './ConcentratorOfflineSetup'
+import MeterUploadSetup from './MeterUploadSetup'
 import PressureTemperatureSetup from './PressureTemperatureSetup/Index'
 // import SystemName from './SystemName'
 // import SmsNotice from './SmsNotice'
@@ -67,6 +68,10 @@ class UserMeterLife extends PureComponent {
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/concentrator_offline_setup`}
                 component={ConcentratorOfflineSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/meter_upload_setup`}
+                component={MeterUploadSetup}
               />
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/pressure_temperature_setup`}
