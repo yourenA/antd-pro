@@ -44,6 +44,7 @@ class MeterModel extends PureComponent {
       canOperateMeter: localStorage.getItem('canOperateMeter') === 'true' ? true : false,
       per_page:30,
       canLoadByScroll:true,
+      selectedRowKeys: [],
     }
   }
 
@@ -165,7 +166,8 @@ class MeterModel extends PureComponent {
         })
         if(!fetchAndPush){
           that.setState({
-            initPage:values.page
+            initPage:values.page,
+            selectedRowKeys:[]
           })
         }
         if(cb) cb()
@@ -353,9 +355,12 @@ class MeterModel extends PureComponent {
     });
     if (cb)cb()
   }
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
+  }
 
   render() {
-
+    const { selectedRowKeys } = this.state;
     const {meters: {data, meta, loading}, meter_models, user_command_data} = this.props;
     const {isMobile} =this.props.global;
     const columns = [
@@ -450,7 +455,7 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: '电池电压状态', dataIndex: 'voltage_status', key: 'voltage_status', width: 100,
+        title: '电池电压状态', dataIndex: 'voltage_status', key: 'voltage_status', width: 110,
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "success" : "error"}/>{record.voltage_status_explain}
@@ -558,6 +563,10 @@ class MeterModel extends PureComponent {
       }
 
     ];
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code==='hy') {
+      columns.splice(7, 1)
+    }
     const operate={
       title: '操作',
       width: isMobile ? 100 : 180,
@@ -627,9 +636,14 @@ class MeterModel extends PureComponent {
         </p>
       ),
     }
+
     if (this.state.canOperateMeter) {
       columns.push(operate)
     }
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea}
@@ -646,6 +660,8 @@ class MeterModel extends PureComponent {
                                    clickInfo={this.showCommandInfo}
                                    per_page={this.state.per_page}
                                    isMobile={isMobile}
+                                   valveCommand={this.valveCommand}
+                                   selectedRowKeys={selectedRowKeys}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
                                    canOperateConcentrator={this.state.canOperateMeter} changeShowOperate={()=> {
@@ -655,11 +671,12 @@ class MeterModel extends PureComponent {
                   </div>
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
-                                 dataSource={data} columns={columns} rowKey={record => record.id}
+                                 dataSource={data} columns={columns} rowKey={record => record.number}
                                  scroll={{x:3450,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
+                                 rowSelection={company_code!=='hy'?rowSelection:null}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>

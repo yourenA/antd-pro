@@ -19,7 +19,7 @@ class SearchForm extends Component {
       console.log(fieldsValue)
       const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
-        query: fieldsValue.query,
+        size_type: fieldsValue.size_type===true?'2':'',
         /*started_at: rangeTimeValue ? moment(rangeTimeValue[0]).format('YYYY-MM-DD') : '',
         ended_at: rangeTimeValue ? moment(rangeTimeValue[1]).format('YYYY-MM-DD') : '',*/
       };
@@ -33,6 +33,8 @@ class SearchForm extends Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
+
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
@@ -41,16 +43,20 @@ class SearchForm extends Component {
                 <Input placeholder="请输入"/>
               )}
             </FormItem>*/}
-            {/*<FormItem label="创建时间">
-              {getFieldDecorator('range-time-picker',{
-                initialValue:this.props.initRange?this.props.initRange: '',
+          {
+            company_code==='mys'&&
+            <FormItem label="只显示大表集中器">
+              {getFieldDecorator('size_type',{
+                valuePropName: 'checked',
+                initialValue:false,
               })(
-                <RangePicker  allowClear={this.props.initRange?false:true}/>
+                <Switch  />
               )}
-            </FormItem>*/}
+            </FormItem>
+          }
           <FormItem>
-            {/*<Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
+            {company_code==='mys'&&<Button type="primary" htmlType="submit">查询</Button>}
+            {company_code==='mys'&&<Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>}
             {(this.props.showAddBtn)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
           </FormItem>
           <FormItem  label="打开操作栏" style={{float:'right'}} className="openOperate">

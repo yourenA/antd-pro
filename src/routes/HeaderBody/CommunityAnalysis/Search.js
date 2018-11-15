@@ -95,6 +95,8 @@ class SearchForm extends Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
+
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row  gutter={16}>
@@ -126,6 +128,7 @@ class SearchForm extends Component {
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            {company_code==='hy'&&<Button type="primary" style={{marginLeft: 8}} onClick={this.props.handleLeak}  className="btn-cyan">计算漏损率</Button>}
           </FormItem>
         </Row>
       </Form>

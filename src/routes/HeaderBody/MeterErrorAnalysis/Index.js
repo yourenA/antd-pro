@@ -13,7 +13,7 @@ import uuid from 'uuid/v4'
 import debounce from 'lodash/throttle'
 import {renderIndex,renderErrorData,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import Detail from './../UserMeterAnalysis/Detail'
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
@@ -233,6 +233,12 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
+  operate = (record)=> {
+    this.setState({
+      edit_meter_number: record.meter_number,
+      editModal: true
+    })
+  }
   render() {
     const {meter_errors: {data, meta, loading}, manufacturers,dispatch} = this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -309,7 +315,6 @@ class UserMeterAnalysis extends PureComponent {
       }},
       {title: '厂商名称', dataIndex: 'manufacturer_name',  key: 'manufacturer_name'},
 
-
     ];
     const that=this;
     const renderComandRecord=(record)=>{
@@ -319,7 +324,7 @@ class UserMeterAnalysis extends PureComponent {
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
-          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}点抄</Button>
+          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 3,marginBottom: 3}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}点抄</Button>
         )
       })
       return renderCommandBtn
@@ -327,11 +332,12 @@ class UserMeterAnalysis extends PureComponent {
     const operate={
       title: '操作',
       key: 'operation',
-      width: 240,
+      width: 250,
       fixed: 'right',
       render: (val, record, index) => {
         return (
           <div>
+            <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
             {this.state.showCommandBtn&&renderComandRecord(record)}
           </div>
         )
@@ -398,6 +404,17 @@ class UserMeterAnalysis extends PureComponent {
               </Card>
             </PageHeaderLayout>
           </div>
+          <Modal
+            destroyOnClose={true}
+            width="900px"
+            title={`水表 ${this.state.edit_meter_number} 详细信息(红色柱状图表示当天错报,黄色表示当天漏报)`}
+            visible={this.state.editModal}
+            onOk={this.handleEdit}
+            onCancel={() => this.setState({editModal: false})}
+          >
+            <Detail showExtra={true} meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
+                    started_at={this.state.started_at}/>
+          </Modal>
         </Content>
       </Layout>
     );

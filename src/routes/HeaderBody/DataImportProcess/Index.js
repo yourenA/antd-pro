@@ -253,12 +253,14 @@ class Vendor extends PureComponent {
         }
       }
     }
-    formValues.longitude='113.131695';
-    formValues.latitude='27.827433';
+    const company_code = sessionStorage.getItem('company_code');
+    var center=company_code==='mys'?[114.288209,27.637665]:[113.131695, 27.827433]
+    formValues.longitude=center[0];
+    formValues.latitude=center[1];
     if (formValues.latitude_longitude) {
       let latitude_longitude = formValues.latitude_longitude
-      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
-      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : center[0]
+      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : center[1]
       that.addConcerntorRequest(formValues,current)
     }else if(formValues.install_address){
       let myGeo = new this.BMap.Geocoder();

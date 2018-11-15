@@ -411,6 +411,7 @@ class UserMeterAnalysis extends PureComponent {
       }},
     ];
     if(company_code==='hy'){
+      columns.splice(5,1)
       columns=[...columns,{title: '抄表员', dataIndex: 'reader', key: 'reader', width: 90,render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},{title: '排序号', dataIndex: 'sort_number', key: 'sort_number',sorter:true,},
@@ -527,7 +528,7 @@ class UserMeterAnalysis extends PureComponent {
           </div>
         </Content>
         <Modal
-          width="750px"
+          width="900px"
           key={ Date.parse(new Date())}
           title={`水表 ${this.state.edit_meter_number} 详细信息(红色柱状图表示当天错报,黄色表示当天漏报)`}
           visible={this.state.editModal}

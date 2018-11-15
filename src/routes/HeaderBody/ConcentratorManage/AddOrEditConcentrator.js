@@ -380,62 +380,18 @@ class AddConcentrator extends Component {
             }
 
           </Form></TabPane>
-          <TabPane tab="编辑集中器上传时间" key="editUpload"><Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label="上传周期"
-            >
-              {getFieldDecorator('radio-group', {
-                initialValue: this.state.value,
-              })(
-                <RadioGroup onChange={this.onChange}>
-                  <Radio value="monthly">每月</Radio>
-                  <Radio value="daily">每天</Radio>
-                  <Radio value="hourly">每小时</Radio>
-                  <Radio value="every_fifteen_minutes">每15分钟</Radio>
-                </RadioGroup>
-              )}
-            </FormItem>
-            {
-              that.state.value !== 'every_fifteen_minutes'&&
-              <FormItem
-                {...formItemLayoutWithLabel}
-                label="上传时间"
-              >
-                {
-                  that.state.value === 'monthly'&&<span>日:<InputNumber min={1} max={28} step={1} precision={0} value={this.state.day} onChange={(val)=>{this.setState({day:val})}} style={{width: '60px'}}/></span>
-                }
-                {
-                  (that.state.value === 'monthly'||that.state.value === 'daily')&&<span>时:<InputNumber min={0} max={59} step={1} precision={0} value={this.state.hour} onChange={(val)=>{this.setState({hour:val})}} style={{width: '60px'}}/></span>
-                }
-                分:<InputNumber min={0} max={59} step={1} precision={0} value={this.state.minute} onChange={(val)=>{this.setState({minute:val})}} style={{width: '60px'}}/>
-                秒:<InputNumber min={0} max={59} step={1} precision={0} value={this.state.second} onChange={(val)=>{this.setState({second:val})}} style={{width: '60px'}}/>
-              </FormItem>
-            }
 
-          </Form></TabPane>
-          <TabPane tab="编辑集中器睡眠时间" key="editSleep"><Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label="睡眠时间"
-            >
-              <Checkbox.Group onChange={this.onChangeSleepHours} value={this.state.checkedList} >
-                <Row>
-                  {rendersleep_hours}
-                </Row>
-              </Checkbox.Group>
-            </FormItem>
-          </Form></TabPane>
         </Tabs>
 
         <Modal
-          width="60%"
+          style={{ top: 20 }}
+          width="80%"
           title={`拖动红点选择地址`}
           visible={this.state.mapModal}
           onOk={this.getPoint}
           onCancel={() => this.setState({mapModal: false})}
         >
-          <ShowMap findChildFunc={this.findChildFunc}/>
+          <ShowMap editRecord={this.props.editRecord} findChildFunc={this.findChildFunc}/>
         </Modal>
     </div>
     );

@@ -323,7 +323,7 @@ class FunctionContent extends PureComponent {
                 onOk={()=>this.processed('1')}
                 onCancel={() => this.setState({processed_model: false})}
               >
-                <ProcessedForm meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
+                <ProcessedForm not_reminder_days="90" meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
               </Modal>
             </PageHeaderLayout>
           </div>

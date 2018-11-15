@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Tabs,DatePicker,Button} from 'antd';
+import { Tabs,DatePicker,Button,Table,Badge,Modal } from 'antd';
 import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
 const ButtonGroup = Button.Group;
-import {getTimeDistance,disabledDate,errorNumber} from './../../../utils/utils';
+import {getTimeDistance,disabledDate,errorNumber,renderIndex} from './../../../utils/utils';
 import request from './../../../utils/request'
 import moment from 'moment'
+import ChangeMeterValueForm from './ChangeMeterValueForm'
 const TabPane = Tabs.TabPane;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -41,6 +42,9 @@ class Detail extends PureComponent {
       }
     }).then((response)=>{
       console.log(response);
+      this.setState({
+        Data:response.data
+      })
       that.dynamic(response.data)
     });
   }
@@ -200,7 +204,54 @@ class Detail extends PureComponent {
     });
 
   }
+  handleEditMeterValue=()=>{
+    const that = this;
+    const formValues =this.ChangeMeterValueForm.props.form.getFieldsValue();
+    that.fetch()
+  }
   render() {
+    const Data=[...this.state.Data].reverse()
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+        key: 'id',
+        width: 50,
+        className: 'table-index',
+        render: (text, record, index) => {
+          return (index+1)
+        }
+      },
+      {title: '日期', dataIndex: 'date', key: 'date'},
+      {title: '水表读数', dataIndex: 'value', key: 'value'},
+      {title: '用水量', dataIndex: 'difference_value', key: 'difference_value'},
+      {
+        title: '状态', dataIndex: 'status', key: 'status', width: 70,
+        render: (val, record, index) => {
+          let status='success';
+          let explain='';
+          switch (val){
+            case -2:
+              status='error'
+              explain='错报'
+              break;
+            case -1:
+              status='warning'
+              explain='漏报'
+
+              break;
+            default:
+              status='success'
+              explain='正常'
+          }
+          return (
+            <p>
+              <Badge status={status}/>{explain}
+            </p>
+          )
+        }
+      },
+    ];
     return (
       <div>
         <div >
@@ -235,16 +286,30 @@ class Detail extends PureComponent {
             style={{width: 256}}
           />*/}
         </div>
-        <div className="month-analysis"></div>
+        <Tabs defaultActiveKey="1" tabBarExtraContent={this.props.showExtra && false? <Button type="primary" onClick={()=>{this.setState({editMeterValueModal:true})}}>Extra Action</Button>:null} >
+          <TabPane tab="折线图" key="1">  <div className="month-analysis"></div></TabPane>
+          <TabPane tab="表格" key="2">
+            <Table
+              className={'meter-table'}
+              bordered
+              columns={columns}
+              dataSource={Data}
+              pagination={false}
+              size="small"
+              rowKey={record => record.date}
+            />
+          </TabPane>
+        </Tabs>
+        <Modal
+          destroyOnClose={true}
+          title={``}
+          visible={this.state.editMeterValueModal}
+          onOk={this.handleEditMeterValue}
+          onCancel={() => this.setState({editMeterValueModal: false})}
+        >
+          <ChangeMeterValueForm meter_number={this.props.meter_number}  wrappedComponentRef={(inst) => this.ChangeMeterValueForm = inst}/>
+        </Modal>
       </div>
-     /* <Tabs defaultActiveKey="month-analysis" onChange={this.changeTab}>
-        <TabPane tab="历史水量分析(每月)" key="month-analysis">
-          <div className="month-analysis"></div>
-        </TabPane>
-        <TabPane tab="历史水量分析(每日)" key="day-analysis"  forceRender={true}>
-          <div className="day-analysis"></div>
-        </TabPane>
-      </Tabs>*/
     );
   }
 }

@@ -435,19 +435,8 @@ class UserMeterAnalysis extends PureComponent {
       data[i].uuidkey = uuid()
     }
     const resetMeterData=parseRowSpanData(data)
+    const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     const children=renderIndex(meta,this.state.initPage,record.index)
-      //     return renderRowSpan(children,record)
-      //   }
-      // },
       { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
         const children= (
           ellipsis2(val, 80)
@@ -533,6 +522,9 @@ class UserMeterAnalysis extends PureComponent {
       }}
 
     ];
+    if(company_code==='hy') {
+      columns.splice(8, 1)
+    }
     const operate={
       title: '操作',
       key: 'operation',
@@ -573,7 +565,6 @@ class UserMeterAnalysis extends PureComponent {
       columns.push(operate)
     }
     const {dispatch} =this.props;
-    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>

@@ -730,6 +730,7 @@ export default class Demo extends React.Component {
         rowClassName={this.props.rowClassName && this.props.rowClassName}
         onRow={this.props.onRow}
         onChange={this.props.onChange}
+        rowSelection={this.props.rowSelection && this.props.rowSelection}
       />
     );
   }

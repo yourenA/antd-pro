@@ -347,7 +347,8 @@ class AddConcentrator extends Component {
 
         </Form>
         <Modal
-          width="60%"
+          style={{ top: 20 }}
+          width="80%"
           title={`拖动红点选择地址`}
           visible={this.state.mapModal}
           onOk={this.getPoint}

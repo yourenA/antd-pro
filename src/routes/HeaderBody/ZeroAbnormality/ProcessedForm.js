@@ -54,7 +54,7 @@ class AddPoliciesForm extends Component {
           )}
         >
           {getFieldDecorator('not_reminder_days', {
-            initialValue:"",
+            initialValue:this.props.not_reminder_days?this.props.not_reminder_days:"1",
           })(
             <InputNumber/>
           )}

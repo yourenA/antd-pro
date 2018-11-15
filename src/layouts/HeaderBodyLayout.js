@@ -155,13 +155,11 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 
   renderNotification = (key, data, notificationText)=> {
-    console.log('key', key)
     const company_code = sessionStorage.getItem('company_code');
     const NotifyDay = localStorage.getItem(company_code + key);
     const dispatch = this.props.dispatch;
     const date = moment(new Date()).format('YYYY-MM-DD');
     if ((data.alarm_level === 2 || data.alarm_level === 1) && data.count !== 0) {
-      console.log('在菜单提示', data.alarm_level)
       this.setState({
         [key]: true
       })
@@ -423,7 +421,7 @@ class HeaderBodyLayout extends React.PureComponent {
       <Layout >
         <div className={styles.header}>
           <div className="logo">
-            <Link to={`/${company_code}/main`} className="logo-up">{company_name}{projectName}</Link>
+            <Link to={`/${company_code}/main`} className="logo-up animated bounceInLeft ">{company_name}{projectName}</Link>
           </div>
           {
             isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomRight"

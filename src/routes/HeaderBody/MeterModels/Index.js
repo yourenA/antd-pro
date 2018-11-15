@@ -253,6 +253,10 @@ class MeterModel extends PureComponent {
         title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
     ];
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code==='hy') {
+      columns.splice(3, 1)
+    }
     const operate={
       title: '操作',
       width: 100,

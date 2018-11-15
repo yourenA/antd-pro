@@ -135,12 +135,12 @@ class SiderTree extends PureComponent {
       const beforeStr = item.name ? item.name.substr(0, index) : item.number.substr(0, index);
       const afterStr = item.name ? item.name.substr(index + this.state.searchValue.length) : item.number.substr(index + this.state.searchValue.length);
       const title = index > -1 ? (
-        <span>
+        <span title={beforeStr+this.state.searchValue+afterStr}>
           {beforeStr}
           <span style={{color: '#f50'}}>{this.state.searchValue}</span>
           {afterStr}
         </span>
-      ) : <span>{item.name ? item.name : item.number}</span>;
+      ) : <span title={item.name ? item.name : item.number}>{item.name ? item.name : item.number}</span>;
       if (item.children) {
         return (
           <TreeNode title={<span>{title}{item.tooltip ?

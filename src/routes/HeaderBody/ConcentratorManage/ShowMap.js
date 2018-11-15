@@ -16,16 +16,23 @@ export default class MapData extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.findChildFunc(this.getPoint);
+    if(this.props.findChildFunc){
+      this.props.findChildFunc(this.getPoint);
+    }
+
     var map = new this.BMap.Map("concentratorMap");          // 创建地图实例
-    map.centerAndZoom(new BMap.Point(113.131695, 27.827433), 5);
+    const company_code = sessionStorage.getItem('company_code');
+    var center=(this.props.editRecord&&this.props.editRecord.latitude)?[this.props.editRecord.longitude,this.props.editRecord.latitude]:company_code==='mys'?[114.288209,27.637665]:[113.131695, 27.827433]
+    map.centerAndZoom(new BMap.Point(center[0],center[1]), 10);
     map.enableScrollWheelZoom();
-    var point = new BMap.Point(113.131695, 27.827433);
-    map.centerAndZoom(point,12);
+    var point = new BMap.Point(center[0],center[1]);
+    map.centerAndZoom(point,15);
     var geoc = new BMap.Geocoder();
     var marker = new BMap.Marker(point);// 创建标注
     map.addOverlay(marker);             // 将标注添加到地图中
-    marker.enableDragging()
+    if(!this.props.cantMovePoint){
+      marker.enableDragging()
+    }
     const that=this;
     that.point=point;
     // var size = new BMap.Size(10, 20);

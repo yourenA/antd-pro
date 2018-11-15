@@ -16,6 +16,7 @@ import GlobalFooter from './../../components/GlobalFooter';
 import request from './../../utils/request'
 import {prefix, projectName, poweredBy} from './../../common/config'
 import {fillZero,disabledPreDate} from './../../utils/utils'
+import CountUp from 'react-countup';
 const TreeNode = TreeSelect.TreeNode;
 const Panel = Collapse.Panel;
 import {connect} from 'dva';
@@ -155,25 +156,25 @@ class Main extends PureComponent {
             <Row gutter={16}>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem1}`}>
-                  <div className={styles.count}>{this.state.concentrator.total_count}</div>
+                  <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>
                   <div className={styles.explain}>集中器总数量</div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
-                  <div className={styles.count}>{this.state.concentrator.yesterday_excellent_rate}</div>
+                  <div className={styles.count}><CountUp end={parseFloat(this.state.concentrator.yesterday_excellent_rate)||0} />%</div>
                   <div className={styles.explain}>集中器在线率</div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem2}`}>
-                  <div className={styles.count}>{this.state.meter.total_count}</div>
+                  <div className={styles.count}><CountUp end={this.state.meter.total_count||0} /></div>
                   <div className={styles.explain}>水表总数量</div>
                 </div>
               </Col>
             <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
-                  <div className={styles.count}>{this.state.meter.yesterday_upload_rate}</div>
+                  <div className={styles.count}><CountUp end={parseFloat(this.state.meter.yesterday_upload_rate)||0}/>%</div>
                   <div className={styles.explain}>水表上传率</div>
                 </div>
               </Col>

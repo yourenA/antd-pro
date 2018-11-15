@@ -16,6 +16,8 @@ import {renderIndex, ellipsis, ellipsis2, fillZero} from './../../../utils/utils
 import './index.less'
 import ConcentratorDetail from './ConcentratorDetail'
 import uuid from 'uuid/v4'
+import map from './../../../images/map.png'
+import ShowMap from './ShowMap'
 const {Content} = Layout;
 @connect(state => ({
   concentrator_models: state.concentrator_models,
@@ -31,6 +33,7 @@ class ConcentratorManage extends PureComponent {
     this.state = {
       showAddBtn: find(this.permissions, {name: 'concentrator_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'concentrator_delete'}),
+      commandBtn: find(this.permissions, {name: 'user_send_command'}),
       showSiderCon: true,
       tableY: 0,
       query: '',
@@ -42,6 +45,7 @@ class ConcentratorManage extends PureComponent {
       editModal: false,
       addModal: false,
       orderModal: false,
+      mapModal:false,
       village_id: '',
       showArea: true,
       editRecord: null,
@@ -50,6 +54,7 @@ class ConcentratorManage extends PureComponent {
       canAdd: true,
       per_page: 30,
       canLoadByScroll: true,
+      size_type:''
     }
 
   }
@@ -106,6 +111,7 @@ class ConcentratorManage extends PureComponent {
           this.handleSearch({
             page: this.state.page + 1,
             per_page: this.state.per_page,
+            size_type:this.state.size_type
           }, function () {
             that.setState({
               canLoadByScroll: true,
@@ -126,6 +132,7 @@ class ConcentratorManage extends PureComponent {
       this.handleSearch({
         page: 1,
         per_page: this.state.per_page,
+        size_type:this.state.size_type
       })
     })
   }
@@ -138,6 +145,8 @@ class ConcentratorManage extends PureComponent {
       this.handleSearch({
         page: 1,
         per_page: this.state.per_page,
+        size_type:this.state.size_type
+
       })
     })
 
@@ -146,6 +155,8 @@ class ConcentratorManage extends PureComponent {
     this.handleSearch({
       page: 1,
       per_page: 30,
+      size_type:''
+
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -179,13 +190,16 @@ class ConcentratorManage extends PureComponent {
   handPageChange = (page)=> {
     this.handleSearch({
       page: page,
-      per_page: this.state.per_page
+      per_page: this.state.per_page,
+      size_type:this.state.size_type
     })
   }
   handPageSizeChange = (per_page)=> {
     this.handleSearch({
       page: 1,
-      per_page: per_page
+      per_page: per_page,
+      size_type:this.state.size_type
+
     })
   }
   operate = (record)=> {
@@ -218,13 +232,15 @@ class ConcentratorManage extends PureComponent {
         }
       }
     }
-    formValues.longitude='113.131695';
-    formValues.latitude='27.827433';
+    const company_code = sessionStorage.getItem('company_code');
+    var center=company_code==='mys'?[114.288209,27.637665]:[113.131695, 27.827433]
+    formValues.longitude=center[0];
+    formValues.latitude=center[1];
     console.log('formValues', formValues);
     if (formValues.latitude_longitude) {
       let latitude_longitude = formValues.latitude_longitude
-      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
-      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+      formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] :center[0]
+      formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : center[1]
       that.addRequest(formValues)
     } else if (formValues.install_address) {
       let myGeo = new this.BMap.Geocoder();
@@ -283,9 +299,39 @@ class ConcentratorManage extends PureComponent {
   setReload = (reload)=> {
     this.reload = reload;
   }
+  handleOrder=()=>{
+    const that = this;
+    const state = this.orderFormRef.state;
+    if (state.tabsActiveKey === 'editUpload') {
+      this.handleEditConfig()
+    } else if (state.tabsActiveKey === 'editSleep') {
+      this.handleEditSleep()
+    } else if (state.tabsActiveKey === 'setGPRS') {
+      this.handleSetGPRS()
+    }
+  }
+  handleSetGPRS=()=>{
+    const {dispatch} = this.props;
+    const that = this;
+    const formValues = this.orderFormRef.state;
+    console.log('formValues',formValues)
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        concentrator_number:this.state.editRecord.number,
+        feature: 'set_gprs',
+        server_id:formValues.server_id.key,
+        apn:formValues.apn
+      },
+      callback:()=>{
+        message.success('发送指令成功')
+      }
+    });
+  }
   handleEdit = () => {
     const that = this;
     const state = this.editFormRef.state;
+    const company_code = sessionStorage.getItem('company_code');
     if (state.tabsActiveKey === 'edit') {
       const formValues = this.editFormRef.props.form.getFieldsValue();
       console.log('formValues', formValues)
@@ -303,13 +349,13 @@ class ConcentratorManage extends PureComponent {
           }
         }
       }
-
-      formValues.longitude='113.131695';
-      formValues.latitude='27.827433';
+      var center=company_code==='mys'?[114.288209,27.637665]:[113.131695, 27.827433]
+      formValues.longitude=center[0];
+      formValues.latitude=center[1];
       if (formValues.latitude_longitude) {
         let latitude_longitude = formValues.latitude_longitude
-        formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] : '113.131695'
-        formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] : '27.827433'
+        formValues.longitude = latitude_longitude ? latitude_longitude.split('/')[0] :center[0]
+        formValues.latitude = latitude_longitude ? latitude_longitude.split('/')[1] :center[1]
         that.editRequest(formValues)
       } else if (formValues.install_address) {
         let myGeo = new this.BMap.Geocoder();
@@ -404,8 +450,8 @@ class ConcentratorManage extends PureComponent {
   }
   handleEditConfig = ()=> {
     const that = this;
-    const formValues = this.editFormRef.state;
-    console.log('formValues', this.editFormRef.state);
+    const formValues = this.orderFormRef.state;
+    console.log('formValues', this.orderFormRef.state);
     let upload_time = '';
     switch (formValues.value) {
       case  'monthly':
@@ -436,7 +482,7 @@ class ConcentratorManage extends PureComponent {
       callback: function () {
         message.success('修改集中器上传时间成功')
         that.setState({
-          editModal: false,
+          orderModal: false,
         });
         that.handleSearch({
           page: that.state.page,
@@ -448,7 +494,7 @@ class ConcentratorManage extends PureComponent {
   }
   handleEditSleep = ()=> {
     const that = this;
-    const formValues = this.editFormRef.state;
+    const formValues = this.orderFormRef.state;
     this.props.dispatch({
       type: 'concentrators/editConfig',
       payload: {
@@ -458,7 +504,7 @@ class ConcentratorManage extends PureComponent {
       callback: function () {
         message.success('修改集中器休眠时间成功')
         that.setState({
-          editModal: false,
+          orderModal: false,
         });
         that.handleSearch({
           page: that.state.page,
@@ -627,12 +673,25 @@ class ConcentratorManage extends PureComponent {
       },
 
     ];
+    const company_code = sessionStorage.getItem('company_code');
+    company_code==='mys'&&columns.splice(8,0 ,{
+      title: '地图', dataIndex: 'map', key: 'map', width: 50,render: (val, record, index) => {
+        return <div  onClick={()=> {
+          this.setState(
+            {
+              editRecord: record,
+              mapModal: true
+            }
+          )
+        }}><img src={map} alt="" style={{width:'30px',cursor:'pointer'}} className="concentrator-map"/></div>
+      }})
+
     const operate = {
       title: '操作',
       key: 'operation',
       fixed: 'right',
       className: 'operation',
-      width: 100,
+      width: 125,
       render: (val, record, index) => {
         return (
           <p>
@@ -647,6 +706,20 @@ class ConcentratorManage extends PureComponent {
                           }
                         )
                       }}>编辑</a>
+            <span className="ant-divider"/>
+                </span>
+            }
+            {
+              this.state.commandBtn &&
+              <span>
+                      <a href="javascript:;" onClick={()=> {
+                        this.setState(
+                          {
+                            editRecord: record,
+                            orderModal: true
+                          }
+                        )
+                      }}>指令</a>
             <span className="ant-divider"/>
                 </span>
             }
@@ -708,21 +781,6 @@ class ConcentratorManage extends PureComponent {
                                          }
                                        }}
                                        showConcentrator={this.showConcentrator}/>
-                      {/*  <Table
-                       rowClassName={function (record, index) {
-                       if (record.description === '') {
-                       return 'error'
-                       }
-                       }}
-                       className='meter-table'
-                       loading={loading}
-                       rowKey={record => record.uuidkey}
-                       dataSource={data}
-                       columns={columns}
-                       scroll={{x: 2050, y: this.state.tableY}}
-                       pagination={false}
-                       size="small"
-                       />*/}
                       <Pagination meta={meta} initPage={this.state.initPage}
                                   handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
                     </div>
@@ -737,6 +795,7 @@ class ConcentratorManage extends PureComponent {
           </div>
         </Content>
         <Modal
+          key={ Date.parse(new Date()) + 3}
           title="添加集中器"
           visible={this.state.addModal}
           //onOk={this.handleAdd}
@@ -765,15 +824,29 @@ class ConcentratorManage extends PureComponent {
             concentrator_models={concentrator_models.data} servers={servers.data}/>
         </Modal>
         <Modal
+          width={'60%'}
           key={ Date.parse(new Date()) + 1}
           title={`集中器指令:集中器编号${this.state.editRecord ? this.state.editRecord.number : ''}`}
           visible={this.state.orderModal}
-          onOk={this.handleEdit}
+          onOk={this.handleOrder}
           onCancel={() => this.setState({orderModal: false})}
         >
-          <Detail />
+          <Detail
+            wrappedComponentRef={(inst) => this.orderFormRef = inst}
+            editRecord={this.state.editRecord}  servers={servers.data} />
         </Modal>
-
+        <Modal
+          style={{ top: 20 }}
+          width="90%"
+          key={ Date.parse(new Date()) + 2}
+          title={`集中器地图`}
+          visible={this.state.mapModal}
+          onOk={() => this.setState({mapModal: false})}
+          onCancel={() => this.setState({mapModal: false})}
+          footer={null}
+        >
+          <ShowMap editRecord={this.state.editRecord} cantMovePoint={true} />
+        </Modal>
       </Layout>
     );
   }
