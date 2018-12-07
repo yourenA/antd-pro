@@ -37,7 +37,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row>
           <FormItem label="户号">
             {getFieldDecorator('member_number')(
               <Input placeholder="请输入"/>

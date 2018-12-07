@@ -13,7 +13,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
 
-        <Row gutter={16}>
+        <Row >
           {this.props.showAddBtn &&
           <FormItem   >
 

@@ -1,16 +1,16 @@
 import BasicLayout from '../layouts/BasicLayout';
-import UserLayout from '../layouts/UserLayout';
-import BlankLayout from '../layouts/BlankLayout';
+// import UserLayout from '../layouts/UserLayout';
+// import BlankLayout from '../layouts/BlankLayout';
 import HeaderBodyLayout from '../layouts/HeaderBodyLayout';
 import TestLayout from '../layouts/TestLayout';
 import {prefix} from './config'
-import Login from '../routes/User/Login';
-import asyncComponent from './../AsyncComponent'
+// import Login from '../routes/User/Login';
+// import asyncComponent from './../AsyncComponent'
 // const Endpoints = asyncComponent(() =>
 // import(/* webpackChunkName: "Endpoints" */ "../routes/AccessManagement/Endpoints")
 // )
-import Test from '../routes/HeaderBody/Test/RowSpan'
-import Demo from '../routes/HeaderBody/Demo'
+// import Test from '../routes/HeaderBody/Test/RowSpan'
+// import Demo from '../routes/HeaderBody/Demo'
 import UserInfo from './../routes/UserInfo/Index'
 // const OrganizationManage = asyncComponent(() =>
 // import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagement/OrganizationManage")
@@ -25,35 +25,37 @@ import PlatformSetting from './../routes/PlatformManagement/PlatformSetting'
 // const UserManage = asyncComponent(() =>
 // import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
 // )
-import UserManage from './../routes/SystemManagement/UserManage'
+// import UserManage from './../routes/SystemManagement/UserManage'
 
 // const UsergroupManage = asyncComponent(() =>
 // import(/* webpackChunkName: "UsergroupManage" */ "./../routes/SystemManagement/UsergroupLayout")
 // )
 
-import UsergroupManage from './../routes/SystemManagement/UsergroupLayout'
+// import UsergroupManage from './../routes/SystemManagement/UsergroupLayout'
 
 // const DataStatistics = asyncComponent(() =>
 // import(/* webpackChunkName: "DataStatistics" */ "./../routes/Application/DataStatistics")
 // )
-import DataStatistics from './../routes/Application/DataStatistics'
+// import DataStatistics from './../routes/Application/DataStatistics'
 
 // const DistributionGraph = asyncComponent(() =>
 // import(/* webpackChunkName: "DistributionGraph" */ "./../routes/Application/DistributionGraph")
 // )
-import DistributionGraph from './../routes/Application/DistributionGraph'
+// import DistributionGraph from './../routes/Application/DistributionGraph'
 
 // const CommunityAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
 // )
 import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
 import MapDemo from './../routes/HeaderBody/MapDemo/Index'
+import BigMeterAnalysis from './../routes/HeaderBody/BigMeterAnalysis/Index'
+
 // const UserMeterAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
 import PressureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
-import TemperatureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
+// import TemperatureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
 import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
 
 // const UserMeterLife = asyncComponent(() =>
@@ -65,12 +67,12 @@ import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'
 // const ProductionMarketingAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "ProductionMarketingAnalysis" */ "./../routes/HeaderBody/ProductionMarketingAnalysis/Index")
 // )
-import ProductionMarketingAnalysis from './../routes/HeaderBody/ProductionMarketingAnalysis/Index'
+// import ProductionMarketingAnalysis from './../routes/HeaderBody/ProductionMarketingAnalysis/Index'
 
 // const ImportConcentrator = asyncComponent(() =>
 // import(/* webpackChunkName: "ImportConcentrator" */ "./../routes/HeaderBody/ImportConcentrator/Index")
 // )
-import ImportConcentrator from './../routes/HeaderBody/ImportConcentrator/Index'
+// import ImportConcentrator from './../routes/HeaderBody/ImportConcentrator/Index'
 
 // const ConcentratorManage = asyncComponent(() =>
 // import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
@@ -97,7 +99,7 @@ import Servers from './../routes/HeaderBody/Servers/Index'
 // const StatusCheck = asyncComponent(() =>
 // import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
 // )
-import StatusCheck from './../routes/HeaderBody/StatusCheck/Index'
+// import StatusCheck from './../routes/HeaderBody/StatusCheck/Index'
 
 // const UserArchives = asyncComponent(() =>
 // import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
@@ -131,7 +133,7 @@ import ConcentratorModels from './../routes/HeaderBody/ConcentratorModels/Index'
 // )
 
 
-import UsersManage from './../routes/HeaderBody/UsersManage/Index'
+// import UsersManage from './../routes/HeaderBody/UsersManage/Index'
 
 
 // const AccountManage = asyncComponent(() =>
@@ -213,12 +215,14 @@ const data = [{
         path: 'organization',
         component: OrganizationManage,
         permissions: ['company_add_and_edit', 'company_status_edit', 'company_delete'],
-      }, {
-        name: '平台设置',
-        path: 'setting',
-        component: PlatformSetting,
-        permissions: ['company_add_and_edit', 'company_status_edit', 'company_delete'],
-      }],
+      }
+      // , {
+      //   name: '平台设置',
+      //   path: 'setting',
+      //   component: PlatformSetting,
+      //   permissions: ['company_add_and_edit', 'company_status_edit', 'company_delete'],
+      // }
+      ],
     },
     /* {
      name: '接入管理',            // 页面名称，会展示在菜单栏中
@@ -304,7 +308,14 @@ const data = [{
           path: 'user_meter_analysis',
           component: UserMeterAnalysis,
           permissions: ['member_meter_data'],
-        }, {
+        },
+        {
+          name: '大用户水量分析',
+          path: 'big_meter_analysis',
+          component: BigMeterAnalysis,
+          permissions: ['member_meter_data'],
+          showCompany: ['hy']
+        },{
           name: '用户水量分析',
           path: 'member_consumption',
           component: MemberConsumption,

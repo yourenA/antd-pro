@@ -89,7 +89,7 @@ class SearchForm extends Component {
     const company_code = sessionStorage.getItem('company_code');
     return (
       <Form onSubmit={this.handleSubmit} layout="inline" style={{overflow: 'hidden'}}>
-        <Row gutter={16}>
+        <Row >
           <FormItem label={"水表号"}>
             {getFieldDecorator('number')(
               <Input placeholder="请输入"/>

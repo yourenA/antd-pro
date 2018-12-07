@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Col, Input, Button,message} from 'antd';
+import {Form, DatePicker, Row, Col, Input, Button,message,Avatar ,Divider } from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 import {connect} from 'dva';
@@ -20,10 +20,6 @@ class SearchForm extends Component {
     };
   }
   componentDidMount() {
-    this.setState({
-      startValue: this.props.initRange[0],
-      endValue: this.props.initRange[1],
-    })
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -99,36 +95,16 @@ class SearchForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row>
+        <Row >
         {/*  <FormItem label={this.props.inputText ? this.props.inputText : "名称"}>
             {getFieldDecorator('query')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
-              <DatePicker
-                value={this.state.startValue}
-                disabledDate={this.disabledStartDate}
-                onChange={this.onStartChange}
-                allowClear={false}
-                //disabledDate={disabledDate}
-                format="YYYY-MM-DD"
-              />
-          </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
-              <DatePicker
-                value={this.state.endValue}
-                disabledDate={this.disabledEndDate}
-                onChange={this.onEndChange}
-                allowClear={false}
-                //disabledDate={disabledDate}
-                format="YYYY-MM-DD"
-              />
-          </FormItem>
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{company_code==='hy'?this.props.handleLeak():this.props.handleForward()}}  className="btn-cyan">{company_code==='hy'?'计算损耗率':'计算损耗率'}</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{this.props.handleLeak}}  className="btn-cyan">同步数据</Button>
           </FormItem>
         </Row>
       </Form>

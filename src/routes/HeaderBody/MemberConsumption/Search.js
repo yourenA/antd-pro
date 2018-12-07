@@ -49,7 +49,7 @@ class SearchForm extends Component {
     }).difference_value:0;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row >
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',

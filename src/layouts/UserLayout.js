@@ -124,19 +124,23 @@ class UserLayout extends React.PureComponent {
   render() {
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
-          <div className={styles.top}>
-            <div className={styles.header}>
+          <div className={styles.login_mask}></div>
+          <div className={styles.login_content}>
+            <div className={styles.top}>
+              <div className={styles.header}>
               <span>
                 <img alt="" className={styles.logo}
                      src={prefix.indexOf('182.61.56.51:8081') >= 0 ? zhuhuaLogo : waterLogo}/>
                 <span className={styles.title}>{this.state.company_name + '远传水表监控系统'}</span>
               </span>
+              </div>
             </div>
+            <Route
+              path='/login'
+              component={Login}
+            />
           </div>
-          <Route
-            path='/login'
-            component={Login}
-          />
+
         </div>
 
         <GlobalFooter className={styles.footer} links={links} copyright={copyright}/>

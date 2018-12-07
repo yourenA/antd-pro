@@ -37,7 +37,7 @@ class SearchForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row>
             {/*<FormItem label="集中器编号">
               {getFieldDecorator('query')(
                 <Input placeholder="请输入"/>

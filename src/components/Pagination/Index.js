@@ -17,6 +17,7 @@ export default class MyPagination extends PureComponent {
   render() {
     const {isMobile} =this.props.global;
     const {meta, handPageChange, initPage}=this.props
+    console.log('meta',meta)
     return (
       <div>
         <Pagination

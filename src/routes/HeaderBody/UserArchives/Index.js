@@ -383,6 +383,7 @@ class UserMeterAnalysis extends PureComponent {
     var formData = new FormData();
     formData.append("file", formValues.file.file);
     formData.append("meter_model_id", formValues.meter_model_id);
+    formData.append("meter_number_length", formValues.meter_number_length);
     formData.append("is_reset", formValues.is_reset.key);
     formData.append("concentrator_number", formValues.concentrator_number);
     formData.append("village_id", formValues.village_id[formValues.village_id.length - 1]);

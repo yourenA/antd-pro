@@ -30,7 +30,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline" style={{overflow: 'hidden'}}>
-        <Row gutter={16}>
+        <Row>
           <FormItem label={"温度传感器编号"}>
             {getFieldDecorator('number')(
               <Input placeholder="请输入"/>

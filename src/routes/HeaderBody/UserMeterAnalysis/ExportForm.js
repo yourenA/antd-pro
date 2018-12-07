@@ -7,6 +7,7 @@ import {connect} from 'dva';
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
+const RadioGroup = Radio.Group;
 import moment from 'moment'
 @connect(state => ({
   sider_regions: state.sider_regions,
@@ -102,6 +103,20 @@ class AddPoliciesForm extends Component {
             />
           )}
         </FormItem>
+        {company_code === 'hy' ? null : <FormItem
+          {...formItemLayoutWithLabel}
+          label="导出类型"
+        >
+          {getFieldDecorator('export_type', {
+            initialValue: 'only_normal',
+          })(
+            <RadioGroup>
+              <Radio value="only_normal">导出正确数据</Radio>
+              <Radio value="all">导出全部</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+        }
       </Form>
     </div>
     );

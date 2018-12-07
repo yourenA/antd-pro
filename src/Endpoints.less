@@ -56,7 +56,7 @@
   .tableListForm {
     .ant-form-item {
       margin-bottom: 24px;
-      margin-right: 0;
+      margin-right: 5px;
       //display: inline-block !important;
       > .ant-form-item-label {
         //line-height: 38px;
@@ -96,14 +96,21 @@
       display: none;
     }
   }
-  .ant-divider {
-    margin: 0 6px;
-    display: inline-block;
-    height: 8px;
-    width: 1px;
-    background: #ccc;
+  //.ant-divider {
+  //  margin: 0 6px;
+  //  display: inline-block;
+  //  height: 8px;
+  //  width: 1px;
+  //  background: #ccc;
+  //}
+  .big-meter-description{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
-
+  .big-meter-divider{
+    margin: 4px 0;
+  }
   .description:hover {
     .edit {
       display: inline-block;
@@ -139,11 +146,14 @@
   }
 
   .dynamic-data, .proportion-data, .concentratorOnline, .guage, .areasupplylist, .DMArate,.VendorConcentrator ,.site-data,.leak-date,.concentratorOffline,
-  .last-30days-water-consumption,.last-12months-water-consumption,.member-analysis,.member-rate-analysis,.concentratorMap,.month-analysis,.day-analysis{
+  .last-30days-water-consumption,.last-12months-water-consumption,.member-analysis,.member-rate-analysis,.concentratorMap,.month-analysis,.day-analysis,.value-analysis{
     width: 100%;
     height: 400px;
   }
-
+  .value-analysis{
+    width: 100%;
+    height: 500px;
+  }
   .concentratorMap{
     width: 100%;
     height:calc(~'100vh - 200px');
@@ -189,7 +199,7 @@
 .custom-table {
     border: 1px solid #e9e9e9;
     width: 100%;
-    max-width: 100%;
+    max-width: 300px;
     margin-bottom: 10px;
   font-family:"Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   thead {
@@ -202,12 +212,13 @@
     tbody {
 
       tr {
-        transition:  all 0.3s;
+        transition:  background 0.3s;
         &:nth-of-type(odd) {
           background: #f9f9f9;
         }
         td:first-child{
           text-align: right;
+          width: 80px;
         }
         &:hover{
           background: #e6f7ff;
@@ -215,13 +226,11 @@
       }
     }
     td, th {
-      padding: 7px;
+      padding: 5px;
       //border: 1px solid #999;
       border-right: 1px solid #e9e9e9;
       border-bottom: 1px solid #e8e8e8;
-      white-space:nowrap;
-      width: 50%;
-
+      word-wrap : break-word ;
     }
   }
 
@@ -450,12 +459,12 @@
     font-size: 18px !important;
     color: @primary-color;
   }
-  .ant-tree.ant-tree-show-line li.concentrator span.ant-tree-switcher.ant-tree-switcher-noop:after {
-    content: "\E951" !important;
-  }
-  .ant-tree.ant-tree-show-line li.village span.ant-tree-switcher.ant-tree-switcher-noop:after {
-    content: "\E65E" !important;
-  }
+  //.ant-tree.ant-tree-show-line li.concentrator span.ant-tree-switcher.ant-tree-switcher-noop:after {
+  //  content: "\E951" !important;
+  //}
+  //.ant-tree.ant-tree-show-line li.village span.ant-tree-switcher.ant-tree-switcher-noop:after {
+  //  content: "\E65E" !important;
+  //}
   .ant-back-top {
     right: 24px;
     .ant-back-top-content {
@@ -567,6 +576,11 @@
     .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td, .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td, .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td, .ant-table-small > .ant-table-content > .ant-table-body > table > .ant-table-tbody > tr > td, .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th, .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-thead > tr > th, .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-thead > tr > th{
       padding:4px !important;
     }
+  }
+
+
+  .ant-divider, .ant-divider-vertical {
+    margin: 0 5px;
   }
 
 }

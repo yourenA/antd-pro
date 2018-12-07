@@ -62,7 +62,7 @@ class SearchForm extends Component {
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row>
           {
             company_code==='hy'&&
             <FormItem

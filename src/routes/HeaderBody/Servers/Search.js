@@ -36,7 +36,7 @@ class SearchForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row >
 
           <FormItem label="显示">
             {getFieldDecorator('display_type',{

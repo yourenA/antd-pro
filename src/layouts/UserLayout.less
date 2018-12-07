@@ -2,29 +2,48 @@
 
 .container {
   background: #f0f2f5;
-  background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+  background-image: url('./../images/login-bg.png');
   width: 100%;
   min-height: 100vh;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100%;
-  padding: 110px 0 144px 0;
+  background-size: 100% 100%;
+  //padding: 175px 0 144px 0;
   position: relative;
+  overflow: hidden;
   .box{
-    margin: 0 auto;
-    background: #fff;
-    padding: 35px 0;
+    position: absolute;
+    top: 50%;
+    transform:translateY(-50%);
     width: 100%;
-    max-width: 500px;
     border-radius: @border-radius-base;
     box-shadow:0 15px 10px -10px rgba(0, 0, 0, 0.3);
+    height: auto;
+    .login_mask{
+      background: #ffffff;
+      height: 100%;
+      opacity: .6;
+
+      box-shadow: 0 0 8px 4px #333;
+      width: 100%;
+      position: absolute;
+      top: 0;
+    }
+    .login_content{
+      position: relative;
+      margin: 0 auto;
+      max-width: 500px;
+      background: #fff;
+      padding: 60px 0;
+    }
+    .top {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
   }
 }
 
-.top {
-  text-align: center;
-  margin-bottom: 30px;
-}
 
 .header {
   a {

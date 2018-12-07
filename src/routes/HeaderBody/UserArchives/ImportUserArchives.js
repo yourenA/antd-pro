@@ -178,6 +178,20 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         <FormItem
+          label="水表号长度"
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('meter_number_length', {
+            initialValue: '14',
+            rules: [{required: true, message: '水表号长度'}],
+          })(
+            <Select >
+              <Option  value="14">14</Option>
+              <Option  value="12">12</Option>
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
           {...formItemLayoutWithLabel}
           label={(
             <span>

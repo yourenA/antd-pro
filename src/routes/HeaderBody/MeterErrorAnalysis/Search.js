@@ -50,7 +50,7 @@ class SearchForm extends Component {
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row>
 
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             {getFieldDecorator('started_at', {
@@ -92,7 +92,7 @@ class SearchForm extends Component {
             label="厂商名称"
             style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('manufacturer_id', {})(
-              <Select labelInValue={true} style={{width: 120}}>
+              <Select allowClear={true} labelInValue={true} style={{width: 120}}>
                 { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
               </Select>
             )}

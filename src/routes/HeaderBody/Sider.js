@@ -118,6 +118,19 @@ class SiderTree extends PureComponent {
           item.children = concatR
         }
       }
+      if (item.monitoring_meters && this.props.showMonitor === true) {
+        if (item.monitoring_meters.length > 0) {
+          item.children = item.children || [];
+          for (let i = 0; i < item.monitoring_meters.length; i++) {
+            item.monitoring_meters[i].parent_village_id = item.id
+            item.monitoring_meters[i].id = item.monitoring_meters[i].site_id
+            item.monitoring_meters[i].name = item.monitoring_meters[i].site_name
+          }
+          let concatR = item.children ? item.children.concat(item.monitoring_meters) : item.monitoring_meters;
+          // console.log('concatR',concatR)
+          item.children = concatR
+        }
+      }
       this.transilate(item.children)
       return item
     });
@@ -145,21 +158,27 @@ class SiderTree extends PureComponent {
         return (
           <TreeNode title={<span>{title}{item.tooltip ?
             <Tooltip placement="top" title={item.tooltip}><Icon style={{marginLeft: '5px'}} type="question-circle-o"/>
-            </Tooltip> : ''}</span>} key={item.id} dataRef={item} className="treeItem">
+            </Tooltip> : ''}</span>} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="treeItem">
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
       if (item.number) {
         return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
-                         className="concentrator"/>;
+                         className="concentrator" icon={<Icon type="setting"/>}/>;
       }
-      return <TreeNode title={title} key={item.id} dataRef={item} className="village"/>;
+      if (item.site_id) {
+        return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+                         className="concentrator" icon={<Icon type="line-chart"/>}/>;
+      }
+      return <TreeNode title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
     });
   }
   onCollapse = () => {
+    const that=this;
     this.setState({
       collapsed: !this.state.collapsed,
+    },function () {
     });
   }
   onSelect = (selectedKeys, info) => {
@@ -174,6 +193,9 @@ class SiderTree extends PureComponent {
       console.log('集中器', info.node.props.dataRef);
       console.log('父级id', info.node.props.dataRef.parent_village_id)
       this.props.changeConcentrator(info.node.props.dataRef.number, info.node.props.dataRef.parent_village_id)
+    }else if(info.node.props.dataRef.site_id){
+      console.log('点击监控表',info.node.props.dataRef.site_id)
+      this.props.changeMonitor(info.node.props.dataRef.site_id,info.node.props.dataRef.site_name)
     } else {
       console.log('地区')
       if (selectedKeys[0] === 'null') {
@@ -242,11 +264,12 @@ class SiderTree extends PureComponent {
           {(this.state.treeData.length)
             ?
             <Tree
+              showIcon={true}
               //loadData={this.onLoadData}
               onExpand={this.onExpandNode}
               expandedKeys={this.state.expandedKeys}
               autoExpandParent={this.state.autoExpandParent}
-              showLine onSelect={this.onSelect}
+               onSelect={this.onSelect}
               selectedKeys={this.state.selectedKeys}
               //defaultExpandedKeys={[data[0].id]}
               //defaultSelectedKeys={[this.state.treeData[0].id]}

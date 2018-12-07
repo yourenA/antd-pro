@@ -45,7 +45,7 @@ class SearchForm extends Component {
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row  gutter={16}>
+        <Row >
         {/*  <FormItem label={this.props.inputText ? this.props.inputText : "名称"}>
             {getFieldDecorator('query')(
               <Input placeholder="请输入"/>

@@ -35,6 +35,8 @@ class SearchForm extends Component {
         install_address: fieldsValue.install_address,
         real_name: fieldsValue.real_name,
         display_type:fieldsValue.display_type,
+        sort_field:this.props.sort_field,
+        sort_direction:this.props.sort_direction,
         started_at:  moment( this.state.startValue).format('YYYY-MM-DD'),
         ended_at:  moment( this.state.endValue).format('YYYY-MM-DD'),
       };
@@ -98,7 +100,7 @@ class SearchForm extends Component {
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row >
           <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
             <DatePicker
               value={this.state.startValue}

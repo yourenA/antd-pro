@@ -74,7 +74,7 @@ class SearchForm extends Component {
     const company_code = sessionStorage.getItem('company_code');
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
-        <Row gutter={16}>
+        <Row >
           <FormItem>
             <Button type="primary"  icon="arrow-left" onClick={this.props.onBack}>返回</Button>
           </FormItem>

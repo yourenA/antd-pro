@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge,Tooltip } from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge, Tooltip,Divider} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -11,11 +11,12 @@ import find from 'lodash/find'
 import debounce from 'lodash/throttle'
 import './index.less'
 import config from '../../../common/config'
-import { routerRedux } from 'dva/router';
+import {routerRedux} from 'dva/router';
 import uuid from 'uuid/v4'
-import {getPreDay, ellipsis2,download,renderIndex,renderErrorData} from './../../../utils/utils'
+import {getPreDay, ellipsis2, download, renderIndex, renderErrorData} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import ExportForm from './ExportForm'
+import AnalysisDetail from './../BigMeterAnalysis/AnalysisDetail'
 import LilingForm from './LilingForm'
 const {Content} = Layout;
 @connect(state => ({
@@ -38,7 +39,7 @@ class UserMeterAnalysis extends PureComponent {
       real_name: '',
       install_address: '',
       page: 1,
-      initPage:1,
+      initPage: 1,
       initRange: getPreDay(),
       started_at: '',
       ended_at: '',
@@ -46,60 +47,65 @@ class UserMeterAnalysis extends PureComponent {
       editModal: false,
       changeModal: false,
       exportModal: false,
-      uploadLlModal:false,
+      uploadLlModal: false,
+      showMonitor:false,
       edit_member_number: '',
       display_type: 'all',
-      total_difference_value:'0',
-      per_page:30,
-      canLoadByScroll:true,
-      sort_field:this.company_code==='hy'?'sort_number':'concentrator_number',
-      sort_direction:'asc'
+      total_difference_value: '0',
+      per_page: 30,
+      canLoadByScroll: true,
+      sort_field: this.company_code === 'hy' ? 'sort_number' : 'concentrator_number',
+      sort_direction: 'asc'
     }
   }
 
   componentDidMount() {
     this.changeTableY();
-    document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+    document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+  }
 
-  }
   componentWillUnmount() {
-    document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    if(document.querySelector('.ant-table-body')){
+      document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
+    }
   }
+
   changeTableY = ()=> {
+    console.log('changeTableY')
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
     })
   }
 
-  scrollTable=()=>{
-    const scrollTop=document.querySelector('.ant-table-body').scrollTop;
-    const offsetHeight=document.querySelector('.ant-table-body').offsetHeight;
-    const scrollHeight=document.querySelector('.ant-table-body').scrollHeight;
-    const that=this;
-    if(scrollTop+offsetHeight>scrollHeight-300){
-      if(this.state.canLoadByScroll){
+  scrollTable = ()=> {
+    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
+    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
+    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
+    const that = this;
+    if (scrollTop + offsetHeight > scrollHeight - 300) {
+      if (this.state.canLoadByScroll) {
         const {member_meter_data: {meta}} = this.props;
-        if(this.state.page<meta.pagination.total_pages){
+        if (this.state.page < meta.pagination.total_pages) {
           this.setState({
-            canLoadByScroll:false,
+            canLoadByScroll: false,
           })
           this.handleSearch({
-            page: this.state.page+1,
-            meter_number:this.state.meter_number,
-            member_number:this.state.member_number,
+            page: this.state.page + 1,
+            meter_number: this.state.meter_number,
+            member_number: this.state.member_number,
             real_name: this.state.real_name,
             install_address: this.state.install_address,
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
-            per_page:this.state.per_page,
+            per_page: this.state.per_page,
             display_type: this.state.display_type,
             sort_field: this.state.sort_field,
             sort_direction: this.state.sort_direction
-          },function () {
+          }, function () {
             that.setState({
-              canLoadByScroll:true,
+              canLoadByScroll: true,
             })
-          },true)
+          }, true)
         }
       }
     }
@@ -110,38 +116,40 @@ class UserMeterAnalysis extends PureComponent {
     this.setState({
       concentrator_number: '',
       village_id: village_id,
+      showMonitor:false
     }, function () {
       this.handleSearch({
         page: 1,
         meter_number: this.state.meter_number,
         member_number: this.state.member_number,
-        real_name:this.state.real_name,
-        install_address:this.state.install_address,
-        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
+        real_name: this.state.real_name,
+        install_address: this.state.install_address,
+        started_at: this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD'),
         display_type: this.state.display_type,
-        per_page:this.state.per_page,
+        per_page: this.state.per_page,
         sort_field: this.state.sort_field,
         sort_direction: this.state.sort_direction
-      },this.changeTableY)
+      }, this.changeTableY)
     })
 
   }
   changeConcentrator = (concentrator_number, parent_village_id)=> {
     // this.searchFormRef.props.form.resetFields()
     this.setState({
-      village_id:parent_village_id,
+      village_id: parent_village_id,
       concentrator_number: concentrator_number,
-    },function () {
+      showMonitor:false
+    }, function () {
       this.handleSearch({
         page: 1,
-        meter_number:this.state.meter_number,
-        member_number:this.state.member_number,
+        meter_number: this.state.meter_number,
+        member_number: this.state.member_number,
         real_name: this.state.real_name,
         install_address: this.state.install_address,
-        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-        per_page:this.state.per_page,
+        started_at: this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+        per_page: this.state.per_page,
         display_type: this.state.display_type,
         sort_field: this.state.sort_field,
         sort_direction: this.state.sort_direction
@@ -159,17 +167,17 @@ class UserMeterAnalysis extends PureComponent {
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       display_type: 'all',
-      per_page:30,
-      sort_field:this.state.sort_field,
-      sort_direction:this.state.sort_direction
+      per_page: 30,
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction
     })
   }
 
-  handleSearch = (values,cb,fetchAndPush=false) => {
+  handleSearch = (values, cb, fetchAndPush = false) => {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: fetchAndPush?'member_meter_data/fetchAndPush':'member_meter_data/fetch',
+      type: fetchAndPush ? 'member_meter_data/fetchAndPush' : 'member_meter_data/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
@@ -179,12 +187,12 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
         });
-        if(!fetchAndPush){
+        if (!fetchAndPush) {
           that.setState({
-            initPage:values.page
+            initPage: values.page
           })
         }
-        if(cb) cb()
+        if (cb) cb()
       }
     });
 
@@ -200,7 +208,7 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       display_type: this.state.display_type,
-      per_page:this.state.per_page,
+      per_page: this.state.per_page,
       sort_field: this.state.sort_field,
       sort_direction: this.state.sort_direction
       // area: this.state.area
@@ -216,7 +224,7 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       display_type: this.state.display_type,
-      per_page:per_page,
+      per_page: per_page,
       sort_field: this.state.sort_field,
       sort_direction: this.state.sort_direction
       // area: this.state.area
@@ -235,14 +243,15 @@ class UserMeterAnalysis extends PureComponent {
   }
   exportCSV = ()=> {
     const that = this;
-    const formValues =this.ExportformRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
+    const formValues = this.ExportformRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
     this.props.dispatch({
       type: 'member_meter_data/exportCSV',
       payload: {
-        village_id:formValues.village_id==='all'?'':formValues.village_id,
+        village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
         started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
         ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+        export_type: formValues.export_type
       },
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)
@@ -253,10 +262,10 @@ class UserMeterAnalysis extends PureComponent {
   findChildFunc = (cb)=> {
     this.cards = cb
   }
-  uploadLl=()=>{
+  uploadLl = ()=> {
     const that = this;
-    const formValues =this.uploadLlformRef.props.form.getFieldsValue();
-    console.log('formValues',formValues)
+    const formValues = this.uploadLlformRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
     this.props.dispatch({
       type: 'member_meter_data/uploadLl',
       payload: {
@@ -265,23 +274,23 @@ class UserMeterAnalysis extends PureComponent {
       callback: function () {
         message.success('上传读数成功');
         that.setState({
-          uploadLlModal:false
+          uploadLlModal: false
         })
       }
     });
   }
   handleTableSort = (pagination, filters, sorter) => {
-    console.log('sorter',sorter);
-    let order='';
-    let columnkey=sorter.columnKey;
-    if(sorter.order==='descend'){
-      order='desc'
-    }else if(sorter.order==='ascend'){
-      order='asc'
+    console.log('sorter', sorter);
+    let order = '';
+    let columnkey = sorter.columnKey;
+    if (sorter.order === 'descend') {
+      order = 'desc'
+    } else if (sorter.order === 'ascend') {
+      order = 'asc'
     }
 
-    if(sorter.columnKey==='install_address'){
-      columnkey='address'
+    if (sorter.columnKey === 'install_address') {
+      columnkey = 'address'
     }
     this.handleSearch({
       page: 1,
@@ -292,10 +301,30 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
       display_type: this.state.display_type,
-      per_page:this.state.per_page,
+      per_page: this.state.per_page,
       sort_field: columnkey,
-      sort_direction:order,
+      sort_direction: order,
       // area: this.state.area
+    })
+  }
+  changeMonitor=(site_id,site_name)=>{
+    console.log(site_id)
+    this.setState({
+      page: 1,
+        meter_number: '',
+      member_number: '',
+      // concentrator_number: '',
+      real_name: '',
+      install_address: '',
+      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+      display_type: 'all',
+      per_page: 30,
+      sort_field:  'sort_number',
+      sort_direction: 'asc',
+      showMonitor:true,
+      site_name:site_name,
+      site_id:site_id
     })
   }
   render() {
@@ -304,36 +333,36 @@ class UserMeterAnalysis extends PureComponent {
       data[i].uuidkey = uuid()
     }
     /*const parseHeader = renderCustomHeaders(meta.custom_headers,meta,this.state.page)
-    let  custom_width = parseHeader.custom_width;
-    const custom_headers = parseHeader.custom_headers;
-    custom_width+=120;
-    custom_headers.unshift({
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-      width: 50,
-      className: 'table-index',
-      fixed: 'left',
-      render: (text, record, index) => {
-        return renderIndex(meta, this.state.initPage, index)
-      }
-    })
-    custom_headers.push(
-      {
-        title: '水表历史状况',
-        key: 'operation',
-        fixed: 'right',
-        width: 120,
-        render: (val, record, index) => {
-          return (
-            <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
-            </div>
-          )
-        }
-      }
-    )*/
-  // console.log('custom_headers',custom_headers)
+     let  custom_width = parseHeader.custom_width;
+     const custom_headers = parseHeader.custom_headers;
+     custom_width+=120;
+     custom_headers.unshift({
+     title: '序号',
+     dataIndex: 'id',
+     key: 'id',
+     width: 50,
+     className: 'table-index',
+     fixed: 'left',
+     render: (text, record, index) => {
+     return renderIndex(meta, this.state.initPage, index)
+     }
+     })
+     custom_headers.push(
+     {
+     title: '水表历史状况',
+     key: 'operation',
+     fixed: 'right',
+     width: 120,
+     render: (val, record, index) => {
+     return (
+     <div>
+     <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+     </div>
+     )
+     }
+     }
+     )*/
+    // console.log('custom_headers',custom_headers)
     const company_code = sessionStorage.getItem('company_code');
     let columns = [
       // {
@@ -347,54 +376,108 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-     {title: '水表编号', dataIndex: 'meter_number', key: 'meter_number', fixed: 'left', width: 100,sorter:true,render: (val, record, index) => {
-       return ellipsis2(val, 100)
-     }},
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',sorter:true,render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }},
+      {
+        title: '水表编号',
+        dataIndex: 'meter_number',
+        key: 'meter_number',
+        fixed: 'left',
+        width: 100,
+        sorter: true,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: '户号',
+        width: 100,
+        dataIndex: 'member_number',
+        key: 'member_number',
+        sorter: true,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
 
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (val, record, index) => {
+      {
+        title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
         return ellipsis2(val, 100)
-      }},
-      {title: '用户地址', dataIndex: 'install_address', key: 'install_address',sorter:true, width: 130,
+      }
+      },
+      {
+        title: '用户地址', dataIndex: 'install_address', key: 'install_address', sorter: true, width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
-        }},
-     {title: '水表类型', width: 105, dataIndex: 'meter_model_name', key: 'meter_model_name',render: (val, record, index) => {
-       return ellipsis2(val, 105)
-     }},
-     {title: '温度介质类型', width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
-       return ellipsis2(val, 100)
-     }},
-      {title: '应收水量', dataIndex: 'difference_value', key: 'difference_value',sorter:true, width: 100,render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }},
-      {title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
+        }
+      },
+      {
+        title: '水表类型',
+        width: 105,
+        dataIndex: 'meter_model_name',
+        key: 'meter_model_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 105)
+        }
+      },
+      {
+        title: '温度介质类型',
+        width: 100,
+        dataIndex: 'temperature_type_explain',
+        key: 'temperature_type_explain',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: '应收水量',
+        dataIndex: 'difference_value',
+        key: 'difference_value',
+        sorter: true,
+        width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100, render: (val, record, index) => {
         return ellipsis2(renderErrorData(val), 100)
-      }},
-      {title: '本次抄见时间', dataIndex: 'latest_collected_at', key: 'latest_collected_at', width: 150,render: (val, record, index) => {
-        return ellipsis2(val, 150)
-      }},
-      {title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100,render: (val, record, index) => {
+      }
+      },
+      {
+        title: '本次抄见时间',
+        dataIndex: 'latest_collected_at',
+        key: 'latest_collected_at',
+        width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val, 150)
+        }
+      },
+      {
+        title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100, render: (val, record, index) => {
         return ellipsis2(renderErrorData(val), 100)
-      }},
-      {title: '上次抄见时间', dataIndex: 'previous_collected_at', key: 'previous_collected_at', width: 150,render: (val, record, index) => {
-        return ellipsis2(val, 150)
-      }},
+      }
+      },
+      {
+        title: '上次抄见时间',
+        dataIndex: 'previous_collected_at',
+        key: 'previous_collected_at',
+        width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val, 150)
+        }
+      },
       {
         title: '状态', dataIndex: 'status', key: 'status', width: 70,
         render: (val, record, index) => {
-          let status='success';
-          switch (val){
+          let status = 'success';
+          switch (val) {
             case -2:
-              status='error'
+              status = 'error'
               break;
             case -1:
-              status='warning'
+              status = 'warning'
               break;
             default:
-              status='success'
+              status = 'success'
           }
           return (
             <p>
@@ -403,18 +486,33 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number', width: 110,sorter:true,render: (val, record, index) => {
-        return ellipsis2(val, 110)
-      }},
-      {title: '水表厂商', dataIndex: 'meter_manufacturer_name', key: 'meter_manufacturer_name', width: 90,render: (val, record, index) => {
-        return ellipsis2(val, 90)
-      }},
+      {
+        title: '集中器编号',
+        dataIndex: 'concentrator_number',
+        key: 'concentrator_number',
+        width: 110,
+        sorter: true,
+        render: (val, record, index) => {
+          return ellipsis2(val, 110)
+        }
+      },
+      {
+        title: '水表厂商',
+        dataIndex: 'meter_manufacturer_name',
+        key: 'meter_manufacturer_name',
+        width: 90,
+        render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }
+      },
     ];
-    if(company_code==='hy'){
-      columns.splice(5,1)
-      columns=[...columns,{title: '抄表员', dataIndex: 'reader', key: 'reader', width: 90,render: (val, record, index) => {
-        return ellipsis2(val, 90)
-      }},{title: '排序号', dataIndex: 'sort_number', key: 'sort_number',sorter:true,},
+    if (company_code === 'hy') {
+      columns.splice(5, 1)
+      columns = [...columns, {
+        title: '抄表员', dataIndex: 'reader', key: 'reader', width: 90, render: (val, record, index) => {
+          return ellipsis2(val, 90)
+        }
+      }, {title: '排序号', dataIndex: 'sort_number', key: 'sort_number', sorter: true,},
         {
           title: '查询历史状况',
           key: 'operation',
@@ -428,8 +526,8 @@ class UserMeterAnalysis extends PureComponent {
             )
           }
         }]
-    }else{
-      columns=[...columns,{title: '抄表员', dataIndex: 'reader', key: 'reader',},
+    } else {
+      columns = [...columns, {title: '抄表员', dataIndex: 'reader', key: 'reader',},
         {
           title: '查询历史状况',
           key: 'operation',
@@ -448,23 +546,30 @@ class UserMeterAnalysis extends PureComponent {
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
+        <Sider  siderCb={this.changeTableY} showMonitor={true} changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
+               changeMonitor={this.changeMonitor}
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '水表水量分析'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
+                {
+                  !this.state.showMonitor
+                    ?
+                    <div>
                 <div className='tableList'>
                   <div className='tableListForm'>
-                    <Search  wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
-                             isMobile={isMobile}
+                            isMobile={isMobile}
+                            sort_field={this.state.sort_field}
+                            sort_direction={this.state.sort_direction}
                             exportCSV={()=> {
-                              company_code!=='mys'?
-                              this.setState({
-                                exportModal: true
-                              }):
+                              company_code !== 'mys' ?
+                                this.setState({
+                                  exportModal: true
+                                }) :
                                 this.props.dispatch({
                                   type: 'member_meter_data/exportCSV',
                                   payload: {
@@ -477,25 +582,25 @@ class UserMeterAnalysis extends PureComponent {
                                   }
                                 });
                             }}
-                             per_page={this.state.per_page}
-                             uploadLl={()=>{
-                               this.setState({
-                                 uploadLlModal:true
-                               })
-                             }}
-                            setExport={()=>{
+                            per_page={this.state.per_page}
+                            uploadLl={()=> {
+                              this.setState({
+                                uploadLlModal: true
+                              })
+                            }}
+                            setExport={()=> {
                               dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup`));
                             }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                             showConfigBtn={this.state.showConfigBtn}
-                             showExportBtn={this.state.showExportBtn}
+                            showConfigBtn={this.state.showConfigBtn}
+                            showExportBtn={this.state.showExportBtn}
                             clickAdd={()=>this.setState({addModal: true})}
-                             total_difference_value={meta.aggregator.total_difference_value }/>
+                            total_difference_value={meta.aggregator.total_difference_value }/>
                   </div>
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:2200,y: this.state.tableY}}
+                                 scroll={{x: 2200, y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
                                  rowClassName={function (record, index) {
@@ -506,36 +611,27 @@ class UserMeterAnalysis extends PureComponent {
 
                                  onChange={this.handleTableSort}
                 />
-            {/*    <Table
-                  rowClassName={function (record, index) {
-                    if (record.status === -2 || record.status === -3) {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.uuidkey}
-                  dataSource={data}
-                  columns={custom_headers}
-                  scroll={{x: custom_width,y: this.state.tableY}}//, y: this.state.tableY
-                  pagination={false}
-                  size="small"
-                />*/}
-                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
+                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}
+                            handPageChange={this.handPageChange}/>
 
+                    </div>:
+                    <div>
+                      <h2>{this.state.site_name}</h2>
+                      <Divider dashed style={{margin:'10px 0'}}/>
+                      <AnalysisDetail  site_id={this.state.site_id}/></div>}
               </Card>
             </PageHeaderLayout>
           </div>
         </Content>
         <Modal
-          width="900px"
+          width="950px"
           key={ Date.parse(new Date())}
           title={`水表 ${this.state.edit_meter_number} 详细信息(红色柱状图表示当天错报,黄色表示当天漏报)`}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
         >
-          <Detail meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
+          <Detail showExtra={true} meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
                   started_at={this.state.started_at}/>
         </Modal>
         <Modal
@@ -544,7 +640,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.exportCSV}
           onCancel={() => this.setState({exportModal: false})}
         >
-          <ExportForm  wrappedComponentRef={(inst) => this.ExportformRef = inst}/>
+          <ExportForm wrappedComponentRef={(inst) => this.ExportformRef = inst}/>
         </Modal>
         <Modal
           title={`上传读数`}
@@ -552,7 +648,7 @@ class UserMeterAnalysis extends PureComponent {
           onOk={this.uploadLl}
           onCancel={() => this.setState({uploadLlModal: false})}
         >
-          <LilingForm  wrappedComponentRef={(inst) => this.uploadLlformRef = inst}/>
+          <LilingForm wrappedComponentRef={(inst) => this.uploadLlformRef = inst}/>
         </Modal>
       </Layout>
     );

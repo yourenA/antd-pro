@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Tabs,DatePicker,Button,Table,Badge,Modal } from 'antd';
+import { Tabs,DatePicker,Button,Table,Badge,Modal ,message,Alert} from 'antd';
 import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
@@ -8,6 +8,8 @@ import {getTimeDistance,disabledDate,errorNumber,renderIndex} from './../../../u
 import request from './../../../utils/request'
 import moment from 'moment'
 import ChangeMeterValueForm from './ChangeMeterValueForm'
+import DelMeterValueForm from './DelMeterValueForm'
+import find from 'lodash/find'
 const TabPane = Tabs.TabPane;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
@@ -18,8 +20,12 @@ class Detail extends PureComponent {
     this.echarts= window.echarts;
     this.myChart=null;
     this.myChart2=null;
+    this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       Data:[],
+      difference_value:0,
+      showEditBtn: find(this.permissions, {name: 'meter_data_edit'}),
+      showdelBtn: find(this.permissions, {name: 'meter_data_delete'}),
       rangePickerValue: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
     }
   }
@@ -31,7 +37,7 @@ class Detail extends PureComponent {
     });
 
   }
-  fetch=()=>{
+  fetch=(cb)=>{
     const that=this;
     request(`/member_meter_data/${this.props.meter_number}`,{
       method:'GET',
@@ -45,6 +51,7 @@ class Detail extends PureComponent {
       this.setState({
         Data:response.data
       })
+      if(cb){ cb()}
       that.dynamic(response.data)
     });
   }
@@ -53,7 +60,8 @@ class Detail extends PureComponent {
     let Data=[];
     let diffData=[];
     let errDataIndex=[];
-    let warmDataIndex=[]
+    let warmDataIndex=[];
+    let difference_value=0
     forEach(data,(value,index)=>{
       Date.push(value.date);
       if(value.value.toString().indexOf(errorNumber)>=0){
@@ -66,8 +74,10 @@ class Detail extends PureComponent {
       }else if(value.status===-1){
         warmDataIndex.push(index)
       }
+      difference_value=(difference_value+value.difference_value).toFixed(10)-0
       diffData.push(value.difference_value)
     })
+    this.setState({difference_value:difference_value})
     console.log('errDataIndex',errDataIndex)
     console.log('warmDataIndex',warmDataIndex)
     this.myChart = this.echarts.init(document.querySelector('.month-analysis'));
@@ -207,7 +217,49 @@ class Detail extends PureComponent {
   handleEditMeterValue=()=>{
     const that = this;
     const formValues =this.ChangeMeterValueForm.props.form.getFieldsValue();
-    that.fetch()
+    console.log('formValues',formValues)
+    request(`/meter_data`,{
+      method:'PUT',
+      data:{
+        started_at:moment(formValues.started_at).format("YYYY-MM-DD"),
+        ended_at:moment(formValues.ended_at).format("YYYY-MM-DD"),
+        meter_number:formValues.meter_number,
+        value:formValues.value
+      }
+    }).then((response)=>{
+      console.log(response);
+      if(response.status===200){
+        message.success('水表读数修正成功')
+        that.setState({
+          editMeterValueModal: false
+        })
+        that.fetch();
+      }
+
+    });
+  }
+  handleDelMeterValue=()=>{
+    const that = this;
+    const formValues =this.DelMeterValueForm.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    request(`/meter_data`,{
+      method:'DELETE',
+      data:{
+        started_at:moment(formValues.started_at).format("YYYY-MM-DD"),
+        ended_at:moment(formValues.ended_at).format("YYYY-MM-DD"),
+        meter_number:formValues.meter_number,
+      }
+    }).then((response)=>{
+      console.log(response);
+      if(response.status===200){
+        message.success('水表读数清除成功')
+        that.setState({
+          delMeterValueModal: false
+        })
+        that.fetch();
+      }
+
+    });
   }
   render() {
     const Data=[...this.state.Data].reverse()
@@ -223,8 +275,9 @@ class Detail extends PureComponent {
         }
       },
       {title: '日期', dataIndex: 'date', key: 'date'},
-      {title: '水表读数', dataIndex: 'value', key: 'value'},
       {title: '用水量', dataIndex: 'difference_value', key: 'difference_value'},
+      {title: '累计读值', dataIndex: 'value', key: 'value'},
+      {title: '抄见读值(原始)', dataIndex: 'upload_value', key: 'upload_value'},
       {
         title: '状态', dataIndex: 'status', key: 'status', width: 70,
         render: (val, record, index) => {
@@ -252,6 +305,7 @@ class Detail extends PureComponent {
         }
       },
     ];
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <div>
         <div >
@@ -279,6 +333,7 @@ class Detail extends PureComponent {
             placeholder="结束日期"
             onChange={(e)=>this.handleRangePickerChange(e,'end')}
           />
+          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>总用水量:{this.state.difference_value}</span>
           {/*<RangePicker
             disabledDate={disabledDate}
             value={this.state.rangePickerValue}
@@ -286,7 +341,16 @@ class Detail extends PureComponent {
             style={{width: 256}}
           />*/}
         </div>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={this.props.showExtra && false? <Button type="primary" onClick={()=>{this.setState({editMeterValueModal:true})}}>Extra Action</Button>:null} >
+        <Tabs defaultActiveKey="1" tabBarExtraContent={(company_code!=='hy'&&this.props.showExtra&&(this.state.showEditBtn||this.state.showdelBtn))?
+          <div>
+            <Button  type="danger" size="small" onClick={()=>{this.setState({editMeterValueModal:true})}}>水表读数修正</Button>
+            <Button  type="danger" size="small"  onClick={()=>{this.setState({delMeterValueModal:true})}}>水表读数清除</Button>
+          </div>:
+          this.props.showAnalysis?
+          <div>
+            <Button  type="primary" onClick={this.props.operateValueAnalysis}>水量分析</Button>
+          </div>:null
+        } >
           <TabPane tab="折线图" key="1">  <div className="month-analysis"></div></TabPane>
           <TabPane tab="表格" key="2">
             <Table
@@ -302,12 +366,49 @@ class Detail extends PureComponent {
         </Tabs>
         <Modal
           destroyOnClose={true}
-          title={``}
+          title={`水表读数修正`}
           visible={this.state.editMeterValueModal}
-          onOk={this.handleEditMeterValue}
+          //onOk={this.handleEditMeterValue}
           onCancel={() => this.setState({editMeterValueModal: false})}
+          footer={[
+            <Button key="back" onClick={() => this.setState({editMeterValueModal: false})}>取消</Button>,
+            <Button key="submit" type="primary"  onClick={()=>{
+              Modal.confirm({
+                title: '警告！',
+                content: '水表读数修正后原读数将被覆盖，请谨慎操作！',
+                okText: '确认修正水表读数',
+                cancelText: '取消',
+                onOk: this.handleEditMeterValue
+              });
+            }}>
+              确定
+            </Button>,
+          ]}
         >
           <ChangeMeterValueForm meter_number={this.props.meter_number}  wrappedComponentRef={(inst) => this.ChangeMeterValueForm = inst}/>
+        </Modal>
+        <Modal
+          destroyOnClose={true}
+          title={`水表读数清除`}
+          visible={this.state.delMeterValueModal}
+          //onOk={this.handleEditMeterValue}
+          onCancel={() => this.setState({delMeterValueModal: false})}
+          footer={[
+            <Button key="back" onClick={() => this.setState({delMeterValueModal: false})}>取消</Button>,
+            <Button key="submit" type="primary"  onClick={()=>{
+              Modal.confirm({
+                title: '警告！',
+                content: '水表读数清除后原读数将被清空，操作不可逆，请谨慎操作！',
+                okText: '确认清除水表读数',
+                cancelText: '取消',
+                onOk: this.handleDelMeterValue
+              });
+            }}>
+              确定
+            </Button>,
+          ]}
+        >
+          <DelMeterValueForm meter_number={this.props.meter_number}  wrappedComponentRef={(inst) => this.DelMeterValueForm = inst}/>
         </Modal>
       </div>
     );
