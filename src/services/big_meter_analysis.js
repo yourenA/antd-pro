@@ -15,17 +15,17 @@ export async function remove({id}) {
   });
 }
 
-export async function add({...restParams}) {
-  return request(`/village_meter_data`, {
+export async function syncData(data) {
+  return request(`/monitoring_meters`, {
     method: 'POST',
     data: {
-      ...restParams,
+      ...data,
     },
   });
 }
 
 export async function edit({id,...restParams}) {
-  return request(`/village_meter_data/${id}`, {
+  return request(`/monitoring_meters/${id}`, {
     method: 'PUT',
     data: {
       ...restParams,

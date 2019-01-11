@@ -2,9 +2,18 @@ import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
 import {message, Badge, Tooltip} from 'antd'
+import uuid from 'uuid/v4'
 import messageJson from './message.json';
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
+}
+
+export function getMonth(val) {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+
+  return `${year}-${fixedZero(month)}`
 }
 
 export function getTimeDistance(type) {
@@ -478,174 +487,55 @@ function parseRowSpanData2(data) {
 
 exports.parseRowSpanData2 = parseRowSpanData2;
 
-function parseRowSpanData3(data) {
-  /*const data = [
-    {
-      "village_name": "望江里",
-      "member_number": "4814056",
-      "real_name": "王文军1",
-      "install_address": "望江里5号06",
-      "reader": "",
-      "temperature_types": [
-        {
-          "name": "冷水表",
-          "difference_value": 0.12,
-          "meters": [
-            {
-              "meter_number": "87281633",
-              "meter_index": 125,
-              "meter_enabled_date": "2018-07-16",
-              "meter_enabled_value": "57.59",
-              "meter_disabled_date": "",
-              "meter_disabled_value": "",
-              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-              "meter_model_name": "有线冷水表（20mm）",
-              "is_valve": -1,
-              "is_valve_explain": "否",
-              "output_type": 1,
-              "output_type_explain": "有线",
-              "temperature_type": 1,
-              "temperature_type_explain": "冷水表",
-              "size_type": 1,
-              "size_type_explain": "小表",
-              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-              "meter_manufacturer_name": "株洲珠华",
-              "concentrator_number": "02000016",
-              "concentrator_serial_number": "A02000016",
-              "previous_value": 57.62,
-              "previous_collected_date": "2018-07-16",
-              "latest_value": 57.71,
-              "latest_collected_date": "2018-07-17",
-              "difference_value": 0.12,
-              "protocols": [
-                "901F",
-                "90EF"
-              ]
-            },
-            {
-              "meter_number": "87441104",
-              "meter_index": 125,
-              "meter_enabled_date": "2018-04-09",
-              "meter_enabled_value": "28.00",
-              "meter_disabled_date": "2018-07-16",
-              "meter_disabled_value": "57.24",
-              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-              "meter_model_name": "有线冷水表（20mm）",
-              "is_valve": -1,
-              "is_valve_explain": "否",
-              "output_type": 1,
-              "output_type_explain": "有线",
-              "temperature_type": 1,
-              "temperature_type_explain": "冷水表",
-              "size_type": 1,
-              "size_type_explain": "小表",
-              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-              "meter_manufacturer_name": "株洲珠华",
-              "concentrator_number": "02000016",
-              "concentrator_serial_number": "A02000016",
-              "previous_value": 56.92,
-              "previous_collected_date": "2018-07-15",
-              "latest_value": 56.92,
-              "latest_collected_date": "2018-07-16",
-              "difference_value": 0,
-              "protocols": [
-                "901F",
-                "90EF"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "热水表",
-          "difference_value": 0,
-          "meters": [
-            {
-              "meter_number": "874412104",
-              "meter_index": 125,
-              "meter_enabled_date": "2018-04-09",
-              "meter_enabled_value": "28.00",
-              "meter_disabled_date": "2018-07-16",
-              "meter_disabled_value": "57.24",
-              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-              "meter_model_name": "有线热水表（20mm）",
-              "is_valve": -1,
-              "is_valve_explain": "否",
-              "output_type": 1,
-              "output_type_explain": "有线",
-              "temperature_type": 1,
-              "temperature_type_explain": "热水表",
-              "size_type": 1,
-              "size_type_explain": "小表",
-              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-              "meter_manufacturer_name": "株洲珠华",
-              "concentrator_number": "02000016",
-              "concentrator_serial_number": "A02000016",
-              "previous_value": 56.92,
-              "previous_collected_date": "2018-07-15",
-              "latest_value": 56.92,
-              "latest_collected_date": "2018-07-16",
-              "difference_value": 0,
-              "protocols": [
-                "901F",
-                "90EF"
-              ]
-            }
-          ]
+
+function parsehistoryData(data) {
+  for (let i = 0; i < data.length; i++) {
+    data[i].index = i
+  }
+  let resetMeterData = []
+  data.map((item, index)=> {
+    if (item.meters) {
+      if (item.meters.length > 0) {
+        for (let i = 0; i < item.meters.length; i++) {
+          if (item.meters.length === 1) {
+            resetMeterData.push({
+              ...item, ...item.meters[i],
+              meter_difference_value: item.difference_value,
+              rowSpan: 1,
+              myId: item.meter_number + String(Math.random())
+            })
+          } else {
+            resetMeterData.push({
+              ...item, ...item.meters[i],
+              meter_difference_value: item.difference_value,
+              rowSpan: i === 0 ? item.meters.length : 0,
+              myId: item.meter_number + String(Math.random())
+            })
+          }
         }
-      ]
-    },
-    {
-      "village_name": "望江里2",
-      "member_number": "4814056",
-      "real_name": "王文军2",
-      "install_address": "望江2里5号07",
-      "reader": "",
-      "temperature_types": [
-        {
-          "name": "冷水表",
-          "difference_value": 0,
-          "meters": [
-            {
-              "meter_number": "874412104",
-              "meter_index": 125,
-              "meter_enabled_date": "2018-04-09",
-              "meter_enabled_value": "28.00",
-              "meter_disabled_date": "2018-07-16",
-              "meter_disabled_value": "57.24",
-              "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-              "meter_model_name": "有线热水表（20mm）",
-              "is_valve": -1,
-              "is_valve_explain": "否",
-              "output_type": 1,
-              "output_type_explain": "有线",
-              "temperature_type": 1,
-              "temperature_type_explain": "冷水表",
-              "size_type": 1,
-              "size_type_explain": "小表",
-              "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-              "meter_manufacturer_name": "株洲珠华",
-              "concentrator_number": "02000016",
-              "concentrator_serial_number": "A02000016",
-              "previous_value": 56.92,
-              "previous_collected_date": "2018-07-15",
-              "latest_value": 56.92,
-              "latest_collected_date": "2018-07-16",
-              "difference_value": 0,
-              "protocols": [
-                "901F",
-                "90EF"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "热水表",
-          "difference_value": 0,
-          "meters": []
-        }
-      ]
+      } else {
+        resetMeterData.push({
+          ...item,
+          meter_difference_value: item.difference_value,
+          rowSpan: 1,
+          myId: item.meter_number + String(Math.random())
+        })
+      }
+    } else {
+      resetMeterData.push({
+        ...item,
+        meter_difference_value: item.difference_value,
+        rowSpan: 1,
+        myId: item.meter_number + String(Math.random())
+      })
     }
-  ];*/
+  });
+  return resetMeterData
+}
+
+exports.parsehistoryData = parsehistoryData;
+
+function parseRowSpanData3(data) {
   for (let i = 0; i < data.length; i++) {
     data[i].index = i
   }
@@ -702,3 +592,89 @@ export async function processed_request(params) {
     },
   });
 }
+
+export function addChildById(seach,data) {
+  if(!data){
+    return false
+  }
+  return data.map((item) => {
+    if(item.village_id===seach.village_parent_id){
+      console.log('找到')
+      item.children=item.children||[];
+      item.children.push({village_id: uuid(),village_name:seach.village_name})
+    }else  {
+        addChildById(seach,item.children)
+    }
+    return  item
+  });
+  // console.log('data',data)
+  //
+  //
+  //
+  //
+  // for(let i=0;i<data.length;i++){
+  //   if(data[i].village_id===item.village_parent_id){
+  //     console.log('找到')
+  //     // data[i].children.push({village_id: uuid(),village_name:item.village_name})
+  //     break
+  //   }
+  //
+  // }
+  // return data
+}
+
+export function parseHistory(data) {
+  if(!data){
+    return false
+  }
+  return data.map((item) => {
+    if(item.children&&item.values){
+      item.started_at='-'
+      item.ended_at='-'
+      item.total_difference_value='-'
+      item.member_count='-'
+      item.night_difference_value='-'
+      item.other_value='-'
+      item.forward_value='-'
+      item.attrition_value='-'
+      item.attrition_rate='-'
+      item.started_at='-'
+      item.uuid=uuid()
+      item.children2=parseHistory(item.children)
+    }else if(item.values){
+      let muaChild=[]
+      if(item.values){
+        for(let i=0;i<item.values.length;i++){
+          muaChild.push({uuid:uuid(),village_name:item.village_name,...item.values[i]})
+        }
+      }
+      return muaChild
+    }else{
+      let muaChild=[]
+      if(item.values){
+        for(let i=0;i<item.values.length;i++){
+          muaChild.push({uuid:uuid(),village_name:item.village_name,...item.values[i]})
+        }
+      }
+      return muaChild
+      // item.values.map((value_item) => {
+      //
+      //   console.log('value_item',value_item)
+      // })
+    }
+    return  item
+  });
+}
+
+export function Delayering(data) {
+  let parseData=[]
+  for(let i=0;i<data.length;i++){
+    for(let j=0;j<data[i].values.length;j++){
+
+      parseData.push({uuid:uuid(),...data[i],...data[i].values[j]})
+    }
+  }
+  return parseData
+}
+
+

@@ -1,4 +1,4 @@
-import { query,add,remove,edit } from '../services/big_meter_analysis';
+import { query,syncData,remove,edit } from '../services/big_meter_analysis';
 
 export default {
   namespace: 'big_meter_analysis',
@@ -13,7 +13,7 @@ export default {
     *reset({ payload }, { call, put }) {
       yield put({
         type: 'save',
-        payload: []
+        payload: {data:[], meta: {pagination: {total: 0, per_page: 0}}}
       });
     },
     *fetch({ payload,callback }, { call, put }) {
@@ -61,8 +61,8 @@ export default {
       }
 
     },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(add, payload);
+    *syncData({ payload, callback }, { call, put }) {
+      const response = yield call(syncData, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();

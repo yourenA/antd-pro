@@ -17,7 +17,7 @@ import {
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import Search from './Search'
-import Sider from './../EmptySider'
+import Sider from './../Sider'
 import {connect} from 'dva';
 import find from 'lodash/find'
 import styles from './../../PlatformManagement/CardList.less';
@@ -34,9 +34,8 @@ class UserMeterAnalysis extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     const company_code = sessionStorage.getItem('company_code');
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showAddBtnByCon: false,
-      showdelBtn: find(this.permissions, {name: 'member_delete'}),
+      showSyncBtn: find(this.permissions, {name: 'monitoring_meter_sync'}),
       tableY: 0,
       meter_number: '',
       member_number: '',
@@ -60,18 +59,23 @@ class UserMeterAnalysis extends PureComponent {
 
   componentDidMount() {
     this.changeTableY();
-    this.handleSearch({
-      page: 1,
-      meter_number: this.state.meter_number,
-      member_number: this.state.member_number,
-      install_address: this.state.install_address,
-    }, false, function () {
-    })
+    // this.handleSearch({
+    //   page: 1,
+    //   meter_number: this.state.meter_number,
+    //   member_number: this.state.member_number,
+    //   install_address: this.state.install_address,
+    // }, false, function () {
+    // })
     // document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
   }
 
   componentWillUnmount() {
     // document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'big_meter_analysis/reset',
+
+    });
   }
 
   changeTableY = ()=> {
@@ -90,6 +94,20 @@ class UserMeterAnalysis extends PureComponent {
       install_address: '',
     })
   }
+  changeArea = (village_id)=> {
+    // this.searchFormRef.props.form.resetFields();
+    const that = this;
+    this.setState({
+      concentrator_number: '',
+      village_id: village_id
+    }, function () {
+      this.handleSearch({
+        page: 1,
+        site_type:3
+      }, false, function () {
+      })
+    })
+  }
   handleSearch = (values, fetchAndPush = false, cb) => {
     const that = this;
     const {dispatch} = this.props;
@@ -100,10 +118,9 @@ class UserMeterAnalysis extends PureComponent {
       type: fetchAndPush ? 'big_meter_analysis/fetchAndPush' : 'big_meter_analysis/fetch',
       payload: {
         ...values,
-        others: values.others ? values.others : '[]',
-        forwards: values.forwards ? values.forwards : '[]',
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
+        site_type:3
       },
       callback: function () {
         const {big_meter_analysis: {data}} = that.props;
@@ -139,6 +156,18 @@ class UserMeterAnalysis extends PureComponent {
       size_type:this.state.size_type
 
     })
+  }
+  handleSync=()=>{
+    const {dispatch} = this.props;
+    dispatch({
+      type:  'big_meter_analysis/syncData',
+      payload: {
+        site_type:3
+      },
+      callback: function () {
+        message.success('同步数据成功')
+      }
+    });
   }
   renderPopiver = (item)=> {
     return (
@@ -192,11 +221,11 @@ class UserMeterAnalysis extends PureComponent {
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
                             village_id={this.state.village_id}
-                            handleLeak={this.handleLeak}
+                            handleSync={this.handleSync}
                             colorList={colorList}
                             handleForward={this.handleForward}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
+                            showSyncBtn={this.state.showSyncBtn}
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
@@ -259,7 +288,7 @@ class UserMeterAnalysis extends PureComponent {
         </Content>
         <Modal
           destroyOnClose={true}
-          width="950px"
+          width="1100px"
           title={`大用户水表 ${this.state.site_name} 水量分析`}
           visible={this.state.valueAnalysisModal}
           onOk={() => this.setState({valueAnalysisModal: false})}

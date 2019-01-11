@@ -19,6 +19,7 @@ class AddConcentrator extends Component {
     }
     this.state = {
       mapModal: false,
+      point:''
     };
   }
 
@@ -107,7 +108,10 @@ class AddConcentrator extends Component {
     let point = this.findChildPoi();
     const {form}=this.props;
     form.setFieldsValue({latitude_longitude: `${point.lng}/${point.lat}`});
-
+    this.setState({
+      point:`${point.lng}/${point.lat}`,
+      savePoint:true
+    })
     let geoc = new this.BMap.Geocoder();
     geoc.getLocation(point, function (rs) {
       var addComp = rs.addressComponents;
@@ -231,20 +235,6 @@ class AddConcentrator extends Component {
               <Input disabled={this.props.editRecord ? true : false}/>
             )}
           </FormItem>
-          {/*<FormItem
-           {...formItemLayoutWithLabel}
-           label={(
-           <span>
-           安装小区
-           </span>
-           )}>
-           {getFieldDecorator('village_id', {
-           rules: [{required: true, message: '安装小区不能为空'}],
-           initialValue: this.props.editRecord?this.props.editRecord.village_ids:'',
-           })(
-           <Cascader options={this.renderTreeSelect(this.props.area)} placeholder="请选择"/>
-           )}
-           </FormItem>*/}
           {formItems}
           <FormItem {...formItemLayoutWithOutLabel}>
             <Button onClick={this.add} style={{width: '60%'}}>
@@ -352,9 +342,9 @@ class AddConcentrator extends Component {
           title={`拖动红点选择地址`}
           visible={this.state.mapModal}
           onOk={this.getPoint}
-          onCancel={() => this.setState({mapModal: false})}
+          onCancel={() => this.setState({mapModal: false,point:''})}
         >
-          <ShowMap findChildFunc={this.findChildFunc}/>
+          <ShowMap point={this.state.point} savePoint={this.state.savePoint} findChildFunc={this.findChildFunc}/>
         </Modal>
 
       </div>

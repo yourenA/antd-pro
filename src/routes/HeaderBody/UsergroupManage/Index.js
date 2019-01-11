@@ -209,7 +209,7 @@ class Vendor extends PureComponent {
       title: '操作',
       width:150,
       render: (val, record, index) => (
-        <p>
+        record.lock!==1&&<p>
           <a href="javascript:;" onClick={()=>{
             dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/${record.id}`))
 

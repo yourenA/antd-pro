@@ -839,7 +839,7 @@ class ConcentratorManage extends PureComponent {
           style={{ top: 20 }}
           width="90%"
           key={ Date.parse(new Date()) + 2}
-          title={`集中器地图`}
+          title={`集中器${this.state.editRecord ? this.state.editRecord.number : ''}地图 `}
           visible={this.state.mapModal}
           onOk={() => this.setState({mapModal: false})}
           onCancel={() => this.setState({mapModal: false})}

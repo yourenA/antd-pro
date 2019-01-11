@@ -2,69 +2,71 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/images/login-bg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/images/nav-bg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/big_meter_analysis.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/AnalysisDetail.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Search.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/index.less" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/DelMeterValueForm.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/big_meter_analysis.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/images/hy-logo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/Photoswipe/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/concentrator_maps.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/hy_monitoring_meter_data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/locations.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/manually_meter.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/manually_monitoring_meter_data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/meter_image.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorMaps/DataPie.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorMaps/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorMaps/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorMaps/Sider.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HYCommunityAnalysis/HistorySearch.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HYCommunityAnalysis/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HYCommunityAnalysis/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/RouteMap.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/addOrEditPoint.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/addOrEditServers.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Locations/editStatus.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Sider.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/index.less" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/HistorySearch.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyMeterManage/EditMonitor.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyMeterManage/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyMeterManage/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/addOrEditMember.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MonitoringMeterManage/EditMonitor.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MonitoringMeterManage/Index.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MonitoringMeterManage/Search.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/concentrator_maps.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/hy_monitoring_meter_data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/locations.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/manually_meter.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/manually_monitoring_meter_data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/meter_image.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Endpoints.less" afterPath="$PROJECT_DIR$/src/Endpoints.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/nav.js" afterPath="$PROJECT_DIR$/src/common/nav.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Pagination/Index.js" afterPath="$PROJECT_DIR$/src/components/Pagination/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/UserLayout.js" afterPath="$PROJECT_DIR$/src/layouts/UserLayout.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/UserLayout.less" afterPath="$PROJECT_DIR$/src/layouts/UserLayout.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/big_meter_analysis.js" afterPath="$PROJECT_DIR$/src/models/big_meter_analysis.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/AnalysisDetail.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/AnalysisDetail.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/DetailSearch.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/DetailSearch.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAData/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAData/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAManage/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/FlowMeters/OnlyAdd.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/FlowMeters/OnlyAdd.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MapDemo/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MapDemo/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MemberConsumption/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MemberConsumption/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterStatus/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterStatus/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Pressure/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Pressure/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/ShowMap.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/ShowMap.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Temperature/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Temperature/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/ImportUserArchives.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/ImportUserArchives.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ExportForm.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ExportForm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorConcentrator/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorConcentrator/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less" afterPath="$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/big_meter_analysis.js" afterPath="$PROJECT_DIR$/src/services/big_meter_analysis.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/village_meter_data.js" afterPath="$PROJECT_DIR$/src/services/village_meter_data.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/utils.js" afterPath="$PROJECT_DIR$/src/utils/utils.js" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -93,21 +95,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Index.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js">
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/common/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="185" column="66" selection-start-line="185" selection-start-column="66" selection-end-line="185" selection-end-column="66" />
-              <folding>
-                <element signature="e#0#43#0" expanded="true" />
-                <element signature="e#3921#4457#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="270">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeaderBodyLayout.less" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+      <file leaf-file-name="mini-cloud.json" pinned="false" current-in-tab="true">
+        <entry file="file://$USER_HOME$/Desktop/mini-cloud.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database_export-E4U_srSjN4Jt.json" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Desktop/database_export-E4U_srSjN4Jt.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="68" selection-start-line="0" selection-start-column="68" selection-end-line="0" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="json.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/json.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -116,44 +135,63 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeaderBodyLayout.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
+      <file leaf-file-name="question-ask.js" pinned="false" current-in-tab="false">
+        <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="436" column="20" selection-start-line="436" selection-start-column="13" selection-end-line="436" selection-end-column="20" />
+            <state relative-caret-position="351">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#49#75#0" expanded="true" />
+                <element signature="e#0#52#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/antd/lib/index.js">
+      <file leaf-file-name="HeaderBodyLayout.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
+            <state relative-caret-position="5967">
+              <caret line="242" column="29" selection-start-line="242" selection-start-column="29" selection-end-line="242" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.d.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/antd/lib/back-top/index.d.ts">
+      <file leaf-file-name="promise.util.js" pinned="false" current-in-tab="false">
+        <entry file="file://D:/360极速浏览器下载/utils/utils/promise.util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+            <state relative-caret-position="81">
+              <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js">
+      <file leaf-file-name="question-ask.json" pinned="false" current-in-tab="false">
+        <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="203" selection-end-column="3" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="question-ask.wxml" pinned="false" current-in-tab="false">
+        <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.wxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="729">
+              <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="question-ask.wxss" pinned="false" current-in-tab="false">
+        <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.wxss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="810">
+              <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -175,57 +213,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/DetailSearch.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAManage/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/DMAData/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/DMA/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MapDemo/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MemberConsumption/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterStatus/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Pressure/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/StatusCheck/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Temperature/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/VendorConcentrator/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Search.js" />
-        <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/layouts/About.less" />
-        <option value="$PROJECT_DIR$/src/layouts/BasicLayout.less" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/FlowMeters/OnlyAdd.js" />
-        <option value="$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less" />
+        <option value="$PROJECT_DIR$/src/services/concentrator_maps.js" />
+        <option value="$PROJECT_DIR$/src/models/concentrator_maps.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddOrEditConcentrator.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/ShowMap.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorMaps/Index.js" />
         <option value="$PROJECT_DIR$/src/services/big_meter_analysis.js" />
-        <option value="$PROJECT_DIR$/src/components/Pagination/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyMeterManage/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MonitoringMeterManage/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js" />
-        <option value="$PROJECT_DIR$/src/Endpoints.less" />
-        <option value="$PROJECT_DIR$/src/models/login.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/AnalysisDetail.js" />
-        <option value="$PROJECT_DIR$/src/models/big_meter_analysis.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MonitoringMeterManage/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/HistorySearch.js" />
+        <option value="$PROJECT_DIR$/src/models/hy_monitoring_meter_data.js" />
+        <option value="$PROJECT_DIR$/src/services/hy_monitoring_meter_data.js" />
+        <option value="$PROJECT_DIR$/src/services/village_meter_data.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Search.js" />
+        <option value="$PROJECT_DIR$/src/services/manually_monitoring_meter_data.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" />
+        <option value="$PROJECT_DIR$/src/models/manually_monitoring_meter_data.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/common/config.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/HYCommunityAnalysis/Search.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/HYCommunityAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/Search.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ManuallyCommunityAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
+        <option value="$PROJECT_DIR$/src/layouts/UserLayout.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js" />
+        <option value="$PROJECT_DIR$/src/models/locations.js" />
+        <option value="$PROJECT_DIR$/src/services/locations.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Locations/Search.js" />
+        <option value="$PROJECT_DIR$/src/Endpoints.less" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Locations/addOrEditPoint.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Locations/RouteMap.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Index.js" />
+        <option value="$PROJECT_DIR$/src/common/nav.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Locations/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Sider.js" />
+        <option value="$PROJECT_DIR$/src/services/meter_image.js" />
+        <option value="$PROJECT_DIR$/src/models/meter_image.js" />
+        <option value="$PROJECT_DIR$/src/components/photoswipe/Index.js" />
+        <option value="$PROJECT_DIR$/src/components/Photoswipe/Index.js" />
+        <option value="$PROJECT_DIR$/src/utils/utils.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Search.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Index.js" />
+        <option value="$USER_HOME$/Desktop/mini-cloud.json" />
       </list>
     </option>
   </component>
@@ -271,8 +309,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -319,142 +357,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HeaderBody" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HeaderBody" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserMeterAnalysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HeaderBody" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ConcentratorManage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="routes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HeaderBody" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigMeterAnalysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layouts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ant-pro" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="common" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -479,15 +381,15 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\BigMeterAnalysis" />
+      <recent name="E:\ant-pro\y\ant-pro\src\components\photoswipe" />
+      <recent name="E:\ant-pro\y\ant-pro\src\components" />
       <recent name="E:\ant-pro\y\ant-pro\src\services" />
       <recent name="E:\ant-pro\y\ant-pro\src\models" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
-      <recent name="E:\ant-pro\y\ant-pro\src\images" />
+      <recent name="E:\ant-pro\y\ant-pro\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup\ExportSetup" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup\ExportSetup" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\DMA\images" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\FlowMeters" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\HomePage" />
@@ -862,6 +764,31 @@
       <workItem from="1543975342151" duration="10195000" />
       <workItem from="1544061172224" duration="8227000" />
       <workItem from="1544148351625" duration="15293000" />
+      <workItem from="1544493945294" duration="16334000" />
+      <workItem from="1544580390192" duration="3831000" />
+      <workItem from="1544667307481" duration="12264000" />
+      <workItem from="1544688988678" duration="4724000" />
+      <workItem from="1544753331380" duration="7177000" />
+      <workItem from="1545012525877" duration="15592000" />
+      <workItem from="1545098364236" duration="19237000" />
+      <workItem from="1545184682411" duration="7367000" />
+      <workItem from="1545271650281" duration="25722000" />
+      <workItem from="1545358412462" duration="1795000" />
+      <workItem from="1545360924526" duration="349000" />
+      <workItem from="1545361303578" duration="3300000" />
+      <workItem from="1545617460613" duration="4153000" />
+      <workItem from="1545703917099" duration="3092000" />
+      <workItem from="1545815393416" duration="2717000" />
+      <workItem from="1545876720334" duration="4497000" />
+      <workItem from="1545967979014" duration="51000" />
+      <workItem from="1546049001503" duration="6100000" />
+      <workItem from="1546394891600" duration="2464000" />
+      <workItem from="1546482626067" duration="23839000" />
+      <workItem from="1546568069282" duration="12996000" />
+      <workItem from="1546914268998" duration="5019000" />
+      <workItem from="1546999241565" duration="818000" />
+      <workItem from="1547085947384" duration="2822000" />
+      <workItem from="1547171724934" duration="5728000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -881,13 +808,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2724498000" />
+    <option name="totallyTimeSpent" value="2916486000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18018967" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13435195" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286334" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16948257" sideWeight="0.503792" order="2" side_tool="true" content_ui="tabs" />
@@ -948,109 +875,350 @@
           <line>455</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js</url>
-          <line>203</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js</url>
-          <line>233</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="34" />
+      <option name="time" value="38" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Search.js">
+    <entry file="file://$PROJECT_DIR$/src/images/water.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/images/hy-logo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/UserLayout.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="50" column="12" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="12" />
+        <state relative-caret-position="3456">
+          <caret line="142" column="16" selection-start-line="142" selection-start-column="16" selection-end-line="142" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Search.js">
+    <entry file="file://$PROJECT_DIR$/src/utils/message.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="64" column="12" selection-start-line="64" selection-start-column="12" selection-end-line="64" selection-end-column="12" />
+        <state relative-caret-position="486">
+          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.roadhogrc">
+    <entry file="file://$PROJECT_DIR$/src/utils/request.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="511">
+          <caret line="30" column="46" selection-start-line="30" selection-start-column="46" selection-end-line="30" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/polyfill.js">
+    <entry file="file://$PROJECT_DIR$/src/models/locations.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-1134">
+          <caret line="0" column="67" selection-start-line="0" selection-start-column="67" selection-end-line="0" selection-end-column="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/lib/index.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/README.md" />
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/dist/antd.less" />
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/package.json" />
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/CHANGELOG.zh-CN.md" />
-    <entry file="file://$PROJECT_DIR$/node_modules/_antd@3.11.0@antd/.npminstall.done" />
-    <entry file="file://$PROJECT_DIR$/src/theme.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/router.js">
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Locations/addOrEditServers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Locations/Search.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+        <state relative-caret-position="376">
+          <caret line="42" column="55" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ActiveChart/index.less">
+    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="239">
+          <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/UserLayout.less">
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MapDemo/Index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="548">
+          <caret line="234" column="65" selection-start-line="233" selection-start-column="3" selection-end-line="234" selection-end-column="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ActiveChart/index.js">
+    <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="378">
+          <caret line="14" column="113" selection-start-line="14" selection-start-column="113" selection-end-line="14" selection-end-column="113" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/About.less">
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/ShowMap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="24" column="30" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="10" column="16" selection-start-line="0" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddOrEditConcentrator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3510">
+          <caret line="135" column="1" selection-start-line="135" selection-start-column="1" selection-end-line="137" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4482">
+          <caret line="179" column="52" selection-start-line="179" selection-start-column="45" selection-end-line="179" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Servers/addOrEditServers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Locations/addOrEditPoint.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1404">
+          <caret line="56" column="18" selection-start-line="56" selection-start-column="18" selection-end-line="56" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/locations.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Locations/RouteMap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="57" column="62" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/AccountManage/Sider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/AccountManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-430">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="528" column="23" selection-start-line="528" selection-start-column="17" selection-end-line="528" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Locations/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="221" column="103" selection-start-line="221" selection-start-column="103" selection-end-line="221" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Sider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="42" column="106" selection-start-line="42" selection-start-column="106" selection-end-line="42" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ResizeableTitle/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-270">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1134">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/meter_image.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/meter_image.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/manually_meter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1296">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Photoswipe">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/LocationsManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="30" column="75" selection-start-line="30" selection-start-column="59" selection-end-line="30" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Pagination/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-376">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="222" column="7" selection-start-line="222" selection-start-column="7" selection-end-line="225" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Photoswipe/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="356" column="28" selection-start-line="356" selection-start-column="28" selection-end-line="356" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1647">
+          <caret line="74" column="22" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#43#0" expanded="false" />
+            <marker date="1547087785352" expanded="true" signature="5940:6198" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterImagesManage/Search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="35" column="33" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
+          <folding>
+            <element signature="e#51#90#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5967">
+          <caret line="242" column="29" selection-start-line="242" selection-start-column="29" selection-end-line="242" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/360极速浏览器下载/utils/utils/promise.util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.wxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/360极速浏览器下载/question-ask (1)/question-ask/question-ask.wxss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1058,192 +1226,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/BasicLayout.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/DataPie.js" />
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/FlowMeters/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/FlowMeters/OnlyAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="678">
-          <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="0" column="1394497" selection-start-line="0" selection-start-column="1394497" selection-end-line="0" selection-end-column="1394497" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/big_meter_analysis.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="84" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Pagination/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="108" column="14" selection-start-line="108" selection-start-column="14" selection-end-line="108" selection-end-column="14" />
-          <folding>
-            <element signature="e#51#90#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/PlatformSetting.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/OrganizationManage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="314" column="94" selection-start-line="314" selection-start-column="30" selection-end-line="314" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/utils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="220" column="16" selection-start-line="220" selection-start-column="16" selection-end-line="220" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CommunityAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1007">
-          <caret line="377" column="45" selection-start-line="377" selection-start-column="45" selection-end-line="377" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="581" column="14" selection-start-line="581" selection-start-column="3" selection-end-line="581" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4024">
-          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#41#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/ConcentratorOnlife.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Sider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="176" column="22" selection-start-line="176" selection-start-column="22" selection-end-line="176" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="75" column="117" selection-start-line="75" selection-start-column="94" selection-end-line="75" selection-end-column="117" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-            <element signature="e#4033#4902#0" expanded="false" />
-            <element signature="e#4969#5841#0" expanded="false" />
-            <element signature="e#5868#6328#0" expanded="false" />
-            <element signature="e#6385#7006#0" expanded="false" />
-            <element signature="e#7035#7551#0" expanded="false" />
-            <element signature="e#7588#8090#0" expanded="false" />
-            <element signature="e#11040#11832#0" expanded="false" />
-            <element signature="e#11968#15732#0" expanded="false" />
-            <element signature="e#15765#16422#0" expanded="false" />
-            <element signature="e#15823#15981#0" expanded="false" />
-            <element signature="e#16068#16415#0" expanded="false" />
-            <element signature="e#16428#16874#0" expanded="false" />
-            <element signature="e#17599#20864#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="335" column="135" selection-start-line="335" selection-start-column="10" selection-end-line="335" selection-end-column="135" />
-          <folding>
-            <element signature="e#0#45#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/AnalysisDetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="188" column="127" selection-start-line="188" selection-start-column="111" selection-end-line="188" selection-end-column="127" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/index.less">
+    <entry file="file://$PROJECT_DIR$/json.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1251,81 +1238,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/complete_real_data.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-891">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/endpoints.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1674">
-          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="69" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/big_meter_analysis.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2376">
-          <caret line="94" column="32" selection-start-line="94" selection-start-column="32" selection-end-line="94" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="203" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/antd/lib/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/antd/lib/back-top/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+    <entry file="file://$USER_HOME$/Desktop/database_export-E4U_srSjN4Jt.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="68" selection-start-line="0" selection-start-column="68" selection-end-line="0" selection-end-column="68" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
+    <entry file="file://$USER_HOME$/Desktop/mini-cloud.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="436" column="20" selection-start-line="436" selection-start-column="13" selection-end-line="436" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#49#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/BigMeterAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="185" column="66" selection-start-line="185" selection-start-column="66" selection-end-line="185" selection-end-column="66" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-            <element signature="e#3921#4457#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="243">
+          <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>

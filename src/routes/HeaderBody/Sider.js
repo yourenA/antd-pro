@@ -154,7 +154,7 @@ class SiderTree extends PureComponent {
           {afterStr}
         </span>
       ) : <span title={item.name ? item.name : item.number}>{item.name ? item.name : item.number}</span>;
-      if (item.children) {
+      if (item.children && !this.props.onlyShowOneLevel) {
         return (
           <TreeNode title={<span>{title}{item.tooltip ?
             <Tooltip placement="top" title={item.tooltip}><Icon style={{marginLeft: '5px'}} type="question-circle-o"/>

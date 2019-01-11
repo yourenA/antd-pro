@@ -8,6 +8,7 @@ import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
 import Login from '../routes/User/Login';
 import waterLogo from '../images/water.png'
+import hyLogo from '../images/hy-logo.png'
 import zhuhuaLogo from '../images/zhuhua.png'
 import {projectName, poweredBy, prefix, loginTitle} from './../common/config'
 import request from './../utils/request'
@@ -130,7 +131,7 @@ class UserLayout extends React.PureComponent {
               <div className={styles.header}>
               <span>
                 <img alt="" className={styles.logo}
-                     src={prefix.indexOf('182.61.56.51:8081') >= 0 ? zhuhuaLogo : waterLogo}/>
+                     src={window.location.hostname.indexOf('124.228.9.126') >= 0 ? hyLogo : waterLogo}/>
                 <span className={styles.title}>{this.state.company_name + '远传水表监控系统'}</span>
               </span>
               </div>

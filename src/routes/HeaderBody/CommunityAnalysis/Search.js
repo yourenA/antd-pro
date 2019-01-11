@@ -2,12 +2,9 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Col, Input, Button,message} from 'antd';
+import {Form, DatePicker, Row, Col, Alert, Button,message} from 'antd';
 import moment from 'moment'
-import {disabledDate} from './../../../utils/utils'
 import {connect} from 'dva';
-import DataRangePickers from './../../../components/DataRangePickers/Index'
-const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 @connect(state => ({
 }))
@@ -40,6 +37,22 @@ class SearchForm extends Component {
         ended_at:  moment( this.state.endValue).format('YYYY-MM-DD'),
       };
       this.props.handleSearch({...values, page: 1})
+    });
+  }
+  handleForward=()=>{
+    const {dispatch, form} = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      if( moment( this.state.startValue).format('YYYY-MM-DD')===moment(this.state.endValue).format('YYYY-MM-DD')){
+        message.error('开始时间和结束时间不能一样')
+        return false
+      }
+      const values = {
+        ...fieldsValue,
+        started_at:  moment( this.state.startValue).format('YYYY-MM-DD'),
+        ended_at:  moment( this.state.endValue).format('YYYY-MM-DD'),
+      };
+      this.props.handleForward({...values, page: 1})
     });
   }
   handleFormReset = () => {
@@ -128,8 +141,13 @@ class SearchForm extends Component {
           <FormItem >
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{company_code==='hy'?this.props.handleLeak():this.props.handleForward()}}  className="btn-cyan">{company_code==='hy'?'计算损耗率':'计算损耗率'}</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{company_code==='hy'?this.props.handleLeak():this.handleForward()}}  className="btn-cyan">{company_code==='hy'?'计算损耗率':'计算损耗率'}</Button>
           </FormItem>
+          {company_code === 'hy' && <FormItem style={{float: 'right'}}>
+            <Alert message="蓝色名称为监控表" type="info" showIcon/>
+          </FormItem>
+          }
+
         </Row>
       </Form>
     )

@@ -47,15 +47,20 @@ class Detail extends PureComponent {
         return:'all'
       }
     }).then((response)=>{
+
       console.log(response);
-      this.setState({
-        Data:response.data
-      })
-      if(cb){ cb()}
-      that.dynamic(response.data)
+      if(response.status===200){
+        this.setState({
+          Data:response.data
+        })
+        if(cb){ cb()}
+        that.dynamic(response.data)
+      }
+
     });
   }
   dynamic=(data)=>{
+
     let Date=[];
     let Data=[];
     let diffData=[];

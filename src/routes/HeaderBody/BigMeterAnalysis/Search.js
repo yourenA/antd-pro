@@ -102,9 +102,9 @@ class SearchForm extends Component {
             )}
           </FormItem>*/}
           <FormItem >
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{this.props.handleLeak}}  className="btn-cyan">同步数据</Button>
+         {/*   <Button type="primary" htmlType="submit">查询</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
+            {this.props.showSyncBtn&&<Button type="primary" style={{marginLeft: 14}} onClick={this.props.handleSync}  className="btn-cyan">同步大用户表</Button>}
           </FormItem>
         </Row>
       </Form>

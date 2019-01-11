@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, InputNumber} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -9,6 +9,7 @@ import update from 'immutability-helper'
 import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, renderIndex2} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
+import uuid from 'uuid/v4'
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,
@@ -40,7 +41,7 @@ class UserMeterAnalysis extends PureComponent {
       expandedRowKeys: [],
       otherMeterValue: '0',
       forwardsMeterValue: '0',
-
+      key:uuid()
       // concentrator_number:''
     }
   }
@@ -171,20 +172,26 @@ class UserMeterAnalysis extends PureComponent {
       return item
     });
   }
-  handleSearch = (values, fetchAndPush = false, cb) => {
+  handleSearch = (values,saveInput) => {
     const that = this;
     const {dispatch} = this.props;
     this.setState({
       expandedRowKeys: []
     })
+    if(!saveInput){
+      this.setState({
+        key:uuid()
+      })
+    }
     dispatch({
-      type: fetchAndPush ? 'village_meter_data/fetchAndPush' : 'village_meter_data/fetch',
+      type:  'village_meter_data/fetch',
       payload: {
         ...values,
-        others: values.others ? values.others : '[]',
-        forwards: values.forwards ? values.forwards : '[]',
+        others: values.others ? values.others : [],
+        forwards: values.forwards ? values.forwards :[],
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
+        is_manually: -1
       },
       callback: function () {
         const {village_meter_data: {data}} = that.props;
@@ -192,12 +199,6 @@ class UserMeterAnalysis extends PureComponent {
         that.setState({
           ...values,
         })
-        if (!fetchAndPush) {
-          that.setState({
-            initPage: values.page
-          })
-        }
-        if (cb)cb()
       }
     });
   }
@@ -233,8 +234,8 @@ class UserMeterAnalysis extends PureComponent {
     let others = [];
     let forwards = [];
     for (let i = 0; i < tbodyRow.length; i++) {
-      let othersInput = tbodyRow[i].querySelectorAll('input.ant-input-number-input')[0];
-      let forwardsInput = tbodyRow[i].querySelectorAll('input.ant-input-number-input')[1];
+      let othersInput = tbodyRow[i].querySelectorAll('input.ant-input')[1];
+      let forwardsInput = tbodyRow[i].querySelectorAll('input.ant-input')[0];
       let inputHidden = tbodyRow[i].querySelector('input.hidden');
       others.push({value: othersInput.value, village_id: inputHidden.value})
       forwards.push({value: forwardsInput.value, village_id: inputHidden.value})
@@ -247,30 +248,33 @@ class UserMeterAnalysis extends PureComponent {
       install_address: this.state.install_address,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
-      others: JSON.stringify(others),
-      forwards:JSON.stringify(forwards)
+      others: others,
+      forwards:forwards
       // area: this.state.area
-    })
+    },true)
   }
-  handleForward = ()=> {
+  handleForward = (values)=> {
     let tbodyRow = document.querySelectorAll('.ant-table-row');
     let forwards = [];
+    let village_items = [];
     for (let i = 0; i < tbodyRow.length; i++) {
-      let input = tbodyRow[i].querySelector('input.ant-input-number-input');
+      let forwardsInput = tbodyRow[i].querySelector('input.ant-input');
       let inputHidden = tbodyRow[i].querySelector('input.hidden');
-      forwards.push({value: input.value, village_id: inputHidden.value})
+      // forwards.push({value: input.value, village_id: inputHidden.value})
+      village_items.push({
+        member_count: '-',
+        other_value: '-',
+        forward_value: forwardsInput.value,
+        village_id: inputHidden.value
+      })
     }
     console.log('forwards',forwards)
     this.handleSearch({
-      page: this.state.page,
-      meter_number: this.state.meter_number,
-      member_number: this.state.member_number,
-      install_address: this.state.install_address,
-      ended_at: this.state.ended_at,
-      started_at: this.state.started_at,
-      forwards: JSON.stringify(forwards)
+      ...values,
+      village_items:village_items
+      // forwards: forwards
       // area: this.state.area
-    })
+    },true)
   }
   render() {
     const {village_meter_data: {data, meta, loading}, concentrators, meters} = this.props;
@@ -287,13 +291,30 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: 180},
+      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: 180,
+        render: (val, record, index) => {
+          // console.log('record',record)
+          // console.log('record.layer*25',record.layer+25)
+          return (
+            <span style={{color: record.is_village===-1?`#1890ff`:'rgba(0, 0, 0, 0.65)'}}>{val}</span>
+          )
+        }},
       {
         title: '用户数量', dataIndex: 'member_count', key: 'member_count', width: 150, render: (val, record, index) => {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
           <span style={{paddingLeft: `${parseInt(record.layer) * 25}px`}}>{val}</span>
+        )
+      }
+      },
+      {
+        title: '进水量(T)', dataIndex: 'forward_value', key: 'forward_value', width: 120, render: (val, record, index) => {
+        // console.log('record',record)
+        // console.log('record.layer*25',record.layer+25)
+        return (
+          <div><Input   onChange={()=>{}} defaultValue={val}  size="small" disabled={record.is_village===-1?true:false}/></div>
+
         )
       }
       },
@@ -312,22 +333,13 @@ class UserMeterAnalysis extends PureComponent {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
-          <div><InputNumber  onChange={()=>{}} defaultValue={0} min={0} size="small"/><input type="hidden" className="hidden"
+          <div><Input  onChange={()=>{}} defaultValue={0} min={0} size="small"/><input type="hidden" className="hidden"
                                                                             value={record.village_id}/></div>
 
         )
       }
       },
-      {
-        title: '进水量(T)', dataIndex: 'forward_value', key: 'forward_value', width: 120, render: (val, record, index) => {
-        // console.log('record',record)
-        // console.log('record.layer*25',record.layer+25)
-        return (
-          <div><InputNumber   onChange={()=>{}} defaultValue={val}  size="small"/></div>
 
-        )
-      }
-      },
       {title: '漏损量', dataIndex: 'attrition_value', key: 'attrition_value', width: 120,   render: (val, record, index) => {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
@@ -335,7 +347,7 @@ class UserMeterAnalysis extends PureComponent {
           <span style={{paddingLeft: `${parseInt(record.layer) * 25}px`}}>{val}</span>
         )
       }},
-        {title: '损耗率', dataIndex: 'attrition_rate', key: 'attrition_rate', width: 120,render: (val, record, index) => {
+        {title: '漏损率', dataIndex: 'attrition_rate', key: 'attrition_rate', width: 120,render: (val, record, index) => {
           // console.log('record',record)
           // console.log('record.layer*25',record.layer+25)
           return (
@@ -375,7 +387,7 @@ class UserMeterAnalysis extends PureComponent {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
-          <div><InputNumber defaultValue={0}  size="small" onChange={()=>{}}/><input type="hidden" className="hidden"
+          <div><Input defaultValue={0}  size="small" onChange={()=>{}}/><input type="hidden" className="hidden"
                                                                             value={record.village_id}/></div>
 
         )
@@ -385,7 +397,7 @@ class UserMeterAnalysis extends PureComponent {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
-          <p style={{marginLeft: `${parseInt(record.layer) * 25}px`}}><span style={{padding:'0 5px',borderRadius:'3px',color:`${parseFloat(val)?'#fff':'#000'}`,background:`${parseFloat(val)?parseFloat(val)>10?'red':'#e90':'#transparent'}`}}>{val}</span></p>
+          <p style={{marginLeft: `${parseInt(record.layer) * 25}px`}}><span style={{padding:'0 5px',borderRadius:'3px',color:`${parseFloat(val)?'#fff':'#000'}`,background:`${!isNaN(parseFloat(val))?parseFloat(val)>10?'red':'#e90':'#transparent'}`}}>{val}</span></p>
         )
       }},];
     const {isMobile} =this.props.global;
@@ -414,6 +426,7 @@ class UserMeterAnalysis extends PureComponent {
                   </div>
                 </div>
                 <Table
+                  key={this.state.key}
                   className='meter-table'
                   loading={loading}
                   rowKey={record => record.village_id}

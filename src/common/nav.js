@@ -20,7 +20,7 @@ import OrganizationManage from './../routes/PlatformManagement/OrganizationManag
 // const PlatformSetting = asyncComponent(() =>
 // import(/* webpackChunkName: "PlatformSetting" */ "./../routes/PlatformManagement/PlatformSetting")
 // )
-import PlatformSetting from './../routes/PlatformManagement/PlatformSetting'
+// import PlatformSetting from './../routes/PlatformManagement/PlatformSetting'
 
 // const UserManage = asyncComponent(() =>
 // import(/* webpackChunkName: "UserManage" */ "./../routes/SystemManagement/UserManage")
@@ -47,8 +47,13 @@ import PlatformSetting from './../routes/PlatformManagement/PlatformSetting'
 // import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
 // )
 import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
+import HYCommunityAnalysis from './../routes/HeaderBody/HYCommunityAnalysis/Index'
+import ManuallyCommunityAnalysis from './../routes/HeaderBody/ManuallyCommunityAnalysis/Index'
 import MapDemo from './../routes/HeaderBody/MapDemo/Index'
+import ConcentratorMaps from './../routes/HeaderBody/ConcentratorMaps/Index'
 import BigMeterAnalysis from './../routes/HeaderBody/BigMeterAnalysis/Index'
+import MonitoringMeterManage from './../routes/HeaderBody/MonitoringMeterManage/Index'
+import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Index'
 
 // const UserMeterAnalysis = asyncComponent(() =>
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
@@ -95,6 +100,7 @@ import FlowMeters from './../routes/HeaderBody/FlowMeters/Index'
 // import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
 // )
 import Servers from './../routes/HeaderBody/Servers/Index'
+import Locations from './../routes/HeaderBody/LocationsManage/Index'
 
 // const StatusCheck = asyncComponent(() =>
 // import(/* webpackChunkName: "StatusCheck" */ "./../routes/HeaderBody/StatusCheck/Index")
@@ -303,6 +309,21 @@ const data = [{
           path: 'community_analysis',
           component: CommunityAnalysis,
           permissions: ['village_meter_data',],
+          noShowCompany: ['hy']
+        },
+        {
+          name: '小区水量分析',
+          path: 'hy_community_analysis',
+          component: HYCommunityAnalysis,
+          permissions: ['village_meter_data',],
+          showCompany: ['hy']
+        },
+        {
+          name: '小区水量分析(手工)',
+          path: 'manually_community_analysis',
+          component: ManuallyCommunityAnalysis,
+          permissions: ['village_meter_data',],
+          showCompany: ['hy']
         }, {
           name: '水表水量分析',
           path: 'user_meter_analysis',
@@ -328,6 +349,13 @@ const data = [{
           component: MapDemo,
           permissions: ['concentrator_real_time_data',],
           showCompany: ['amwares','zhsgy']
+        },
+        {
+          name: '大表数据分析地图',
+          path: 'big_meter_map',
+          component: ConcentratorMaps,
+          permissions: ['concentrator_maps',],
+          showCompany: ['mys']
         },
         {
           name: '压力传感器历史分析',
@@ -375,7 +403,8 @@ const data = [{
       name: '设备管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions: ['temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit', 'pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
+      permissions: ['temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit',
+        'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete','pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
       children: [
 
         //   ,
@@ -408,6 +437,20 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
+        },
+        {
+          name: '监控表管理',
+          path: 'monitor_meter_manage',
+          component: MonitoringMeterManage,
+          permissions: [ 'monitoring_meter_edit'],
+          showCompany: ['hy']
+        },
+        {
+          name: '手工录入监控表',
+          path: 'manually_meter_manage',
+          component: ManuallyMeterManage,
+          permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
+          showCompany: ['hy']
         },
         {
           name: '压力传感器管理',
@@ -481,6 +524,13 @@ const data = [{
           component: DMA,
           permissions: [ 'area_add_and_edit', 'area_delete'],
           showCompany: ['hy']
+        },
+        {
+          name: '抄表路线管理',
+          path: 'locations_manage',
+          component: Locations,
+          permissions: [ 'location_edit'],
+          showCompany: ['qc']
         },
 
         {

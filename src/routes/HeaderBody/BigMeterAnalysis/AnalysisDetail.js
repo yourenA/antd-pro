@@ -46,12 +46,12 @@ class Detail extends PureComponent {
   }
   fetch=(site_id)=>{
     const that=this;
-    request(`/member_meter_data/${site_id}`,{
+    request(`/monitoring_meter_data`,{
       method:'GET',
       params:{
+        site_id:site_id,
         started_at:that.state.rangePickerValue[0].format("YYYY-MM-DD"),
         ended_at:that.state.rangePickerValue[1].format("YYYY-MM-DD"),
-        return:'all'
       }
     }).then((response)=>{
       console.log(response);
@@ -63,7 +63,25 @@ class Detail extends PureComponent {
   }
   dynamic=(data)=>{
     this.myChart = this.echarts.init(document.querySelector('.value-analysis'));
+    let date=[];
+    let this_period=[];
+    let same_period_last_month=[];
+    let same_period_last_year=[];
+    let difference_value=0;
+    for(let i=0;i<data.length;i++){
+      date.push(data[i].date);
+      this_period.push(data[i].this_period)
+      same_period_last_month.push(data[i].same_period_last_month)
+      same_period_last_year.push(data[i].same_period_last_year)
+      if(Number(data[i].this_period)){
+        difference_value=(difference_value+Number(data[i].this_period)).toFixed(10)-0
+      }
+    }
+    this.setState({
+      difference_value:difference_value
+    })
     let option = {
+
       title: {
         text: ''
       },
@@ -93,7 +111,7 @@ class Detail extends PureComponent {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一','周二','周三','周四','周五','周六','周日']
+        data: date
       },
       yAxis: {
         type: 'value'
@@ -103,19 +121,19 @@ class Detail extends PureComponent {
           name:'本期',
           type:'line',
           smooth: true,
-          data:[120, 132, 101, 134, 90, 230, 210]
+          data:this_period
         },
         {
           name:'上月',
           type:'line',
           smooth: true,
-          data:[220, 182, 191, 234, 290, 330, 310]
+          data:same_period_last_month
         },
         {
           name:'去年同期',
           type:'line',
           smooth: true,
-          data:[150, 232, 201, 154, 190, 330, 410]
+          data:same_period_last_year
         }
       ]
     };
@@ -139,13 +157,13 @@ class Detail extends PureComponent {
       this.setState({
         rangePickerValue:[datePickerValue,this.state.rangePickerValue[1]],
       },function () {
-        that.fetch()
+        that.fetch(this.props.site_id)
       });
     }else{
       this.setState({
         rangePickerValue:[this.state.rangePickerValue[0],datePickerValue],
       },function () {
-        that.fetch()
+        that.fetch(this.props.site_id)
       });
     }
   }
@@ -154,7 +172,7 @@ class Detail extends PureComponent {
     this.setState({
       rangePickerValue: getTimeDistance(type),
     },function () {
-      that.fetch()
+      that.fetch(this.props.site_id)
     });
 
   }

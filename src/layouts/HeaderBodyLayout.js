@@ -20,6 +20,7 @@ import NotFound from './../routes/Exception/404';
 import {projectName, poweredBy} from './../common/config'
 import moment from 'moment';
 import find from 'lodash/find'
+import HyLogo from '../images/hy-logo.png'
 
 const {SubMenu} = Menu;
 const {Header, Content} = Layout;
@@ -421,7 +422,7 @@ class HeaderBodyLayout extends React.PureComponent {
       <Layout >
         <div className={styles.header}>
           <div className="logo">
-            <Link to={`/${company_code}/main`} className="logo-up animated bounceInLeft ">{company_name}{projectName}</Link>
+            <Link to={`/${company_code}/main`} className="logo-up animated bounceInLeft ">{company_code==='hy'&&<img  src={HyLogo} style={{marginRight:'5px'}}/>}{company_name}{projectName}</Link>
           </div>
           {
             isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomRight"
