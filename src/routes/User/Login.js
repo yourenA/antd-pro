@@ -110,96 +110,6 @@ export default class Login extends Component {
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
-     {/*     <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
-            <TabPane tab="账户密码登录" key="account">
-              {
-                login.status === 'error' &&
-                login.type === 'account' &&
-                login.submitting === false &&
-                this.renderMessage('账户或密码错误')
-              }
-              /!*<FormItem
-              >
-                {getFieldDecorator('company_id', {
-                  onChange: this.handleChange,
-                  initialValue: localStorage.getItem('organization')?{key:JSON.parse(localStorage.getItem('organization')).key,label:JSON.parse(localStorage.getItem('organization')).label}:{key:'0',label:'系统'},
-                  rules: [
-                    {required: true, message: '请选择机构'},
-                  ],
-                })(
-                  <Select labelInValue={true}  size="large">
-                    { this.state.companiesList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
-                  </Select>
-                )}
-              </FormItem>*!/
-
-            </TabPane>
-            <TabPane tab="手机号登录" key="mobile">
-              {
-                login.status === 'error' &&
-                login.type === 'mobile' &&
-                login.submitting === false &&
-                this.renderMessage('验证码错误')
-              }
-              <FormItem>
-                {getFieldDecorator('mobile', {
-                  rules: [{
-                    required: type === 'mobile', message: '请输入手机号！',
-                  }, {
-                    pattern: /^1\d{10}$/, message: '手机号格式错误！',
-                  }],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="mobile" className={styles.prefixIcon} />}
-                    placeholder="手机号"
-                  />
-                )}
-              </FormItem>
-              <FormItem>
-                <Row gutter={8}>
-                  <Col span={16}>
-                    {getFieldDecorator('captcha', {
-                      rules: [{
-                        required: type === 'mobile', message: '请输入验证码！',
-                      }],
-                    })(
-                      <Input
-                        size="large"
-                        prefix={<Icon type="mail" className={styles.prefixIcon} />}
-                        placeholder="验证码"
-                      />
-                    )}
-                  </Col>
-                  <Col span={8}>
-                    <Button
-                      disabled={count}
-                      className={styles.getCaptcha}
-                      size="large"
-                      onClick={this.onGetCaptcha}
-                    >
-                      {count ? `${count} s` : '获取验证码'}
-                    </Button>
-                  </Col>
-                </Row>
-              </FormItem>
-            </TabPane>
-          </Tabs>*/}
-      {/*    <FormItem>
-            {getFieldDecorator('company_name', {
-              initialValue:company_name,
-              rules: [{
-                required: type === 'account', message: '请输入机构名称！',
-              }],
-            })(
-              <Input
-                size="large"
-                prefix={<Icon type="home" className={styles.prefixIcon}
-                             />}
-                placeholder="机构名称"
-              />
-            )}
-          </FormItem>*/}
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{
@@ -228,13 +138,6 @@ export default class Login extends Component {
             )}
           </FormItem>
           <FormItem className={styles.additional}>
-           {/* {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(
-              <Checkbox className={styles.autoLogin}>自动登录</Checkbox>
-            )}
-            <a className={styles.forgot} href="">忘记密码</a>*/}
             <Button size="large"  className={styles.submit} type="primary" htmlType="submit">
               登录
             </Button>

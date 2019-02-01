@@ -19,7 +19,7 @@ class EditPassword extends Component {
     this.format = 'HH:mm';
     const company_code = sessionStorage.getItem('company_code');
     this.state = {
-      activeKey:company_code==='hy'?'2':'1',
+      activeKey:(company_code==='hy'||company_code==='jxwa')?'2':'1',
       tableY:0
     }
   }
@@ -52,7 +52,7 @@ class EditPassword extends Component {
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" type="card">
                   {
-                    company_code!=='hy'&&<TabPane tab=' 水表读数信息导出' key="1">
+                    (company_code!=='hy')&& (company_code!=='jxwa')&&<TabPane tab=' 水表读数信息导出' key="1">
                       <MeterDataExportIndex />
                     </TabPane>
                   }

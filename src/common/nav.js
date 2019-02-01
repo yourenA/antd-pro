@@ -121,6 +121,9 @@ import VendorMange from './../routes/HeaderBody/VendorMange/Index'
 // import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
 // )
 import MeterModels from './../routes/HeaderBody/MeterModels/Index'
+import LiquidSensors from './../routes/HeaderBody/LiquidSensors/Index'
+import ValveSensors from './../routes/HeaderBody/ValveSensors/Index'
+import LiquidValveAnalysis from './../routes/HeaderBody/LiquidValveAnalysis/Index'
 
 // const Meters = asyncComponent(() =>
 // import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
@@ -363,7 +366,6 @@ const data = [{
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
           showCompany: ['amwares','zhsgy']
-
         },
         // {
         //   name: '温度传感器历史分析',
@@ -391,6 +393,13 @@ const data = [{
           path: 'vendor_concentrator',
           component: VendorConcentrator,
           permissions: ['manufacturer_status'],
+        },
+        {
+          name: '液位/比例阀控传感器分析',
+          path: 'liquid_valve_analysis',
+          component: LiquidValveAnalysis,
+          permissions: ['company_visit',],
+          showCompany: ['mys','test','amwares']
         }
         // ,{
         //   name: '产销差分析',
@@ -403,7 +412,8 @@ const data = [{
       name: '设备管理',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
-      permissions: ['temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit',
+      permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete','liquid_sensor_add_and_edit','liquid_sensor_delete',
+        'temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit',
         'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete','pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
       children: [
 
@@ -437,6 +447,20 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
+        },
+        {
+          name: '液位传感器管理',
+          path: 'liquid_sensors_manage',
+          component: LiquidSensors,
+          permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
+          showCompany: ['mys','test','amwares']
+        },
+        {
+          name: '比例阀控传感器管理',
+          path: 'valve_sensors_manage',
+          component: ValveSensors,
+          permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
+          showCompany: ['mys','test','amwares']
         },
         {
           name: '监控表管理',

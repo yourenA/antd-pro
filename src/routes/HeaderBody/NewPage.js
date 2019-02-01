@@ -5,6 +5,8 @@ import Proportion from './HomePage/Proportion'
 import ConcentratorOnlife from './HomePage/ConcentratorOnlife'
 import AreaSupplyList from './HomePage/AreaSupplyList'
 import DMArate from './HomePage/DMArate'
+import LiquidPosition from './HomePage/LiquidPosition'
+import ValvePosition from './HomePage/ValvePosition'
 import VendorConcentrator from './HomePage/VendorConcentrator'
 import DMADate from './HomePage/DMADate'
 import MYSHomepageChart from './HomePage/MYSHomepageChart'
@@ -320,6 +322,32 @@ class Main extends PureComponent {
                 style={{marginBottom: 16, minHeight: 509}}
               >
                 <DMADate />
+              </Card>
+            </Col>
+          }
+          {
+            (company_code === 'mys'||company_code === 'amwares'||company_code === 'test')  &&
+            <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>当前液位传感器值</span>}
+                bodyStyle={{padding: 24}}
+                style={{marginBottom: 16, minHeight: 509}}
+              >
+                <LiquidPosition/>
+              </Card>
+            </Col>
+          }
+          {
+            (company_code === 'mys'||company_code === 'amwares'||company_code === 'test')  &&
+            <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+              <Card
+                bordered={false}
+                title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#1890ff'}}/>当前比例阀控传感器阀门开度</span>}
+                bodyStyle={{padding: 24}}
+                style={{marginBottom: 16, minHeight: 509}}
+              >
+                <ValvePosition/>
               </Card>
             </Col>
           }

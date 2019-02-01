@@ -165,3 +165,5 @@ class AddPoliciesForm extends Component {
 
 const AddPoliciesFormWrap = Form.create()(AddPoliciesForm);
 export default connect()(AddPoliciesFormWrap);
+
+
