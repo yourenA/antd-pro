@@ -7,6 +7,7 @@ import {renderIndex,ellipsis2} from './../../../utils/utils'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import find from 'lodash/find'
+import {injectIntl} from 'react-intl';
 import AddOrEditForm from './addOrEditConcentratorModels'
 import debounce from 'lodash/throttle'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
@@ -16,6 +17,7 @@ const {Content} = Layout;
   manufacturers: state.manufacturers,
   global:state.global,
 }))
+@injectIntl
 class ConcentratorModels extends PureComponent {
   constructor(props) {
     super(props);
@@ -204,34 +206,24 @@ class ConcentratorModels extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {concentrator_models: {data, meta, loading},manufacturers} = this.props;
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.page,index)
-      //   }
-      // },
-      {title: '类型名称', width:  200, dataIndex: 'name', key: 'name',
+      {title: formatMessage({id: 'intl.concentrator_type'}), width:  200, dataIndex: 'name', key: 'name',
         fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val,200)
         }},
-      {title: '类型编码', width:  200, dataIndex: 'code', key: 'code',
+      {title: formatMessage({id: 'intl.type_coding'}), width:  200, dataIndex: 'code', key: 'code',
         render: (val, record, index) => {
           return ellipsis2(val,200)
         }},
 
-      {title: '协议', dataIndex: 'protocols', key: 'protocols', width: 200, render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.concentrator_protocols'}), dataIndex: 'protocols', key: 'protocols', width: 200, render: (text, record, index) => {
         return ellipsis2(text.join('|'),200)
       }},
       {
-        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
+        title: formatMessage({id: 'intl.vendor_name'}), dataIndex: 'manufacturer_name', key: 'manufacturer_name',
         render: (val, record, index) => {
           return  <Tooltip
             placement="topLeft"
@@ -242,7 +234,7 @@ class ConcentratorModels extends PureComponent {
       },
     ];
     const operate ={
-      title: '操作',
+      title:formatMessage({id: 'intl.operate'}),
       width: 100,
       fixed:'right',
       render: (val, record, index) => (
@@ -257,15 +249,15 @@ class ConcentratorModels extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.Delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -281,7 +273,7 @@ class ConcentratorModels extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '集中器类型查询'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.concentrator_type_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

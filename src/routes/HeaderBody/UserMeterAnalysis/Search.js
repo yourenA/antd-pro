@@ -5,10 +5,12 @@ import React, {Component} from 'react';
 import {Form,DatePicker,Row,message,Input,Button,Icon,Radio} from 'antd';
 import moment from 'moment'
 import {disabledDate,searchFormItemLayout} from './../../../utils/utils'
+import {injectIntl} from 'react-intl';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -95,13 +97,14 @@ class SearchForm extends Component {
     this.setState({ expand: !expand });
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText :  formatMessage({id: 'intl.start'})}>
             <DatePicker
               value={this.state.startValue}
               disabledDate={this.disabledStartDate}
@@ -111,7 +114,7 @@ class SearchForm extends Component {
               format="YYYY-MM-DD"
             />
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.end'})}>
             <DatePicker
               value={this.state.endValue}
               disabledDate={this.disabledEndDate}
@@ -122,11 +125,11 @@ class SearchForm extends Component {
             />
           </FormItem>
 
-          <FormItem label="户号"
+          <FormItem label={formatMessage({id: 'intl.user_number'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           {/*<FormItem label="集中器编号">
@@ -134,54 +137,54 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-            <FormItem label="水表编号"
+            <FormItem label={formatMessage({id: 'intl.water_meter_number'})}
                       style={{ display: expand ? 'inline-block' : 'none' }}
             >
               {getFieldDecorator('meter_number')(
-                <Input placeholder="请输入"/>
+                <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
-            <FormItem label="用户名称"
+            <FormItem label={formatMessage({id: 'intl.user_name'})}
                       style={{ display: expand ? 'inline-block' : 'none' }}
             >
               {getFieldDecorator('real_name')(
-                <Input placeholder="请输入"/>
+                <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
-          <FormItem label="安装地址"
+          <FormItem label={formatMessage({id: 'intl.install_address'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('install_address')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
 
-          <FormItem label="显示"
+          <FormItem label={formatMessage({id: 'intl.display_type'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('display_type',{
               initialValue:  'all',
             })(
               <RadioGroup>
-                <RadioButton value="all">全部</RadioButton>
-                <RadioButton value="only_normal">正常</RadioButton>
-                <RadioButton value="only_error">异常</RadioButton>
+                <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
+                <RadioButton value="only_normal">{formatMessage({id: 'intl.only_normal'})}</RadioButton>
+                <RadioButton value="only_error">{formatMessage({id: 'intl.only_error'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem>
             {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
-              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'} />
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            {this.props.showExportBtn&&<Button type="primary" className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()}  icon='export'>导出水表读数</Button>}
-            {this.props.showConfigBtn&&company_code!=='hy'&&<Button type="primary"  className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出格式</Button>}
+            <Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
+            {this.props.showExportBtn&&<Button type="primary" className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()}  icon='export'>{ formatMessage({id: 'intl.export_water_meter_readings'})}</Button>}
+            {this.props.showConfigBtn&&company_code!=='hy'&&<Button type="primary"  className="btn-cyan" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>{ formatMessage({id: 'intl.set_export_format'})}</Button>}
             {company_code==='ll'&&<Button type="primary"  icon='upload'  style={{marginLeft: 8}} onClick={()=>this.props.uploadLl()}>上传醴陵读数</Button>}
             {/*<Button  type="primary" style={{marginLeft: 8}} onClick={()=>message.info('暂未开通该功能')}>导出到Oracle</Button>*/}
           </FormItem>
-          <FormItem label="总用水量">
-              <Input value={this.props.total_difference_value} style={{width:'173px'}} readOnly addonAfter="吨" />
+          <FormItem label={formatMessage({id: 'intl.total_water_consumption'})}>
+              <Input value={this.props.total_difference_value} style={{width:'173px'}} readOnly addonAfter={formatMessage({id: 'intl.ton'})} />
           </FormItem>
         </Row>
       </Form>

@@ -18,11 +18,13 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import ExportForm from './ExportForm'
 import AnalysisDetail from './../BigMeterAnalysis/AnalysisDetail'
 import LilingForm from './LilingForm'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   member_meter_data: state.member_meter_data,
   global: state.global,
 }))
+@injectIntl
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
@@ -328,56 +330,15 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    /*const parseHeader = renderCustomHeaders(meta.custom_headers,meta,this.state.page)
-     let  custom_width = parseHeader.custom_width;
-     const custom_headers = parseHeader.custom_headers;
-     custom_width+=120;
-     custom_headers.unshift({
-     title: '序号',
-     dataIndex: 'id',
-     key: 'id',
-     width: 50,
-     className: 'table-index',
-     fixed: 'left',
-     render: (text, record, index) => {
-     return renderIndex(meta, this.state.initPage, index)
-     }
-     })
-     custom_headers.push(
-     {
-     title: '水表历史状况',
-     key: 'operation',
-     fixed: 'right',
-     width: 120,
-     render: (val, record, index) => {
-     return (
-     <div>
-     <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
-     </div>
-     )
-     }
-     }
-     )*/
-    // console.log('custom_headers',custom_headers)
     const company_code = sessionStorage.getItem('company_code');
     let columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta, this.state.initPage, index)
-      //   }
-      // },
       {
-        title: '水表编号',
+        title: formatMessage({id: 'intl.water_meter_number'}),
         dataIndex: 'meter_number',
         key: 'meter_number',
         fixed: 'left',
@@ -388,7 +349,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '户号',
+        title: formatMessage({id: 'intl.user_number'}),
         width: 100,
         dataIndex: 'member_number',
         key: 'member_number',
@@ -399,18 +360,18 @@ class UserMeterAnalysis extends PureComponent {
       },
 
       {
-        title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
+        title: formatMessage({id: 'intl.user_name'}), width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }
       },
       {
-        title: '用户地址', dataIndex: 'install_address', key: 'install_address', sorter: true, width: 130,
+        title:  formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address', sorter: true, width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }
       },
       {
-        title: '水表类型',
+        title:  formatMessage({id: 'intl.water_meter_type'}),
         width: 105,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
@@ -419,7 +380,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '温度介质类型',
+        title:  formatMessage({id: 'intl.Temperature_medium_type'}),
         width: 100,
         dataIndex: 'temperature_type_explain',
         key: 'temperature_type_explain',
@@ -428,7 +389,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '应收水量',
+        title: formatMessage({id: 'intl.water_consumption'}),
         dataIndex: 'difference_value',
         key: 'difference_value',
         sorter: true,
@@ -438,12 +399,12 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '本次抄见', dataIndex: 'latest_value', key: 'latest_value', width: 100, render: (val, record, index) => {
+        title: formatMessage({id: 'intl.latest_reading'}), dataIndex: 'latest_value', key: 'latest_value', width: 100, render: (val, record, index) => {
         return ellipsis2(renderErrorData(val), 100)
       }
       },
       {
-        title: '本次抄见时间',
+        title:  formatMessage({id: 'intl.latest_reading_time'}),
         dataIndex: 'latest_collected_at',
         key: 'latest_collected_at',
         width: 150,
@@ -452,12 +413,12 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '上次抄见', dataIndex: 'previous_value', key: 'previous_value', width: 100, render: (val, record, index) => {
+        title: formatMessage({id: 'intl.previous_reading'}),dataIndex: 'previous_value', key: 'previous_value', width: 100, render: (val, record, index) => {
         return ellipsis2(renderErrorData(val), 100)
       }
       },
       {
-        title: '上次抄见时间',
+        title:  formatMessage({id: 'intl.previous_reading_time'}),
         dataIndex: 'previous_collected_at',
         key: 'previous_collected_at',
         width: 150,
@@ -466,7 +427,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '状态', dataIndex: 'status', key: 'status', width: 70,
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 70,
         render: (val, record, index) => {
           let status = 'success';
           switch (val) {
@@ -487,7 +448,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '集中器编号',
+        title:  formatMessage({id: 'intl.concentrator_number'}),
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 110,
@@ -497,7 +458,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '水表厂商',
+        title:  formatMessage({id: 'intl.vendor_manage'}),
         dataIndex: 'meter_manufacturer_name',
         key: 'meter_manufacturer_name',
         width: 90,
@@ -509,34 +470,34 @@ class UserMeterAnalysis extends PureComponent {
     if (company_code === 'hy') {
       columns.splice(5, 1)
       columns = [...columns, {
-        title: '抄表员', dataIndex: 'reader', key: 'reader', width: 90, render: (val, record, index) => {
+        title:  formatMessage({id: 'intl.reader'}), dataIndex: 'reader', key: 'reader', width: 90, render: (val, record, index) => {
           return ellipsis2(val, 90)
         }
-      }, {title: '排序号', dataIndex: 'sort_number', key: 'sort_number', sorter: true,},
+      }, {title: formatMessage({id: 'intl.sort_number'}), dataIndex: 'sort_number', key: 'sort_number', sorter: true,},
         {
-          title: '查询历史状况',
+          title: formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
           width: 110,
           render: (val, record, index) => {
             return (
               <div>
-                <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+                <Button type="primary" size='small' onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
               </div>
             )
           }
         }]
     } else {
-      columns = [...columns, {title: '抄表员', dataIndex: 'reader', key: 'reader',},
+      columns = [...columns, {title: formatMessage({id: 'intl.reader'}), dataIndex: 'reader', key: 'reader',},
         {
-          title: '查询历史状况',
+          title:  formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
           width: 110,
           render: (val, record, index) => {
             return (
               <div>
-                <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
+                <Button type="primary" size='small' onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
               </div>
             )
           }
@@ -551,7 +512,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '水表水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name: formatMessage({id: 'intl.meter_volume_data'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 {
                   !this.state.showMonitor

@@ -202,7 +202,7 @@ const data = [{
   path: '',
   children: [
     {
-      name: '主页',            // 页面名称，会展示在菜单栏中
+      name: 'home',            // 页面名称，会展示在菜单栏中
       path: 'home',   // 匹配的路由
       icon: 'home',              // 页面图标，会展示在菜单栏中
       component: NewPage,
@@ -298,70 +298,70 @@ const data = [{
 }, {
   component: HeaderBodyLayout,
   layout: 'HeaderBodyLayout',
-  name: '首页', // for breadcrumb
+  name: 'home', // for breadcrumb
   path: 'main',
   children: [
     {
-      name: '数据分析',            // 页面名称，会展示在菜单栏中
+      name: 'data_analysis',            // 页面名称，会展示在菜单栏中
       path: 'real_time_data',   // 匹配的路由
       icon: 'area-chart',              // 页面图标，会展示在菜单栏中
       permissions: ['village_difference_consumption', 'meter_status','concentrator_real_time_data','pressure_sensor_historical_data', 'village_meter_data', 'member_meter_data'],
       children: [
         {
-          name: '小区水量分析',
+          name: 'village_meter_data',
           path: 'community_analysis',
           component: CommunityAnalysis,
           permissions: ['village_meter_data',],
           noShowCompany: ['hy']
         },
         {
-          name: '小区水量分析',
+          name: 'village_meter_data',
           path: 'hy_community_analysis',
           component: HYCommunityAnalysis,
           permissions: ['village_meter_data',],
           showCompany: ['hy']
         },
         {
-          name: '小区水量分析(手工)',
+          name: 'village_meter_data_manual',
           path: 'manually_community_analysis',
           component: ManuallyCommunityAnalysis,
           permissions: ['village_meter_data',],
           showCompany: ['hy']
         }, {
-          name: '水表水量分析',
+          name: 'meter_volume_data',
           path: 'user_meter_analysis',
           component: UserMeterAnalysis,
           permissions: ['member_meter_data'],
         },
         {
-          name: '大用户水量分析',
+          name: 'big_meter_volume',
           path: 'big_meter_analysis',
           component: BigMeterAnalysis,
           permissions: ['member_meter_data'],
           showCompany: ['hy']
         },{
-          name: '用户水量分析',
+          name: 'user_meter_volume',
           path: 'member_consumption',
           component: MemberConsumption,
           permissions: ['member_consumption'],
           noShowCompany: ['hy']
         },
         {
-          name: '压力/温度实时地图',
+          name: 'pressure/temperature_map',
           path: 'map_demo',
           component: MapDemo,
           permissions: ['concentrator_real_time_data',],
           showCompany: ['amwares','zhsgy']
         },
         {
-          name: '大表数据分析地图',
+          name: 'big_meter_analysis_map',
           path: 'big_meter_map',
           component: ConcentratorMaps,
           permissions: ['concentrator_maps',],
           showCompany: ['mys']
         },
         {
-          name: '压力传感器历史分析',
+          name: 'pressure_history',
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
@@ -382,20 +382,20 @@ const data = [{
         //   permissions: ['meter_status'],
         // },
         {
-          name: '完整实时数据',
+          name: 'real_time_data',
           path: 'complete_realData',
           component: CompleteRealData,
           permissions: ['complete_meter_data'],
           noShowCompany: ['hy']
         },
         {
-          name: '厂商-集中器统计',
+          name: 'vendor_concentrator_statistics',
           path: 'vendor_concentrator',
           component: VendorConcentrator,
           permissions: ['manufacturer_status'],
         },
         {
-          name: '液位/比例阀控传感器分析',
+          name: 'liquid/valve_analysis',
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
@@ -409,7 +409,7 @@ const data = [{
         // },
       ],
     }, {
-      name: '设备管理',            // 页面名称，会展示在菜单栏中
+      name: 'device',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
       permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete','liquid_sensor_add_and_edit','liquid_sensor_delete',
@@ -426,65 +426,65 @@ const data = [{
         // }
         // ,
         {
-          name: '集中器管理',
+          name: 'concentrator_manage',
           path: 'concentrator_manage',
           component: ConcentratorManage,
           permissions: [ 'concentrator_add_and_edit', 'concentrator_delete'],
         },
         {
-          name: '集中器类型管理',
+          name: 'concentrator_type_manage',
           path: 'concentrator_type_search',
           component: ConcentratorModels,
           permissions: [ 'concentrator_model_delete', 'concentrator_model_add_and_edit'],
         }, {
-          name: '水表管理',
+          name: 'meter_manage',
           path: 'water_meter_manage',
           component: Meters,
           permissions: [ 'meter_add_and_edit', 'meter_delete'],
         },
         {
-          name: '水表类型管理',
+          name: 'meter_type_manage',
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
         },
         {
-          name: '液位传感器管理',
+          name: 'liquid_sensors_manage',
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
           showCompany: ['mys','test','amwares']
         },
         {
-          name: '比例阀控传感器管理',
+          name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
           showCompany: ['mys','test','amwares']
         },
         {
-          name: '监控表管理',
+          name: 'monitor_meter_manage',
           path: 'monitor_meter_manage',
           component: MonitoringMeterManage,
           permissions: [ 'monitoring_meter_edit'],
           showCompany: ['hy']
         },
         {
-          name: '手工录入监控表',
+          name: 'manually_meter_manage',
           path: 'manually_meter_manage',
           component: ManuallyMeterManage,
           permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
           showCompany: ['hy']
         },
         {
-          name: '压力传感器管理',
+          name: 'pressure_sensors_manage',
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
           showCompany: ['amwares','zhsgy']
         },
         {
-          name: '温度传感器管理',
+          name: 'temperature_sensors_manage',
           path: 'temperature_sensors',
           component: Temperature,
           permissions: [ 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
@@ -497,7 +497,7 @@ const data = [{
         //   permissions:['company_visit'],
         // },
         {
-          name: '流量计管理',
+          name: 'flow_meters_manage',
           path: 'flow_meters',
           component: FlowMeters,
           permissions: [ 'flow_meter_add_and_edit', 'flow_meter_delete'],
@@ -506,51 +506,51 @@ const data = [{
 
       ],
     }, {
-      name: '系统管理',            // 页面名称，会展示在菜单栏中
+      name: 'system',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
       permissions: ['config_edit', 'area_add_and_edit', 'area_delete', 'server_add_and_edit', 'server_status_edit', 'server_delete', 'member_add_and_edit', 'member_delete', 'concentrator_add_and_edit', 'role_add_and_edit', 'role_status_edit', 'role_delete', 'user_add_and_edit', 'user_delete', 'manufacturer_delete', 'manufacturer_add_and_edit'],
       children: [
         {
-          name: '系统设置',
+          name: 'system_setting',
           path: 'system_setup',
           component: SystemSetup,
           permissions: ['config_edit'],
         },
         {
-          name: '用户档案',
+          name: 'user_profile',
           path: 'user_archives',
           component: UserArchives,
           permissions: ['member_add_and_edit', 'member_delete'],
         },
         {
-          name: '厂商管理',
+          name: 'vendor_manage',
           path: 'vendor_manage',
           component: VendorMange,
           permissions: [ 'manufacturer_delete', 'manufacturer_add_and_edit'],
         },
         {
-          name: '区域管理',
+          name: 'village_manage',
           path: 'area_manage',
           component: AreaManage,
           permissions: [ 'village_add_and_edit', 'village_delete'],
         },
 
         {
-          name: '服务器地址',
+          name: 'servers_manage',
           path: 'servers_manage',
           component: Servers,
           permissions: [ 'server_add_and_edit', 'server_status_edit', 'server_delete'],
         },
         {
-          name: 'DMA分区管理',
+          name: 'dma',
           path: 'DMA',
           component: DMA,
           permissions: [ 'area_add_and_edit', 'area_delete'],
           showCompany: ['hy']
         },
         {
-          name: '抄表路线管理',
+          name: 'meter_reading_path',
           path: 'locations_manage',
           component: Locations,
           permissions: [ 'location_edit'],
@@ -558,64 +558,64 @@ const data = [{
         },
 
         {
-          name: '账号管理',
+          name: 'account_manage',
           path: 'account_manage',
           component: AccountManage,
           permissions: ['user_add_and_edit', 'user_delete', 'role_add_and_edit', 'role_status_edit', 'role_delete'],
         }, {
-          name: '一站添加数据',
+          name: 'add_data_at_one_stop',
           path: 'data_import_process',
           component: DataImportProcess,
           permissions: ['member_add_and_edit', 'concentrator_add_and_edit', 'meter_model_delete', 'meter_add_and_edit', 'village_add_and_edit', 'concentrator_model_add_and_edit', 'manufacturer_add_and_edit'],
         }],
     }, {
-      name: '异常分析',            // 页面名称，会展示在菜单栏中
+      name: 'abnormal_analysis',            // 页面名称，会展示在菜单栏中
       path: 'unusual_analysis',   // 匹配的路由
       icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
       permissions: ['concentrator_error_analysis', 'meter_error_analysis', 'daily_error', 'consumption_abnormality', 'zero_abnormality', 'leak_abnormality', 'night_abnormality'],
       children: [{
-        name: '集中器异常分析',
+        name: 'concentrator_abnormal_analysis',
         path: 'concentrator_unusual_analysis',
         component: ConcentratorErrorAnalysis,
         permissions: ['concentrator_error_analysis'],
       }, {
-        name: '水表异常分析',
+        name: 'water_meter_abnormal_analysis',
         path: 'meter_unusual_analysis',
         component: MeterErrorAnalysis,
         permissions: ['meter_error_analysis'],
       }, {
-        name: '统计日报',
+        name: 'Statistical_daily',
         path: 'statistics_daily',
         component: StatisticsDaily,
         permissions: ['daily_error'],
       }, {
-        name: '用水量异常报警',
+        name: 'water_consumption_abnormal_analysis',
         path: 'consumption_abnormality',
         component: Consumption_abnormality,
         permissions: ['consumption_abnormality'],
       }, {
-        name: '零流量异常报警',
+        name: 'zero_consumption_abnormal_analysis',
         path: 'zero_abnormality',
         component: ZeroAbnormality,
         permissions: ['zero_abnormality'],
       }, {
-        name: '漏水异常报警',
+        name: 'water_leak_abnormal_analysis',
         path: 'leak_abnormality',
         component: Leak_abnormality,
         permissions: ['leak_abnormality'],
       }, {
-        name: '夜间异常流量报警',
+        name: 'night_consumption_abnormal_analysis',
         path: 'night_abnormality',
         component: NightAbnormality,
         permissions: ['night_abnormality'],
       }, {
-        name: '水表阀控异常报警',
+        name: 'valve_status_abnormal_analysis',
         path: 'valve_status_abnormality',
         component: ValveStatusAbnormality,
         permissions: ['valve_status_abnormality'],
       }
         , {
-          name: '水表电池电压异常报警',
+          name: 'voltage_status_abnormal_analysis',
           path: 'voltage_status_abnormality',
           component: VoltageStatusAbnormality,
           permissions: ['voltage_status_abnormality'],

@@ -302,7 +302,7 @@ class UserMeterAnalysis extends PureComponent {
           // console.log('record',record)
           // console.log('record.layer*25',record.layer+25)
           return (
-            <span style={{color: record.is_village === -1 ? `#1890ff` : 'rgba(0, 0, 0, 0.65)',paddingLeft: `${parseInt(record.village_ids.length-1) * 25}px`}}>{val}</span>
+            <span style={{color: record.is_village === -1 ? `#1890ff` : 'rgba(0, 0, 0, 0.65)',paddingLeft: `${parseInt(record.village_ids.length-2) * 25}px`}}>{val}</span>
           )
         }
       },

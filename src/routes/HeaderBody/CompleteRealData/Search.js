@@ -5,9 +5,11 @@ import React, {Component} from 'react';
 import {Form, DatePicker, Row, Icon , Input, Button,Radio} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
+import {injectIntl} from 'react-intl';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -41,6 +43,7 @@ class SearchForm extends Component {
     this.setState({ expand: !expand });
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const {getFieldDecorator} = this.props.form;
     const {expand}=this.state
     return (
@@ -51,7 +54,7 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-          <FormItem label={this.props.dateText ? this.props.dateText : '上传开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -62,7 +65,7 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '上传结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.end'})}>
             {getFieldDecorator('ended_at', {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
@@ -73,41 +76,41 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="户号"
+          <FormItem label={formatMessage({id: 'intl.user_number'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="水表编号"
+          <FormItem label={formatMessage({id: 'intl.water_meter_number'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('meter_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="用户名称"
+          <FormItem label={formatMessage({id: 'intl.user_name'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('real_name')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="显示"
+          <FormItem label={formatMessage({id: 'intl.display_type'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('display_type',{
               initialValue:  'only_latest',
             })(
               <RadioGroup>
-                <RadioButton value="only_latest">最新数据</RadioButton>
-                <RadioButton value="all">全部数据</RadioButton>
+                <RadioButton value="only_latest">{formatMessage({id: 'intl.latest_data'})}</RadioButton>
+                <RadioButton value="all">{formatMessage({id: 'intl.all_data'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem >
             {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
-              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'} />
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
         </Row>
       </Form>

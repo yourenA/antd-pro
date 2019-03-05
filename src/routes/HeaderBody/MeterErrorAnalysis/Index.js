@@ -275,6 +275,9 @@ class UserMeterAnalysis extends PureComponent {
       {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
+      {title: '地址', width: 150, dataIndex: 'address', key: 'address',render: (text, record, index) => {
+        return ellipsis2(text,150)
+      }},
       {title: '日期', dataIndex: 'date',  key: 'date',width:100,render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
@@ -375,7 +378,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:1600,y: this.state.tableY}}
+                                 scroll={{x:1750,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}

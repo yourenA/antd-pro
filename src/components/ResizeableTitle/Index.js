@@ -2,6 +2,7 @@ import {Table, Badge, Switch, Progress} from 'antd';
 import React, {PureComponent} from 'react';
 import {Resizable} from 'react-resizable';
 import {renderIndex, ellipsis2,renderErrorData} from './../../utils/utils'
+import {injectIntl} from 'react-intl';
 
 const ResizeableTitle = (props) => {
   const {onResize, width, ...restProps} = props;
@@ -16,12 +17,12 @@ const ResizeableTitle = (props) => {
     </Resizable>
   );
 };
-
-export default class Demo extends React.Component {
+@injectIntl
+class Demo extends React.Component {
   state = {
     columns: this.props.customIndex?this.props.columns:[
       {
-        title: '序号',
+        title:this.props.intl.formatMessage({id: 'intl.index'}),
         dataIndex: 'id',
         key: 'id',
         width: 50,
@@ -735,3 +736,4 @@ export default class Demo extends React.Component {
     );
   }
 }
+export default Demo

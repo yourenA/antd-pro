@@ -11,6 +11,7 @@ import {connect} from 'dva';
 import Detail from './Detail'
 import find from 'lodash/find'
 import debounce from 'lodash/throttle'
+import {injectIntl} from 'react-intl';
 // import moment from 'moment'
 import {renderIndex, ellipsis, ellipsis2, fillZero} from './../../../utils/utils'
 import './index.less'
@@ -25,6 +26,7 @@ const {Content} = Layout;
   servers: state.servers,
   area: state.area
 }))
+@injectIntl
 class ConcentratorManage extends PureComponent {
   constructor(props) {
     super(props);
@@ -522,6 +524,7 @@ class ConcentratorManage extends PureComponent {
     console.log('sorter', sorter)
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {concentrators: {data, meta, loading}, servers, concentrator_models, area} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
@@ -538,7 +541,7 @@ class ConcentratorManage extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       {
-        title: '集中器编号', width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: formatMessage({id: 'intl.concentrator_number'}), width: 100, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (text, record, index) => {
           return (
             <p className="link" onClick={()=>this.showConcentrator(record)}>
@@ -548,7 +551,7 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: '集中器类型',
+        title: formatMessage({id: 'intl.concentrator_type'}),
         width: 100,
         dataIndex: 'concentrator_model_name',
         key: 'concentrator_model_name',
@@ -557,7 +560,7 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: '支持协议', width: 100, dataIndex: 'protocols', key: 'protocols', render: (val, record, index) => {
+        title: formatMessage({id: 'intl.concentrator_protocols'}), width: 100, dataIndex: 'protocols', key: 'protocols', render: (val, record, index) => {
         if (val) {
           return ellipsis2(val.join('|'), 90)
         } else {
@@ -566,29 +569,29 @@ class ConcentratorManage extends PureComponent {
       }
       },
       {
-        title: '硬件编号', dataIndex: 'serial_number', key: 'serial_number', width: 100,
+        title: formatMessage({id: 'intl.serial_number'}), dataIndex: 'serial_number', key: 'serial_number', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
         }
       },
-      {title: '水表总数', dataIndex: 'meter_count', key: 'meter_count', width: 80},
+      {title: formatMessage({id: 'intl.water_meter_count'}), dataIndex: 'meter_count', key: 'meter_count', width: 80},
       {
-        title: '在线状态', dataIndex: 'is_online', key: 'is_online', width: 80,
+        title: formatMessage({id: 'intl.online_status'}), dataIndex: 'is_online', key: 'is_online', width: 80,
         render: (val, record, index) => {
           let status = "success";
-          let status_text = "是";
+          let status_text = formatMessage({id: 'intl.yes'});
           switch (val) {
             case  1:
               status = 'success';
-              status_text = "是";
+              status_text = formatMessage({id: 'intl.yes'})
               break;
             case  -1:
               status = 'error';
-              status_text = "否";
+              status_text = formatMessage({id: 'intl.no'});
               break;
             case  -2:
               status = 'warning';
-              status_text = "休眠";
+              status_text =  formatMessage({id: 'intl.sleep'});
               break;
           }
           return (
@@ -599,7 +602,7 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: '安装小区', dataIndex: 'villages', key: 'villages', width: 120,
+        title: formatMessage({id: 'intl.village_name'}), dataIndex: 'villages', key: 'villages', width: 120,
         render: (val, record, index) => {
           let transVal = val.map((item, index)=> {
             return <span key={index}>{ellipsis2(item.name, 110)}<br/></span>
@@ -609,45 +612,45 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: '安装地址', dataIndex: 'install_address', key: 'install_address', width: 120,
+        title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address', width: 120,
         render: (val, record, index) => {
           return ellipsis2(val, 120)
         }
       },
       {
-        title: '服务器IP', dataIndex: 'server_ip', key: 'server_ip', width: 100,
+        title: formatMessage({id: 'intl.server_ip'}), dataIndex: 'server_ip', key: 'server_ip', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
         }
       },
       {
-        title: '服务器端口', dataIndex: 'server_port', key: 'server_port', width: 90,
+        title: formatMessage({id: 'intl.server_port'}), dataIndex: 'server_port', key: 'server_port', width: 90,
         render: (val, record, index) => {
           return ellipsis2(val, 80)
         }
       },
       {
-        title: 'SIM卡号码', dataIndex: 'sim_number', key: 'sim_number', width: 90,
+        title: formatMessage({id: 'intl.sim_number'}), dataIndex: 'sim_number', key: 'sim_number', width: 90,
         render: (val, record, index) => {
           return ellipsis2(val, 90)
         }
       },
       {
-        title: 'SIM卡运营商', dataIndex: 'sim_operator', key: 'sim_operator', width: 100,
+        title: formatMessage({id: 'intl.sim_operator'}), dataIndex: 'sim_operator', key: 'sim_operator', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
         }
       },
-      {title: '本轮登录时间', dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
-      {title: '最后访问时间', dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
+      {title: formatMessage({id: 'intl.last_logined_time'}), dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
+      {title: formatMessage({id: 'intl.last_onlined_time'}), dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
       {
-        title: '上传周期', dataIndex: 'upload_cycle_unit_explain', key: 'upload_cycle_unit_explain', width: 100,
+        title: formatMessage({id: 'intl.upload_cycle_unit_explain'}), dataIndex: 'upload_cycle_unit_explain', key: 'upload_cycle_unit_explain', width: 100,
       },
       {
-        title: '上传时间', dataIndex: 'upload_time', key: 'upload_time', width: 100,
+        title: formatMessage({id: 'intl.upload_time'}), dataIndex: 'upload_time', key: 'upload_time', width: 100,
       },
       {
-        title: '睡眠时间', dataIndex: 'sleep_hours', key: 'sleep_hours', width: 100,
+        title: formatMessage({id: 'intl.sleep_hours'}), dataIndex: 'sleep_hours', key: 'sleep_hours', width: 100,
         render: (val, record, index) => {
           let transVal = val;
           transVal.sort(function (a, b) {
@@ -657,17 +660,17 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: '是否做统计日报', dataIndex: 'is_count', key: 'is_count', width: 120,
+        title: formatMessage({id: 'intl.is_count'}), dataIndex: 'is_count', key: 'is_count', width: 120,
         render: (val, record, index) => {
           return (
             <p>
-              <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? "是" : "否"}
+              <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? formatMessage({id: 'intl.yes'}) : formatMessage({id: 'intl.no'})}
             </p>
           )
         }
       },
       {
-        title: '备注', dataIndex: 'remark', key: 'remark', render: (val, record, index) => {
+        title: formatMessage({id: 'intl.remark'}), dataIndex: 'remark', key: 'remark', render: (val, record, index) => {
         return ellipsis2(val)
       }
       },
@@ -687,7 +690,7 @@ class ConcentratorManage extends PureComponent {
       }})
 
     const operate = {
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}),
       key: 'operation',
       fixed: 'right',
       className: 'operation',
@@ -705,7 +708,7 @@ class ConcentratorManage extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{ formatMessage({id: 'intl.Edit'})}</a>
             <span className="ant-divider"/>
                 </span>
             }
@@ -719,16 +722,16 @@ class ConcentratorManage extends PureComponent {
                             orderModal: true
                           }
                         )
-                      }}>指令</a>
+                      }}>{ formatMessage({id: 'intl.Command'})}</a>
             <span className="ant-divider"/>
                 </span>
             }
             {
               this.state.showdelBtn &&
               <span>
-                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                  <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.Delete'})})}
                               onConfirm={()=>this.handleRemove(record.id)}>
-                  <a href="">删除</a>
+                  <a href="">{ formatMessage({id: 'intl.Delete'})}</a>
                 </Popconfirm>
                 </span>
             }
@@ -739,10 +742,10 @@ class ConcentratorManage extends PureComponent {
     if (this.state.canOperateConcentrator) {
       columns.push(operate)
     }
-    let breadcrumb = this.state.concentratorNumber ? [{name: '运行管理'}, {
-      name: '集中器管理',
+    let breadcrumb = this.state.concentratorNumber ? [{name: formatMessage({id: 'intl.device'})}, {
+      name: formatMessage({id: 'intl.concentrator_manage'}),
       click: this.handleBack
-    }, {name: this.state.concentratorNumber}] : [{name: '运行管理'}, {name: '集中器管理'}]
+    }, {name: this.state.concentratorNumber}] : [{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.concentrator_manage'})}]
     return (
       <Layout className="layout">
         <Sider refreshSider={this.state.refreshSider} showSiderCon={this.state.showSiderCon}

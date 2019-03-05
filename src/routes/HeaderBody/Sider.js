@@ -4,6 +4,8 @@ import siderJson from './sider.json'
 import {connect} from 'dva';
 import request from '../../utils/request';
 import forEach from 'lodash/forEach'
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 const TreeNode = Tree.TreeNode;
 const {Sider} = Layout;
 const Search = Input.Search;
@@ -11,6 +13,7 @@ const Search = Input.Search;
   sider_regions: state.sider_regions,
   global: state.global,
 }))
+@injectIntl
 class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
@@ -54,7 +57,8 @@ class SiderTree extends PureComponent {
       }).then((concentratorsResponse)=> {
         console.log('concentratorsResponse', concentratorsResponse)
         if (that.props.showConcentrator !== false) {
-          response.data.data.unshift({id: 'null', name: '全部集中器', tooltip: "列出所有的集中器号，与安装小区无关", children: []})
+          const { intl:{formatMessage} } = this.props;
+          response.data.data.unshift({id: 'null', name: formatMessage({id: 'intl.all_concentrator'}), tooltip:formatMessage({id: 'intl.sider_help'}), children: []})
           for (let i = 0; i < concentratorsResponse.data.data.length; i++) {
             response.data.data[0].children.push({
               id: concentratorsResponse.data.data[i].id + '5',
@@ -252,14 +256,14 @@ class SiderTree extends PureComponent {
   };
 
   render() {
-    const {sider_regions:{data}}=this.props;
+    const {sider_regions:{data},intl:{formatMessage}}=this.props;
     return (
       <Sider collapsed={this.state.collapsed} collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
-          区域信息
+          <FormattedMessage id="intl.village_info"/>
         </div>
         <Search style={{marginTop: '20px', marginLeft: '12px', marginBottom: '8px', width: '88%'}}
-                placeholder="搜索小区或集中器号" onChange={this.onChange}/>
+                placeholder={formatMessage({id:'intl.search_village_or_concentrator'})} onChange={this.onChange}/>
         <div className="sider-content">
           {(this.state.treeData.length)
             ?

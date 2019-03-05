@@ -1,6 +1,7 @@
 import { Table ,Badge} from 'antd';
 import React, {PureComponent} from 'react';
 import { Resizable } from 'react-resizable';
+import {injectIntl} from 'react-intl';
 import {renderIndex, ellipsis2,renderRowSpan} from './../../utils/utils'
 
 const ResizeableTitle = (props) => {
@@ -16,12 +17,12 @@ const ResizeableTitle = (props) => {
     </Resizable>
   );
 };
-
+@injectIntl
 export default class Demo extends React.Component {
   state = {
     columns: [
       {
-        title: '序号',
+        title: this.props.intl.formatMessage({id: 'intl.index'}),
         dataIndex: 'id',
         key: 'id',
         width: 50,

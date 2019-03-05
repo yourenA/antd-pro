@@ -14,12 +14,14 @@ import {renderIndex, ellipsis2,renderRowSpan,parseRowSpanData2,parseRowSpanData3
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   member_consumption: state.member_consumption,
   global: state.global,
 
 }))
+@injectIntl
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
@@ -205,113 +207,8 @@ class UserMeterAnalysis extends PureComponent {
     })
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const {member_consumption: {data,meta,  loading}} = this.props;
-   /* const data= [
-      {
-        "village_name": "望江里",
-        "member_number": "4814056",
-        "real_name": "王文军",
-        "install_address": "望江里5号06",
-        "reader": "",
-        "temperature_types": [
-          {
-            "name": "冷水表",
-            "difference_value": 0.12,
-            "meters": [
-              {
-                "meter_number": "87281633",
-                "meter_index": 125,
-                "meter_enabled_date": "2018-07-16",
-                "meter_enabled_value": "57.59",
-                "meter_disabled_date": "",
-                "meter_disabled_value": "",
-                "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-                "meter_model_name": "有线冷水表（20mm）",
-                "is_valve": -1,
-                "is_valve_explain": "否",
-                "output_type": 1,
-                "output_type_explain": "有线",
-                "temperature_type": 1,
-                "temperature_type_explain": "冷水表",
-                "size_type": 1,
-                "size_type_explain": "小表",
-                "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-                "meter_manufacturer_name": "株洲珠华",
-                "concentrator_number": "02000016",
-                "concentrator_serial_number": "A02000016",
-                "previous_value": 57.62,
-                "previous_collected_date": "2018-07-16",
-                "latest_value": 57.71,
-                "latest_collected_date": "2018-07-17",
-                "difference_value": 0.12,
-                "protocols": [
-                  "901F",
-                  "90EF"
-                ]
-              },
-              {
-                "meter_number": "87441104",
-                "meter_index": 125,
-                "meter_enabled_date": "2018-04-09",
-                "meter_enabled_value": "28.00",
-                "meter_disabled_date": "2018-07-16",
-                "meter_disabled_value": "57.24",
-                "meter_model_id": "d389ea0c-2e7f-11e8-bf81-a771ce425475",
-                "meter_model_name": "有线冷水表（20mm）",
-                "is_valve": -1,
-                "is_valve_explain": "否",
-                "output_type": 1,
-                "output_type_explain": "有线",
-                "temperature_type": 1,
-                "temperature_type_explain": "冷水表",
-                "size_type": 1,
-                "size_type_explain": "小表",
-                "meter_manufacturer_id": "d3847112-2e7f-11e8-a75a-7b19972e48ce",
-                "meter_manufacturer_name": "株洲珠华",
-                "concentrator_number": "02000016",
-                "concentrator_serial_number": "A02000016",
-                "previous_value": 56.92,
-                "previous_collected_date": "2018-07-15",
-                "latest_value": 56.92,
-                "latest_collected_date": "2018-07-16",
-                "difference_value": 0,
-                "protocols": [
-                  "901F",
-                  "90EF"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "热水表",
-            "difference_value": 0,
-            "meters": []
-          }
-        ]
-      }
-    ];
-    const meta={
-      "aggregator": {
-        "temperature_type_difference_values": [
-          {
-            "name": "冷水表",
-            "difference_value": 0.12
-          },
-          {
-            "name": "热水表",
-            "difference_value": 0
-          }
-        ]
-      },
-      "pagination": {
-        "total": 1,
-        "count": 1,
-        "per_page": 30,
-        "current_page": 1,
-        "total_pages": 1,
-        "links": []
-      }
-    }*/
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
@@ -319,110 +216,98 @@ class UserMeterAnalysis extends PureComponent {
     const resetMeterData=parseRowSpanData3(data)
     const {isMobile} =this.props.global;
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     const children=renderIndex(meta, this.state.initPage, record.index)
-      //     return renderRowSpan(children,record)
-      //   }
-      // },
-      { title: '户号', width: 90, dataIndex: 'member_number', key: 'member_number',  fixed: isMobile?'':'left',  render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.user_number'}), width: 90, dataIndex: 'member_number', key: 'member_number',  fixed: isMobile?'':'left',  render: (val, record, index) => {
         const children= (
           ellipsis2(val, 90)
         )
         return renderRowSpan(children,record)
       } },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
         const children= (
           ellipsis2(val, 80)
         )
         return renderRowSpan(children,record)
       } },
-      { title: '安装地址', dataIndex: 'install_address', key: 'install_address' ,width: 100,   render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address' ,width: 100,   render: (val, record, index) => {
         const children=  (
           ellipsis2(val, 100)
         )
         return renderRowSpan(children,record)
       }},
-      { title: '温度介质类型', width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain' , render: (text, record, index) => {
+      { title:  formatMessage({id: 'intl.Temperature_medium_type'}), width: 100, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain' , render: (text, record, index) => {
         return ellipsis2(text, 100)
       }},
 
-      { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
       } },
-      { title: '水表类型', width: 105, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
+      { title:  formatMessage({id: 'intl.water_meter_type'}), width: 105, dataIndex: 'meter_model_name', key: 'meter_model_name' , render: (text, record, index) => {
         return ellipsis2(text, 105)
       }},
-      { title: '水表用水量', dataIndex: 'difference_value', key: 'difference_value' ,width: 90,  render: (val, record, index) => {
-        return ellipsis2(val, 90)
+      { title:  formatMessage({id: 'intl.water_consumption'}), dataIndex: 'difference_value', key: 'difference_value' ,width: 120,  render: (val, record, index) => {
+        return ellipsis2(val, 120)
       }},
-      {title: '本次抄见(T)', dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.latest_reading'}), dataIndex: 'latest_value', key: 'latest_value', width: 100,render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '本次抄见日期', dataIndex: 'latest_collected_date', key: 'latest_collected_date', width: 110,render: (val, record, index) => {
+      {title:  formatMessage({id: 'intl.latest_reading_time'}), dataIndex: 'latest_collected_date', key: 'latest_collected_date', width: 110,render: (val, record, index) => {
         return ellipsis2(val, 110)
       }},
-      {title: '上次抄见(T)', dataIndex: 'previous_value', key: 'previous_value', width: 100,render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.previous_reading'}), dataIndex: 'previous_value', key: 'previous_value', width: 100,render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '上次抄见日期', dataIndex: 'previous_collected_date', key: 'previous_collected_date', width: 110,render: (val, record, index) => {
+      {title:  formatMessage({id: 'intl.previous_reading_time'}), dataIndex: 'previous_collected_date', key: 'previous_collected_date', width: 110,render: (val, record, index) => {
         return ellipsis2(val, 110)
       }},
-      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90,render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 90,render: (val, record, index) => {
         return ellipsis2(val, 90)
       } },
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.water_meter_index'}), width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
-      { title: '集中器硬件编号', dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120,render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_serial_number', key: 'concentrator_serial_number' ,width: 120,render: (val, record, index) => {
         return ellipsis2(val, 120)
       } },
-      { title: '集中器协议', dataIndex: 'protocols', key: 'protocols' ,width: 90 ,render: (val, record, index) => {
-        return ellipsis2(val.join('|'), 90)
+      { title:  formatMessage({id: 'intl.concentrator_protocols'}), dataIndex: 'protocols', key: 'protocols' ,width: 100 ,render: (val, record, index) => {
+        return ellipsis2(val.join('|'), 100)
       }},
-      {title: '开始使用日期', width: 120, dataIndex: 'meter_enabled_date', key: 'meter_enabled_date', render: (text, record, index) => {
+      {title:  formatMessage({id: 'intl.meter_enabled_date'}), width: 120, dataIndex: 'meter_enabled_date', key: 'meter_enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '开始使用时读数', width: 120, dataIndex: 'meter_enabled_value', key: 'meter_enabled_value', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.meter_enabled_value'}), width: 120, dataIndex: 'meter_enabled_value', key: 'meter_enabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用日期', width: 120, dataIndex: 'meter_disabled_date', key: 'meter_disabled_date', render: (text, record, index) => {
+      {title:  formatMessage({id: 'intl.meter_disabled_date'}), width: 120, dataIndex: 'meter_disabled_date', key: 'meter_disabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用时读数', width: 120, dataIndex: 'meter_disabled_value', key: 'meter_disabled_value', render: (text, record, index) => {
+      {title:  formatMessage({id: 'intl.meter_disabled_value'}), width: 120, dataIndex: 'meter_disabled_value', key: 'meter_disabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
+      { title:  formatMessage({id: 'intl.reader'}), dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }},
       {
-        title: '水表历史状况',
+        title:  formatMessage({id: 'intl.meter_history_data'}),
         key: 'operation',
         fixed: 'right',
         width: 120,
         render: (val, record, index) => {
           return (
             <div >
-              <Button type="primary" size='small' onClick={()=>this.operate(record)} style={{width:'105px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap'}}>{record.meter_number}详情</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)} style={{width:'105px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap'}}>{record.meter_number}{ formatMessage({id: 'intl.details'})}</Button>
             </div>
           )
         }
       },
       {
-        title: '用户历史状况',
+        title:  formatMessage({id: 'intl.user_history_data'}),
         key: 'operation2',
         fixed: 'right',
         width: 110,
         render: (val, record, index) => {
           const children= (
             <div>
-              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>this.operateMember(record)}>用户详情</Button>
+              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>this.operateMember(record)}>{ formatMessage({id: 'intl.detail'})}</Button>
             </div>
           )
           return renderRowSpan(children,record)
@@ -434,7 +319,7 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '用户水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})},{name:formatMessage({id: 'intl.user_meter_volume'})}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

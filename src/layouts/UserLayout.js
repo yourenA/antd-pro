@@ -12,10 +12,19 @@ import hyLogo from '../images/hy-logo.png'
 import zhuhuaLogo from '../images/zhuhua.png'
 import {projectName, poweredBy, prefix, loginTitle} from './../common/config'
 import request from './../utils/request'
+import {LocaleProvider} from 'antd';
+import en_US from 'antd/lib/locale-provider/en_US';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import {IntlProvider, addLocaleData,FormattedMessage} from 'react-intl';
+import zhCN from './../locale/zh-CN.js';  //导入 i18n 配置文件,需要手动创建并填入语言转换信息
+import enUS from './../locale/en-US.js';
+import en from 'react-intl/locale-data/en';
+import zh from 'react-intl/locale-data/zh';
+addLocaleData([...en, ...zh]);
 import find from 'lodash/find'
 const links = [];
 
-const copyright = <div>powered by {poweredBy}</div>;
+const copyright = <div>powered by <FormattedMessage id="intl.power_name"/></div>;
 const query = {
   'screen-xs': {
     maxWidth: 575,
@@ -46,6 +55,7 @@ class UserLayout extends React.PureComponent {
     this.state = {
       company_name: '',
       company: [],
+      locale: localStorage.getItem('locale') || 'zh-CN'
     };
   }
 
@@ -77,7 +87,12 @@ class UserLayout extends React.PureComponent {
           }
           if (company_name) {
             this.setState({
-              company_name: company_name.name
+              company_name: company_name.name,
+              locale: company_name.language,
+            }, function () {
+              if (company_name.language) {
+                localStorage.setItem('locale', company_name.language)
+              }
             })
           } else {
             this.setState({
@@ -103,7 +118,12 @@ class UserLayout extends React.PureComponent {
       });
       if (company_name) {
         this.setState({
-          company_name: company_name.name
+          company_name: company_name.name,
+          locale: company_name.language,
+        },function () {
+          if (company_name.language) {
+            localStorage.setItem('locale', company_name.language)
+          }
         })
       } else {
         this.setState({
@@ -132,7 +152,8 @@ class UserLayout extends React.PureComponent {
               <span>
                 <img alt="" className={styles.logo}
                      src={window.location.hostname.indexOf('124.228.9.126') >= 0 ? hyLogo : waterLogo}/>
-                <span className={styles.title}>{this.state.company_name + '远传水表监控系统'}</span>
+                <span className={styles.title}>{this.state.company_name }<FormattedMessage id="intl.project_name"/></span>
+
               </span>
               </div>
             </div>
@@ -143,16 +164,19 @@ class UserLayout extends React.PureComponent {
           </div>
 
         </div>
-
         <GlobalFooter className={styles.footer} links={links} copyright={copyright}/>
       </div>
     )
     return (
-      <DocumentTitle title={this.getPageTitle()}>
-        <ContainerQuery query={query} style={{height:'100%'}}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
-      </DocumentTitle>
+      <IntlProvider locale={this.state.locale === 'en' ? 'en' : 'zh'} messages={this.state.locale === 'en' ? enUS: zhCN}>
+        <LocaleProvider locale={this.state.locale === 'en' ? en_US : zh_CN}>
+          <DocumentTitle title={this.getPageTitle()}>
+            <ContainerQuery query={query} style={{height: '100%'}}>
+              {params => <div className={classNames(params)}>{layout}</div>}
+            </ContainerQuery>
+          </DocumentTitle>
+        </LocaleProvider>
+      </IntlProvider>
     );
   }
 }

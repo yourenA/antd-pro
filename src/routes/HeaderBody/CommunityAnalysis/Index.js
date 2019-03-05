@@ -10,11 +10,13 @@ import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, renderIndex2} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
 import uuid from 'uuid/v4'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   village_meter_data: state.village_meter_data,
   global: state.global,
 }))
+@injectIntl
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
@@ -277,7 +279,7 @@ class UserMeterAnalysis extends PureComponent {
     },true)
   }
   render() {
-    const {village_meter_data: {data, meta, loading}, concentrators, meters} = this.props;
+    const {village_meter_data: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const columns = company_code === 'hy' ? [
       // {
@@ -362,9 +364,9 @@ class UserMeterAnalysis extends PureComponent {
         )
       }},
 
-    ] : [{title: '小区名称', dataIndex: 'village_name', key: 'village_name', width: '20%'},
+    ] : [{title: formatMessage({id: 'intl.member_count'}), dataIndex: 'village_name', key: 'village_name', width: '20%'},
       {
-        title: '用户数量', dataIndex: 'member_count', key: 'member_count', width: '20%', render: (val, record, index) => {
+        title: formatMessage({id: 'intl.member_count'}), dataIndex: 'member_count', key: 'member_count', width: '20%', render: (val, record, index) => {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
@@ -373,7 +375,7 @@ class UserMeterAnalysis extends PureComponent {
       }
       },
       {
-        title: '远传用户总水量(T)', dataIndex: 'total_difference_value', key: 'total_difference_value', width: '20%',
+        title:  formatMessage({id: 'intl.total_water_consumption'}), dataIndex: 'total_difference_value', key: 'total_difference_value', width: '20%',
         render: (val, record, index) => {
           // console.log('record',record)
           // console.log('record.layer*25',record.layer+25)
@@ -383,7 +385,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: '进水量(T)', dataIndex: 'forwards', key: 'forwards', width: 150, render: (val, record, index) => {
+        title: formatMessage({id: 'intl.water_intake'}), dataIndex: 'forwards', key: 'forwards', width: 150, render: (val, record, index) => {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
@@ -393,7 +395,7 @@ class UserMeterAnalysis extends PureComponent {
         )
       }
       },
-      {title: '损耗率', dataIndex: 'attrition_rate', key: 'attrition_rate',render: (val, record, index) => {
+      {title:  formatMessage({id: 'intl.attrition_rate'}), dataIndex: 'attrition_rate', key: 'attrition_rate',render: (val, record, index) => {
         // console.log('record',record)
         // console.log('record.layer*25',record.layer+25)
         return (
@@ -411,7 +413,7 @@ class UserMeterAnalysis extends PureComponent {
           siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '小区水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:formatMessage({id: 'intl.data_analysis'}) }, {name: formatMessage({id: 'intl.village_meter_data'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

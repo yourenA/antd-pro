@@ -4,8 +4,10 @@
 import React, {Component} from 'react';
 import {Form,DatePicker,Row,Col,Input,Button,Switch} from 'antd';
 import moment from 'moment'
+import {injectIntl} from 'react-intl';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -32,9 +34,9 @@ class SearchForm extends Component {
     this.props.handleFormReset()
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
-
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
@@ -55,11 +57,11 @@ class SearchForm extends Component {
             </FormItem>
           }
           <FormItem>
-            {company_code==='mys'&&<Button type="primary" htmlType="submit">查询</Button>}
-            {company_code==='mys'&&<Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>}
-            {(this.props.showAddBtn)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
+            {company_code==='mys'&&<Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>}
+            {company_code==='mys'&&<Button style={{marginLeft: 8}} onClick={this.handleFormReset}> {formatMessage({id: 'intl.reset'})}</Button>}
+            {(this.props.showAddBtn)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>:null}
           </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}} className="openOperate">
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})} style={{float:'right'}} className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateConcentrator')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateConcentrator',checked);
               this.props.changeShowOperate()

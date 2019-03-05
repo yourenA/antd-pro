@@ -2,17 +2,18 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,DatePicker,Row,message,Input,Button,Switch,Divider,Badge,Select } from 'antd';
+import {Form, DatePicker, Row, message, Input, Button, Switch, Divider, Badge, Select} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
-const RangePicker = DatePicker.RangePicker;
+import {injectIntl} from 'react-intl';
 const FormItem = Form.Item;
-const Option = Select.Option;
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const {dispatch, form} = this.props;
@@ -20,10 +21,10 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
-        started_at:  fieldsValue['started_at'] ? moment( fieldsValue['started_at']).format('YYYY-MM-DD') : '',
-        ended_at:  fieldsValue['ended_at']  ? moment( fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
+        started_at: fieldsValue['started_at'] ? moment(fieldsValue['started_at']).format('YYYY-MM-DD') : '',
+        ended_at: fieldsValue['ended_at'] ? moment(fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
-      this.props.handleSearch({...values,page:1,per_page:this.props.per_page})
+      this.props.handleSearch({...values, page: 1, per_page: this.props.per_page})
     });
   }
   handleFormReset = () => {
@@ -31,12 +32,14 @@ class SearchForm extends Component {
     form.resetFields();
     this.props.handleFormReset()
   }
+
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
-       <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -47,7 +50,7 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.end'})}>
             {getFieldDecorator('ended_at', {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
@@ -60,8 +63,8 @@ class SearchForm extends Component {
           </FormItem>
 
           <FormItem>
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
         </Row>
       </Form>

@@ -3,11 +3,13 @@
  */
 import React, {Component} from 'react';
 import {Form, Row, Input, Button, Switch,Icon,Modal,Popconfirm ,message} from 'antd';
+import {injectIntl} from 'react-intl';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 
 @connect(state => ({
 }))
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -65,6 +67,7 @@ class SearchForm extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {expand}=this.state
     const {getFieldDecorator} = this.props.form;
     const that=this;
@@ -72,8 +75,8 @@ class SearchForm extends Component {
       const clickTime=sessionStorage.getItem(`open_valve-selected`)
       const isLoading=clickTime&&that.state.time-clickTime<12000
       return(
-        <Popconfirm title={`确定要批量开阀?`} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand('open_valve')}} okText="确定" cancelText="取消">
-          <Button loading={isLoading}  type="primary" style={{marginLeft: 8}}>{isLoading?'正在':''}批量开阀 {that.props.concentratorNumber}</Button>
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve_batch'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand('open_valve')}}>
+          <Button loading={isLoading}  type="primary" style={{marginLeft: 8}}>{isLoading?'':''}{formatMessage({id: 'intl.open_valve_batch'})} {that.props.concentratorNumber}</Button>
         </Popconfirm>
       )
     }
@@ -81,8 +84,8 @@ class SearchForm extends Component {
       const clickTime=sessionStorage.getItem(`close_valve-selected`)
       const isLoading=clickTime&&that.state.time-clickTime<12000
       return(
-        <Popconfirm title={`确定要批量关阀?`} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand( 'close_valve')}} okText="确定" cancelText="取消">
-          <Button loading={isLoading}  type="danger" style={{marginLeft: 8}}>{isLoading?'正在':''}批量关阀 {that.props.concentratorNumber}</Button>
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve_batch'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand( 'close_valve')}} >
+          <Button loading={isLoading}  type="danger" style={{marginLeft: 8}}>{isLoading?'':''}{formatMessage({id: 'intl.close_valve_batch'})} {that.props.concentratorNumber}</Button>
         </Popconfirm>
       )
     }
@@ -90,35 +93,35 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline" style={{overflow: 'hidden'}}>
         <Row >
-          <FormItem label={"水表号"}>
+          <FormItem label={formatMessage({id: 'intl.water_meter_number'})}>
             {getFieldDecorator('number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={"用户名称"}
+          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('real_name')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={"户号"}
+          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={"安装地址"}
+          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('install_address')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           <FormItem >
             {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
-              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'} />
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
             {/*{this.props.showAddBtn &&
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
           </FormItem>
@@ -131,7 +134,7 @@ class SearchForm extends Component {
               {renderCloseValveBtn()}
             </FormItem>
           }
-          <FormItem label="打开操作栏" style={{float: 'right'}}  className="openOperate">
+          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateMeter') === 'true' ? true : false}
                     onChange={(checked)=> {
                       localStorage.setItem('canOperateMeter', checked);

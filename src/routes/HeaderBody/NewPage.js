@@ -19,12 +19,14 @@ import request from './../../utils/request'
 import {prefix, projectName, poweredBy} from './../../common/config'
 import {fillZero,disabledPreDate} from './../../utils/utils'
 import CountUp from 'react-countup';
+import {injectIntl,FormattedMessage} from 'react-intl';
 const TreeNode = TreeSelect.TreeNode;
 const Panel = Collapse.Panel;
 import {connect} from 'dva';
 @connect(state => ({
   sider_regions: state.sider_regions,
 }))
+@injectIntl
 class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -147,37 +149,38 @@ class Main extends PureComponent {
   }
 
   render() {
+    const { intl:{formatMessage} } = this.props;
     const dispatch = this.props.dispatch;
     const company_code = sessionStorage.getItem('company_code');
     const {sider_regions:{data}}=this.props;
     return (
       <div className={styles.main}>
         <Collapse activeKey={['1']} style={{marginBottom:'16px'}}>
-          <Panel header={<h3 style={{fontSize:'18px'}}><DatePicker allowClear={false}  defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />基本统计信息
+          <Panel header={<h3 style={{fontSize:'18px'}}><DatePicker allowClear={false}  defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
           </h3>} key="1" showArrow={false}>
             <Row gutter={16}>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem1}`}>
                   <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>
-                  <div className={styles.explain}>集中器总数量</div>
+                  <div className={styles.explain}>{formatMessage({id: 'intl.total_number_of_concentrators'})}</div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
                   <div className={styles.count}><CountUp   decimals={2} end={parseFloat(this.state.concentrator.yesterday_excellent_rate)||0} />%</div>
-                  <div className={styles.explain}>集中器在线率</div>
+                  <div className={styles.explain}>{formatMessage({id: 'intl.concentrator_online_rate'})}</div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem2}`}>
                   <div className={styles.count}><CountUp end={this.state.meter.total_count||0} /></div>
-                  <div className={styles.explain}>水表总数量</div>
+                  <div className={styles.explain}>{formatMessage({id: 'intl.total_number_of_water_meter'})}</div>
                 </div>
               </Col>
             <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
                   <div className={styles.count}><CountUp  decimals={2}  end={parseFloat(this.state.meter.yesterday_upload_rate)||0}/>%</div>
-                  <div className={styles.explain}>水表上传率</div>
+                  <div className={styles.explain}>{formatMessage({id: 'intl.water_meter_online_rate'})}</div>
                 </div>
               </Col>
 
@@ -197,7 +200,9 @@ class Main extends PureComponent {
             <Row gutter={16}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Card
-                  title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#1890ff'}}/>集中器在线情况统计</span>}
+                  title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                    {formatMessage({id: 'intl.concentrator_online_statistics'})}
+                  </span>}
                   bodyStyle={{padding: 24}}
                   style={{marginBottom: 16, minHeight: 509}}
                 >
@@ -206,7 +211,9 @@ class Main extends PureComponent {
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Card
-                  title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>水表状态统计</span>}
+                  title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                    {formatMessage({id: 'intl.water_meter_status_statistics'})}
+                    </span>}
                   bodyStyle={{padding: 24}}
                   style={{marginBottom: 16, minHeight: 509}}
                 >
@@ -237,7 +244,10 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>五大区供水一览</span>}
+                title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+
+                  {formatMessage({id: 'intl.water_meter_online_rate'})}
+                  </span>}
                 bodyStyle={{padding: 24}}
                 style={{marginBottom: 16, minHeight: 509}}
               >
@@ -251,7 +261,9 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>每天用水总量与漏损率</span>}
+                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                  {formatMessage({id: 'intl.water_meter_online_rate'})}
+                  </span>}
                 bodyStyle={{padding: 24}}
                 style={{marginBottom: 16, minHeight: 509}}
               >
@@ -282,7 +294,8 @@ class Main extends PureComponent {
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>各水表类型用水量
+              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                {formatMessage({id: 'intl.water_consumption_of_each_type_of_water_meter'})}
                  <TreeSelect
                    value={this.state.value}
                    style={{width: 150, marginLeft: '10px'}}
@@ -304,7 +317,9 @@ class Main extends PureComponent {
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               bordered={false}
-              title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>厂商-集中器/水表个数</span>}
+              title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                {formatMessage({id: 'intl.Manufacturer_concentrator/water_meter_number'})}
+                </span>}
               style={{marginBottom: 16, minHeight: 509}}
             >
               <VendorConcentrator />
@@ -318,7 +333,9 @@ class Main extends PureComponent {
                 }}>查看详情</a>}
                 bordered={false}
                 title={<span><Icon type='area-chart'
-                                   style={{marginRight: '5px', color: '#1890ff'}}/>五大DMA分区每小时用水量</span>}
+                                   style={{marginRight: '5px', color: '#1890ff'}}/>
+                  {formatMessage({id: 'intl.5_DMA_water_consumption'})}
+                  </span>}
                 style={{marginBottom: 16, minHeight: 509}}
               >
                 <DMADate />
@@ -330,7 +347,9 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>当前液位传感器值</span>}
+                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                  {formatMessage({id: 'intl.current_level_sensor_value'})}
+                  </span>}
                 bodyStyle={{padding: 24}}
                 style={{marginBottom: 16, minHeight: 509}}
               >
@@ -343,7 +362,9 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#1890ff'}}/>当前比例阀控传感器阀门开度</span>}
+                title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#1890ff'}}/>
+                  {formatMessage({id: 'intl.current_valve_sensor_opening_value'})}
+                  </span>}
                 bodyStyle={{padding: 24}}
                 style={{marginBottom: 16, minHeight: 509}}
               >
@@ -366,7 +387,7 @@ class Main extends PureComponent {
         <GlobalFooter
           copyright={
             <div>
-              powered by {poweredBy}
+              powered by {formatMessage({id: 'intl.power_name'})}
             </div>
           }
         />

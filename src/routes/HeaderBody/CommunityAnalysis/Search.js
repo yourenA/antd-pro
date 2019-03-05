@@ -3,11 +3,14 @@
  */
 import React, {Component} from 'react';
 import {Form, DatePicker, Row, Col, Alert, Button,message} from 'antd';
+import {injectIntl} from 'react-intl';
 import moment from 'moment'
 import {connect} from 'dva';
+
 const FormItem = Form.Item;
 @connect(state => ({
 }))
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -107,6 +110,7 @@ class SearchForm extends Component {
     return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
 
@@ -118,7 +122,7 @@ class SearchForm extends Component {
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.start'})}>
               <DatePicker
                 value={this.state.startValue}
                 disabledDate={this.disabledStartDate}
@@ -128,7 +132,7 @@ class SearchForm extends Component {
                 format="YYYY-MM-DD"
               />
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText :  formatMessage({id: 'intl.end'})}>
               <DatePicker
                 value={this.state.endValue}
                 disabledDate={this.disabledEndDate}
@@ -139,9 +143,10 @@ class SearchForm extends Component {
               />
           </FormItem>
           <FormItem >
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{company_code==='hy'?this.props.handleLeak():this.handleForward()}}  className="btn-cyan">{company_code==='hy'?'计算损耗率':'计算损耗率'}</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={()=>{company_code==='hy'?
+              this.props.handleLeak():this.handleForward()}}  className="btn-cyan">{ formatMessage({id: 'intl.calculated_loss_rate'})}</Button>
           </FormItem>
           {company_code === 'hy' && <FormItem style={{float: 'right'}}>
             <Alert message="蓝色名称为监控表" type="info" showIcon/>

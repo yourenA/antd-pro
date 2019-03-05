@@ -11,12 +11,13 @@ import {renderIndex,ellipsis2} from './../../../utils/utils'
 import AddOrEditVendor from './addOrEditVendor'
 import debounce from 'lodash/throttle'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   manufacturers:state.manufacturers,
   vendor_concentrator: state.vendor_concentrator,
 }))
+@injectIntl
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
@@ -128,6 +129,7 @@ class Vendor extends PureComponent {
     })
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     let {vendor_concentrator: {data, meta, loading}} = this.props;
     const columns = [
       // {
@@ -140,11 +142,11 @@ class Vendor extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '厂商名称', width: 200,dataIndex: 'manufacturer_name', key: 'manufacturer_name'
+      {title: formatMessage({id: 'intl.vendor_name'}), width: 200,dataIndex: 'manufacturer_name', key: 'manufacturer_name'
         , render: (val, record, index) => {
         return ellipsis2(val,200)
       }},
-      {title: '集中器优良率', dataIndex: 'concentrator_excellent_rate', key: 'concentrator_excellent_rate',
+      {title: formatMessage({id: 'intl.concentrator_excellent_rate'}), dataIndex: 'concentrator_excellent_rate', key: 'concentrator_excellent_rate',
         render:(val,record)=>{
           const parserVal=parseFloat(val)
           if(typeof parserVal === 'number' && !isNaN(parserVal) ){
@@ -166,7 +168,7 @@ class Vendor extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="运行管理 " breadcrumb={[{name: '数据分析 '}, {name: '厂商-集中器统计'}]}>
+            <PageHeaderLayout title="运行管理 " breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name:formatMessage({id: 'intl.vendor_concentrator_statistics'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                <div className='tableList'>
                   <div className='tableListForm'>

@@ -4,7 +4,10 @@
 import React, {Component} from 'react';
 import {Form,  Input} from 'antd';
 import {connect} from 'dva';
+import {injectIntl} from 'react-intl';
 const FormItem = Form.Item;
+
+@injectIntl
 class EditPassword extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +15,11 @@ class EditPassword extends Component {
     };
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -28,7 +32,7 @@ class EditPassword extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayoutWithLabel}
-          label="旧密码"
+          label={formatMessage({id: 'intl.old_password'})}
         >
           {getFieldDecorator('old_password', {
           })(
@@ -36,7 +40,7 @@ class EditPassword extends Component {
           )}
         </FormItem>
         <FormItem
-          label="新密码"
+          label={formatMessage({id: 'intl.new_password'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('new_password', {
@@ -45,7 +49,7 @@ class EditPassword extends Component {
           )}
         </FormItem>
         <FormItem
-          label="重复密码"
+          label={formatMessage({id: 'intl.repeat_password'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('new_password_confirmation', {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert ,Select,message} from 'antd';
+import { Form, Input, Tabs, Button, Icon, DatePicker, Row, Col, Alert ,Select,message} from 'antd';
 import styles from './Login.less';
-
+import {injectIntl,FormattedMessage} from 'react-intl';
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 const Option = Select.Option;
@@ -11,6 +11,7 @@ const Option = Select.Option;
   login: state.login,
 }))
 @Form.create()
+@injectIntl
 export default class Login extends Component {
   state = {
     count: 0,
@@ -104,7 +105,7 @@ export default class Login extends Component {
   }
 
   render() {
-    const { form, login } = this.props;
+    const { form, login,intl:{formatMessage} } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
     return (
@@ -113,33 +114,33 @@ export default class Login extends Component {
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{
-                required: type === 'account', message: '请输入用户名！',
+                required: type === 'account', message:formatMessage({id: 'intl.please_input'})+formatMessage({id: 'intl.username'}),
               }],
             })(
               <Input
                 size="large"
                 prefix={<Icon type="user" className={styles.prefixIcon} />}
-                placeholder="用户名"
+                placeholder={formatMessage({id: 'intl.username'})}
               />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
               rules: [{
-                required: type === 'account', message: '请输入密码！',
+                required: type === 'account', message:formatMessage({id: 'intl.please_input'})+formatMessage({id: 'intl.password'}),
               }],
             })(
               <Input
                 size="large"
                 prefix={<Icon type="lock" className={styles.prefixIcon} />}
                 type="password"
-                placeholder="密码"
+                placeholder={formatMessage({id: 'intl.password'})}
               />
             )}
           </FormItem>
           <FormItem className={styles.additional}>
             <Button size="large"  className={styles.submit} type="primary" htmlType="submit">
-              登录
+              <FormattedMessage id="intl.sign_in"/>
             </Button>
           </FormItem>
         </Form>

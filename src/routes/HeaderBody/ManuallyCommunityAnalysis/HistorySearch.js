@@ -80,7 +80,7 @@ class SearchForm extends Component {
     if (!startValue || !endValue) {
       return false;
     }
-    return  moment(moment(startValue.valueOf()).format('YYYY-MM-DD')) >= moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) ||   startValue > moment().add(-1, 'days') || startValue < moment('2017-10-01');
+    return  moment(moment(startValue.valueOf()).format('YYYY-MM-DD')) >= moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) ||   startValue > moment().add(-1, 'days') ;
   }
 
   disabledEndDate = (endValue) => {
@@ -88,7 +88,7 @@ class SearchForm extends Component {
     if (!endValue || !startValue) {
       return false;
     }
-    return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
+    return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') ;
   }
   render() {
     const {getFieldDecorator} = this.props.form;
