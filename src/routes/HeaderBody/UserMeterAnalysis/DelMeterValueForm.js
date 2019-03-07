@@ -7,6 +7,8 @@ import {connect} from 'dva';
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
 import moment from 'moment'
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
 }))
 class AddPoliciesForm extends Component {
@@ -18,6 +20,7 @@ class AddPoliciesForm extends Component {
   componentDidMount() {
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -33,14 +36,14 @@ class AddPoliciesForm extends Component {
       <div>
 
       <Form onSubmit={this.handleSubmit}>
-        <FormItem label="水表号"   {...formItemLayoutWithLabel}>
+        <FormItem label=  {formatMessage({id: 'intl.water_meter_number'})}   {...formItemLayoutWithLabel}>
           {getFieldDecorator('meter_number',{
             initialValue: this.props.meter_number
           })(
             <Input disabled />
           )}
         </FormItem>
-        <FormItem label={ '开始日期'}
+        <FormItem label=  {formatMessage({id: 'intl.start'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('started_at', {
             initialValue: moment(),
@@ -53,7 +56,7 @@ class AddPoliciesForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem label={'结束日期'}
+        <FormItem label=  {formatMessage({id: 'intl.end'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('ended_at', {
             initialValue: moment(),

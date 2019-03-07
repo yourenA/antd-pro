@@ -89,6 +89,12 @@ class UserMeterAnalysis extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   changeArea = (village_id)=> {
@@ -294,7 +300,7 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           return (
             <div >
-              <Button type="primary" size='small' onClick={()=>this.operate(record)} style={{width:'105px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap'}}>{record.meter_number}{ formatMessage({id: 'intl.details'})}</Button>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)} style={{width:'105px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap'}}>{record.meter_number}</Button>
             </div>
           )
         }
@@ -307,7 +313,7 @@ class UserMeterAnalysis extends PureComponent {
         render: (val, record, index) => {
           const children= (
             <div>
-              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>this.operateMember(record)}>{ formatMessage({id: 'intl.detail'})}</Button>
+              <Button style={{background:'#26a69a',color:'#fff'}} size='small' onClick={()=>this.operateMember(record)}>{ formatMessage({id: 'intl.details'})}</Button>
             </div>
           )
           return renderRowSpan(children,record)
@@ -359,9 +365,9 @@ class UserMeterAnalysis extends PureComponent {
               </Card>
             </PageHeaderLayout>
             <Modal
-              width="750px"
+              width="900px"
               key={ Date.parse(new Date())}
-              title={`水表 ${this.state.edit_meter_number} 详细信息 (红色柱状图表示当天错报,黄色表示当天漏报)`}
+              title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.edit_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
               visible={this.state.editModal}
               onOk={this.handleEdit}
               onCancel={() => this.setState({editModal: false})}
@@ -372,7 +378,7 @@ class UserMeterAnalysis extends PureComponent {
             <Modal
               width="80%"
               key={ Date.parse(new Date())+1}
-              title={`用户 ${this.state.edit_member_number}`}
+              title={`${ formatMessage({id: 'intl.user_number'})} ${this.state.edit_member_number}`}
               visible={this.state.memberModal}
               onOk={this.handleEdit}
               onCancel={() => this.setState({memberModal: false})}

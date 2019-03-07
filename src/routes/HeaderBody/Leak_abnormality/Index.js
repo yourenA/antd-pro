@@ -16,6 +16,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   dma: state.dma,
   leak_abnormality: state.leak_abnormality,
@@ -114,6 +116,12 @@ class Leak_abnormality extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 +5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   handleFormReset = () => {
@@ -202,7 +210,13 @@ class Leak_abnormality extends PureComponent {
         not_reminder_days:String(formValues.not_reminder_days)
       },
       callback: function () {
-        message.success("确认异常成功")
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: '', type: formatMessage({id: 'intl.confirm_exception'})}
+          )
+        )
         that.setState({
           processed_model:false
         })
@@ -222,62 +236,55 @@ class Leak_abnormality extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {leak_abnormality: {data, meta, loading}, dma} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
     const {isMobile} =this.props.global;
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.initPage,index)
-      //   }
-      // },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number',float:'left',render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '用户名称', width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number',render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '安装地址', dataIndex: 'install_address',   key: 'install_address', width: 100, render: (val, record, index) => {
-        return ellipsis2(val,100)
+      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
+        return ellipsis2(val, 120)
       }},
-      {title: '异常时间', dataIndex: 'abnormality_hours',  width: 150,  key: 'abnormality_hours',
+      {title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
+        return ellipsis2(val, 150)
+      }},
+      {title:formatMessage({id: 'intl.abnormality_hours'}), dataIndex: 'abnormality_hours',  width: 150,  key: 'abnormality_hours',
         render: (val, record, index) => {
           const parseVal=val.join(',');
           return ellipsis2(parseVal,150)
         }},
-      {title: '日期', dataIndex: 'date',   key: 'date',width: 100, render: (val, record, index) => {
-        return ellipsis2(val,100)
-      }
-      },
-      {title: '备注', dataIndex: 'remark', key: 'remark'},
+
+      {title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark'},
       {
-        title: '操作',
+        title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
-        fixed: 'right',
-        width: 200,
+        fixed:'right',
+        width: 170,
         render: (val, record, index) => {
           return (
             <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record)}>当天水表读数</Button>
-              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>确认异常</Button>}
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}> {formatMessage({id: 'intl.details'})}</Button>
+              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
+                {formatMessage({id: 'intl.confirm_abnormal'})}
+              </Button>}
             </div>
           )
         }
       },
+
     ];
     const {dispatch}=this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -287,7 +294,8 @@ class Leak_abnormality extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '漏水异常报警'}]}>
+            <PageHeaderLayout title="异常分析 "   breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+              {name: formatMessage({id: 'intl.water_leak_abnormal_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

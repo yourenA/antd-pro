@@ -9,13 +9,14 @@ import find from 'lodash/find'
 import AddOrEditForm from './addOrEditServers'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import {injectIntl} from 'react-intl';
 import EditStatusForm from './editStatus'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   servers: state.servers,
 }))
+@injectIntl
 class MeterModel extends PureComponent {
   constructor(props) {
     super(props);
@@ -132,7 +133,13 @@ class MeterModel extends PureComponent {
         ...formValues,
       },
       callback: function () {
-        message.success('添加服务器地址成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.server_address'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -160,7 +167,13 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改服务器地址成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.server_address'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -187,7 +200,13 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改状态成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.status'})}
+          )
+        )
         that.setState({
           editStatusModal: false,
         });
@@ -211,7 +230,13 @@ class MeterModel extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除服务器地址成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.server_address'})}
+          )
+        )
         that.props.dispatch({
           type: 'servers/fetch',
           payload: {
@@ -226,6 +251,7 @@ class MeterModel extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {servers: {data, meta, loading}} = this.props;
     const columns = [
       // {
@@ -238,26 +264,26 @@ class MeterModel extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '服务器地址', width: 200, dataIndex: 'ip', key: 'ip',
+      {title:  formatMessage({id: 'intl.server_ip'}), width: 200, dataIndex: 'ip', key: 'ip',
         render: (val, record, index) => {
           return ellipsis2(val,200)
         }},
-      {title: '服务器端口',  dataIndex: 'port', key: 'port',width:150,
+      {title:  formatMessage({id: 'intl.server_port'}),  dataIndex: 'port', key: 'port',width:150,
         render: (val, record, index) => {
           return ellipsis2(val,150)
         }},
-      {title: '状态', dataIndex: 'status', key: 'status',width:150,
+      {title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status',width:150,
         render:(val, record, index) => (
           <p>
             <Badge status={val===1?"success":"error"} />{record.status_explain}
 
           </p>
         )},
-      {title: '创建时间', dataIndex: 'created_at', key: 'created_at',
+      {title: formatMessage({id: 'intl.created_time'}) , dataIndex: 'created_at', key: 'created_at',
       },
     ];
     let operate={
-      title: '操作',
+      title:  formatMessage({id: 'intl.operate'}),
       width: 170,
       fixed:'right',
       render: (val, record, index) => (
@@ -272,7 +298,7 @@ class MeterModel extends PureComponent {
                             editStatusModal: true
                           }
                         )
-                      }}>修改状态</a>
+                      }}>{formatMessage({id: 'intl.edit'})}{formatMessage({id: 'intl.status'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
@@ -286,15 +312,15 @@ class MeterModel extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -309,7 +335,8 @@ class MeterModel extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '服务器地址'}]}>
+            <PageHeaderLayout title="系统管理 "   breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.servers_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -335,7 +362,7 @@ class MeterModel extends PureComponent {
             </PageHeaderLayout>
           </div>
           <Modal
-            title="添加服务器地址"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -344,7 +371,7 @@ class MeterModel extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
-            title="修改服务器地址"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
@@ -354,7 +381,7 @@ class MeterModel extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())+1}
-            title="修改服务器地址状态"
+            title={formatMessage({id: 'intl.edit'})+" "+formatMessage({id: 'intl.status'})}
             visible={this.state.editStatusModal}
             onOk={this.handleEditStatus}
             onCancel={() => this.setState({editStatusModal: false})}

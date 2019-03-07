@@ -9,6 +9,8 @@ const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
 const RadioGroup = Radio.Group;
 import moment from 'moment'
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   sider_regions: state.sider_regions,
 }))
@@ -40,6 +42,7 @@ class AddPoliciesForm extends Component {
     });
   }
   render() {
+    const { intl:{formatMessage} } = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -52,7 +55,7 @@ class AddPoliciesForm extends Component {
     };
     const {sider_regions:{data}}=this.props;
     if(data.length>0 && data[0].id!=='all'){
-      data.unshift({id:'all',name:'全部小区'})
+      data.unshift({id:'all',name:formatMessage({id: 'intl.all'})})
     }
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
@@ -64,7 +67,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              小区名称
+              {formatMessage({id: 'intl.village_name'})}
             </span>
           )}>
           {getFieldDecorator('village_id', {
@@ -78,7 +81,7 @@ class AddPoliciesForm extends Component {
             </TreeSelect>
           )}
         </FormItem>
-        <FormItem label={ '开始时间'}
+        <FormItem label=   {formatMessage({id: 'intl.start'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('started_at', {
             initialValue: company_code==='hy'?moment().add(-1, 'days'):moment(),
@@ -91,7 +94,7 @@ class AddPoliciesForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem label={'结束时间'}
+        <FormItem label=   {formatMessage({id: 'intl.end'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('ended_at', {
             initialValue: moment(),
@@ -105,14 +108,14 @@ class AddPoliciesForm extends Component {
         </FormItem>
         {company_code === 'hy' ? null : <FormItem
           {...formItemLayoutWithLabel}
-          label="导出类型"
+          label= {formatMessage({id: 'intl.export_type'})}
         >
           {getFieldDecorator('export_type', {
             initialValue: 'only_normal',
           })(
             <RadioGroup>
-              <Radio value="only_normal">导出正确数据</Radio>
-              <Radio value="all">导出全部</Radio>
+              <Radio value="only_normal">{formatMessage({id: 'intl.correct_data'})}</Radio>
+              <Radio value="all">{formatMessage({id: 'intl.all'})}</Radio>
             </RadioGroup>
           )}
         </FormItem>

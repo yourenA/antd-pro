@@ -96,6 +96,12 @@ class ConcentratorManage extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   scrollTable = ()=> {
@@ -222,7 +228,8 @@ class ConcentratorManage extends PureComponent {
       if (k.indexOf('villages-') >= 0) {
         if (formValues.hasOwnProperty(k)) {
           if (formValues[k].village === undefined) {
-            message.error('安装小区 不能为空');
+            const {intl:{formatMessage}} = that.props;
+            message.error(formatMessage({id: 'intl.village_name'})+formatMessage({id: 'intl.can_not_be_empty'}))
             this.setState({
               canAdd: true
             })
@@ -276,7 +283,13 @@ class ConcentratorManage extends PureComponent {
         is_count: formValues.is_count.key,
       },
       callback: function () {
-        message.success('添加集中器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.concentrator'})}
+          )
+        )
         that.setState({
           addModal: false,
           refreshSider: that.state.refreshSider + 1
@@ -326,7 +339,13 @@ class ConcentratorManage extends PureComponent {
         apn:formValues.apn
       },
       callback:()=>{
-        message.success('发送指令成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
       }
     });
   }
@@ -342,7 +361,8 @@ class ConcentratorManage extends PureComponent {
         if (k.indexOf('villages-') >= 0) {
           if (formValues.hasOwnProperty(k)) {
             if (formValues[k].village === undefined) {
-              message.error('安装小区 不能为空')
+              const {intl:{formatMessage}} = that.props;
+              message.error(formatMessage({id: 'intl.village_name'}) + formatMessage({id: 'intl.can_not_be_empty'}))
               return false
             } else {
               const village = formValues[k].village
@@ -397,7 +417,13 @@ class ConcentratorManage extends PureComponent {
         id: this.state.editRecord.id
       },
       callback: function () {
-        message.success('修改集中器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.concentrator'})}
+          )
+        )
         that.setState({
           editModal: false,
           refreshSider: that.state.refreshSider + 1
@@ -418,7 +444,13 @@ class ConcentratorManage extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除集中器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.concentrator'})}
+          )
+        )
         that.setState({
           refreshSider: that.state.refreshSider + 1
         });
@@ -482,7 +514,13 @@ class ConcentratorManage extends PureComponent {
       type: 'concentrators/editConfig',
       payload: putData,
       callback: function () {
-        message.success('修改集中器上传时间成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.upload_time'})}
+          )
+        )
         that.setState({
           orderModal: false,
         });
@@ -504,7 +542,13 @@ class ConcentratorManage extends PureComponent {
         sleep_hours: formValues.checkedList
       },
       callback: function () {
-        message.success('修改集中器休眠时间成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.sleep_hours'})}
+          )
+        )
         that.setState({
           orderModal: false,
         });
@@ -708,7 +752,7 @@ class ConcentratorManage extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>{ formatMessage({id: 'intl.Edit'})}</a>
+                      }}>{ formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
             }
@@ -722,16 +766,16 @@ class ConcentratorManage extends PureComponent {
                             orderModal: true
                           }
                         )
-                      }}>{ formatMessage({id: 'intl.Command'})}</a>
+                      }}>{ formatMessage({id: 'intl.command'})}</a>
             <span className="ant-divider"/>
                 </span>
             }
             {
               this.state.showdelBtn &&
               <span>
-                  <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.Delete'})})}
+                  <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                               onConfirm={()=>this.handleRemove(record.id)}>
-                  <a href="">{ formatMessage({id: 'intl.Delete'})}</a>
+                  <a href="">{ formatMessage({id: 'intl.delete'})}</a>
                 </Popconfirm>
                 </span>
             }
@@ -798,15 +842,16 @@ class ConcentratorManage extends PureComponent {
           </div>
         </Content>
         <Modal
+          width={650}
           key={ Date.parse(new Date()) + 3}
-          title="添加集中器"
+          title={ formatMessage({id: 'intl.add'})+" "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.addModal}
           //onOk={this.handleAdd}
           onCancel={() => this.setState({addModal: false, canAdd: true})}
           footer={[
-            <Button key="back" onClick={() => this.setState({addModal: false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({addModal: false})}> { formatMessage({id: 'intl.cancel'})}</Button>,
             <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
-              确认
+              { formatMessage({id: 'intl.submit'})}
             </Button>,
           ]}
         >
@@ -816,7 +861,7 @@ class ConcentratorManage extends PureComponent {
         <Modal
           width={650}
           key={ Date.parse(new Date())}
-          title="编辑集中器"
+          title={ formatMessage({id: 'intl.edit'})+ " "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
@@ -829,7 +874,7 @@ class ConcentratorManage extends PureComponent {
         <Modal
           width={'60%'}
           key={ Date.parse(new Date()) + 1}
-          title={`集中器指令:集中器编号${this.state.editRecord ? this.state.editRecord.number : ''}`}
+          title={ formatMessage({id: 'intl.concentrator'})+" "+ (this.state.editRecord ? this.state.editRecord.number : '') +" "+ formatMessage({id: 'intl.command'})}
           visible={this.state.orderModal}
           onOk={this.handleOrder}
           onCancel={() => this.setState({orderModal: false})}
@@ -842,7 +887,7 @@ class ConcentratorManage extends PureComponent {
           style={{ top: 20 }}
           width="90%"
           key={ Date.parse(new Date()) + 2}
-          title={`集中器${this.state.editRecord ? this.state.editRecord.number : ''}地图 `}
+          title={ formatMessage({id: 'intl.concentrator'})+" "+ (this.state.editRecord ? this.state.editRecord.number : '') +" "+ formatMessage({id: 'intl.map'})}
           visible={this.state.mapModal}
           onOk={() => this.setState({mapModal: false})}
           onCancel={() => this.setState({mapModal: false})}

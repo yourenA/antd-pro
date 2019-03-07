@@ -11,6 +11,8 @@ import ChangeMeterValueForm from './ChangeMeterValueForm'
 import DelMeterValueForm from './DelMeterValueForm'
 import find from 'lodash/find'
 const TabPane = Tabs.TabPane;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   member_meter_data: state.member_meter_data,
 }))
@@ -60,7 +62,7 @@ class Detail extends PureComponent {
     });
   }
   dynamic=(data)=>{
-
+    const {intl:{formatMessage}} = this.props;
     let Date=[];
     let Data=[];
     let diffData=[];
@@ -120,7 +122,7 @@ class Detail extends PureComponent {
       yAxis:  [
         {
           type: 'value',
-          name: '水表读数',
+          name:  formatMessage({id: 'intl.meter_reading'}),
           position: 'left',
           axisLine: {
             lineStyle: {
@@ -130,7 +132,7 @@ class Detail extends PureComponent {
         },
         {
           type: 'value',
-          name: '用水量',
+          name: formatMessage({id: 'intl.water_consumption'}),
           position: 'right',
           axisLine: {
             lineStyle: {
@@ -141,7 +143,7 @@ class Detail extends PureComponent {
       ],
       series: [
         {
-          name:'水表读数',
+          name:formatMessage({id: 'intl.meter_reading'}),
           type:'bar',
           data:Data,
           itemStyle:{
@@ -163,7 +165,7 @@ class Detail extends PureComponent {
           },
         },
         {
-          name:'用水量',
+          name: formatMessage({id: 'intl.water_consumption'}),
           type:'line',
           yAxisIndex: 1,
           data:diffData,
@@ -234,7 +236,13 @@ class Detail extends PureComponent {
     }).then((response)=>{
       console.log(response);
       if(response.status===200){
-        message.success('水表读数修正成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate:'', type: formatMessage({id: 'intl.meter_reading_correct'})}
+          )
+        )
         that.setState({
           editMeterValueModal: false
         })
@@ -257,7 +265,13 @@ class Detail extends PureComponent {
     }).then((response)=>{
       console.log(response);
       if(response.status===200){
-        message.success('水表读数清除成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate:'', type: formatMessage({id: 'intl.meter_reading_clear'})}
+          )
+        )
         that.setState({
           delMeterValueModal: false
         })
@@ -267,40 +281,41 @@ class Detail extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const Data=[...this.state.Data].reverse()
     const columns = [
       {
-        title: '序号',
+        title:formatMessage({id: 'intl.index'}),
         dataIndex: 'id',
         key: 'id',
-        width: 50,
+        width: 60,
         className: 'table-index',
         render: (text, record, index) => {
           return (index+1)
         }
       },
-      {title: '日期', dataIndex: 'date', key: 'date'},
-      {title: '用水量', dataIndex: 'difference_value', key: 'difference_value'},
-      {title: '累计读值', dataIndex: 'value', key: 'value'},
-      {title: '抄见读值(原始)', dataIndex: 'upload_value', key: 'upload_value'},
+      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', key: 'date'},
+      {title: formatMessage({id: 'intl.water_consumption'}), dataIndex: 'difference_value', key: 'difference_value'},
+      {title: formatMessage({id: 'intl.meter_reading'}) , dataIndex: 'value', key: 'value'},
+      {title:  formatMessage({id: 'intl.meter_reading_original'}), dataIndex: 'upload_value', key: 'upload_value'},
       {
-        title: '状态', dataIndex: 'status', key: 'status', width: 70,
+        title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 100,
         render: (val, record, index) => {
           let status='success';
           let explain='';
           switch (val){
             case -2:
               status='error'
-              explain='错报'
+              explain= formatMessage({id: 'intl.error'})
               break;
             case -1:
               status='warning'
-              explain='漏报'
+              explain= formatMessage({id: 'intl.missing'})
 
               break;
             default:
               status='success'
-              explain='正常'
+              explain=formatMessage({id: 'intl.only_normal'})
           }
           return (
             <p>
@@ -315,9 +330,9 @@ class Detail extends PureComponent {
       <div>
         <div >
          <ButtonGroup>
-            <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>本周</Button>
-            <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>本月</Button>
-            <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>本年</Button>
+            <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>{formatMessage({id: 'intl.this_week'})}</Button>
+            <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
+            <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>{formatMessage({id: 'intl.this_year'})}</Button>
           </ButtonGroup>
 
           <DatePicker
@@ -326,7 +341,7 @@ class Detail extends PureComponent {
             disabledDate={disabledDate}
             format="YYYY-MM-DD"
             style={{width: 150}}
-            placeholder="开始日期"
+            placeholder={formatMessage({id: 'intl.start'})}
             onChange={(e)=>this.handleRangePickerChange(e,'start')}
           />
           <DatePicker
@@ -335,10 +350,10 @@ class Detail extends PureComponent {
             disabledDate={disabledDate}
             format="YYYY-MM-DD"
             style={{width: 150}}
-            placeholder="结束日期"
+            placeholder={formatMessage({id: 'intl.end'})}
             onChange={(e)=>this.handleRangePickerChange(e,'end')}
           />
-          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>总用水量:{this.state.difference_value}</span>
+          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>{formatMessage({id: 'intl.total_water_consumption'})}:{this.state.difference_value}</span>
           {/*<RangePicker
             disabledDate={disabledDate}
             value={this.state.rangePickerValue}
@@ -348,16 +363,16 @@ class Detail extends PureComponent {
         </div>
         <Tabs defaultActiveKey="1" tabBarExtraContent={(company_code!=='hy'&&this.props.showExtra&&(this.state.showEditBtn||this.state.showdelBtn))?
           <div>
-            <Button  type="danger" size="small" onClick={()=>{this.setState({editMeterValueModal:true})}}>水表读数修正</Button>
-            <Button  type="danger" size="small"  onClick={()=>{this.setState({delMeterValueModal:true})}}>水表读数清除</Button>
+            <Button  type="danger" size="small" onClick={()=>{this.setState({editMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_correct'})}</Button>
+            <Button  type="danger" size="small"  onClick={()=>{this.setState({delMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_clear'})}</Button>
           </div>:
           this.props.showAnalysis?
           <div>
             <Button  type="primary" onClick={this.props.operateValueAnalysis}>水量分析</Button>
           </div>:null
         } >
-          <TabPane tab="折线图" key="1">  <div className="month-analysis"></div></TabPane>
-          <TabPane tab="表格" key="2">
+          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1">  <div className="month-analysis"></div></TabPane>
+          <TabPane tab={formatMessage({id: 'intl.table'})} key="2">
             <Table
               className={'meter-table'}
               bordered
@@ -371,22 +386,20 @@ class Detail extends PureComponent {
         </Tabs>
         <Modal
           destroyOnClose={true}
-          title={`水表读数修正`}
+          title={formatMessage({id: 'intl.meter_reading_correct'})}
           visible={this.state.editMeterValueModal}
           //onOk={this.handleEditMeterValue}
           onCancel={() => this.setState({editMeterValueModal: false})}
           footer={[
-            <Button key="back" onClick={() => this.setState({editMeterValueModal: false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({editMeterValueModal: false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
             <Button key="submit" type="primary"  onClick={()=>{
               Modal.confirm({
-                title: '警告！',
-                content: '水表读数修正后原读数将被覆盖，请谨慎操作！',
-                okText: '确认修正水表读数',
-                cancelText: '取消',
+                title:formatMessage({id: 'intl.warning'}) ,
+                content: formatMessage({id: 'intl.warning_correct'}),
                 onOk: this.handleEditMeterValue
               });
             }}>
-              确定
+              {formatMessage({id: 'intl.submit'})}
             </Button>,
           ]}
         >
@@ -394,22 +407,20 @@ class Detail extends PureComponent {
         </Modal>
         <Modal
           destroyOnClose={true}
-          title={`水表读数清除`}
+          title={formatMessage({id: 'intl.meter_reading_clear'})}
           visible={this.state.delMeterValueModal}
           //onOk={this.handleEditMeterValue}
           onCancel={() => this.setState({delMeterValueModal: false})}
           footer={[
-            <Button key="back" onClick={() => this.setState({delMeterValueModal: false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({delMeterValueModal: false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
             <Button key="submit" type="primary"  onClick={()=>{
               Modal.confirm({
-                title: '警告！',
-                content: '水表读数清除后原读数将被清空，操作不可逆，请谨慎操作！',
-                okText: '确认清除水表读数',
-                cancelText: '取消',
+                title:formatMessage({id: 'intl.warning'}) ,
+                content: formatMessage({id: 'intl.warning_clear'}),
                 onOk: this.handleDelMeterValue
               });
             }}>
-              确定
+              {formatMessage({id: 'intl.submit'})}
             </Button>,
           ]}
         >

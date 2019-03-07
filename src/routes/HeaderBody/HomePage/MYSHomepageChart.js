@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 import { Row, Col } from 'antd';
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class MYSHomepageChart extends PureComponent {
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ export default class MYSHomepageChart extends PureComponent {
     }
   }
   dynamic = (data)=> {
+    const {intl:{formatMessage}} = this.props;
     console.log('data',data)
     if(data.length===0) return false;
     this.myChart = this.echarts.init(document.querySelector('.last-30days-water-consumption'));
@@ -56,7 +59,7 @@ export default class MYSHomepageChart extends PureComponent {
         // },
         markLine: {
           data: [
-            {type: 'average', name: '平均值'}
+            {type: 'average', name:formatMessage({id: 'intl.average_value'})}
           ],
           label:{
             show:true,
@@ -80,7 +83,7 @@ export default class MYSHomepageChart extends PureComponent {
     let option = {
       backgroundColor: '#eee',
       title: {
-        text: '近一个月各类型水表用水量(虚线箭头为平均值)',
+        text: formatMessage({id: 'intl.meter_consumption_last_30_days'})
       },
       tooltip: {
         trigger: 'axis',
@@ -105,7 +108,7 @@ export default class MYSHomepageChart extends PureComponent {
       yAxis: [
         {
           type: 'value',
-          name: '用水量',
+          name:formatMessage({id: 'intl.water_consumption'}),
           axisLabel: {
             formatter: '{value} T'
           }
@@ -118,6 +121,7 @@ export default class MYSHomepageChart extends PureComponent {
     that.myChart.setOption(option);
   }
   dynamic2 = (data)=> {
+    const {intl:{formatMessage}} = this.props;
     console.log('data',data)
     if(data.length===0) return false;
     this.myChart2 = this.echarts.init(document.querySelector('.last-12months-water-consumption'));
@@ -140,7 +144,7 @@ export default class MYSHomepageChart extends PureComponent {
         },
         markLine: {
           data: [
-            {type: 'average', name: '平均值'}
+            {type: 'average', name: formatMessage({id: 'intl.average_value'})}
           ]
         },
         type: 'bar',
@@ -159,7 +163,7 @@ export default class MYSHomepageChart extends PureComponent {
     let option = {
       backgroundColor: '#eee',
       title: {
-        text: '近一年各类型水表用水量(虚线箭头为平均值)',
+        text: formatMessage({id: 'intl.meter_consumption_last_12_months'})
       },
       tooltip: {
         trigger: 'axis',
@@ -184,7 +188,7 @@ export default class MYSHomepageChart extends PureComponent {
       yAxis: [
         {
           type: 'value',
-          name: '用水量',
+          name:  formatMessage({id: 'intl.water_consumption'}),
           axisLabel: {
             formatter: '{value} T'
           }

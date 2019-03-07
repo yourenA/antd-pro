@@ -1,4 +1,6 @@
 import React, {PureComponent} from 'react';
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class EndpointsList extends PureComponent {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ export default class EndpointsList extends PureComponent {
     }
   }
   dynamic = (concentrator)=> {
+    const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.concentratorOffline'));
     console.log(concentrator);
     let concentrator_number=concentrator.reduce((total,item)=>{
@@ -67,17 +70,17 @@ export default class EndpointsList extends PureComponent {
       },
       yAxis: {
         type: 'value',
-        name: '离线小时数',
+        name: formatMessage({id: 'intl.offline_hours'}),
       },
       xAxis : {
-        name: '编号',
+        name: formatMessage({id: 'intl.concentrator_number'}),
         type: 'category',
         data: concentrator_number,
         axisLabel:{interval:0},
       },
       series: [
         {
-          name:  '离线小时数',
+          name:  formatMessage({id: 'intl.offline_hours'}),
           type: 'bar',
           stack: '总量',
           label: {

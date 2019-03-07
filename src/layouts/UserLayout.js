@@ -116,12 +116,14 @@ class UserLayout extends React.PureComponent {
       const company_name = find(this.state.company, function (o) {
         return o.code === url_code;
       });
+      console.log('company_name',company_name)
       if (company_name) {
         this.setState({
           company_name: company_name.name,
           locale: company_name.language,
         },function () {
           if (company_name.language) {
+            console.log('company_name.language',company_name.language)
             localStorage.setItem('locale', company_name.language)
           }
         })
@@ -143,6 +145,7 @@ class UserLayout extends React.PureComponent {
   }
 
   render() {
+    console.log('this.state.locale',this.state.locale)
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
           <div className={styles.login_mask}></div>

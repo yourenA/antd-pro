@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Layout, message, Badge, Button, Modal} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import DefaultSearch from './Search'
+import DefaultSearch from './../Leak_abnormality/Search'
 import {connect} from 'dva';
 import Sider from './../EmptySider'
 import {routerRedux} from 'dva/router';
@@ -14,6 +14,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import ProcessedForm from './ProcessedForm'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   dma: state.dma,
   zero_abnormality: state.zero_abnormality,
@@ -105,6 +107,12 @@ class FunctionContent extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 +5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   handleFormReset = () => {
@@ -189,7 +197,13 @@ class FunctionContent extends PureComponent {
         not_reminder_days:String(formValues.not_reminder_days)
       },
       callback: function () {
-        message.success("确认异常成功")
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: '', type: formatMessage({id: 'intl.confirm_exception'})}
+          )
+        )
         that.setState({
           processed_model:false
         })
@@ -209,59 +223,55 @@ class FunctionContent extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {zero_abnormality: {data, meta, loading}, dma} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
     const {isMobile} =this.props.global;
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   fixed: 'left',
-      //   className: 'table-index',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.initPage,index)
-      //   }
-      // },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '水表号', width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
-        return ellipsis2(val, 110)
-      }},
-      {title: '姓名', dataIndex: 'real_name', width: 100, key: 'real_name', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '日期', width: 100, dataIndex: 'date', key: 'date', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '安装地址', dataIndex: 'install_address',width: 150,  key: 'install_address', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
+        return ellipsis2(val, 120)
+      }},
+      {title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
-      {title: '持续时间(天)', dataIndex: 'duration_days', key: 'duration_days',width: 100, render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }},
-      {title: '备注', dataIndex: 'remark', key: 'remark'},
+      {title:formatMessage({id: 'intl.duration_days'}), dataIndex: 'duration_days',  width: 110,  key: 'abnormality_hours',
+        render: (val, record, index) => {
+          const parseVal=val.join(',');
+          return ellipsis2(parseVal,100)
+        }},
+
+      {title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark'},
       {
-        title: '操作',
+        title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
         fixed:'right',
         width: 170,
         render: (val, record, index) => {
           return (
             <div>
-              <Button type="primary" size='small' onClick={()=>this.operate(record)}>详细信息</Button>
-              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>确认异常</Button>}
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>  {formatMessage({id: 'intl.details'})}</Button>
+              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
+                {formatMessage({id: 'intl.confirm_abnormal'})}
+              </Button>}
             </div>
           )
         }
       },
+
     ];
     const {dispatch}=this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -271,7 +281,8 @@ class FunctionContent extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '零流量异常报警'}]}>
+            <PageHeaderLayout title="异常分析 "   breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+              {name: formatMessage({id: 'intl.zero_consumption_abnormal_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

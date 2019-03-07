@@ -14,6 +14,8 @@ import './index.less'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   concentrator_water: state.concentrator_water,
   global:state.global,
@@ -154,7 +156,13 @@ class UserMeterAnalysis extends PureComponent {
           // disabled:false
           time:new Date().getTime()
         });
-        message.success('发送指令成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
       }
     });
   }
@@ -176,7 +184,13 @@ class UserMeterAnalysis extends PureComponent {
           // disabled:false
           time:new Date().getTime()
         });
-        message.success('发送指令成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
       }
     });
   }
@@ -196,11 +210,18 @@ class UserMeterAnalysis extends PureComponent {
           // disabled:false
           time:new Date().getTime()
         });
-        message.success('发送指令成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
       }
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {concentrator_water: {data, meta, loading}} = this.props;
     const that=this;
     // const command=this.props.protocols;
@@ -210,26 +231,28 @@ class UserMeterAnalysis extends PureComponent {
         const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
         const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
-          <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 8,marginBottom:(index===0||record.protocols.length>1)?5:0}} onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{isLoading?'正在':''}{item.toUpperCase()}点抄</Button>
+          <Button loading={isLoading} key={index} type="primary" size="small"
+                  style={{marginLeft: 8,marginBottom:(index===0||record.protocols.length>1)?5:0}}
+                  onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
         )
       })
       return renderCommandBtn
     }
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      {title: '水表号', width: 90, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
-        return ellipsis2(val,90)
+      {title:formatMessage({id: 'intl.water_meter_number'}), width: 120, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val,120)
       }},
-      {title: '水表类型', dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150,render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_type'}), dataIndex: 'meter_model_name', key: 'meter_model_name', width:  150,render: (val, record, index) => {
       return ellipsis2(val,150)
     } },
-      {title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name', width: 150,render: (val, record, index) => {
         return ellipsis2(val,150)
       }},
-      {title: '小区名称', dataIndex: 'village_name', key: 'village_name', width:150,render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.village_name'}), dataIndex: 'village_name', key: 'village_name', width:150,render: (val, record, index) => {
         return ellipsis2(val,150)
       }},
-      {title: '安装地址', dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address',render: (val, record, index) => {
         return   <Tooltip
           placement="topLeft"
           title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
@@ -240,10 +263,10 @@ class UserMeterAnalysis extends PureComponent {
     ];
     const {isMobile} =this.props.global;
     const operate={
-      title: '操作',
+      title:formatMessage({id: 'intl.operate'}),
       key: 'operation',
       fixed:'right',
-      width: isMobile?150:300,
+      width: isMobile?150:320,
       render: (val, record, index) => {
         return (
           <div>

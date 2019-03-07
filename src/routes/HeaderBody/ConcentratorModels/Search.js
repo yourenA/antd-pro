@@ -3,8 +3,10 @@
  */
 import React, {Component} from 'react';
 import {Form, Row, Input, Button,Switch} from 'antd';
-import {injectIntl} from 'react-intl';
+
+
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
 @injectIntl
 class SearchForm extends Component {
   constructor(props) {

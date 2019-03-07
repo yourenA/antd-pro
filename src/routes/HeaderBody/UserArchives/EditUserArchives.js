@@ -9,6 +9,8 @@ const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditUserArchives extends Component {
   constructor(props) {
     super(props);
@@ -28,10 +30,11 @@ class EditUserArchives extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 7},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -45,12 +48,12 @@ class EditUserArchives extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           style={{width:'50%',display:'inline-block'}}
-          label="户号"
+          label= {formatMessage({id: 'intl.user_number'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('number', {
             initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-            rules: [{required: true, message: '户号不能为空'}],
+            rules: [{required: true, message: formatMessage({id: 'intl.user_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input  />
           )}
@@ -60,7 +63,7 @@ class EditUserArchives extends Component {
           style={{width:'50%',display:'inline-block'}}
           label={(
             <span>
-              安装小区
+               {formatMessage({id: 'intl.village_name'})}
             </span>
           )}>
           {getFieldDecorator('village_id', {
@@ -73,32 +76,8 @@ class EditUserArchives extends Component {
             </TreeSelect>
           )}
         </FormItem>
-       {/* {this.props.editRecord ?null: <FormItem
-          style={{width:'50%',display:'inline-block'}}
-          label="台区"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('distribution_area', {
-            initialValue: this.props.editRecord ? this.props.editRecord.distribution_area : '',
-            rules: [{required: true, message: '台区不能为空'}],
-          })(
-            <Input />
-          )}
-        </FormItem>}
-        {this.props.editRecord ?null: <FormItem
-          style={{width:'50%',display:'inline-block'}}
-          label="表册"
-          {...formItemLayoutWithLabel}
-        >
-          {getFieldDecorator('statistical_forms', {
-            initialValue: this.props.editRecord ? this.props.editRecord.statistical_forms : '',
-            rules: [{required: true, message: '表册不能为空'}],
-          })(
-            <Input />
-          )}
-        </FormItem>}*/}
         <FormItem
-          label="用户名称"
+          label= {formatMessage({id: 'intl.user_name'})}
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
@@ -108,28 +87,12 @@ class EditUserArchives extends Component {
             <Input />
           )}
         </FormItem>
-      {/*  <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              安装小区
-            </span>
-          )}>
-          {getFieldDecorator('village_id', {
-          })(
-            <TreeSelect
-              treeDefaultExpandAll={true}
-            >
-              {this.renderTreeNodes(data)}
-            </TreeSelect>
-          )}
-        </FormItem>*/}
         <FormItem
           {...formItemLayoutWithLabel}
           style={{width:'50%',display:'inline-block'}}
           label={(
             <span>
-              安装地址
+               {formatMessage({id: 'intl.install_address'})}
             </span>
           )}
         >
@@ -142,7 +105,7 @@ class EditUserArchives extends Component {
 
         <FormItem
           style={{width:'50%',display:'inline-block'}}
-          label="邮箱地址"
+          label= {formatMessage({id: 'intl.email'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('email', {
@@ -153,7 +116,7 @@ class EditUserArchives extends Component {
         </FormItem>
         <FormItem
           style={{width:'50%',display:'inline-block'}}
-          label="电话"
+          label= {formatMessage({id: 'intl.telephone'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('phone', {
@@ -162,26 +125,8 @@ class EditUserArchives extends Component {
             <Input />
           )}
         </FormItem>
-    {/*    <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              安装小区
-            </span>
-          )}>
-          {getFieldDecorator('village_id', {
-            rules: [{required: true, message: '安装小区不能为空'}],
-            initialValue: this.props.editRecord?this.props.editRecord.village_id:'',
-          })(
-            <TreeSelect
-              treeDefaultExpandAll={true}
-            >
-              {this.renderTreeNodes(this.props.area)}
-            </TreeSelect>
-          )}
-        </FormItem>*/}
         <FormItem
-          label="身份证号码"
+          label= {formatMessage({id: 'intl.id_card'})}
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
@@ -192,22 +137,22 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         <FormItem
-          label="性别"
+          label= {formatMessage({id: 'intl.sex'})}
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('sex', {
-            initialValue: this.props.editRecord ? this.props.editRecord.sex : '保密',
+            initialValue:  '保密',
           })(
             <RadioGroup>
-              <Radio value="男">男</Radio>
-              <Radio value="女">女</Radio>
-              <Radio value="保密">保密</Radio>
+              <Radio value="男">{formatMessage({id: 'intl.male'})}</Radio>
+              <Radio value="女">{formatMessage({id: 'intl.female'})}</Radio>
+              <Radio value="保密">{formatMessage({id: 'intl.secret'})}</Radio>
             </RadioGroup>
           )}
         </FormItem>
         <FormItem
-          label="抄表员"
+          label= {formatMessage({id: 'intl.reader'})}
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
@@ -218,7 +163,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         {this.props.editRecord ?null:  <FormItem
-          label="初始水量"
+          label= {formatMessage({id: 'intl.initial_value'})}
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
         >
@@ -230,7 +175,7 @@ class EditUserArchives extends Component {
         </FormItem>}
         {this.props.editRecord ?null:   <FormItem
           style={{width:'50%',display:'inline-block'}}
-          label="历史读数"
+          label= {formatMessage({id: 'intl.history_reading'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('historical_value', {
@@ -261,7 +206,7 @@ class EditUserArchives extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              安装日期
+               {formatMessage({id: 'intl.installed_date'})}
             </span>
           )}>
           {getFieldDecorator('installed_at', {

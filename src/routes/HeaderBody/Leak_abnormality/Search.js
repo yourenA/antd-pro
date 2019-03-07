@@ -11,6 +11,8 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +59,7 @@ class SearchForm extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const {getFieldDecorator} = this.props.form;
     const {expand}=this.state
@@ -78,7 +81,7 @@ class SearchForm extends Component {
               )}
             </FormItem>
           }
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -89,7 +92,7 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.end'})}>
             {getFieldDecorator('ended_at', {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
@@ -100,40 +103,40 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="户号" style={{display: expand ? 'inline-block' : 'none'}}>
+          <FormItem label={ formatMessage({id: 'intl.user_number'})} style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={ formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="集中器编号" style={{display: expand ? 'inline-block' : 'none'}}>
+          <FormItem label={ formatMessage({id: 'intl.concentrator_number'})} style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('concentrator_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={ formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="水表编号"  style={{display: expand ? 'inline-block' : 'none'}}>
+          <FormItem label={ formatMessage({id: 'intl.water_meter_number'})}  style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('meter_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={ formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="显示"
+          <FormItem label={ formatMessage({id: 'intl.display_type'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('display_type',{
               initialValue:  'only_unprocessed',
             })(
               <RadioGroup>
-                <RadioButton value="only_unprocessed">未处理</RadioButton>
-                <RadioButton value="only_processed">已处理</RadioButton>
+                <RadioButton value="only_unprocessed">{ formatMessage({id: 'intl.unprocessed'})}</RadioButton>
+                <RadioButton value="only_processed">{ formatMessage({id: 'intl.processed'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem>
-            {this.props.isMobile && <Button type="primary" onClick={this.toggle} style={{marginRight: 8}}>
-              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'}/>
+            {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
+            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>{ formatMessage({id: 'intl.set_alarm_rule'})}</Button>
           </FormItem>
         </Row>
       </Form>

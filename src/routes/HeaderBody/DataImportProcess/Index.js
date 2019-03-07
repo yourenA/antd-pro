@@ -18,6 +18,8 @@ import './index.less'
 const Step = Steps.Step;
 
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   area: state.area,
   manufacturers: state.manufacturers,
@@ -152,7 +154,13 @@ class Vendor extends PureComponent {
         ...formValues
       },
       callback: function () {
-        message.success('添加厂商成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.vendor'})}
+          )
+        )
         that.setState({current});
       }
     });
@@ -169,7 +177,13 @@ class Vendor extends PureComponent {
         ...formValues
       },
       callback: function () {
-        message.success('添加区域成功');
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.village'})}
+          )
+        )
         that.props.dispatch({
           type: 'manufacturers/fetch',
           payload: {
@@ -191,7 +205,13 @@ class Vendor extends PureComponent {
         ...formValues,
       },
       callback: function () {
-        message.success('添加服务器地址成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.server_address'})}
+          )
+        )
         that.props.dispatch({
           type: 'servers/fetch',
           payload: {
@@ -216,7 +236,13 @@ class Vendor extends PureComponent {
         manufacturer_id: formValues.manufacturer_id.key,
       },
       callback: function () {
-        message.success('添加集中器类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.concentrator_type'})}
+          )
+        )
         that.props.dispatch({
           type: 'concentrator_models/fetch',
           payload: {
@@ -241,7 +267,8 @@ class Vendor extends PureComponent {
       if (k.indexOf('villages-') >= 0) {
         if (formValues.hasOwnProperty(k)) {
           if (formValues[k].village === undefined) {
-            message.error('安装小区 不能为空');
+            const {intl:{formatMessage}} = that.props;
+            message.error(formatMessage({id: 'intl.village_name'})+formatMessage({id: 'intl.can_not_be_empty'}))
             this.setState({
               canAdd: true
             })
@@ -293,7 +320,13 @@ class Vendor extends PureComponent {
         is_count: formValues.is_count.key,
       },
       callback: function () {
-        message.success('添加集中器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.concentrator'})}
+          )
+        )
         that.setState({current});
       }
     });
@@ -310,7 +343,13 @@ class Vendor extends PureComponent {
         is_control: formValues.is_control.key ? parseInt(formValues.is_control.key) : -1
       },
       callback: function () {
-        message.success('添加水表类型成功');
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.water_meter_type'})}
+          )
+        )
         that.props.dispatch({
           type: 'meter_models/fetch',
           payload: {
@@ -347,11 +386,12 @@ class Vendor extends PureComponent {
     this.file = cb
   }
   handleImport = ()=> {
+    const {intl:{formatMessage}} = this.props;
     let file = this.file();
     const formValues = this.importFormRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
     if (!formValues.file) {
-      message.error('请选择文件');
+      message.error( formatMessage({id: 'intl.please_choose_Excel'}));
       return false
     }
     var formData = new FormData();
@@ -370,37 +410,43 @@ class Vendor extends PureComponent {
     }).then((response)=> {
       console.log(response);
       if (response.status === 200) {
-        message.success('导入成功');
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.import'}), type: formatMessage({id: 'intl.excel'})}
+          )
+        )
       }
     })
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {manufacturers, concentrator_models, area, concentrators, meter_models, servers,sider_regions,dma} = this.props;
 
     const steps = [{
-      title: '添加厂商',
+      title: formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.vendor_manage'}),
       content: <AddOrEditVendor wrappedComponentRef={(inst) => this.VendorformRef = inst}/>,
     }, {
-      title: '添加区域',
+      title: formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.village_manage'}),
       content: <AddOrEditArea wrappedComponentRef={(inst) => this.AreaformRef = inst}/>,
     }, {
-      title: '添加服务器地址',
+      title: formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.servers_manage'}),
       content: <AddOrEditServer wrappedComponentRef={(inst) => this.ServerformRef = inst}/>,
     }, {
-      title: '添加集中器类型',
+      title:formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.concentrator_type_manage'}) ,
       content: <AddOrEditConcentratorModels manufacturers={manufacturers.data}
                                             wrappedComponentRef={(inst) => this.ConcerntratorModelformRef = inst}/>,
     }, {
-      title: '添加集中器',
+      title:formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.concentrator_manage'}) ,
       content: <AddOrEditConcentrator wrappedComponentRef={(inst) => this.ConcentratorformRef = inst} area={area.data}
                                       servers={servers.data} concentrator_models={concentrator_models.data}/>,
     }, {
-      title: '添加水表类型',
+      title: formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.meter_type_manage'}),
       content: <AddOrEditMeterModel manufacturers={manufacturers.data}
                                     wrappedComponentRef={(inst) => this.MeterModelformRef = inst}/>,
     }, {
-      title: '导入用户和水表数据',
+      title: formatMessage({id: 'intl.import_user_and_meter'}),
       content: <ImportArchives  dma={dma}  findChildFunc={this.findChildFunc}
                                wrappedComponentRef={(inst) => this.importFormRef = inst}
                                sider_regions={sider_regions}
@@ -412,7 +458,8 @@ class Vendor extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '一站添加数据'}]}>
+            <PageHeaderLayout title="系统管理 "  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.add_data_at_one_stop'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div>
                   <Steps size="small" current={current}>
@@ -424,15 +471,15 @@ class Vendor extends PureComponent {
                       this.state.current > 0
                       &&
                       <Button onClick={() => this.prev()}>
-                        上一步
+                        {formatMessage({id: 'intl.pre'})}
                       </Button>
                     }
                     {
                       this.state.current < steps.length - 1
                       &&
-                      <Button onClick={() => this.next()} style={{marginLeft: 8}}>跳过</Button>
+                      <Button onClick={() => this.next()} style={{marginLeft: 8}}>  {formatMessage({id: 'intl.next'})}</Button>
                     }
-                    <Button type="primary" onClick={() => this.confirmNext()} style={{marginLeft: 8}}>确定</Button>
+                    <Button type="primary" onClick={() => this.confirmNext()} style={{marginLeft: 8}}>{formatMessage({id: 'intl.submit'})}</Button>
 
                   </div>
                 </div>

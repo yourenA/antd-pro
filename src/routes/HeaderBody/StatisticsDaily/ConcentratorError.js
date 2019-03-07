@@ -10,6 +10,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ConcentratorOfflife from './ConcentratorOfflife'
 import uuid from 'uuid/v4'
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   concentrator_daily_errors: state.concentrator_daily_errors,
   global:state.global,
@@ -36,6 +38,12 @@ class FunctionContent extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   handleFormReset = () => {
@@ -72,6 +80,7 @@ class FunctionContent extends PureComponent {
 
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {concentrator_daily_errors: {data, meta, loading},dispatch} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
@@ -89,7 +98,7 @@ class FunctionContent extends PureComponent {
       //     return renderIndex(meta,this.state.page,index)
       //   }
       // },
-      {title: '集中器编号', width:100, dataIndex: 'concentrator_number', key: 'concentrator_number'
+      {title:  formatMessage({id: 'intl.concentrator_number'}), width:100, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (
           <p  className="link" onClick={()=>{
@@ -97,36 +106,36 @@ class FunctionContent extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '离线时间',width:150,  dataIndex: 'offlines', key: 'offlines',
+      {title:  formatMessage({id: 'intl.offline_hours'}),width:150,  dataIndex: 'offlines', key: 'offlines',
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }},
-      {title: '错误类型', dataIndex: 'status', key: 'status' ,width:80,render:(val, record, index) => (
+      {title: formatMessage({id: 'intl.status'}) , dataIndex: 'status', key: 'status' ,width:80,render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.status_explain}
         </p>
       )},
-      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
+      {title:  formatMessage({id: 'intl.total_meter_count'}), width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
         render: (val, record, index) => {
           return ellipsis2(val, 90)
         }},
-      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
+      {title:  formatMessage({id: 'intl.upload_meter_count'}), width: 100, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
         render: (val, record, index) => {
-          return ellipsis2(val, 80)
+          return ellipsis2(val, 100)
         }},
       {
-        title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
+        title: formatMessage({id: 'intl.upload_meter_rate'}) , width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
         render: (val, record, index) => {
           return parseFloat(val) ?
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
         }
       },
-      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
+      {title: formatMessage({id: 'intl.normal_meter_count'}) , width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
         render: (val, record, index) => {
           return ellipsis2(val, 110)
         }},
       {
-        title: '正常读值率', dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
+        title: formatMessage({id: 'intl.normal_meter_rate'}) , dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
         render: (val, record, index) => {
           return parseFloat(val) ?
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
@@ -135,7 +144,8 @@ class FunctionContent extends PureComponent {
     ];
     const {isMobile} =this.props.global;
     return (
-      <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '集中器错误'}]}>
+      <PageHeaderLayout title="异常分析 " breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+        {name: formatMessage({id: 'intl.Statistical_daily'})},{name: formatMessage({id: 'intl.concentrator_error'})}]}>
         <Card bordered={false} style={{margin: '-16px -16px 0'}}>
           <Row>
             <Col md={24} lg={14} >

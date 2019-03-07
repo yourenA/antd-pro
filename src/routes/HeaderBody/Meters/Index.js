@@ -12,6 +12,7 @@ import AddOrEditForm from './addOrEditMeterModels'
 import ChangeTable from './ChangeTable'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   user_command_data: state.user_command_data,
@@ -19,6 +20,7 @@ const {Content} = Layout;
   meters: state.meters,
   global: state.global,
 }))
+@injectIntl
 class MeterModel extends PureComponent {
   constructor(props) {
     super(props);
@@ -103,6 +105,12 @@ class MeterModel extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
 
@@ -209,7 +217,13 @@ class MeterModel extends PureComponent {
         valve_status: formValues.valve_status ? 1 : -1
       },
       callback: function () {
-        message.success('添加水表成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.meter'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -241,7 +255,13 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改水表成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.meter'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -269,7 +289,13 @@ class MeterModel extends PureComponent {
         is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
       },
       callback: function () {
-        message.success('更换水表成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.change'}), type: formatMessage({id: 'intl.meter'})}
+          )
+        )
         that.setState({
           changeModal: false,
         });
@@ -292,7 +318,13 @@ class MeterModel extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除水表成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.meter'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -315,7 +347,13 @@ class MeterModel extends PureComponent {
         feature: command
       },
       callback: ()=> {
-        message.success('发送指令成功');
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -360,6 +398,7 @@ class MeterModel extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const { selectedRowKeys } = this.state;
     const {meters: {data, meta, loading}, meter_models, user_command_data} = this.props;
     const {isMobile} =this.props.global;
@@ -376,23 +415,23 @@ class MeterModel extends PureComponent {
       //   }
       // },
       {
-        title: '水表号', width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: formatMessage({id: 'intl.water_meter_number'}), width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val, 90)
         }
       },
       {
-        title: '用户名称', dataIndex: 'real_name', key: 'real_name', width: 80, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.user_name'}) , dataIndex: 'real_name', key: 'real_name', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
       },
       {
-        title: '户号', dataIndex: 'member_number', key: 'member_number', width: 80, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.user_number'}), dataIndex: 'member_number', key: 'member_number', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
       },
       {
-        title: '安装地址',
+        title: formatMessage({id: 'intl.install_address'}),
         dataIndex: 'install_address',
         key: 'install_address',
         width: 100,
@@ -401,15 +440,15 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '水表序号', dataIndex: 'index', key: 'index', width: 80, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.water_meter_index'}), dataIndex: 'index', key: 'index', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
       },
-      {title: '初始水量', width: 80, dataIndex: 'initial_water', key: 'initial_water', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.initial_value'}), width: 80, dataIndex: 'initial_water', key: 'initial_water', render: (text, record, index) => {
         return ellipsis2(text, 80)
       }},
       {
-        title: '水表类型名称',
+        title: formatMessage({id: 'intl.water_meter_type'}),
         width: 110,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
@@ -417,29 +456,29 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 110)
         }
       },
-      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.temperature_type'}), dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
         return ellipsis2(text,110)
       }
       },
-      {title: '尺寸类型', dataIndex: 'size_type_explain', key: 'size_type_explain', width: 80,render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.size_type'}), dataIndex: 'size_type_explain', key: 'size_type_explain', width: 80,render: (text, record, index) => {
         return ellipsis2(text,80)
       } },
-      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.output_type'}), dataIndex: 'output_type_explain', key: 'output_type_explain', width: 80,render: (text, record, index) => {
         return ellipsis2(text,80)
       }
       },
 
       {
-        title: '是否阀控', dataIndex: 'is_valve', key: 'is_valve', width: 80,
+        title: formatMessage({id: 'intl.can_valve'}), dataIndex: 'is_valve', key: 'is_valve', width: 80,
         render: (val, record, index) => (
           <p>
-            <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? '是' : '否'}
+            <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? formatMessage({id: 'intl.yes'}) :formatMessage({id: 'intl.no'})}
 
           </p>
         )
       },
       {
-        title: '阀门状态', dataIndex: 'valve_status', key: 'valve_status', width: 80,
+        title: formatMessage({id: 'intl.valve_status'}), dataIndex: 'valve_status', key: 'valve_status', width: 80,
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "success" : "error"}/>{record.valve_status_explain}
@@ -447,7 +486,7 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
+        title: formatMessage({id: 'intl.water_meter_number'}), dataIndex: 'status', key: 'status', width: 80,
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
@@ -455,7 +494,7 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: '电池电压状态', dataIndex: 'voltage_status', key: 'voltage_status', width: 110,
+        title: formatMessage({id: 'intl.battery_voltage_state'}), dataIndex: 'voltage_status', key: 'voltage_status', width: 110,
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "success" : "error"}/>{record.voltage_status_explain}
@@ -463,7 +502,7 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: '集中器号',
+        title: formatMessage({id: 'intl.concentrator_number'}),
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 100,
@@ -472,7 +511,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '通道号',
+        title: formatMessage({id: 'intl.channel'}),
         dataIndex: 'channel',
         key: 'channel',
         width: 80,
@@ -482,7 +521,7 @@ class MeterModel extends PureComponent {
       },
 
       {
-        title: '厂商代码',
+        title: formatMessage({id: 'intl.vendor_code'}),
         dataIndex: 'manufacturer_prefix',
         key: 'manufacturer_prefix',
         width: 80,
@@ -491,12 +530,12 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        title: formatMessage({id: 'intl.enabled_date'}), width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '开始使用时读数',
+        title: formatMessage({id: 'intl.enabled_value'}),
         width: 120,
         dataIndex: 'enabled_value',
         key: 'enabled_value',
@@ -505,7 +544,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '停止使用日期',
+        title: formatMessage({id: 'intl.disabled_date'}),
         width: 120,
         dataIndex: 'disabled_date',
         key: 'disabled_date',
@@ -514,7 +553,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '停止使用时读数',
+        title: formatMessage({id: 'intl.disabled_value'}),
         width: 120,
         dataIndex: 'disabled_value',
         key: 'disabled_value',
@@ -523,7 +562,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '生产日期',
+        title: formatMessage({id: 'intl.manufactured_date'}),
         width: 120,
         dataIndex: 'manufactured_at',
         key: 'manufactured_at',
@@ -532,17 +571,17 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '安装日期', width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
+        title: formatMessage({id: 'intl.installed_date'}), width: 120, dataIndex: 'installed_at', key: 'installed_at', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
 
-      {title: '电池寿命(年)', dataIndex: 'battery_life', key: 'battery_life', width: 100,
+      {title:formatMessage({id: 'intl.battery_life'}) , dataIndex: 'battery_life', key: 'battery_life', width: 100,
         render: (text, record, index) => {
           return ellipsis2(text, 100)
         }},
       {
-        title: '所属厂商',
+        title: formatMessage({id: 'intl.vendor_name'}),
         dataIndex: 'manufacturer_name',
         key: 'manufacturer_name',
         width: 100,
@@ -551,15 +590,15 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '备注', dataIndex: 'remark', key: 'remark',  width: 100,render: (text, record, index) => {
+        title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark',  width: 100,render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
-      {title: '条码', dataIndex: 'barcode', key: 'barcode',width: 100,render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.barcode'}), dataIndex: 'barcode', key: 'barcode',width: 100,render: (text, record, index) => {
         return ellipsis2(text, 100)
       }},
       {
-        title:'排序号', dataIndex: 'sort_number', key: 'sort_number'
+        title:formatMessage({id: 'intl.sort_number'}), dataIndex: 'sort_number', key: 'sort_number'
       }
 
     ];
@@ -568,7 +607,7 @@ class MeterModel extends PureComponent {
       columns.splice(7, 1)
     }
     const operate={
-      title: '操作',
+      title:formatMessage({id: 'intl.operate'}),
       width: isMobile ? 100 : 180,
       fixed: 'right',
       render: (val, record, index) => (
@@ -577,21 +616,21 @@ class MeterModel extends PureComponent {
             (this.state.showCommandBtn && record.is_valve === 1) &&
             <span>
                 {record.valve_status === -1 &&
-                <Popconfirm placement="topRight" title={ `确定要开阀吗?`}
+                <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve'})})}
                             onConfirm={()=> {
                               this.handleCommand(record, 'open_valve')
                             }}>
                 <span>
-                  <a href="javascript:;">开阀</a>
+                  <a href="javascript:;">{formatMessage({id: 'intl.open_valve'})}</a>
                 </span>
                 </Popconfirm>}
               {record.valve_status === 1 &&
-              <Popconfirm placement="topRight" title={ `确定要关阀吗?`}
+              <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve'})})}
                           onConfirm={()=> {
                             this.handleCommand(record, 'close_valve')
                           }}>
                 <span>
-                   <a href="javascript:;">关阀</a>
+                   <a href="javascript:;">{formatMessage({id: 'intl.close_valve'})}</a>
                 </span>
               </Popconfirm>}
               <span className="ant-divider"/>
@@ -607,7 +646,7 @@ class MeterModel extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
@@ -621,15 +660,15 @@ class MeterModel extends PureComponent {
                             changeModal: true
                           }
                         )
-                      }}>换表</a>
+                      }}>{formatMessage({id: 'intl.change_meter'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&record.status === 1&&
-            <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的用户也会被删除！</p></div>}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -651,7 +690,7 @@ class MeterModel extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '水表管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.meter_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -683,7 +722,8 @@ class MeterModel extends PureComponent {
             </PageHeaderLayout>
           </div>
           <Modal
-            title="添加水表"
+            width="700px"
+            title={ formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -691,8 +731,9 @@ class MeterModel extends PureComponent {
             <AddOrEditForm meter_models={meter_models.data} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
+            width="700px"
             key={ Date.parse(new Date())}
-            title="修改水表"
+            title={ formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
@@ -701,8 +742,9 @@ class MeterModel extends PureComponent {
                            wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
           <Modal
+            width="700px"
             key={ Date.parse(new Date()) + 1}
-            title="更换水表"
+            title={ formatMessage({id: 'intl.change_meter'})}
             visible={this.state.changeModal}
             onOk={this.handleChangeMeter}
             onCancel={() => this.setState({changeModal: false})}

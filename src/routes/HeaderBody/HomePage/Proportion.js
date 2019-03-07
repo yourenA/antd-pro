@@ -1,4 +1,6 @@
 import React, {PureComponent} from 'react';
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class Proportion extends PureComponent {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ export default class Proportion extends PureComponent {
     }
   }
   dynamic=(meter)=>{
+    const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
     let option = {
       backgroundColor: '#eee',
@@ -45,7 +48,9 @@ export default class Proportion extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['水表上传数量','水表没有上传数量','水表错误上传数量','水表停止上传数量']
+        data: [formatMessage({id: 'intl.meter_successful_upload_count'}),formatMessage({id: 'intl.meter_no_upload_count'}),
+          formatMessage({id: 'intl.meter_error_upload_count'}),
+          formatMessage({id: 'intl.meter_stop_upload_count'})]
       },
       series : [
         {
@@ -54,25 +59,25 @@ export default class Proportion extends PureComponent {
           radius : '55%',
           center: ['50%', '60%'],
           data:[
-            {value:meter.yesterday_upload_count, name:'水表上传数量',
+            {value:meter.yesterday_upload_count, name:formatMessage({id: 'intl.meter_successful_upload_count'}),
               itemStyle:{
                 normal: {
                   color: '#61a0a8',
                 }
               },},
-            {value:meter.yesterday_missing_upload_count, name:'水表没有上传数量',
+            {value:meter.yesterday_missing_upload_count, name:formatMessage({id: 'intl.meter_no_upload_count'}),
               itemStyle:{
                 normal: {
                   color: '#d48265',
                 }
               },},
-            {value:meter.yesterday_error_upload_count, name:'水表错误上传数量',
+            {value:meter.yesterday_error_upload_count, name:formatMessage({id: 'intl.meter_error_upload_count'}),
               itemStyle:{
                 normal: {
                   color: '#c23531',
                 }
               },},
-            {value:meter.yesterday_stop_upload_count, name:'水表停止上传数量',
+            {value:meter.yesterday_stop_upload_count, name:formatMessage({id: 'intl.meter_stop_upload_count'}),
               itemStyle:{
                 normal: {
                   color: '#2f4554',

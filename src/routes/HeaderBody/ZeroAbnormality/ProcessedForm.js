@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {Form, Input, InputNumber  } from 'antd';
 const { TextArea } = Input;
 const FormItem = Form.Item;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class AddPoliciesForm extends Component {
   componentDidMount() {
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -35,7 +37,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              水表号
+              {formatMessage({id: 'intl.water_meter_number'})}
             </span>
           )}
         >
@@ -49,7 +51,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              几天内不再提醒
+              {formatMessage({id: 'intl.not_reminder_days'})}
             </span>
           )}
         >
@@ -63,7 +65,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              备注
+              {formatMessage({id: 'intl.remark'})}
             </span>
           )}
         >

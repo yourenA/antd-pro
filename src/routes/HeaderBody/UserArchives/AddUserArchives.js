@@ -11,6 +11,8 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const Panel = Collapse.Panel;
 let uuid=1
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditUserArchives extends Component {
   constructor(props) {
     super(props);
@@ -73,10 +75,11 @@ class EditUserArchives extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 7},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -90,30 +93,30 @@ class EditUserArchives extends Component {
     const meterForms=this.state.meterArr.map((item,index)=>{
       return (
         <Panel showArrow={false}
-               header={<div>水表-{index+1}  <Button onClick={(e)=>{e.stopPropagation();this.deleteMeter(item)}}
-               size="small" style={{float:'right',marginRight:'10px'}} type="danger">删除</Button>  </div>}
+               header={<div>{formatMessage({id: 'intl.meter'})}-{index+1}  <Button onClick={(e)=>{e.stopPropagation();this.deleteMeter(item)}}
+               size="small" style={{float:'right',marginRight:'10px'}} type="danger">{formatMessage({id: 'intl.delete'})}</Button>  </div>}
                key={item.toString()} >
           <Form key={index}>
             <FormItem
               style={{width:'33%',display:'inline-block'}}
-              label="水表号"
+              label={formatMessage({id: 'intl.water_meter_number'})}
               {...formItemLayoutWithLabel}
             >
               {getFieldDecorator(`meter_number-${item}`, {
                 initialValue: '',
-                rules: [{required: true, message: '水表号不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.water_meter_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Input />
               )}
             </FormItem>
             <FormItem
-              label="水表类型"
+              label={formatMessage({id: 'intl.water_meter_type'})}
               style={{width:'33%',display:'inline-block'}}
               {...formItemLayoutWithLabel}
             >
               {getFieldDecorator(`meter_model_id-${item}`, {
                 initialValue: '',
-                rules: [{required: true, message: '水表类型不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.water_meter_type'})+formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Select >
                   { this.props.meter_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
@@ -125,12 +128,12 @@ class EditUserArchives extends Component {
               style={{width:'33%',display:'inline-block'}}
               label={(
                 <span>
-              水表序号
+              {formatMessage({id: 'intl.water_meter_index'})}
             </span>
               )}
             >
               {getFieldDecorator(`meter_index-${item}`, {
-                rules: [{required: true, message: '水表序号不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.water_meter_index'})+formatMessage({id: 'intl.can_not_be_empty'})}],
                 initialValue: '',
               })(
                 <InputNumber />
@@ -141,7 +144,7 @@ class EditUserArchives extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              初始水量
+              {formatMessage({id: 'intl.initial_value'})}
             </span>
               )}
             >
@@ -155,7 +158,7 @@ class EditUserArchives extends Component {
 
             <FormItem
               style={{width:'33%',display:'inline-block'}}
-              label="水表厂商代码"
+              label={formatMessage({id: 'intl.vendor_code'})}
               {...formItemLayoutWithLabel}
             >
               {getFieldDecorator(`manufacturer_prefix-${item}`, {
@@ -166,18 +169,18 @@ class EditUserArchives extends Component {
             </FormItem>
             <FormItem
               style={{width:'33%',display:'inline-block'}}
-              label="集中器编号"
+              label={formatMessage({id: 'intl.concentrator_number'})}
               {...formItemLayoutWithLabel}
             >
               {getFieldDecorator(`concentrator_number-${item}`, {
                 initialValue: '',
-                rules: [{required: true, message: '集中器编号不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.concentrator_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Input  />
               )}
             </FormItem>
             <FormItem
-              label="集中器通道号"
+              label={formatMessage({id: 'intl.channel'})}
               style={{width:'33%',display:'inline-block'}}
               {...formItemLayoutWithLabel}
             >
@@ -188,7 +191,7 @@ class EditUserArchives extends Component {
               )}
             </FormItem>
             {
-              (company_code==='hy'||company_code==='amwares')&&
+              (company_code==='hy')&&
               <FormItem
                 style={{width:'33%',display:'inline-block'}}
                 {...formItemLayoutWithLabel}
@@ -215,16 +218,17 @@ class EditUserArchives extends Component {
       <div>
 
         <Collapse activeKey={['1','2']} >
-          <Panel header="基本信息" key="1" showArrow={false}>
+          <Panel header={formatMessage({id: 'intl.base_info'})} key="1" showArrow={false}>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
                 style={{width:'33%',display:'inline-block'}}
-                label="户号"
+                label={formatMessage({id: 'intl.user_number'})}
                 {...formItemLayoutWithLabel}
               >
                 {getFieldDecorator('number', {
                   initialValue: '',
-                  rules: [{required: true, message: '户号不能为空'}],
+                  rules: [{required: true, message:  formatMessage({id: 'intl.user_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
                 })(
                   <Input  />
                 )}
@@ -234,12 +238,12 @@ class EditUserArchives extends Component {
                 style={{width:'33%',display:'inline-block'}}
                 label={(
                   <span>
-              安装小区
+              {formatMessage({id: 'intl.village_name'})}
             </span>
                 )}>
                 {getFieldDecorator('village_id', {
                   initialValue: '',
-                  rules: [{required: true, message: '安装小区不能为空'}],
+                  rules: [{required: true, message:  formatMessage({id: 'intl.village_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
                 })(
                   <TreeSelect
                     treeDefaultExpandAll={true}
@@ -289,7 +293,7 @@ class EditUserArchives extends Component {
                )}
                </FormItem>}*/}
               <FormItem
-                label="用户名称"
+                label={formatMessage({id: 'intl.user_name'})}
                 style={{width:'33%',display:'inline-block'}}
                 {...formItemLayoutWithLabel}
               >
@@ -304,7 +308,7 @@ class EditUserArchives extends Component {
                 style={{width:'33%',display:'inline-block'}}
                 label={(
                   <span>
-              安装地址
+              {formatMessage({id: 'intl.install_address'})}
             </span>
                 )}
               >
@@ -317,7 +321,7 @@ class EditUserArchives extends Component {
 
               <FormItem
                 style={{width:'33%',display:'inline-block'}}
-                label="邮箱地址"
+                label={formatMessage({id: 'intl.email'})}
                 {...formItemLayoutWithLabel}
               >
                 {getFieldDecorator('email', {
@@ -328,7 +332,7 @@ class EditUserArchives extends Component {
               </FormItem>
               <FormItem
                 style={{width:'33%',display:'inline-block'}}
-                label="电话"
+                label={formatMessage({id: 'intl.telephone'})}
                 {...formItemLayoutWithLabel}
               >
                 {getFieldDecorator('phone', {
@@ -356,7 +360,7 @@ class EditUserArchives extends Component {
                )}
                </FormItem>*/}
               <FormItem
-                label="身份证号码"
+                label={formatMessage({id: 'intl.id_card'})}
                 style={{width:'33%',display:'inline-block'}}
                 {...formItemLayoutWithLabel}
               >
@@ -367,7 +371,7 @@ class EditUserArchives extends Component {
                 )}
               </FormItem>
               <FormItem
-                label="性别"
+                label={formatMessage({id: 'intl.sex'})}
                 style={{width:'33%',display:'inline-block'}}
                 {...formItemLayoutWithLabel}
               >
@@ -375,14 +379,14 @@ class EditUserArchives extends Component {
                   initialValue:  '保密',
                 })(
                   <RadioGroup>
-                    <Radio value="男">男</Radio>
-                    <Radio value="女">女</Radio>
-                    <Radio value="保密">保密</Radio>
+                    <Radio value="男">{formatMessage({id: 'intl.male'})}</Radio>
+                    <Radio value="女">{formatMessage({id: 'intl.female'})}</Radio>
+                    <Radio value="保密">{formatMessage({id: 'intl.secret'})}</Radio>
                   </RadioGroup>
                 )}
               </FormItem>
               <FormItem
-                label="抄表员"
+                label={formatMessage({id: 'intl.reader'})}
                 style={{width:'33%',display:'inline-block'}}
                 {...formItemLayoutWithLabel}
               >
@@ -394,12 +398,12 @@ class EditUserArchives extends Component {
               </FormItem>
             </Form>
           </Panel>
-          <Panel header="水表信息" key="2" showArrow={false}>
+          <Panel header={formatMessage({id: 'intl.water_meter_info'})} key="2" showArrow={false}>
             <Collapse activeKey={this.state.meterActiveKey} onChange={this.changeMeterPanel}>
             {meterForms}
 
             </Collapse>
-            <Button type="primary" block onClick={this.addMeter}>添加水表</Button>
+            <Button type="primary" block onClick={this.addMeter}>{formatMessage({id: 'intl.add'})+formatMessage({id: 'intl.meter'})}</Button>
           </Panel>
         </Collapse>
     </div>

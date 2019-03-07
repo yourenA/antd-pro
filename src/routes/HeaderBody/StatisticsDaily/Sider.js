@@ -4,6 +4,8 @@ import {Link} from 'dva/router';
 import {connect} from 'dva';
 
 const { Sider} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   global:state.global,
 }))
@@ -13,7 +15,7 @@ class SiderNav extends PureComponent {
     const {isMobile} =this.props.global;
     this.state = {
       collapsed: isMobile,
-      siderNav: [{name: '集中器错误', url: 'concentrator_error'}, {name: '户表错误', url: 'user_meter_error'}],
+      siderNav: [{name: this.props.intl.formatMessage({id: 'intl.concentrator_error'}) , url: 'concentrator_error'}, {name: this.props.intl.formatMessage({id: 'intl.water_meter_error'}), url: 'user_meter_error'}],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }
   }

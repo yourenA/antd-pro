@@ -7,6 +7,8 @@ import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +16,7 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -28,19 +31,19 @@ class AddPoliciesForm extends Component {
     const {getFieldDecorator} = this.props.form;
     return (
       <div>
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} className="model-form">
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              名称
+              {formatMessage({id: 'intl.water_meter_type'})}
             </span>
           )}
         >
           {getFieldDecorator('name', {
             initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.water_meter_type'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
           })(
             <Input />
           )}
@@ -48,15 +51,16 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label="尺寸类型"
+          label=  {formatMessage({id: 'intl.size_type'})}
         >
           {getFieldDecorator('size_type',{
             initialValue: this.props.editRecord ? this.props.editRecord.size_type.toString() : '1',
-            rules: [{required: true, message: '尺寸类型不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.size_type'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
+
           })(
             <RadioGroup>
-              <Radio value="1">小表</Radio>
-              <Radio value="2">大表</Radio>
+              <Radio value="1">{formatMessage({id: 'intl.small_meter'})}</Radio>
+              <Radio value="2">{formatMessage({id: 'intl.big_meter'})}</Radio>
             </RadioGroup>
           )}
         </FormItem>
@@ -65,12 +69,12 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              生产厂家
+               {formatMessage({id: 'intl.vendor_name'})}
             </span>
           )}>
           {getFieldDecorator('manufacturer_id', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.manufacturer_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
-            rules: [{required: true, message: '生产厂家不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.vendor_name'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
           })(
             <Select labelInValue={true} >
               { this.props.manufacturers.map((item, key) => {
@@ -84,15 +88,15 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label="输出类型"
+          label= {formatMessage({id: 'intl.output_type'})}
         >
           {getFieldDecorator('output_type',{
             initialValue: this.props.editRecord ? this.props.editRecord.output_type.toString() : '1',
-            rules: [{required: true, message: '输出类型不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.output_type'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
           })(
             <RadioGroup>
-              <Radio value="1">有线</Radio>
-              <Radio value="2">无线</Radio>
+              <Radio value="1">{formatMessage({id: 'intl.wired'})}</Radio>
+              <Radio value="2">{formatMessage({id: 'intl.wireless'})}</Radio>
             </RadioGroup>
           )}
         </FormItem>
@@ -101,15 +105,15 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              是否阀控
+               {formatMessage({id: 'intl.can_valve'})}
             </span>
           )}>
           {getFieldDecorator('is_control', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.is_control.toString(),label:this.props.editRecord.is_control_explain}:{key:'',label:''},
-            rules: [{required: true, message: '是否阀控不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.can_valve'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
           })(
             <Select labelInValue={true} >
-              { [{key:1,label:'是'},{key:-1,label:'否'}].map((item, key) => {
+              { [{key: 1, label: formatMessage({id: 'intl.yes'})}, {key: -1, label: formatMessage({id: 'intl.no'})}].map((item, key) => {
                 return (
                   <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
                 )
@@ -121,16 +125,16 @@ class AddPoliciesForm extends Component {
         <FormItem
           style={{width:'50%',display:'inline-block'}}
           {...formItemLayoutWithLabel}
-          label="温度介质类型"
+          label= {formatMessage({id: 'intl.temperature_type'})}
         >
           {getFieldDecorator('temperature_type',{
             initialValue: this.props.editRecord ? this.props.editRecord.temperature_type.toString() : '1',
-            rules: [{required: true, message: '温度介质类型不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.temperature_type'})+formatMessage({id: 'intl.can_not_be_empty'}) }],
 
           })(
             <RadioGroup>
-              <Radio value="1">冷水表</Radio>
-              <Radio value="2">热水表</Radio>
+              <Radio value="1">{formatMessage({id: 'intl.cold_water_meter'})}</Radio>
+              <Radio value="2">{formatMessage({id: 'intl.hot_water_meter'})}</Radio>
             </RadioGroup>
           )}
         </FormItem>
@@ -140,7 +144,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              口径
+               {formatMessage({id: 'intl.bore'})}
             </span>
           )}
         >
@@ -156,7 +160,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              使用年限
+               {formatMessage({id: 'intl.battery_life'})}
             </span>
           )}
         >
@@ -171,7 +175,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              波特率
+               {formatMessage({id: 'intl.baud_rate'})}
             </span>
           )}
         >
@@ -186,7 +190,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              下行协议
+               {formatMessage({id: 'intl.down_protocol'})}
             </span>
           )}
         >
@@ -201,7 +205,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              单位
+               {formatMessage({id: 'intl.unit'})}
             </span>
           )}
         >

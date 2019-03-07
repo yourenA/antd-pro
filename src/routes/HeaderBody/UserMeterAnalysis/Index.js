@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge, Tooltip,Divider} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Badge, Tooltip, Divider} from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
@@ -50,7 +50,7 @@ class UserMeterAnalysis extends PureComponent {
       changeModal: false,
       exportModal: false,
       uploadLlModal: false,
-      showMonitor:false,
+      showMonitor: false,
       edit_member_number: '',
       display_type: 'all',
       total_difference_value: '0',
@@ -67,7 +67,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentWillUnmount() {
-    if(document.querySelector('.ant-table-body')){
+    if (document.querySelector('.ant-table-body')) {
       document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
     }
   }
@@ -76,6 +76,12 @@ class UserMeterAnalysis extends PureComponent {
     console.log('changeTableY')
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
 
@@ -118,7 +124,7 @@ class UserMeterAnalysis extends PureComponent {
     this.setState({
       concentrator_number: '',
       village_id: village_id,
-      showMonitor:false
+      showMonitor: false
     }, function () {
       this.handleSearch({
         page: 1,
@@ -141,7 +147,7 @@ class UserMeterAnalysis extends PureComponent {
     this.setState({
       village_id: parent_village_id,
       concentrator_number: concentrator_number,
-      showMonitor:false
+      showMonitor: false
     }, function () {
       this.handleSearch({
         page: 1,
@@ -309,11 +315,11 @@ class UserMeterAnalysis extends PureComponent {
       // area: this.state.area
     })
   }
-  changeMonitor=(site_id,site_name)=>{
+  changeMonitor = (site_id, site_name)=> {
     console.log(site_id)
     this.setState({
       page: 1,
-        meter_number: '',
+      meter_number: '',
       member_number: '',
       // concentrator_number: '',
       real_name: '',
@@ -322,15 +328,16 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       display_type: 'all',
       per_page: 30,
-      sort_field:  'sort_number',
+      sort_field: 'sort_number',
       sort_direction: 'asc',
-      showMonitor:true,
-      site_name:site_name,
-      site_id:site_id
+      showMonitor: true,
+      site_name: site_name,
+      site_id: site_id
     })
   }
+
   render() {
-    const { intl:{formatMessage} } = this.props;
+    const {intl:{formatMessage}} = this.props;
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
@@ -360,18 +367,26 @@ class UserMeterAnalysis extends PureComponent {
       },
 
       {
-        title: formatMessage({id: 'intl.user_name'}), width: 100, dataIndex: 'real_name', key: 'real_name', render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }
+        title: formatMessage({id: 'intl.user_name'}),
+        width: 100,
+        dataIndex: 'real_name',
+        key: 'real_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
       },
       {
-        title:  formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address', sorter: true, width: 130,
+        title: formatMessage({id: 'intl.install_address'}),
+        dataIndex: 'install_address',
+        key: 'install_address',
+        sorter: true,
+        width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }
       },
       {
-        title:  formatMessage({id: 'intl.water_meter_type'}),
+        title: formatMessage({id: 'intl.water_meter_type'}),
         width: 105,
         dataIndex: 'meter_model_name',
         key: 'meter_model_name',
@@ -380,7 +395,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title:  formatMessage({id: 'intl.Temperature_medium_type'}),
+        title: formatMessage({id: 'intl.Temperature_medium_type'}),
         width: 100,
         dataIndex: 'temperature_type_explain',
         key: 'temperature_type_explain',
@@ -399,12 +414,16 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: formatMessage({id: 'intl.latest_reading'}), dataIndex: 'latest_value', key: 'latest_value', width: 100, render: (val, record, index) => {
-        return ellipsis2(renderErrorData(val), 100)
-      }
+        title: formatMessage({id: 'intl.latest_reading'}),
+        dataIndex: 'latest_value',
+        key: 'latest_value',
+        width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(renderErrorData(val), 100)
+        }
       },
       {
-        title:  formatMessage({id: 'intl.latest_reading_time'}),
+        title: formatMessage({id: 'intl.latest_reading_time'}),
         dataIndex: 'latest_collected_at',
         key: 'latest_collected_at',
         width: 150,
@@ -413,12 +432,16 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: formatMessage({id: 'intl.previous_reading'}),dataIndex: 'previous_value', key: 'previous_value', width: 100, render: (val, record, index) => {
-        return ellipsis2(renderErrorData(val), 100)
-      }
+        title: formatMessage({id: 'intl.previous_reading'}),
+        dataIndex: 'previous_value',
+        key: 'previous_value',
+        width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(renderErrorData(val), 100)
+        }
       },
       {
-        title:  formatMessage({id: 'intl.previous_reading_time'}),
+        title: formatMessage({id: 'intl.previous_reading_time'}),
         dataIndex: 'previous_collected_at',
         key: 'previous_collected_at',
         width: 150,
@@ -448,7 +471,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title:  formatMessage({id: 'intl.concentrator_number'}),
+        title: formatMessage({id: 'intl.concentrator_number'}),
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 110,
@@ -458,7 +481,7 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title:  formatMessage({id: 'intl.vendor_manage'}),
+        title: formatMessage({id: 'intl.vendor_manage'}),
         dataIndex: 'meter_manufacturer_name',
         key: 'meter_manufacturer_name',
         width: 90,
@@ -470,7 +493,11 @@ class UserMeterAnalysis extends PureComponent {
     if (company_code === 'hy') {
       columns.splice(5, 1)
       columns = [...columns, {
-        title:  formatMessage({id: 'intl.reader'}), dataIndex: 'reader', key: 'reader', width: 90, render: (val, record, index) => {
+        title: formatMessage({id: 'intl.reader'}),
+        dataIndex: 'reader',
+        key: 'reader',
+        width: 90,
+        render: (val, record, index) => {
           return ellipsis2(val, 90)
         }
       }, {title: formatMessage({id: 'intl.sort_number'}), dataIndex: 'sort_number', key: 'sort_number', sorter: true,},
@@ -482,7 +509,8 @@ class UserMeterAnalysis extends PureComponent {
           render: (val, record, index) => {
             return (
               <div>
-                <Button type="primary" size='small' onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
+                <Button type="primary" size='small'
+                        onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
               </div>
             )
           }
@@ -490,14 +518,15 @@ class UserMeterAnalysis extends PureComponent {
     } else {
       columns = [...columns, {title: formatMessage({id: 'intl.reader'}), dataIndex: 'reader', key: 'reader',},
         {
-          title:  formatMessage({id: 'intl.operate'}),
+          title: formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
           width: 110,
           render: (val, record, index) => {
             return (
               <div>
-                <Button type="primary" size='small' onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
+                <Button type="primary" size='small'
+                        onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
               </div>
             )
           }
@@ -507,79 +536,82 @@ class UserMeterAnalysis extends PureComponent {
     const {isMobile} =this.props.global;
     return (
       <Layout className="layout">
-        <Sider  siderCb={this.changeTableY} showMonitor={true} changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
+        <Sider siderCb={this.changeTableY} showMonitor={true} changeArea={this.changeArea}
+               changeConcentrator={this.changeConcentrator}
                changeMonitor={this.changeMonitor}
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name: formatMessage({id: 'intl.meter_volume_data'})}]}>
+            <PageHeaderLayout title="实时数据分析"
+                              breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name: formatMessage({id: 'intl.meter_volume_data'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 {
                   !this.state.showMonitor
                     ?
                     <div>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
-                            initRange={this.state.initRange}
-                            village_id={this.state.village_id}
-                            isMobile={isMobile}
-                            sort_field={this.state.sort_field}
-                            sort_direction={this.state.sort_direction}
-                            exportCSV={()=> {
-                              company_code !== 'mys' ?
-                                this.setState({
-                                  exportModal: true
-                                }) :
-                                this.props.dispatch({
-                                  type: 'member_meter_data/exportCSV',
-                                  payload: {
-                                    started_at: moment().format('YYYY-MM-DD'),
-                                    ended_at: moment().format('YYYY-MM-DD'),
+                      <div className='tableList'>
+                        <div className='tableListForm'>
+                          <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
+                                  initRange={this.state.initRange}
+                                  village_id={this.state.village_id}
+                                  isMobile={isMobile}
+                                  sort_field={this.state.sort_field}
+                                  sort_direction={this.state.sort_direction}
+                                  exportCSV={()=> {
+                                    company_code !== 'mys' ?
+                                      this.setState({
+                                        exportModal: true
+                                      }) :
+                                      this.props.dispatch({
+                                        type: 'member_meter_data/exportCSV',
+                                        payload: {
+                                          started_at: moment().format('YYYY-MM-DD'),
+                                          ended_at: moment().format('YYYY-MM-DD'),
 
-                                  },
-                                  callback: function (download_key) {
-                                    download(`${config.prefix}/download?download_key=${download_key}`)
-                                  }
-                                });
-                            }}
-                            per_page={this.state.per_page}
-                            uploadLl={()=> {
-                              this.setState({
-                                uploadLlModal: true
-                              })
-                            }}
-                            setExport={()=> {
-                              dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup`));
-                            }}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showConfigBtn={this.state.showConfigBtn}
-                            showExportBtn={this.state.showExportBtn}
-                            clickAdd={()=>this.setState({addModal: true})}
-                            total_difference_value={meta.aggregator.total_difference_value }/>
-                  </div>
-                </div>
-                <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
-                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x: 2200, y: this.state.tableY}}
-                                 history={this.props.history}
-                                 className={'meter-table'}
-                                 rowClassName={function (record, index) {
-                                   if (record.status === -2 || record.status === -3) {
-                                     return 'error'
-                                   }
-                                 }}
+                                        },
+                                        callback: function (download_key) {
+                                          download(`${config.prefix}/download?download_key=${download_key}`)
+                                        }
+                                      });
+                                  }}
+                                  per_page={this.state.per_page}
+                                  uploadLl={()=> {
+                                    this.setState({
+                                      uploadLlModal: true
+                                    })
+                                  }}
+                                  setExport={()=> {
+                                    dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/export_setup`));
+                                  }}
+                                  handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
+                                  showConfigBtn={this.state.showConfigBtn}
+                                  showExportBtn={this.state.showExportBtn}
+                                  clickAdd={()=>this.setState({addModal: true})}
+                                  total_difference_value={meta.aggregator.total_difference_value }/>
+                        </div>
+                      </div>
+                      <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
+                                       dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                       scroll={{x: 2200, y: this.state.tableY}}
+                                       history={this.props.history}
+                                       className={'meter-table'}
+                                       rowClassName={function (record, index) {
+                                         if (record.status === -2 || record.status === -3) {
+                                           return 'error'
+                                         }
+                                       }}
 
-                                 onChange={this.handleTableSort}
-                />
-                <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}
-                            handPageChange={this.handPageChange}/>
+                                       onChange={this.handleTableSort}
+                      />
+                      <Pagination meta={meta} initPage={this.state.initPage}
+                                  handPageSizeChange={this.handPageSizeChange}
+                                  handPageChange={this.handPageChange}/>
 
-                    </div>:
+                    </div> :
                     <div>
                       <h2>{this.state.site_name}</h2>
-                      <Divider dashed style={{margin:'10px 0'}}/>
-                      <AnalysisDetail  site_id={this.state.site_id}/></div>}
+                      <Divider dashed style={{margin: '10px 0'}}/>
+                      <AnalysisDetail site_id={this.state.site_id}/></div>}
               </Card>
             </PageHeaderLayout>
           </div>
@@ -587,7 +619,7 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           width="950px"
           key={ Date.parse(new Date())}
-          title={`水表 ${this.state.edit_meter_number} 详细信息(红色柱状图表示当天错报,黄色表示当天漏报)`}
+          title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.edit_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal: false})}
@@ -596,7 +628,7 @@ class UserMeterAnalysis extends PureComponent {
                   started_at={this.state.started_at}/>
         </Modal>
         <Modal
-          title={`导出`}
+          title={formatMessage({id: 'intl.export'})}
           visible={this.state.exportModal}
           onOk={this.exportCSV}
           onCancel={() => this.setState({exportModal: false})}

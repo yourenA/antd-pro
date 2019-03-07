@@ -351,7 +351,7 @@ const data = [{
           path: 'map_demo',
           component: MapDemo,
           permissions: ['concentrator_real_time_data',],
-          showCompany: ['amwares','zhsgy']
+          showCompany: ['zhsgy']
         },
         {
           name: 'big_meter_analysis_map',
@@ -365,7 +365,7 @@ const data = [{
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['amwares','zhsgy']
+          showCompany: ['zhsgy']
         },
         // {
         //   name: '温度传感器历史分析',
@@ -399,7 +399,7 @@ const data = [{
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','test']
         }
         // ,{
         //   name: '产销差分析',
@@ -453,14 +453,14 @@ const data = [{
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','test']
         },
         {
           name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','test']
         },
         {
           name: 'monitor_meter_manage',
@@ -481,14 +481,14 @@ const data = [{
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['amwares','zhsgy']
+          showCompany: ['zhsgy']
         },
         {
           name: 'temperature_sensors_manage',
           path: 'temperature_sensors',
           component: Temperature,
           permissions: [ 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
-          showCompany: ['amwares','zhsgy']
+          showCompany: ['zhsgy']
         },
         //   {
         //   name: '指令和状态查看',

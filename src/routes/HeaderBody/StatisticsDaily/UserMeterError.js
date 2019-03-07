@@ -9,6 +9,8 @@ import moment from 'moment'
 import { routerRedux} from 'dva/router';
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   meter_daily_errors: state.meter_daily_errors,
   global:state.global,
@@ -148,6 +150,7 @@ class FunctionContent extends PureComponent {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {meter_daily_errors: {data, meta, loading},dispatch} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
@@ -162,7 +165,7 @@ class FunctionContent extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '集中器编号', width:200, dataIndex: 'concentrator_number', key: 'concentrator_number'
+      {title:  formatMessage({id: 'intl.concentrator_number'}), width:200, dataIndex: 'concentrator_number', key: 'concentrator_number'
         , render: (val, record, index) => {
         return (
           <p  className="link" onClick={()=>{
@@ -170,15 +173,15 @@ class FunctionContent extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title: '户号', width: 200, dataIndex: 'member_number', key: 'member_number',
+      {title:  formatMessage({id: 'intl.user_number'}), width: 200, dataIndex: 'member_number', key: 'member_number',
         render: (val, record, index) => {
           return ellipsis2(val, 200)
         }},
-      {title: '水表编号', width: 200, dataIndex: 'meter_number', key: 'meter_number',
+      {title:  formatMessage({id: 'intl.water_meter_number'}), width: 200, dataIndex: 'meter_number', key: 'meter_number',
         render: (val, record, index) => {
           return ellipsis2(val, 200)
         }},
-      {title: '错误类型', dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
+      {title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
         <p>
           <Badge status={val===-1?"warning":"error"} />{record.status_explain}
         </p>
@@ -186,7 +189,8 @@ class FunctionContent extends PureComponent {
     ];
     const {isMobile} =this.props.global;
     return (
-      <PageHeaderLayout title="异常分析 " breadcrumb={[{name: '异常分析 '}, {name: '统计日报'}, {name: '户表错误'}]}>
+      <PageHeaderLayout title="异常分析 " breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+        {name: formatMessage({id: 'intl.Statistical_daily'})},{name: formatMessage({id: 'intl.water_meter_error'})}]}>
         <Card bordered={false} style={{margin: '-16px -16px 0'}}>
           <div className='tableList'>
             <div className='tableListForm'>

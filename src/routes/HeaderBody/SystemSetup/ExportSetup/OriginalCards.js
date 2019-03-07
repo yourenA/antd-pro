@@ -7,7 +7,8 @@ const style = {
   marginBottom: '.5rem',
   backgroundColor: 'white',
 }
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class OriginalCards extends Component {
   constructor(props) {
     super(props)
@@ -18,6 +19,7 @@ export default class OriginalCards extends Component {
   componentDidMount() {
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {
       text,
       index,
@@ -31,7 +33,7 @@ export default class OriginalCards extends Component {
 
           console.log('click',index);
           addCard(index)
-        }}>添加</Button>
+        }}>{formatMessage({id: 'intl.add'})}</Button>
       </div>
 
     )

@@ -10,6 +10,8 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddConcentrator extends Component {
   constructor(props) {
     super(props);
@@ -151,20 +153,21 @@ class AddConcentrator extends Component {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
-        sm: {span: 18},
+        sm: {span: 17},
       }
     };
-    const formItemLayoutWithOutLabel={
+    const formItemLayoutWithOutLabel = {
       wrapperCol: {
         xs: {span: 24, offset: 0},
-        sm: {span: 18, offset: 5},
+        sm: {span: 17, offset: 7},
       },
     };
     const {getFieldDecorator, getFieldValue} = this.props.form;
@@ -193,7 +196,7 @@ class AddConcentrator extends Component {
       return (
         <FormItem
           {...layout}
-          label={index === 0 ? '安装小区' : ''}
+          label={index === 0 ?  formatMessage({id: 'intl.village_name'}): ''}
           required={false}
           key={k}>
           {getFieldDecorator(`villages-${k}`, {
@@ -202,7 +205,7 @@ class AddConcentrator extends Component {
           <Icon
             className="concentrator-cascader-del-btn"
             type="minus-circle-o"
-            title="删除"
+            title={ formatMessage({id: 'intl.delete'})}
             onClick={() => this.remove(k)}
           />
         </FormItem>
@@ -211,9 +214,9 @@ class AddConcentrator extends Component {
     return (
       <div>
         <Tabs activeKey={this.state.tabsActiveKey} onChange={(activeKey)=>{this.setState({tabsActiveKey:activeKey})}}>
-          <TabPane tab="编辑集中器基本属性" key="edit"><Form onSubmit={this.handleSubmit}>
+          <TabPane tab="" key="edit"><Form onSubmit={this.handleSubmit}>
             <FormItem
-             label="服务器地址"
+             label={ formatMessage({id: 'intl.server_address'})}
              {...formItemLayoutWithLabel}
              >
              {getFieldDecorator('server_id', {
@@ -226,12 +229,12 @@ class AddConcentrator extends Component {
              )}
              </FormItem>
             <FormItem
-              label="集中器类型"
+              label={ formatMessage({id: 'intl.concentrator_type'})}
               {...formItemLayoutWithLabel}
             >
               {getFieldDecorator('concentrator_model_id', {
                 initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
-                rules: [{required: true, message: '集中器类型不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.concentrator_type'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Select labelInValue={true} >
                   { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
@@ -242,13 +245,13 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              集中器编号
+              { formatMessage({id: 'intl.concentrator_number'})}
             </span>
               )}
             >
               {getFieldDecorator('number', {
                 initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-                rules: [{required: true, message: '集中器编号不能为空'}],
+                rules: [{required: true, message: formatMessage({id: 'intl.concentrator_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Input />
               )}
@@ -257,13 +260,13 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              硬件编号
+              { formatMessage({id: 'intl.serial_number'})}
             </span>
               )}
             >
               {getFieldDecorator('serial_number', {
                 initialValue: this.props.editRecord ? this.props.editRecord.serial_number : '',
-                rules: [{required: true, message: '硬件编号不能为空'}],
+                rules: [{required: true, message: formatMessage({id: 'intl.serial_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Input />
               )}
@@ -285,14 +288,14 @@ class AddConcentrator extends Component {
             {formItems}
             <FormItem {...formItemLayoutWithOutLabel}>
               <Button  onClick={this.add} style={{width: '60%'}}>
-                <Icon type="plus"/> 增加安装小区
+                <Icon type="plus"/> { formatMessage({id: 'intl.add'})}
               </Button>
             </FormItem>
             <FormItem
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              SIM卡号码
+              { formatMessage({id: 'intl.sim_number'})}
             </span>
               )}
             >
@@ -306,7 +309,7 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              SIM卡运营商
+              { formatMessage({id: 'intl.sim_operator'})}
             </span>
               )}
             >
@@ -320,7 +323,7 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              安装地址
+              { formatMessage({id: 'intl.install_address'})}
             </span>
               )}
             >
@@ -329,7 +332,7 @@ class AddConcentrator extends Component {
               })(
                 <Input style={{width: '70%'}}/>
               )}
-              <Button type="primary" onClick={this.showMap}>手动选点</Button>
+              <Button type="primary" onClick={this.showMap}> { formatMessage({id: 'intl.manual_selection'})}</Button>
             </FormItem>
             {getFieldDecorator('latitude_longitude', {})(
               <div>
@@ -340,14 +343,17 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              是否统计
+               { formatMessage({id: 'intl.is_count'})}
             </span>
               )}>
               {getFieldDecorator('is_count', {
-                initialValue: this.props.editRecord?{key:this.props.editRecord.is_count.toString(),label:this.props.editRecord.is_count===1?'是':'否'}:{key:'1',label:'是'},
+                initialValue: this.props.editRecord ? {
+                  key: this.props.editRecord.is_count.toString(),
+                  label: this.props.editRecord.is_count === 1 ?formatMessage({id: 'intl.yes'})  : formatMessage({id: 'intl.no'})
+                } : {key: '1', label:formatMessage({id: 'intl.yes'})},
               })(
-                <Select labelInValue={true} >
-                  { [{key:1,label:'是'},{key:-1,label:'否'}].map((item, key) => {
+                <Select labelInValue={true}>
+                  { [{key: 1, label: formatMessage({id: 'intl.yes'})}, {key: -1, label: formatMessage({id: 'intl.no'})}].map((item, key) => {
                     return (
                       <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
                     )
@@ -359,7 +365,7 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              备注
+              { formatMessage({id: 'intl.remark'})}
             </span>
               )}
             >
@@ -373,9 +379,9 @@ class AddConcentrator extends Component {
               this.props.editRecord?null:
                 <FormItem
                   style={{color:'red'}}
-                  label="提示"
+                  label={ formatMessage({id: 'intl.prompt'})}
                   {...formItemLayoutWithLabel}>
-                  <div>添加集中器会同时对集中器进行初始化</div>
+                  <div>{ formatMessage({id: 'intl.concentrator_tip'})}</div>
                 </FormItem>
             }
 
@@ -386,7 +392,7 @@ class AddConcentrator extends Component {
         <Modal
           style={{ top: 20 }}
           width="80%"
-          title={`拖动红点选择地址`}
+          title={ formatMessage({id: 'intl.drag_the_red_dot'})}
           visible={this.state.mapModal}
           onOk={this.getPoint}
           onCancel={() => this.setState({mapModal: false})}
@@ -444,7 +450,8 @@ class VillageCascader  extends React.Component {
     const state = this.state;
     return (
       <span>
-         <Cascader className="concentrator-cascader" options={this.renderTreeSelect(this.props.area)}  value={state.village}  onChange={this.handleCurrencyChange} placeholder="请选择"/>
+         <Cascader className="concentrator-cascader" options={this.renderTreeSelect(this.props.area)}  value={state.village}
+                   onChange={this.handleCurrencyChange} />
       </span>
     );
   }

@@ -7,7 +7,8 @@ import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -15,10 +16,11 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -34,13 +36,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              账号
+               {formatMessage({id: 'intl.username'})}
             </span>
           )}
         >
           {getFieldDecorator('username', {
             initialValue: this.props.editRecord ? this.props.editRecord.username : '',
-            rules: [{required: true, message: '账号不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.username'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input disabled={ this.props.editRecord ?true:false}/>
           )}
@@ -49,7 +51,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              名字
+               {formatMessage({id: 'intl.real_name'})}
             </span>
           )}
         >
@@ -64,7 +66,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              电话
+               {formatMessage({id: 'intl.telephone'})}
             </span>
           )}
         >
@@ -78,7 +80,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              邮箱
+               {formatMessage({id: 'intl.email'})}
             </span>
           )}
         >
@@ -118,12 +120,12 @@ class AddPoliciesForm extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              角色
+               {formatMessage({id: 'intl.role_name'})}
             </span>
               )}>
               {getFieldDecorator('role_id', {
                 initialValue: this.props.editRecord?{key:this.props.editRecord.role_id,label:this.props.editRecord.role_display_name}:{key:'',label:''},
-                rules: [{required: true, message: '角色不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.role_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Select labelInValue={true} >
                   { this.props.usergroup.map((item, key) => {
@@ -138,7 +140,7 @@ class AddPoliciesForm extends Component {
 
         <FormItem
           {...formItemLayoutWithLabel}
-          label="电话通知"
+          label= {formatMessage({id: 'intl.is_telephone_notify'})}
         >
           {getFieldDecorator('is_sms_notify', {
             initialValue: this.props.editRecord ? (this.props.editRecord.is_sms_notify===1?true:false) : false,
@@ -148,7 +150,7 @@ class AddPoliciesForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
-          label="电邮通知"
+          label= {formatMessage({id: 'intl.is_email_notify'})}
         >
           {getFieldDecorator('is_email_notify',
             { initialValue: this.props.editRecord ? (this.props.editRecord.is_email_notify===1?true:false) : false

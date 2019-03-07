@@ -146,7 +146,13 @@ class ConcentratorModels extends PureComponent {
         manufacturer_id: formValues.manufacturer_id.key,
       },
       callback: function () {
-        message.success('添加集中器类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.concentrator_type'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -178,7 +184,13 @@ class ConcentratorModels extends PureComponent {
         id:this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改集中器类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.concentrator_type'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -197,7 +209,13 @@ class ConcentratorModels extends PureComponent {
         id:id,
       },
       callback: function () {
-        message.success('删除集中器类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.concentrator_type'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           per_page:that.state.per_page
@@ -255,7 +273,7 @@ class ConcentratorModels extends PureComponent {
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.Delete'})})}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
               <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
@@ -273,7 +291,9 @@ class ConcentratorModels extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.concentrator_type_manage'})}]}>
+            <PageHeaderLayout title="系统管理 "
+                              breadcrumb={[{name: formatMessage({id: 'intl.device'})},
+                                {name: formatMessage({id: 'intl.concentrator_type_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -314,7 +334,7 @@ class ConcentratorModels extends PureComponent {
           </div>
 
           <Modal
-            title="添加集中器类型"
+            title={  formatMessage({id: 'intl.add'})+" "+formatMessage({id: 'intl.concentrator_type'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false,canAdd:true})}
@@ -329,7 +349,7 @@ class ConcentratorModels extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
-            title="修改集中器类型"
+            title={  formatMessage({id: 'intl.edit'})+" "+formatMessage({id: 'intl.concentrator_type'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}

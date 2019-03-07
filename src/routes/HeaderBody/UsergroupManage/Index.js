@@ -11,13 +11,14 @@ import find from 'lodash/find'
 import {Link, routerRedux} from 'dva/router';
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import {injectIntl} from 'react-intl';
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 @connect(state => ({
   usergroup: state.usergroup,
   global:state.global,
 }))
+@injectIntl
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
@@ -163,6 +164,7 @@ class Vendor extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const {usergroup: {data, meta, loading},dispatch} = this.props;
     const columns = [
@@ -177,7 +179,7 @@ class Vendor extends PureComponent {
       //   }
       // },
       {
-        title: '名称',
+        title: formatMessage({id: 'intl.role_name'}),
         dataIndex: 'display_name',
         key:'display_name',
         width:150,
@@ -185,7 +187,7 @@ class Vendor extends PureComponent {
           return ellipsis2(val,150)
         }
       },{
-        title: '描述',
+        title: formatMessage({id: 'intl.description'}),
         dataIndex: 'description',
         key:'description',
         width: 200,
@@ -194,7 +196,7 @@ class Vendor extends PureComponent {
         }
       },
       {
-        title: '状态',
+        title: formatMessage({id: 'intl.status'}),
         dataIndex: 'status',
         render:(val,record,index)=>{
           return(
@@ -206,23 +208,23 @@ class Vendor extends PureComponent {
       },
     ];
     const operate=  {
-      title: '操作',
-      width:150,
+      title: formatMessage({id: 'intl.operate'}),
+      width:170,
       render: (val, record, index) => (
         record.lock!==1&&<p>
           <a href="javascript:;" onClick={()=>{
             dispatch(routerRedux.push(`/${company_code}/main/system_manage/account_manage/user_group_manage/${record.id}`))
 
-          }}>编辑</a>
+          }}>{formatMessage({id: 'intl.edit'})}</a>
           <span className="ant-divider" />
-          <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+          <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: record.status===1?'intl.disable':'intl.enable'})})}
                       onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
-            <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
+            <a href="javascript:;">{formatMessage({id: record.status===1?'intl.disable':'intl.enable'})}</a>
           </Popconfirm>
           <span className="ant-divider" />
-          <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+          <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                       onConfirm={()=>this.handleRemove(record.id)}>
-            <a href="">删除</a>
+            <a href="">{formatMessage({id: 'intl.delete'})}</a>
           </Popconfirm>
 
         </p>
@@ -237,7 +239,9 @@ class Vendor extends PureComponent {
         {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '账号管理'},{name: '角色管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.account_manage'})},
+              {name:formatMessage({id: 'intl.user_role'})}]}>
               <Card bordered={false}   style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

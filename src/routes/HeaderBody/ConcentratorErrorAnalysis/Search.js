@@ -8,6 +8,8 @@ import {disabledDate} from './../../../utils/utils'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -36,11 +38,12 @@ class SearchForm extends Component {
     this.props.handleFormReset()
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText : formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -51,7 +54,7 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText :  formatMessage({id: 'intl.end'})}>
             {getFieldDecorator('ended_at', {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
@@ -63,7 +66,7 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem
-            label="厂商名称"
+            label={ formatMessage({id: 'intl.vendor_name'})}
           >
             {getFieldDecorator('manufacturer_id', {
             })(
@@ -74,14 +77,14 @@ class SearchForm extends Component {
           </FormItem>
 
           <FormItem>
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
           <FormItem style={{float:'right'}}>
-            <Badge status="success" />在线 <Divider type="vertical"/>
-            <Badge status="error" />离线 <Divider type="vertical"/>
-            <Badge status="warning" />休眠 <Divider type="vertical"/>
-            <Badge status="default" />无记录
+            <Badge status="success" />{ formatMessage({id: 'intl.online'})} <Divider type="vertical"/>
+            <Badge status="error" />{ formatMessage({id: 'intl.offline'})} <Divider type="vertical"/>
+            <Badge status="warning" />{ formatMessage({id: 'intl.sleep'})} <Divider type="vertical"/>
+            <Badge status="default" />{ formatMessage({id: 'intl.no_record'})}
           </FormItem>
         </Row>
       </Form>

@@ -4,6 +4,8 @@
 import React, {Component} from 'react';
 import {Form,Row,Input,Button,Switch} from 'antd';
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ class SearchForm extends Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form;
+    const {intl:{formatMessage}} = this.props;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
@@ -37,9 +40,9 @@ class SearchForm extends Component {
             <FormItem   >
               {/*<Button type="primary" htmlType="submit">查询</Button>*/}
               {/*<Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
-              {this.props.showAddBtn&&<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>}
+              {this.props.showAddBtn&& <Button type="primary" onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>}
             </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})}   style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateUserGroup')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateUserGroup',checked);
               this.props.changeShowOperate()

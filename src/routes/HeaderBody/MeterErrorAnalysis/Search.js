@@ -10,6 +10,8 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -46,13 +48,14 @@ class SearchForm extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     const {expand}=this.state
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
 
-          <FormItem label={this.props.dateText ? this.props.dateText : '开始时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText :formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
               initialValue: this.props.initRange ? this.props.initRange[0] : '',
             })(
@@ -63,7 +66,7 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem label={this.props.dateText ? this.props.dateText : '结束时间'}>
+          <FormItem label={this.props.dateText ? this.props.dateText :formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('ended_at', {
               initialValue: this.props.initRange ? this.props.initRange[1] : '',
             })(
@@ -75,21 +78,21 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem
-            label='水表编号'
+            label={formatMessage({id: 'intl.water_meter_number'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('meter_number', {})(
               <Input/>
             )}
           </FormItem>
           <FormItem
-            label='户号'
+            label={formatMessage({id: 'intl.user_number'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('member_number', {})(
               <Input/>
             )}
           </FormItem>
           <FormItem
-            label="厂商名称"
+            label={formatMessage({id: 'intl.vendor_name'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('manufacturer_id', {})(
               <Select allowClear={true} labelInValue={true} style={{width: 120}}>
@@ -97,26 +100,26 @@ class SearchForm extends Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label="显示"
+          <FormItem label={formatMessage({id: 'intl.display_type'})}
                     style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('display_type', {
               initialValue: 'all',
             })(
               <RadioGroup>
-                <RadioButton value="all">全部</RadioButton>
-                <RadioButton value="only_missing_upload">漏报</RadioButton>
-                <RadioButton value="only_error_upload">错报</RadioButton>
+                <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
+                <RadioButton value="only_missing_upload">{formatMessage({id: 'intl.missing'})}</RadioButton>
+                <RadioButton value="only_error_upload">{formatMessage({id: 'intl.error'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem>
-            {this.props.isMobile && <Button type="primary" onClick={this.toggle} style={{marginRight: 8}}>
-              {this.state.expand ? '收起' : '展开'}条件 <Icon type={this.state.expand ? 'up' : 'down'}/>
+            {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
-          <FormItem label="打开操作栏" style={{float: 'right'}}>
+          <FormItem label={ formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}>
             <Switch defaultChecked={localStorage.getItem('canOperateMeterUnusualAnalysis') === 'true' ? true : false}
                     onChange={(checked)=> {
                       localStorage.setItem('canOperateMeterUnusualAnalysis', checked);

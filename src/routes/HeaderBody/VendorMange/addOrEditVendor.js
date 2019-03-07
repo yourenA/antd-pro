@@ -7,7 +7,8 @@ import {connect} from 'dva';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -15,10 +16,11 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -34,13 +36,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              厂商编号
+              {formatMessage({id: 'intl.vendor_number'})}
             </span>
           )}
         >
           {getFieldDecorator('code', {
             initialValue: this.props.editRecord ? this.props.editRecord.code : '',
-            rules: [{required: true, message: '编号不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.vendor_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -49,13 +51,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              厂商名称
+             {formatMessage({id: 'intl.vendor_name'})}
             </span>
           )}
         >
           {getFieldDecorator('name', {
             initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.vendor_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -65,7 +67,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              联系人
+             {formatMessage({id: 'intl.vendor_contact'})}
             </span>
           )}
         >
@@ -79,7 +81,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              电话
+             {formatMessage({id: 'intl.vendor_phone'})}
             </span>
           )}
         >

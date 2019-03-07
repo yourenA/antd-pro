@@ -98,19 +98,19 @@ class SearchForm extends Component {
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
+          <FormItem label={formatMessage({id: 'intl.user_name'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('real_name')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
+          <FormItem label={formatMessage({id: 'intl.user_number'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('member_number')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})}
+          <FormItem label={formatMessage({id: 'intl.install_address'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}>
             {getFieldDecorator('install_address')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
@@ -129,7 +129,7 @@ class SearchForm extends Component {
             company_code!=='hy'&&
             <FormItem
             >
-              <span style={{ marginRight:   8 }}>已选{this.props.selectedRowKeys.length}个水表</span>
+              <span style={{ marginRight:   8 }}>{formatMessage({id: 'intl.water_meters_selected'},{number:this.props.selectedRowKeys.length})}</span>
               {renderOpenValveBtn()}
               {renderCloseValveBtn()}
             </FormItem>

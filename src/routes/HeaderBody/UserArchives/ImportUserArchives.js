@@ -13,6 +13,8 @@ const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditUserArchives extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +42,7 @@ class EditUserArchives extends Component {
     });
   }
   downloadTemplates=()=>{
-    download(`${config.prefix}/templates?type=meter`)
+    download(`${config.prefix}/templates?type=meter&language=${localStorage.getItem('locale') === 'en'?'en':'zh-CN'}`)
   }
   renderTreeSelect=(data)=>{
     return data.map((item)=>{
@@ -82,10 +84,11 @@ class EditUserArchives extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 7},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -117,10 +120,10 @@ class EditUserArchives extends Component {
       <div>
       <Form onSubmit={this.handleSubmit}>
         <FormItem
-          label="导入模板下载"
+          label= {formatMessage({id: 'intl.import_template_download'})}
           {...formItemLayoutWithLabel}
         >
-          <Button type="primary" onClick={this.downloadTemplates}>下载模板</Button>
+          <Button type="primary" onClick={this.downloadTemplates}> {formatMessage({id: 'intl.download_template'})}</Button>
         </FormItem>
         {
           company_code==='hy'&&
@@ -141,17 +144,17 @@ class EditUserArchives extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              采集范围
+              {formatMessage({id: 'intl.village_name'})}
             </span>
           )}>
           {getFieldDecorator('village_id', {
             rules: [{required: true, message: '安装小区不能为空'}],
           })(
-            <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(this.props.sider_regions.data)} placeholder="请选择"/>
+            <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(this.props.sider_regions.data)} />
           )}
         </FormItem>
         <FormItem
-          label="集中器编号"
+          label={formatMessage({id: 'intl.concentrator_number'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('concentrator_number', {
@@ -165,7 +168,7 @@ class EditUserArchives extends Component {
         </FormItem>
 
         <FormItem
-          label="水表类型"
+          label={formatMessage({id: 'intl.water_meter_type'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('meter_model_id', {
@@ -178,7 +181,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         <FormItem
-          label="水表号长度"
+          label={formatMessage({id: 'intl.water_meter_number_length'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('meter_number_length', {
@@ -195,15 +198,15 @@ class EditUserArchives extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              是否重置数据
+              {formatMessage({id: 'intl.reset_the_data'})}
             </span>
           )}>
           {getFieldDecorator('is_reset', {
-            initialValue:{key:-1,label:'否'},
+            initialValue:{key:-1,label:formatMessage({id: 'intl.no'})},
             rules: [{required: true}],
           })(
             <Select labelInValue={true} >
-              { [{key:1,label:'是'},{key:-1,label:'否'}].map((item, key) => {
+              { [{key:1,label:formatMessage({id: 'intl.yes'})},{key:-1,label:formatMessage({id: 'intl.no'})}].map((item, key) => {
                 return (
                   <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
                 )
@@ -213,7 +216,7 @@ class EditUserArchives extends Component {
         </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
-          label="Excel文件"
+          label={formatMessage({id: 'intl.excel_file'})}
         >
           <div className="dropbox">
             {getFieldDecorator('file', {
@@ -223,7 +226,7 @@ class EditUserArchives extends Component {
                 <p className="ant-upload-drag-icon">
                   <Icon type="inbox" />
                 </p>
-                <p className="ant-upload-text">点击这个区域选择Excel文件</p>
+                <p className="ant-upload-text">{formatMessage({id: 'intl.click_on_this_area'})}</p>
               </Upload.Dragger>
             )}
           </div>

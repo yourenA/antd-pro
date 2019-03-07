@@ -6,6 +6,8 @@ import {Form, DatePicker, Row, Col, Input, Button} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -33,16 +35,17 @@ class SearchForm extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row gutter={16}>
-          <FormItem label="集中器编号">
+          <FormItem label={formatMessage({id: 'intl.concentrator_number'})}>
             {getFieldDecorator('concentrator_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label={ '日期'}>
+          <FormItem label={formatMessage({id: 'intl.date'}) }>
             {getFieldDecorator('date', {
               initialValue: this.props.initDate ? this.props.initDate : '',
             })(
@@ -50,8 +53,8 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem >
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
         </Row>
       </Form>

@@ -1,4 +1,6 @@
 import React, {PureComponent} from 'react';
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class EndpointsList extends PureComponent {
   constructor(props) {
     super(props);
@@ -26,7 +28,7 @@ export default class EndpointsList extends PureComponent {
     }
   }
   dynamic = (concentrator)=> {
-    console.log('online')
+    const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.concentratorOnline'));
     console.log(concentrator)
     let option = {
@@ -43,20 +45,20 @@ export default class EndpointsList extends PureComponent {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['在线', '睡眠', '离线']
+        data: [formatMessage({id: 'intl.online'}), formatMessage({id: 'intl.sleep'}),formatMessage({id: 'intl.offline'}) ]
       },
       yAxis: {
         type: 'value',
-        name: '集中器个数',
+        name: formatMessage({id: 'intl.concentrator_count'}),
       },
       xAxis : {
-        name: '时间',
+        name:  formatMessage({id: 'intl.time'}),
         type: 'category',
         data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
       },
       series: [
         {
-          name: '在线',
+          name: formatMessage({id: 'intl.online'}),
           type: 'bar',
           stack: '总量',
           label: {
@@ -73,7 +75,7 @@ export default class EndpointsList extends PureComponent {
           data: concentrator.yesterday_online_status
         },
         {
-          name:  '睡眠',
+          name: formatMessage({id: 'intl.sleep'}),
           type: 'bar',
           stack: '总量',
           label: {
@@ -91,7 +93,7 @@ export default class EndpointsList extends PureComponent {
 
         },
         {
-          name:  '离线',
+          name: formatMessage({id: 'intl.offline'}),
           type: 'bar',
           stack: '总量',
           label: {

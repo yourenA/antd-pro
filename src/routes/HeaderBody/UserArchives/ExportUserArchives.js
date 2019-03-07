@@ -8,6 +8,8 @@ import request from "./../../../utils/request";
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditUserArchives extends Component {
   constructor(props) {
     super(props);
@@ -70,10 +72,11 @@ class EditUserArchives extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 7},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -104,7 +107,7 @@ class EditUserArchives extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              采集范围
+              {formatMessage({id: 'intl.village_name'})}
             </span>
           )}>
           {getFieldDecorator('village_id', {
@@ -114,7 +117,7 @@ class EditUserArchives extends Component {
           )}
         </FormItem>
         <FormItem
-          label="集中器编号"
+          label={formatMessage({id: 'intl.concentrator_number'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('concentrator_number', {
@@ -128,7 +131,7 @@ class EditUserArchives extends Component {
         </FormItem>
 
         <FormItem
-          label="水表类型"
+          label={formatMessage({id: 'intl.water_meter_type'})}
           {...formItemLayoutWithLabel}
         >
           {getFieldDecorator('meter_model_id', {

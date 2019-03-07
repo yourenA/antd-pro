@@ -14,6 +14,8 @@ import uuid from 'uuid/v4'
 import debounce from 'lodash/throttle'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   concentrator_errors: state.concentrator_errors,
   manufacturers: state.manufacturers,
@@ -101,6 +103,12 @@ class UserMeterAnalysis extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   changeArea = (village_id)=> {
@@ -212,6 +220,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {concentrator_errors: {data, meta, loading}, manufacturers} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
@@ -228,44 +237,44 @@ class UserMeterAnalysis extends PureComponent {
       //     return renderIndex(meta, this.state.initPage, index)
       //   }
       // },
-      {title: '集中器编号', width: 90, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',
+      {title: formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', fixed: 'left',
         render: (val, record, index) => {
-          return ellipsis2(val, 90)
+          return ellipsis2(val, 100)
         }},
-      {title: '生产厂商', width: 90, dataIndex: 'manufacturer_name', key: 'manufacturer_name',render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.vendor_name'}) , width: 90, dataIndex: 'manufacturer_name', key: 'manufacturer_name',render: (val, record, index) => {
         return ellipsis2(val, 90)
       }},
       {
-        title: '安装位置', dataIndex: 'install_address', key: 'install_address', width: 130,
+        title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address', width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
         }
       },
-      {title: '日期', dataIndex: 'date', key: 'date', width: 120,
+      {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date', key: 'date', width: 120,
         render: (val, record, index) => {
           return ellipsis2(val, 120)
         }},
-      {title: '水表总数量', width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
+      {title:formatMessage({id: 'intl.total_meter_count'}) , width: 90, dataIndex: 'total_meter_count', key: 'total_meter_count',
         render: (val, record, index) => {
           return ellipsis2(val, 90)
         }},
-      {title: '上传数量', width: 80, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
+      {title: formatMessage({id: 'intl.upload_meter_count'}), width: 90, dataIndex: 'upload_meter_count', key: 'upload_meter_count',
         render: (val, record, index) => {
           return ellipsis2(val, 80)
         }},
       {
-        title: '上传率', width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
+        title: formatMessage({id: 'intl.upload_meter_rate'}), width: 80, dataIndex: 'upload_meter_rate', key: 'upload_meter_rate', className: 'align-center',
         render: (val, record, index) => {
           return parseFloat(val) ?
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
         }
       },
-      {title: '正常读值数量', width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
+      {title:formatMessage({id: 'intl.normal_meter_count'}) , width: 110, dataIndex: 'normal_meter_count', key: 'normal_meter_count',
         render: (val, record, index) => {
           return ellipsis2(val, 110)
         }},
       {
-        title: '正常读值率', width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
+        title:formatMessage({id: 'intl.normal_meter_rate'}) , width: 90, dataIndex: 'normal_meter_rate', key: 'normal_meter_rate', className: 'align-center',
         render: (val, record, index) => {
           return parseFloat(val) ?
             <Progress type="circle" percent={parseFloat(val)} width={30} format={(val) =>val + '%'}/> : val
@@ -398,7 +407,8 @@ class UserMeterAnalysis extends PureComponent {
                changeConcentrator={this.changeConcentrator}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '集中器异常分析'}]}>
+            <PageHeaderLayout title="异常分析"  breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+              {name: formatMessage({id: 'intl.concentrator_abnormal_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

@@ -6,6 +6,8 @@ import {Form, DatePicker, Row, Col, Input, Button, Switch} from 'antd';
 import moment from 'moment'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -34,49 +36,33 @@ class SearchForm extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
-          <FormItem label="户号">
+          <FormItem label={formatMessage({id: 'intl.user_number'})}>
             {getFieldDecorator('member_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
-          <FormItem label="水表编号">
+          <FormItem label={formatMessage({id: 'intl.water_meter_number'})} >
             {getFieldDecorator('meter_number')(
-              <Input placeholder="请输入"/>
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
-          </FormItem>
-      {/*    <FormItem label="台区">
-            {getFieldDecorator('distribution_area')(
-              <Input placeholder="请输入"/>
-            )}
-          </FormItem>
-          <FormItem label="表册">
-            {getFieldDecorator('statistical_forms')(
-              <Input placeholder="请输入"/>
-            )}
-          </FormItem>*/}
-         {/* <FormItem label="创建时间">
-            {getFieldDecorator('range-time-picker', {
-              initialValue: this.props.initRange ? this.props.initRange : '',
-            })(
-              <RangePicker allowClear={this.props.initRange ? false : true}/>
-            )}
-          </FormItem>*/}
-          <FormItem >
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>添加</Button>}
-            {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>批量导入</Button>}
           </FormItem>
           <FormItem >
-            {this.props.showConcentratorExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportConcentratorCSV()} icon='export'>导出单个集中器信息</Button>}
-            {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()} icon='export'>导出用户信息</Button>}
-            {this.props.showConfigBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>设置导出用户格式</Button>}
+            <Button type="primary" htmlType="submit">{formatMessage({id: 'intl.search'})}  </Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}  </Button>
+            {this.props.showAddBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}  </Button>}
+            {this.props.showImportBtn&&<Button style={{marginLeft: 8}} type="primary" onClick={this.props.clickImport} icon='plus'>{formatMessage({id: 'intl.batch_Import'})}</Button>}
           </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
+          <FormItem >
+            {this.props.showConcentratorExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportConcentratorCSV()} icon='export'>{formatMessage({id: 'intl.export_single_concentrator_info'})}</Button>}
+            {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportCSV()} icon='export'>{formatMessage({id: 'intl.export_user_info'})}</Button>}
+            {this.props.showConfigBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.setExport()}>{formatMessage({id: 'intl.set_export_user_info_format'})}</Button>}
+          </FormItem>
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})} style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateUserArchives')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateUserArchives',checked);
               this.props.changeShowOperate()

@@ -4,6 +4,8 @@
 import React, {Component} from 'react';
 import {Form,Row,Input,Button,Switch} from 'antd';
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -25,21 +27,22 @@ class SearchForm extends Component {
     this.props.handleFormReset()
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
-            <FormItem  label={this.props.inputText?this.props.inputText:"名称"}>
+            <FormItem  label={formatMessage({id: 'intl.username'})}>
               {getFieldDecorator('query')(
-                <Input placeholder="请输入"/>
+                <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
             <FormItem   >
-              <Button type="primary" htmlType="submit">查询</Button>
-              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-              {this.props.showAddBtn&&<Button  type="primary"  style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}
+              <Button type="primary" htmlType="submit">{formatMessage({id: 'intl.search'})}</Button>
+              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}</Button>
+              {this.props.showAddBtn&& <Button type="primary"  style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>}
             </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
+          <FormItem   label={formatMessage({id: 'intl.open_operating_bar'})}   style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateuser')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateuser',checked);
               this.props.changeShowOperate()

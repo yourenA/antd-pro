@@ -9,7 +9,8 @@ import find from "lodash/find";
 // import forEach from "lodash/forEach";
 import request from "./../../../../../utils/request";
 const RadioGroup = Radio.Group;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class Container extends Component {
   constructor(props) {
     super(props)
@@ -166,6 +167,7 @@ class Container extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const { cards,originalCards } = this.state
     return (
       <div className="card-container">
@@ -173,7 +175,7 @@ class Container extends Component {
           <div className="card-block">
 
             <div className="card-header">
-              不需要导出字段
+              {formatMessage({id: 'intl.no_need_to_export_fields'})}
             </div>
             <div  style={{maxHeight:`${this.state.tableY}px`,overflow:'auto'}}>
               {originalCards.map((card, i) => (
@@ -193,8 +195,8 @@ class Container extends Component {
           </div>
           <div className="card-block">
             <div className="card-header">
-              需要导出字段(拖动排序)
-              <span style={{marginLeft:'5px'}}>导出格式 : </span><RadioGroup onChange={this.onChange} value={this.state.value}>
+              {formatMessage({id: 'intl.need_to_export_fields'})}
+              <span style={{marginLeft:'5px'}}> {formatMessage({id: 'intl.format'})}  : </span><RadioGroup onChange={this.onChange} value={this.state.value}>
                 <Radio value={'csv'}>csv</Radio>
                 <Radio value={'txt'}>txt</Radio>
               </RadioGroup>
@@ -213,7 +215,7 @@ class Container extends Component {
                 />
               ))}
             </div>
-            <Button  type="primary" style={{width:'100%',marginTop:'5px'}} onClick={this.handleExport}>保存</Button>
+            <Button  type="primary" style={{width:'100%',marginTop:'5px'}} onClick={this.handleExport}>{formatMessage({id: 'intl.save'})}</Button>
           </div>
         </div>
 

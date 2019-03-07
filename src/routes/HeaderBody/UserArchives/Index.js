@@ -20,6 +20,8 @@ import uuid from 'uuid/v4'
 import './index.less'
 import debounce from 'lodash/throttle'
 const { Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   members: state.members,
   concentrators: state.concentrators,
@@ -139,6 +141,12 @@ class UserMeterAnalysis extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   changeArea = (village_id)=> {
@@ -296,7 +304,13 @@ class UserMeterAnalysis extends PureComponent {
         meters:metersArr
       },
       callback: function () {
-        message.success('添加用户成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.user'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -322,7 +336,13 @@ class UserMeterAnalysis extends PureComponent {
         id:this.state.editRecord.id
       },
       callback: function () {
-        message.success('修改用户成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.user'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -345,7 +365,13 @@ class UserMeterAnalysis extends PureComponent {
         id:id,
       },
       callback: function () {
-        message.success('删除用户成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.user'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           distribution_area:that.state.distribution_area,
@@ -373,7 +399,7 @@ class UserMeterAnalysis extends PureComponent {
     const formValues =this.importFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     if(!formValues.file){
-      message.error('请选择文件');
+      message.error(formatMessage({id: 'intl.please_choose_Excel'}));
       this.setState({
         canImport:true
       })
@@ -394,7 +420,13 @@ class UserMeterAnalysis extends PureComponent {
     }).then((response)=> {
       console.log(response);
       if(response.status===200){
-        message.success('导入成功');
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.import'}), type: formatMessage({id: 'intl.excel'})}
+          )
+        )
         that.setState({
           importModal:false
         })
@@ -431,6 +463,7 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {members: {data, meta, loading},concentrators,meters,sider_regions,meter_models,dma} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
@@ -438,54 +471,54 @@ class UserMeterAnalysis extends PureComponent {
     const resetMeterData=parseRowSpanData(data)
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
-      { title: '户号', width: 80, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.user_number'}), width: 100, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
         const children= (
-          ellipsis2(val, 80)
-        )
-        return renderRowSpan(children,record)
-      } },
-      { title: '用户名称', dataIndex: 'real_name', key: 'real_name' ,width: 80,   render: (val, record, index) => {
-        const children= (
-          ellipsis2(val, 80)
-        )
-        return renderRowSpan(children,record)
-      } },
-      { title: '安装地址', dataIndex: 'address', key: 'address' ,width: 100,   render: (val, record, index) => {
-        const children=  (
           ellipsis2(val, 100)
         )
         return renderRowSpan(children,record)
+      } },
+      { title:formatMessage({id: 'intl.user_name'}) , dataIndex: 'real_name', key: 'real_name' ,width: 100,   render: (val, record, index) => {
+        const children= (
+          ellipsis2(val, 100)
+        )
+        return renderRowSpan(children,record)
+      } },
+      { title: formatMessage({id: 'intl.install_address'}), dataIndex: 'address', key: 'address' ,width: 110,   render: (val, record, index) => {
+        const children=  (
+          ellipsis2(val, 110)
+        )
+        return renderRowSpan(children,record)
       }},
-      { title: '身份证号', dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.id_card'}), dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
         const children=  (
           ellipsis2(val, 170)
         )
         return renderRowSpan(children,record)
       }},
-      { title: '联系电话', dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.telephone'}), dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
         const children=  (
           ellipsis2(val, 130)
         )
         return renderRowSpan(children,record)
       }},
-      { title: '集中器编号', dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
-      { title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
+      { title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
       }},
-      { title: '水表类型', width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' ,render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.water_meter_type'}), width: 80, dataIndex: 'meter_model_name', key: 'meter_model_name' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
-      { title: '温度介质类型', width: 110, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.temperature_type'}), width: 110, dataIndex: 'temperature_type_explain', key: 'temperature_type_explain',render: (val, record, index) => {
         return ellipsis2(val, 110)
       }},
-      { title: '水表口径', width: 80, dataIndex: 'bore', key: 'bore' ,render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.bore'}), width: 80, dataIndex: 'bore', key: 'bore' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
-      { title: '水表序号', width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
+      { title: formatMessage({id: 'intl.water_meter_index'}), width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
         return ellipsis2(val, 80)
       }},
       {
-        title: '水表状态', dataIndex: 'status', key: 'status', width: 80,
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 80,
         render: (val, record, index) => {
           if(val===undefined){
             return ''
@@ -497,28 +530,28 @@ class UserMeterAnalysis extends PureComponent {
           )
         }
       },
-      {title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.enabled_date'}), width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '开始使用时读数', width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.enabled_value'}), width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用日期', width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.disabled_date'}), width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
-      {title: '停止使用时读数', width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.disabled_value'}), width: 120, dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }},
 
       // { title: '台区', dataIndex: 'distribution_area', key: 'distribution_area',width: 90},
       // { title: '表册', dataIndex: 'statistical_forms', key: 'statistical_forms',width: 90,},
-      { title: '用户创建时间', dataIndex: 'created_at', key: 'created_at', width: 150, render: (val, record, index) => {
+      { title:formatMessage({id: 'intl.created_time'}) , dataIndex: 'created_at', key: 'created_at', width: 150, render: (val, record, index) => {
         const children= (
           ellipsis2(val, 150)
         )
         return renderRowSpan(children,record)
       }},
-      { title: '抄表员', dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
+      { title:formatMessage({id: 'intl.reader'}) , dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }}
 
@@ -527,7 +560,7 @@ class UserMeterAnalysis extends PureComponent {
       columns.splice(8, 1)
     }
     const operate={
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}),
       key: 'operation',
       fixed: 'right',
       width: 90,
@@ -544,17 +577,17 @@ class UserMeterAnalysis extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{ formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
             }
             {
               this.state.showdelBtn &&
               <span>
-                  <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p><p style={{color:'red'}}>删除后关联的水表也会被删除！</p></div>}
+                  <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                               onConfirm={()=>this.handleRemove(record.id)}>
-                  <a href="">删除</a>
-                </Popconfirm>
+                <a href="">{formatMessage({id: 'intl.delete'})}</a>
+              </Popconfirm>
                 </span>
             }
           </p>
@@ -571,7 +604,7 @@ class UserMeterAnalysis extends PureComponent {
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background:'#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="运行管理" breadcrumb={[{name: '系统管理'}, {name: '用户档案'}]}>
+            <PageHeaderLayout title="运行管理" breadcrumb={[{name: formatMessage({id: 'intl.system'})}, {name:formatMessage({id: 'intl.user_profile'})}]}>
               <Card bordered={false} style={{margin:'-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -613,7 +646,7 @@ class UserMeterAnalysis extends PureComponent {
         </Content>
         <Modal
           width="80%"
-          title="添加用户档案"
+          title={formatMessage({id: 'intl.add'})}
           visible={this.state.addModal}
           onOk={this.handleAdd}
           onCancel={() => this.setState({addModal:false})}
@@ -623,7 +656,7 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           width="650px"
           key={ Date.parse(new Date())+1}
-          title="编辑用户档案"
+          title={formatMessage({id: 'intl.edit'})}
           visible={this.state.editModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({editModal:false})}
@@ -631,28 +664,28 @@ class UserMeterAnalysis extends PureComponent {
           <EditUserArchives sider_regions={sider_regions}  wrappedComponentRef={(inst) => this.editFormRef = inst} concentrators={concentrators.data} meters={meters.data}    editRecord={this.state.editRecord} />
         </Modal>
         <Modal
-          title="批量导入用户"
+          title={formatMessage({id: 'intl.batch_Import'})}
           visible={this.state.importModal}
           onCancel={() => this.setState({importModal:false,canImport:true})}
           //onOk={this.handleImport}
           footer={[
-            <Button key="back" onClick={() => this.setState({importModal:false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({importModal:false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
             <Button key="submit" type="primary" disabled={!this.state.canImport} onClick={this.handleImport}>
-              确认
+              {formatMessage({id: 'intl.submit'})}
             </Button>,
           ]}
         >
           <ImportArchives dma={dma} sider_regions={sider_regions}  findChildFunc={this.findChildFunc} wrappedComponentRef={(inst) => this.importFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data} meters={meters.data}  editRecord={this.state.editRecord} />
         </Modal>
         <Modal
-          title="导出单个集中器信息"
+          title={formatMessage({id: 'intl.export_single_concentrator_info'})}
           visible={this.state.exportModal}
           onCancel={() => this.setState({exportModal:false})}
           //onOk={this.handleImport}
           footer={[
-            <Button key="back" onClick={() => this.setState({exportModal:false})}>取消</Button>,
+            <Button key="back" onClick={() => this.setState({exportModal:false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
             <Button key="submit" type="primary"  onClick={this.handleExportConcentrator}>
-              确认
+              {formatMessage({id: 'intl.submit'})}
             </Button>,
           ]}
         >

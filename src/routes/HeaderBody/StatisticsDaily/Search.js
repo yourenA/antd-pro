@@ -8,6 +8,8 @@ import {disabledDate} from './../../../utils/utils'
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -35,49 +37,50 @@ class SearchForm extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
-          <FormItem label={ '日期'}>
+          <FormItem label={ formatMessage({id: 'intl.date'})}>
             {getFieldDecorator('date', {
               initialValue: this.props.initDate ? this.props.initDate : '',
             })(
               <DatePicker   disabledDate={disabledDate} />
             )}
           </FormItem>
-          <FormItem label="集中器编号">
+          <FormItem label={formatMessage({id: 'intl.concentrator_number'})}>
             {getFieldDecorator('concentrator_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
           <FormItem
-            label='户号'
+            label={formatMessage({id: 'intl.user_number'})}
           >
             {getFieldDecorator('member_number', {
             })(
               <Input/>
             )}
           </FormItem>
-          <FormItem label="水表编号">
+          <FormItem label={formatMessage({id: 'intl.water_meter_number'})}>
             {getFieldDecorator('meter_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>
-          <FormItem label="显示">
+          <FormItem label={formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('display_type',{
               initialValue:  'all',
             })(
               <RadioGroup>
-                <RadioButton value="all">全部</RadioButton>
-                <RadioButton value="only_missing_upload">漏报</RadioButton>
-                <RadioButton value="only_error_upload">错报</RadioButton>
+                <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
+                <RadioButton value="only_missing_upload">{formatMessage({id: 'intl.missing'})}</RadioButton>
+                <RadioButton value="only_error_upload">{formatMessage({id: 'intl.error'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem >
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
+            <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
         </Row>
       </Form>

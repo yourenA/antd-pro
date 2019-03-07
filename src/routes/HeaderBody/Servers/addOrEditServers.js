@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {Form, Input,  Radio, Select,InputNumber, } from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -32,13 +34,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              服务器地址
+               {formatMessage({id: 'intl.server_ip'})}
             </span>
           )}
         >
           {getFieldDecorator('ip', {
             initialValue: this.props.editRecord ? this.props.editRecord.ip : '',
-            rules: [{required: true, message: '服务器地址不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.server_ip'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -47,13 +49,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              服务器端口
+               {formatMessage({id: 'intl.server_port'})}
             </span>
           )}
         >
           {getFieldDecorator('port', {
             initialValue: this.props.editRecord ? this.props.editRecord.port : '',
-            rules: [{required: true, message: '服务器端口不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.server_port'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <InputNumber />
           )}

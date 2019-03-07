@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 import request from './../../../utils/request'
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class VendorConcentrator extends PureComponent {
   constructor(props) {
     super(props);
@@ -36,7 +38,7 @@ export default class VendorConcentrator extends PureComponent {
     }
   }
   dynamic = (response)=> {
-    console.log('online')
+    const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.VendorConcentrator'));
     let data=response;
     let parseData=[]
@@ -65,7 +67,7 @@ export default class VendorConcentrator extends PureComponent {
       },
       series : [
         {
-          name: '集中器个数',
+          name: formatMessage({id: 'intl.concentrator_count'}),
           type: 'pie',
           radius : '40%',
           center: ['25%', '45%'],
@@ -79,7 +81,7 @@ export default class VendorConcentrator extends PureComponent {
           }
         },
         {
-          name: '水表个数',
+          name: formatMessage({id: 'intl.water_meter_count'}),
           type: 'pie',
           radius : '40%',
           center: ['75%', '45%'],

@@ -10,6 +10,8 @@ import MemberRate from './MemberRate'
 import moment from 'moment'
 import find from 'lodash/find'
 const TabPane = Tabs.TabPane;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   member_meter_data: state.member_meter_data,
 }))
@@ -51,6 +53,7 @@ class Detail extends PureComponent {
     });
   }
   dynamic=(data)=>{
+    const {intl:{formatMessage}} = this.props;
     let date=[];
     let legend=[];
     let series=[]
@@ -79,7 +82,7 @@ class Detail extends PureComponent {
       color:['#2f4554','#c23531'],
       backgroundColor: '#eee',
       title: {
-        text: '各水表类型用水量',
+        text:formatMessage({id: 'intl.water_consumption_of_each_type_of_water_meter'}),
       },
       tooltip: {
         trigger: 'axis',
@@ -116,7 +119,7 @@ class Detail extends PureComponent {
       yAxis: [
         {
           type: 'value',
-          name: '水量',
+          name:  formatMessage({id: 'intl.water_consumption'}),
           axisLabel: {
             formatter: '{value} T'
           }
@@ -166,13 +169,14 @@ class Detail extends PureComponent {
 
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     return (
       <div>
         <div >
-         <ButtonGroup>
-            <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>本周</Button>
-            <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>本月</Button>
-            <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>本年</Button>
+          <ButtonGroup>
+            <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>{formatMessage({id: 'intl.this_week'})}</Button>
+            <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
+            <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>{formatMessage({id: 'intl.this_year'})}</Button>
           </ButtonGroup>
 
           <DatePicker
@@ -181,7 +185,7 @@ class Detail extends PureComponent {
             disabledDate={disabledDate}
             format="YYYY-MM-DD"
             style={{width: 150}}
-            placeholder="开始日期"
+            placeholder={formatMessage({id: 'intl.start'})}
             onChange={(e)=>this.handleRangePickerChange(e,'start')}
           />
           <DatePicker
@@ -190,7 +194,7 @@ class Detail extends PureComponent {
             disabledDate={disabledDate}
             format="YYYY-MM-DD"
             style={{width: 150}}
-            placeholder="结束日期"
+            placeholder={formatMessage({id: 'intl.end'})}
             onChange={(e)=>this.handleRangePickerChange(e,'end')}
           />
           {/*<RangePicker

@@ -343,7 +343,7 @@ class Main extends PureComponent {
             </Col>
           }
           {
-            (company_code === 'mys'||company_code === 'amwares'||company_code === 'test')  &&
+            (company_code === 'mys'||company_code === 'test')  &&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
@@ -358,7 +358,7 @@ class Main extends PureComponent {
             </Col>
           }
           {
-            (company_code === 'mys'||company_code === 'amwares'||company_code === 'test')  &&
+            (company_code === 'mys'||company_code === 'test')  &&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}

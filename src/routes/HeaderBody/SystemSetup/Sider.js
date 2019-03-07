@@ -3,7 +3,8 @@ import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
 const { Sider} = Layout;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   global:state.global,
 }))
@@ -11,14 +12,20 @@ class SiderNav extends PureComponent {
   constructor(props) {
     super(props);
     const {isMobile} =this.props.global;
+    const {intl:{formatMessage}} = this.props;
     this.state = {
       collapsed: isMobile,
-      siderNav: [{name: '夜间流量异常报警设置', url: 'night_warning_setup'}, {name: '零水量异常报警设置', url: 'zero_warning_setup'}, {name: '用水量异常报警设置', url: 'unusual_water'},
-        {name: '漏水异常报警设置', url: 'leak_warning_setup'}, {name: '水表阀控异常报警设置', url: 'valve_status_setup'},  {name: '水表电池电压报警设置', url: 'voltage_status_setup'},
-        {name: '集中器离线异常报警设置', url: 'concentrator_offline_setup'},
-        {name: '水表上传异常报警设置', url: 'meter_upload_setup'},
+      siderNav: [
+        {name: formatMessage({id: 'intl.night_warning_setup'}), url: 'night_warning_setup'},
+        {name: formatMessage({id: 'intl.zero_warning_setup'}) , url: 'zero_warning_setup'},
+        {name: formatMessage({id: 'intl.unusual_water'}) , url: 'unusual_water'},
+        {name: formatMessage({id: 'intl.leak_warning_setup'}) , url: 'leak_warning_setup'},
+        {name: formatMessage({id: 'intl.valve_status_setup'}) , url: 'valve_status_setup'},
+        {name: formatMessage({id: 'intl.voltage_status_setup'}) , url: 'voltage_status_setup'},
+        {name: formatMessage({id: 'intl.concentrator_offline_setup'}) , url: 'concentrator_offline_setup'},
+        {name: formatMessage({id: 'intl.meter_upload_setup'}) , url: 'meter_upload_setup'},
         // {name: '压力/温度传感器设置', url: 'pressure_temperature_setup'},
-        {name: '导出设置', url: 'export_setup'},
+        {name: formatMessage({id: 'intl.export_setup'}) , url: 'export_setup'},
         //{name: '水表水量分析页面设置', url: 'member_meter_setup'},
         // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
         //           {name: '邮件通知设置', url: 'email_notice' }
@@ -44,6 +51,7 @@ class SiderNav extends PureComponent {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const that=this;
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
@@ -56,7 +64,7 @@ class SiderNav extends PureComponent {
     return (
       <Sider collapsed={this.state.collapsed}  collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
-          选项
+          { formatMessage({id: 'intl.option'})}
         </div>
         <div className="siderNav">
           {renderSiderNav}

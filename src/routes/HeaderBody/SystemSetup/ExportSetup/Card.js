@@ -66,7 +66,8 @@ const cardTarget = {
     monitor.getItem().index = hoverIndex
   },
 }
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 @DropTarget('card', cardTarget, connect => ({
   connectDropTarget: connect.dropTarget(),
 }))
@@ -86,6 +87,7 @@ export default class Card extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {
       index,
       text,
@@ -106,7 +108,7 @@ export default class Card extends Component {
 
           console.log('click',index);
           removeCard(index)
-        }}>删除</Button>
+        }}>{formatMessage({id: 'intl.delete'})}</Button>
       </div>
       ),
     )

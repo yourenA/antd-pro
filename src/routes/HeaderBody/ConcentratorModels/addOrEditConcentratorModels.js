@@ -8,6 +8,8 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const CheckboxGroup = Checkbox.Group;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -15,10 +17,11 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -35,13 +38,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-             类型编码
+             {formatMessage({id: 'intl.type_coding'})}
             </span>
           )}
         >
           {getFieldDecorator('code', {
             initialValue: this.props.editRecord ? this.props.editRecord.code : '',
-            rules: [{required: true, message: '编码不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.type_coding'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -50,13 +53,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              类型名称
+              {formatMessage({id: 'intl.concentrator_type'})}
             </span>
           )}
         >
           {getFieldDecorator('name', {
             initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '名称不能为空'}],
+            rules: [{required: true, message: formatMessage({id: 'intl.type_coding'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -66,12 +69,12 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              生产厂家
+              {formatMessage({id: 'intl.vendor_name'})}
             </span>
           )}>
           {getFieldDecorator('manufacturer_id', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.manufacturer_id,label:this.props.editRecord.manufacturer_name}:{key:'',label:''},
-            rules: [{required: true, message: '生产厂家不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.vendor_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Select labelInValue={true} >
               { this.props.manufacturers.map((item, key) => {
@@ -86,13 +89,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              协议
+              {formatMessage({id: 'intl.concentrator_protocols'})}
             </span>
           )}
         >
           {getFieldDecorator('protocols', {
             initialValue: this.props.editRecord ? this.props.editRecord.protocols : [],
-            rules: [{required: true, message: '协议不能为空'}],
+            rules: [{required: true, message:formatMessage({id: 'intl.concentrator_protocols'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <CheckboxGroup options={plainOptions}   />
           )}

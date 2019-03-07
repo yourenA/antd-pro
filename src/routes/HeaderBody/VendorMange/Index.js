@@ -10,11 +10,13 @@ import find from 'lodash/find'
 import AddOrEditVendor from './addOrEditVendor'
 import debounce from 'lodash/throttle'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   manufacturers: state.manufacturers,
   global:state.global,
 }))
+@injectIntl
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
@@ -136,7 +138,13 @@ class Vendor extends PureComponent {
         ...formValues
       },
       callback: function () {
-        message.success('添加厂商成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.vendor'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -167,7 +175,13 @@ class Vendor extends PureComponent {
         id:this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改厂商成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.vendor'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -186,7 +200,13 @@ class Vendor extends PureComponent {
         id:id,
       },
       callback: function () {
-        message.success('删除厂商成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.vendor'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           per_page:that.state.per_page
@@ -195,6 +215,7 @@ class Vendor extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {manufacturers: {data, meta, loading}} = this.props;
     const columns = [
       // {
@@ -209,30 +230,30 @@ class Vendor extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '厂商编号', width: 100, dataIndex: 'code', key: 'code',
+      {title:  formatMessage({id: 'intl.vendor_number'}), width: 120, dataIndex: 'code', key: 'code',
         fixed:'left',
         render: (val, record, index) => {
-          return ellipsis2(val,100)
+          return ellipsis2(val,130)
         }},
-      {title: '厂商名称', width: 150, dataIndex: 'name', key: 'name',
+      {title:  formatMessage({id: 'intl.vendor_name'}), width: 150, dataIndex: 'name', key: 'name',
         render: (val, record, index) => {
           return ellipsis2(val,150)
         }},
-      {title: '集中器数量', dataIndex: 'concentrator_count', key: 'concentrator_count',
+      {title:  formatMessage({id: 'intl.concentrator_count'}), dataIndex: 'concentrator_count', key: 'concentrator_count',
         render: (val, record, index) => {
-          return ellipsis2(val,120)
-        },width: 120},
-      {title: '水表数量', dataIndex: 'meter_count', key: 'meter_count', width: 120,
+          return ellipsis2(val,140)
+        },width: 140},
+      {title:  formatMessage({id: 'intl.meter_count'}), dataIndex: 'meter_count', key: 'meter_count', width: 120,
         render: (val, record, index) => {
           return ellipsis2(val,120)
         }},
-      {title: '厂商电话', dataIndex: 'phone', key: 'phone', width: 150,
+      {title:  formatMessage({id: 'intl.vendor_phone'}), dataIndex: 'phone', key: 'phone', width: 150,
         render: (val, record, index) => {
 
           return ellipsis2(val,150)
         }},
       {
-        title: '联系人', dataIndex: 'contact', key: 'contact',
+        title:  formatMessage({id: 'intl.vendor_contact'}), dataIndex: 'contact', key: 'contact',
         render: (val, record, index) => {
           return  <Tooltip
             placement="topLeft"
@@ -243,7 +264,7 @@ class Vendor extends PureComponent {
       },
     ];
     const operate={
-      title: '操作',
+      title:  formatMessage({id: 'intl.operate'}),
       width: 100,
       fixed:'right',
       render: (val, record, index) => (
@@ -258,15 +279,15 @@ class Vendor extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -282,7 +303,8 @@ class Vendor extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '厂商查询'}]}>
+            <PageHeaderLayout title="系统管理 "  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.vendor_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -324,14 +346,14 @@ class Vendor extends PureComponent {
           </div>
 
           <Modal
-            title="添加厂商"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false,canAdd:true})}
             footer={[
-              <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+              <Button key="back" onClick={() => this.setState({addModal:false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
               <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
-                确认
+                {formatMessage({id: 'intl.submit'})}
               </Button>,
             ]}
           >
@@ -339,7 +361,7 @@ class Vendor extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
-            title="修改厂商"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}

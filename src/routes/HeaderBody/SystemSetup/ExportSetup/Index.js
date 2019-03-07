@@ -11,7 +11,8 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 @DragDropContext(HTML5Backend)
 class EditPassword extends Component {
   constructor(props) {
@@ -43,20 +44,23 @@ class EditPassword extends Component {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '导出设置'}]}>
+            <PageHeaderLayout title="系统管理"  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.system_setting'})},
+              {name: formatMessage({id: 'intl.export_setup'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" type="card">
                   {
-                    (company_code!=='hy')&& (company_code!=='jxwa')&&<TabPane tab=' 水表读数信息导出' key="1">
+                    (company_code!=='hy')&& (company_code!=='jxwa')&&<TabPane tab={formatMessage({id: 'intl.water_meter_value_export'})} key="1">
                       <MeterDataExportIndex />
                     </TabPane>
                   }
-                  <TabPane  tab='用户信息导出' key="2" >
+                  <TabPane  tab={formatMessage({id: 'intl.user_info_export'})} key="2" >
                     <MemberExport />
                   </TabPane>
 

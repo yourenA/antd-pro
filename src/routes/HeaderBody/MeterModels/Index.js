@@ -10,11 +10,13 @@ import AddOrEditForm from './addOrEditMeterModels'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   meter_models: state.meter_models,
   manufacturers: state.manufacturers,
 }))
+@injectIntl
 class MeterModel extends PureComponent {
   constructor(props) {
     super(props);
@@ -87,6 +89,12 @@ class MeterModel extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   handleFormReset = () => {
@@ -140,7 +148,13 @@ class MeterModel extends PureComponent {
         is_control:formValues.is_control.key?parseInt(formValues.is_control.key):-1
       },
       callback: function () {
-        message.success('添加水表类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.water_meter_type'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -165,7 +179,13 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改水表类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.water_meter_type'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -184,7 +204,13 @@ class MeterModel extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除水表类型成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.water_meter_type'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           per_page:that.state.per_page
@@ -196,6 +222,7 @@ class MeterModel extends PureComponent {
     console.log('sorter', sorter)
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {meter_models: {data, meta, loading}, manufacturers} = this.props;
     console.log('this.state.initPage',this.state.initPage);
     const columns = [
@@ -210,47 +237,47 @@ class MeterModel extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '类型名称', width: 120, dataIndex: 'name', key: 'name',render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_type'}), width: 120, dataIndex: 'name', key: 'name',render: (text, record, index) => {
         return ellipsis2(text,120)
       }},
-      {title: '尺寸类型', width: 100, dataIndex: 'size_type_explain', key: 'size_type_explain',render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.size_type'}), width: 100, dataIndex: 'size_type_explain', key: 'size_type_explain',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
-      {title: '输出类型', dataIndex: 'output_type_explain', key: 'output_type_explain', width: 100,render: (text, record, index) => {
+      {title: formatMessage({id: 'intl.output_type'}), dataIndex: 'output_type_explain', key: 'output_type_explain', width: 100,render: (text, record, index) => {
         return ellipsis2(text,100)
       }
       },
-      {title: '温度介质类型', dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
+      {title:formatMessage({id: 'intl.temperature_type'}) , dataIndex: 'temperature_type_explain', key: 'temperature_type_explain', width: 110,render: (text, record, index) => {
         return ellipsis2(text,110)
       }
       },
 
-      {title: '是否支持阀控', dataIndex: 'is_control', key: 'is_control', width: 110,
+      {title: formatMessage({id: 'intl.can_valve'}), dataIndex: 'is_control', key: 'is_control', width: 110,
       render:(val, record, index) => (
         <p>
           <Badge status={val===1?"success":"error"} />{record.is_control_explain}
 
         </p>
       )},
-      {title: '口径mm', width: 80, dataIndex: 'bore', key: 'bore',render: (text, record, index) => {
+      {title:formatMessage({id: 'intl.bore'}) , width: 80, dataIndex: 'bore', key: 'bore',render: (text, record, index) => {
         return ellipsis2(text,80)
       }},
-      {title: '使用年限', dataIndex: 'service_life', key: 'service_life', width: 100,
+      {title: formatMessage({id: 'intl.battery_life'}), dataIndex: 'service_life', key: 'service_life', width: 100,
         render: (text, record, index) => {
           return ellipsis2(text,100)
         }},
-      {title: '波特率', dataIndex: 'baud_rate', key: 'baud_rate', width:80,
+      {title:formatMessage({id: 'intl.baud_rate'}) , dataIndex: 'baud_rate', key: 'baud_rate', width:80,
         render: (text, record, index) => {
           return ellipsis2(text,80)
         }},
       {
-        title: '下行协议', dataIndex: 'down_protocol', key: 'down_protocol', width: 100,
+        title: formatMessage({id: 'intl.down_protocol'}), dataIndex: 'down_protocol', key: 'down_protocol', width: 100,
         render: (text, record, index) => {
           return ellipsis2(text,100)
         }
       },
       {
-        title: '所属厂商', dataIndex: 'manufacturer_name', key: 'manufacturer_name',
+        title: formatMessage({id: 'intl.vendor_name'}), dataIndex: 'manufacturer_name', key: 'manufacturer_name',
       },
     ];
     const company_code = sessionStorage.getItem('company_code');
@@ -258,7 +285,7 @@ class MeterModel extends PureComponent {
       columns.splice(3, 1)
     }
     const operate={
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}),
       width: 100,
       fixed: 'right',
       render: (val, record, index) => (
@@ -273,15 +300,15 @@ class MeterModel extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -296,7 +323,8 @@ class MeterModel extends PureComponent {
         <Sider changeArea={this.changeArea} location={this.props.history.location}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '水表类型查询'}]}>
+            <PageHeaderLayout title="系统管理 "   breadcrumb={[{name: formatMessage({id: 'intl.device'})},
+              {name: formatMessage({id: 'intl.meter_type_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -322,8 +350,8 @@ class MeterModel extends PureComponent {
             </PageHeaderLayout>
           </div>
           <Modal
-            width="700px"
-            title="添加水表类型"
+            width="900px"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -331,9 +359,9 @@ class MeterModel extends PureComponent {
             <AddOrEditForm manufacturers={manufacturers.data} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
-            width="700px"
+            width="900px"
             key={ Date.parse(new Date())}
-            title="修改水表类型"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}

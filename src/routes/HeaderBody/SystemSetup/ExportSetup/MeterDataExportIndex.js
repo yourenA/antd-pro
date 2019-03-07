@@ -7,7 +7,8 @@ import {connect} from "dva";
 import MeterDataExport from './MeterDataExport/Sort'
 import MeterSortExport from './MeterSortExport/Sort'
 const TabPane = Tabs.TabPane;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditPassword extends Component {
   constructor(props) {
     super(props);
@@ -21,13 +22,14 @@ class EditPassword extends Component {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     return (
                 <Tabs  className="system-tabs"  tabPosition='left' >
-                  <TabPane tab='导出字段信息(列)' key="1">
+                  <TabPane tab={formatMessage({id: 'intl.export_field_info'})} key="1">
                       <MeterDataExport />
                     </TabPane>
-                  <TabPane  tab='导出排序信息(行)' key="2" >
+                  <TabPane  tab={formatMessage({id: 'intl.export_sort_info'})} key="2" >
                     <MeterSortExport />
                   </TabPane>
                 </Tabs>

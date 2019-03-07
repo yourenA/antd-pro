@@ -17,6 +17,8 @@ const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   meter_models: state.meter_models,
 }))
@@ -305,6 +307,7 @@ class EditPassword extends Component {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {meter_models}=this.props
     const formItemLayoutWithLabel = {
       labelCol: {
@@ -327,7 +330,9 @@ class EditPassword extends Component {
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '用水量异常报警设置'}]}>
+            <PageHeaderLayout title="系统管理"  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.system_setting'})},
+              {name: formatMessage({id: 'intl.unusual_water'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Tabs defaultActiveKey="1" className="system-tabs" >
                   <TabPane tab={this.state.consumption_abnormality_normal_meter_value.display_name} key="1">
@@ -355,9 +360,9 @@ class EditPassword extends Component {
                       >
                         {getFieldDecorator('consumption_abnormality_alarm_level')(
                           <RadioGroup>
-                            <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
-                            <Radio style={radioStyle} value="2">导航栏提示</Radio>
-                            <Radio style={radioStyle} value="3">无</Radio>
+                            <Radio style={radioStyle} value="1">{formatMessage({id: 'intl.alarm_level1'})}</Radio>
+                            <Radio style={radioStyle} value="2">{formatMessage({id: 'intl.alarm_level2'})}</Radio>
+                            <Radio style={radioStyle} value="3">{formatMessage({id: 'intl.alarm_level3'})}</Radio>
                           </RadioGroup>
                         )}
                       </FormItem>
@@ -365,8 +370,8 @@ class EditPassword extends Component {
                         wrapperCol={ {
                           offset: 10,
                         }}>
-                        <Button onClick={this.handleFormReset} >重置</Button>
-                        <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit}  >确定</Button>
+                        <Button onClick={this.handleFormReset} >{formatMessage({id: 'intl.reset'})}</Button>
+                        <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >{formatMessage({id: 'intl.submit'})}</Button>
                       </FormItem>
                     </Form>
                   </TabPane>
@@ -378,7 +383,7 @@ class EditPassword extends Component {
                             modelModal:true
                           })
                         }} type="primary" >
-                          <Icon type="plus" /> 添加水表类型异常规则
+                          <Icon type="plus" />{formatMessage({id: 'intl.add_meter_type_abnormal_rule'})}
                         </Button>
                       </div>
                       <List
@@ -392,22 +397,22 @@ class EditPassword extends Component {
                                 <table className="custom-table">
                                   <tbody>
                                   <tr>
-                                    <td>水表类型</td>
+                                    <td>{formatMessage({id: 'intl.water_meter_type'})}</td>
                                     <td>{item.name}
-                                      <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                                      <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                                                   onConfirm={()=>this.handleRemoveModel(item.id)}>
-                                        <Button style={{float:'right'}} size="small" type="danger">删除</Button>
+                                        <Button style={{float:'right'}} size="small" type="danger">{formatMessage({id: 'intl.delete'})}</Button>
                                       </Popconfirm>
                                      </td>
                                   </tr>
                                   <tr>
-                                    <td>异常值</td>
+                                    <td>{formatMessage({id: 'intl.abnormal_value'})}</td>
                                     <td>{item.value} <Button size="small"  style={{float:'right'}} onClick={()=>{
                                       this.setState({
                                         editModelRecord:item,
                                         editModelModal:true
                                       })
-                                    }}>修改</Button></td>
+                                    }}>{formatMessage({id: 'intl.edit'})}</Button></td>
                                   </tr>
                                   </tbody>
                                 </table>
@@ -419,7 +424,7 @@ class EditPassword extends Component {
                   </TabPane>
                   <TabPane  tab={this.state.consumption_abnormality_special_meters.display_name} key="3">
                     <div style={{margin:'0 0 16px 12px'}}>
-                      <Input placeholder="水表号" style={{width:'150px',marginRight:'10px'}} onChange={(e)=>{
+                      <Input placeholder={formatMessage({id: 'intl.water_meter_number'})} style={{width:'150px',marginRight:'10px'}} onChange={(e)=>{
                         this.setState({
                           searchInputValue:e.target.value
                         })
@@ -429,7 +434,7 @@ class EditPassword extends Component {
                           searchSpecialValue:this.state.searchInputValue
                         })
                       }} type="primary" >
-                         确定
+                        {formatMessage({id: 'intl.submit'})}
                       </Button>
                       <Button style={{marginRight:'10px'}} onClick={()=>{
                         this.setState({
@@ -437,14 +442,14 @@ class EditPassword extends Component {
                           searchInputValue:''
                         })
                       }}  >
-                        重置
+                        {formatMessage({id: 'intl.reset'})}
                       </Button>
                       <Button onClick={() =>{
                         this.setState({
                           specialModal:true
                         })
                       }} type="primary" >
-                        <Icon type="plus" /> 添加特殊水表异常规则
+                        <Icon type="plus" />   {formatMessage({id: 'intl.add_meter_abnormal_rule'})}
                       </Button>
                     </div>
                     <List
@@ -460,22 +465,22 @@ class EditPassword extends Component {
                             <table className="custom-table">
                               <tbody>
                               <tr>
-                                <td>水表号</td>
+                                <td>{formatMessage({id: 'intl.water_meter_number'})}</td>
                                 <td>{item.number}
-                                  <Popconfirm placement="topRight" title={ `确定要删除吗?`}
+                                  <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                                               onConfirm={()=>this.handleRemoveSpecial(item.number)}>
-                                    <Button style={{float:'right'}} size="small" type="danger">删除</Button>
+                                    <Button style={{float:'right'}} size="small" type="danger">  {formatMessage({id: 'intl.delete'})}</Button>
                                   </Popconfirm>
                                 </td>
                               </tr>
                               <tr>
-                                <td>异常值</td>
+                                <td>{formatMessage({id: 'intl.abnormal_value'})}</td>
                                 <td>{item.value} <Button size="small"  style={{float:'right'}} onClick={()=>{
                                   this.setState({
                                     editSpecialRecord:item,
                                     editSpecialModal:true
                                   })
-                                }}>修改</Button></td>
+                                }}>{formatMessage({id: 'intl.edit'})}</Button></td>
                               </tr>
                               </tbody>
                             </table>

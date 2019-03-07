@@ -8,7 +8,8 @@ const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   sider_regions: state.sider_regions,
 }))
@@ -41,10 +42,11 @@ class AddPoliciesForm extends Component {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 5},
+        sm: {span: 8},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -73,13 +75,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              地址名称
+              {formatMessage({id: 'intl.village_name'})}
             </span>
           )}
         >
           {getFieldDecorator('name', {
             initialValue: this.props.editRecord ? this.props.editRecord.name : '',
-            rules: [{required: true, message: '地址名称不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.village_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Input />
           )}
@@ -110,7 +112,7 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              上级名称
+              {formatMessage({id: 'intl.parent_name'})}
             </span>
             )}>
             {getFieldDecorator('parent_id', {
@@ -128,7 +130,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              备注
+              {formatMessage({id: 'intl.remark'})}
             </span>
           )}
         >

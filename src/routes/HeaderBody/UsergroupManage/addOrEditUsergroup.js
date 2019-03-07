@@ -12,6 +12,8 @@ import forEach from 'lodash/forEach'
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   usergroup: state.usergroup,
 }))
@@ -292,7 +294,7 @@ class AddPoliciesForm extends Component {
   }
 
   render() {
-
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -309,28 +311,32 @@ class AddPoliciesForm extends Component {
     return (
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '}, {name: '账号管理'},{name: '角色管理'},{name: this.isNew ? '添加角色' : '修改角色'}]}>
+            <PageHeaderLayout title="系统管理 "  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.account_manage'})},
+              {name:formatMessage({id: 'intl.user_role'})},
+              {name: this.isNew ? formatMessage({id: 'intl.add'}) : formatMessage({id: 'intl.edit'})}]}>
+
               <Card bordered={false} style={{margin: '-24px -24px 0'}}>
                 <Button icon="left" type="primary" onClick={()=> {
                   this.props.dispatch(routerRedux.replace(`/${company_code}/main/system_manage/account_manage/user_group_manage`));
                 }}>
-                  后退
+                  {formatMessage({id: 'intl.back'})}
                 </Button>
                 <Form >
-            <h3 className="form-title">基本信息</h3>
+            <h3 className="form-title">{formatMessage({id: 'intl.base_info'})}</h3>
             <FormItem
               {...formItemLayoutWithLabel}
-              label='名称'
+              label= {formatMessage({id: 'intl.role_name'})}
             >
               {getFieldDecorator('display_name', {
                 initialValue: !this.isNew ? editRecord.display_name : '',
-                rules: [{required: true, message: '名称不能为空'}],
+                rules: [{required: true, message:  formatMessage({id: 'intl.role_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
               })(
                 <Input disabled={this.props.editRecord ? true : false}/>
               )}
             </FormItem>
             <FormItem
-              label="描述"
+              label= {formatMessage({id: 'intl.description'})}
               {...formItemLayoutWithLabel}
 
             >
@@ -340,20 +346,20 @@ class AddPoliciesForm extends Component {
                 <Input type="textarea" autosize={{minRows: 2, maxRows: 6}}/>
               )}
             </FormItem>
-            <h3 className="form-title">权限信息</h3>
+            <h3 className="form-title"> {formatMessage({id: 'intl.permission_info'})}</h3>
             {this.renderXheckGroup(this.state.group)}
             <FormItem
               wrapperCol={ {
                 offset: 7,
                 span: 10
               }}>
-              <Button style={{marginRight: '10px', width: '40%'}} onClick={()=> {
-                this.props.dispatch(routerRedux.replace(`/main/system_manage/account_manage/user_group_manage`));
+              <Button style={{marginRight: '10px', width: '40%'}}  onClick={()=> {
+                this.props.dispatch(routerRedux.replace(`/${company_code}/main/system_manage/account_manage/user_group_manage`));
               }}>
-                取消
+                {formatMessage({id: 'intl.cancel'})}
               </Button>
               <Button style={{width: '40%'}} type="primary" onClick={this.handleSubmit2}>
-                确定
+                {formatMessage({id: 'intl.submit'})}
               </Button>
             </FormItem>
           </Form>

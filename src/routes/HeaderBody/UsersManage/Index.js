@@ -11,12 +11,13 @@ import AddOrEditForm from './addOrEditMember'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import {injectIntl} from 'react-intl';
 const {Content} = Layout;
 @connect(state => ({
   user: state.user,
   usergroup: state.usergroup,
 }))
+@injectIntl
 class Vendor extends PureComponent {
   constructor(props) {
     super(props);
@@ -157,7 +158,13 @@ class Vendor extends PureComponent {
               },
             },
             callback: function () {
-              message.success('添加用户成功')
+              const {intl:{formatMessage}} = that.props;
+              message.success(
+                formatMessage(
+                  {id: 'intl.operate_successful'},
+                  {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.account'})}
+                )
+              )
               that.setState({
                 addModal: false,
               });
@@ -201,7 +208,12 @@ class Vendor extends PureComponent {
         },
       },
       callback: function () {
-        message.success('修改用户成功')
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.account'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -221,7 +233,12 @@ class Vendor extends PureComponent {
         id:id,
       },
       callback: function () {
-        message.success('删除用户成功')
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.account'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
@@ -248,7 +265,12 @@ class Vendor extends PureComponent {
         }
       },
       callback: function () {
-        message.success('修改状态成功')
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.status'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           query: that.state.query,
@@ -278,17 +300,18 @@ class Vendor extends PureComponent {
     console.log(id)
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {user: {data, meta, loading},usergroup} = this.props;
     const itemMenu = (
       <Menu>
         {
           this.state.showPasswordBtn&& <Menu.Item>
-            <a onClick={()=>{this.handleResetPassword(this.state.editRecord.id)}}>重置密码</a>
+            <a onClick={()=>{this.handleResetPassword(this.state.editRecord.id)}}>{ formatMessage({id: 'intl.reset_password'})}</a>
           </Menu.Item>
         }
 
         {this.state.showdelBtn&&<Menu.Item>
-          <a onClick={()=>{this.handleRemove(this.state.editRecord.id)}}>删除</a>
+          <a onClick={()=>{this.handleRemove(this.state.editRecord.id)}}>{ formatMessage({id: 'intl.delete'})}</a>
         </Menu.Item>}
 
       </Menu>
@@ -305,39 +328,39 @@ class Vendor extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title: '账号', width: 100, dataIndex: 'username', key: 'username', fixed: 'left',
+      {title: formatMessage({id: 'intl.username'}), width: 100, dataIndex: 'username', key: 'username', fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val,100)
         }},
-      {title: '名字', width: 100, dataIndex: 'real_name', key: 'real_name',
+      {title: formatMessage({id: 'intl.real_name'}), width: 100, dataIndex: 'real_name', key: 'real_name',
         render: (val, record, index) => {
           return ellipsis2(val,100)
         }},
-      {title: '电话', dataIndex: 'mobile', key: 'mobile', width: 150,
+      {title: formatMessage({id: 'intl.telephone'}), dataIndex: 'mobile', key: 'mobile', width: 150,
         render: (val, record, index) => {
           return ellipsis2(val,150)
         }},
-      {title: '邮箱', dataIndex: 'email', key: 'email', width: 150,
+      {title: formatMessage({id: 'intl.email'}), dataIndex: 'email', key: 'email', width: 150,
         render: (val, record, index) => {
           return ellipsis2(val,150)
         }},
-      {title: '电话通知', dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: 100,
+      {title: formatMessage({id: 'intl.is_telephone_notify'}), dataIndex: 'is_sms_notify', key: 'is_sms_notify', width: 180,
         render: (val, record, index) => (
           <Switch checked={record.is_sms_notify===1?true:false}  />
         )},
 
       {
-        title: '电邮通知', dataIndex: 'is_email_notify', key: 'is_email_notify', width: 100,
+        title: formatMessage({id: 'intl.is_email_notify'}), dataIndex: 'is_email_notify', key: 'is_email_notify', width: 150,
         render: (val, record, index) => (
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: '角色', dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,
+      {title: formatMessage({id: 'intl.role_name'}), dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,
         render: (val, record, index) => {
           return ellipsis2(val,100)
         }},
       {
-        title: '状态',
+        title: formatMessage({id: 'intl.status'}),
         dataIndex: 'status',
 
         render:(val,record,index)=>{
@@ -350,8 +373,8 @@ class Vendor extends PureComponent {
       },
     ];
     const operate={
-      title: '操作',
-      width: 150,
+      title: formatMessage({id: 'intl.operate'}),
+      width: 170,
       fixed:'right',
       render: (val, record, index) =>{
         if(record.lock===1){
@@ -369,7 +392,7 @@ class Vendor extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
                 </span>
               }
 
@@ -388,16 +411,16 @@ class Vendor extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
               }
               {
                 this.state.showStatusBtn &&
                 <span>
-                     <Popconfirm placement="topRight" title={ `确定要${record.status===1?'禁用':'启用'}吗?`}
+                     <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: record.status===1?'intl.disable':'intl.enable'})})}
                                  onConfirm={()=>this.handleEditStatus(record.id,record.status)}>
-              <a href="javascript:;">{record.status===1?'禁用':'启用'}</a>
+              <a href="javascript:;">{formatMessage({id: record.status===1?'intl.disable':'intl.enable'})}</a>
             </Popconfirm>
             <span className="ant-divider"/>
                 </span>
@@ -415,7 +438,7 @@ class Vendor extends PureComponent {
                       })
                     }
 
-                  }} overlay={itemMenu}><a >更多<Icon type="ellipsis" /></a></Dropdown>
+                  }} overlay={itemMenu}><a >{formatMessage({id: 'intl.more'})}<Icon type="ellipsis" /></a></Dropdown>
                   :null
               }
 
@@ -432,7 +455,7 @@ class Vendor extends PureComponent {
         {/*<Sider changeArea={this.changeArea} location={this.props.history.location}/>*/}
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '系统管理 '},{name: '账号管理'}, {name: '用户账号管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.system'})},{name: formatMessage({id: 'intl.account_manage'})}, {name:formatMessage({id: 'intl.user_account'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -472,14 +495,14 @@ class Vendor extends PureComponent {
           </div>
 
           <Modal
-            title="添加用户"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false,canAdd:true})}
             footer={[
-              <Button key="back" onClick={() => this.setState({addModal:false})}>取消</Button>,
+              <Button key="back" onClick={() => this.setState({addModal:false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
               <Button key="submit" type="primary" disabled={!this.state.canAdd} onClick={this.handleAdd}>
-                确认
+                {formatMessage({id: 'intl.submit'})}
               </Button>,
             ]}
           >
@@ -487,7 +510,7 @@ class Vendor extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())}
-            title="修改用户"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}

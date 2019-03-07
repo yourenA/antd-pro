@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Badge, Layout, message, Modal, Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
-import Search from './Search'
+import Search from './../Leak_abnormality/Search'
 import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
@@ -15,6 +15,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 import ProcessedForm from './../ZeroAbnormality/ProcessedForm'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   dma: state.dma,
   consumption_abnormality: state.consumption_abnormality,
@@ -116,6 +118,12 @@ class Consumption_abnormality extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop -(68 + 54 + 50 + 38 +5)
+    }, function () {
+      if (localStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
   handleFormReset = () => {
@@ -196,7 +204,13 @@ class Consumption_abnormality extends PureComponent {
         not_reminder_days:String(formValues.not_reminder_days)
       },
       callback: function () {
-        message.success("确认异常成功")
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: '', type: formatMessage({id: 'intl.confirm_exception'})}
+          )
+        )
         that.setState({
           processed_model:false
         })
@@ -216,59 +230,51 @@ class Consumption_abnormality extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {consumption_abnormality: {data, meta, loading}, dma} = this.props;
     for(let i=0;i<data.length;i++){
       data[i].uuidkey=uuid()
     }
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.initPage,index)
-      //   }
-      // },
-      {title: '户号', width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '集中器编号', width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '水表编号', width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '日期', dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
         return ellipsis2(val, 120)
       }},
-      {title: '今天水表读值', width: 120, dataIndex: 'today_value', key: 'today_value', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.today_value'}) , width: 120, dataIndex: 'today_value', key: 'today_value', render: (val, record, index) => {
         return ellipsis2(val, 120)
       }},
-      {title: '昨天水表读值', width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.yesterday_value'}) , width: 120, dataIndex: 'yesterday_value', key: 'yesterday_value', render: (val, record, index) => {
         return ellipsis2(val, 120)
       }},
-      {title: '用水量', width: 70,dataIndex: 'difference_value', key: 'difference_value', render: (val, record, index) => {
-        return ellipsis2(val, 70)
+      {title: formatMessage({id: 'intl.water_consumption'}), width: 100,dataIndex: 'difference_value', key: 'difference_value', render: (val, record, index) => {
+        return ellipsis2(val, 100)
       }},
-      {title: '安装地址', dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
+      {title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
-      {title: '用户名称',  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title: '备注', dataIndex: 'remark', key: 'remark'},
+      {title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark'},
       {
-        title: '操作',
+        title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
         fixed:'right',
         width: 80,
         render: (val, record, index) => {
           return (
             <div>
-              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>确认异常</Button>}
+              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
+                {formatMessage({id: 'intl.confirm_abnormal'})}
+              </Button>}
             </div>
           )
         }
@@ -284,7 +290,8 @@ class Consumption_abnormality extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="异常分析" breadcrumb={[{name: '异常分析'}, {name: '用水量异常报警'}]}>
+            <PageHeaderLayout title="异常分析"   breadcrumb={[{name: formatMessage({id: 'intl.abnormal_analysis'})},
+              {name: formatMessage({id: 'intl.water_consumption_abnormal_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -306,26 +313,11 @@ class Consumption_abnormality extends PureComponent {
                                  history={this.props.history}
                                  className={'meter-table'}
                 />
-               {/* <Table
-                  rowClassName={function (record, index) {
-                    if (record.description === '') {
-                      return 'error'
-                    }
-                  }}
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.uuidkey}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{x: 1250,y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
               <Modal
                 key={ Date.parse(new Date())+1}
-                title={`确认异常`}
+                title={formatMessage({id: 'intl.confirm_exception'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('4')}
                 onCancel={() => this.setState({processed_model: false})}

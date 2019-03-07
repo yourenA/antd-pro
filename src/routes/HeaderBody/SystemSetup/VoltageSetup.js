@@ -11,6 +11,8 @@ const {Content} = Layout;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditPassword extends Component {
   constructor(props) {
     super(props);
@@ -76,6 +78,7 @@ class EditPassword extends Component {
     );
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -96,7 +99,9 @@ class EditPassword extends Component {
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="系统管理" breadcrumb={[{name: '系统管理'}, {name: '系统设置'}, {name: '水表电池电压异常报警设置'}]}>
+            <PageHeaderLayout title="系统管理"  breadcrumb={[{name: formatMessage({id: 'intl.system'})},
+              {name: formatMessage({id: 'intl.system_setting'})},
+              {name: formatMessage({id: 'intl.voltage_status_setup'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <Form style={{maxWidth: '550px', margin: '0 auto'}} >
 
@@ -115,9 +120,9 @@ class EditPassword extends Component {
                   >
                     {getFieldDecorator('voltage_status_abnormality_alarm_level')(
                       <RadioGroup>
-                        <Radio style={radioStyle} value="1">弹框报警及导航栏提示</Radio>
-                        <Radio style={radioStyle} value="2">导航栏提示</Radio>
-                        <Radio style={radioStyle} value="3">无</Radio>
+                        <Radio style={radioStyle} value="1">{formatMessage({id: 'intl.alarm_level1'})}</Radio>
+                        <Radio style={radioStyle} value="2">{formatMessage({id: 'intl.alarm_level2'})}</Radio>
+                        <Radio style={radioStyle} value="3">{formatMessage({id: 'intl.alarm_level3'})}</Radio>
                       </RadioGroup>
                     )}
                   </FormItem>
@@ -125,8 +130,8 @@ class EditPassword extends Component {
                     wrapperCol={ {
                       offset: 10,
                     }}>
-                    <Button onClick={this.handleFormReset} >重置</Button>
-                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >确定</Button>
+                    <Button onClick={this.handleFormReset} >{formatMessage({id: 'intl.reset'})}</Button>
+                    <Button style={{marginLeft: 8}} type="primary" onClick={this.handleSubmit} >{formatMessage({id: 'intl.submit'})}</Button>
                   </FormItem>
                 </Form>
               </Card>

@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {Form, Switch, } from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class EditStatus extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class EditStatus extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -30,12 +32,13 @@ class EditStatus extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayoutWithLabel}
-          label="服务器地址状态"
+          label={formatMessage({id: 'intl.status'})}
+
         >
           {getFieldDecorator('status',
             { initialValue: this.props.editRecord ? (this.props.editRecord.status===1?true:false) : false
               ,valuePropName: 'checked' })(
-            <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            <Switch checkedChildren={formatMessage({id: 'intl.enable'})} unCheckedChildren={formatMessage({id: 'intl.disable'})} />
           )}
         </FormItem>
       </Form>

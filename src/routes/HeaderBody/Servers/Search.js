@@ -10,6 +10,8 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -33,27 +35,28 @@ class SearchForm extends Component {
     this.props.handleFormReset()
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
 
-          <FormItem label="显示">
+          <FormItem label={formatMessage({id: 'intl.display_type'})}>
             {getFieldDecorator('display_type',{
               initialValue:  'all',
             })(
               <RadioGroup>
-                <RadioButton value="all">全部</RadioButton>
-                <RadioButton value="only_enabled">启用</RadioButton>
+                <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
+                <RadioButton value="only_enabled">{formatMessage({id: 'intl.enable'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
-            {(this.props.showAddBtn)?<Button  style={{marginLeft: 8}}   type="primary"   onClick={this.props.clickAdd} icon='plus'>添加</Button>:null}
+            <Button type="primary" htmlType="submit">{formatMessage({id: 'intl.search'})}</Button>
+            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}</Button>
+            {(this.props.showAddBtn)?<Button  style={{marginLeft: 8}}   type="primary"   onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>:null}
           </FormItem>
-          <FormItem  label="打开操作栏" style={{float:'right'}}  className="openOperate">
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})}  style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateServer')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateServer',checked);
               this.props.changeShowOperate()
