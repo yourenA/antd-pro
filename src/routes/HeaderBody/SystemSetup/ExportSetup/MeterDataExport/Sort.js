@@ -139,6 +139,7 @@ class Container extends Component {
 
   handleExport=()=>{
     let card=this.state.cards;
+    const {intl:{formatMessage}} = this.props;
     let value=this.state.value;
     console.log('card',card)
     if(card.length>0){
@@ -153,11 +154,19 @@ class Container extends Component {
       }).then((response)=> {
         console.log(response);
         if(response.status===200){
-          message.success('修改导出设置成功')
+          message.success(
+            formatMessage(
+              {id: 'intl.operate_successful'},
+              {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.export_setup'})}
+            )
+          )
         }
       })
     }else{
-      message.error('字段不能为空')
+
+      message.error(
+        formatMessage({id: 'intl.field'})+ formatMessage({id: 'intl.can_not_be_empty'})
+      )
     }
   }
   onChange = (e) => {

@@ -42,7 +42,7 @@ class EditUserArchives extends Component {
     });
   }
   downloadTemplates=()=>{
-    download(`${config.prefix}/templates?type=meter&language=${localStorage.getItem('locale') === 'en'?'en':'zh-CN'}`)
+    download(`${config.prefix}/templates?type=meter&language=${sessionStorage.getItem('locale') === 'en'?'en':'zh-CN'}`)
   }
   renderTreeSelect=(data)=>{
     return data.map((item)=>{

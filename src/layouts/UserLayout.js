@@ -20,6 +20,13 @@ import zhCN from './../locale/zh-CN.js';  //导入 i18n 配置文件,需要手�
 import enUS from './../locale/en-US.js';
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
+// let output={}
+// for(let key in zhCN){
+//   // console.log(zhCN[key])
+//   // console.log(enUS[key])
+//   output[zhCN[key]]=enUS[key]
+// }
+// console.log('output',output)
 addLocaleData([...en, ...zh]);
 import find from 'lodash/find'
 const links = [];
@@ -45,6 +52,7 @@ const query = {
     minWidth: 1200,
   },
 };
+
 class UserLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
@@ -55,7 +63,7 @@ class UserLayout extends React.PureComponent {
     this.state = {
       company_name: '',
       company: [],
-      locale: localStorage.getItem('locale') || 'zh-CN'
+      locale: sessionStorage.getItem('locale') || 'zh-CN'
     };
   }
 
@@ -91,7 +99,7 @@ class UserLayout extends React.PureComponent {
               locale: company_name.language,
             }, function () {
               if (company_name.language) {
-                localStorage.setItem('locale', company_name.language)
+                sessionStorage.setItem('locale', company_name.language)
               }
             })
           } else {
@@ -124,7 +132,7 @@ class UserLayout extends React.PureComponent {
         },function () {
           if (company_name.language) {
             console.log('company_name.language',company_name.language)
-            localStorage.setItem('locale', company_name.language)
+            sessionStorage.setItem('locale', company_name.language)
           }
         })
       } else {
@@ -141,11 +149,12 @@ class UserLayout extends React.PureComponent {
   }
 
   getPageTitle() {
-    return `登录-${projectName}`;
+
+    return  this.state.locale === 'en' ? `Sign in-${enUS['intl.project_name']}`: `登陆-${zhCN['intl.project_name']}`;
   }
 
   render() {
-    console.log('this.state.locale',this.state.locale)
+    console.log('this.state.locale',<FormattedMessage id="intl.project_name"/>)
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
           <div className={styles.login_mask}></div>

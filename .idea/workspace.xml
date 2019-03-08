@@ -3,72 +3,40 @@
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/common/nav.js" afterPath="$PROJECT_DIR$/src/common/nav.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/About.js" afterPath="$PROJECT_DIR$/src/layouts/About.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" afterPath="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/UserLayout.js" afterPath="$PROJECT_DIR$/src/layouts/UserLayout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/layouts/headerBodyContent.js" afterPath="$PROJECT_DIR$/src/layouts/headerBodyContent.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/locale/en-US.js" afterPath="$PROJECT_DIR$/src/locale/en-US.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/AccountManage/Sider.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/AccountManage/Sider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/locale/zh-CN.js" afterPath="$PROJECT_DIR$/src/locale/zh-CN.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorErrorAnalysis/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddOrEditConcentrator.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddOrEditConcentrator.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorModels/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/DataImportProcess/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/ConcentratorOnlife.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/ConcentratorOnlife.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/VendorConcentrator.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/VendorConcentrator.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MemberConsumption/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MemberConsumption/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/ConcentratorError.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/ConcentratorError.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/ConcentratorErrorSearch.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/ConcentratorErrorSearch.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Sider.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Sider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/UserMeterError.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/UserMeterError.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ConcentratorOfflineSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ConcentratorOfflineSetup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/Card.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/Card.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MemberExport/Sort.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MemberExport/Sort.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MeterDataExport/Sort.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MeterDataExport/Sort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MeterDataExportIndex.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/MeterDataExportIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/OriginalCards.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ExportSetup/OriginalCards.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/LeakWarningSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/LeakWarningSetup.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/MeterUploadSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/MeterUploadSetup.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/NightWarningSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/NightWarningSetup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Sider.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Sider.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Unusual_water.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Unusual_water.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ValveStatusSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ValveStatusSetup.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/VoltageSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/VoltageSetup.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ZeroWarningSetup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ZeroWarningSetup.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditUnusualModels.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditUnusualModels.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditUnusualSpecial.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditUnusualSpecial.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/ImportUserArchives.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/ImportUserArchives.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserArchives/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ChangeMeterValueForm.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ChangeMeterValueForm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/DelMeterValueForm.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/DelMeterValueForm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ExportForm.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/ExportForm.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/addOrEditUsergroup.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsergroupManage/addOrEditUsergroup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/UsersManage/Search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Search.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorMange/Search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VendorConcentrator/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VendorConcentrator/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Index.js" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Index.js" />
     </list>
@@ -98,52 +66,18 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.7081138">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Search.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1161">
-                  <caret line="48" column="74" selection-start-line="48" selection-start-column="41" selection-end-line="48" selection-end-column="74" />
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Detail.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="27">
-                  <caret line="289" column="98" selection-start-line="289" selection-start-column="98" selection-end-line="289" selection-end-column="98" />
-                  <folding>
-                    <element signature="e#0#45#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="en-US.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/locale/en-US.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="27">
-                  <caret line="114" column="19" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="19" />
-                  <folding>
-                    <element signature="e#0#48#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/common/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="73" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="73" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -159,7 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/AreaManage/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Servers/Index.js" />
@@ -210,6 +143,7 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/VendorConcentrator.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
         <option value="$PROJECT_DIR$/src/locale/en-US.js" />
+        <option value="$PROJECT_DIR$/src/layouts/UserLayout.js" />
       </list>
     </option>
   </component>
@@ -241,7 +175,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -254,7 +188,102 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="routes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="routes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HeaderBody" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant-pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
@@ -271,19 +300,19 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup\ExportSetup" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\DMA\images" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\FlowMeters" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\HomePage" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\ant-pro\y\ant-pro\src\layouts" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\HomePage" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\ValveSensors" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\LiquidValveAnalysis" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup\ExportSetup" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\DMA\images" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\FlowMeters" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\HomePage" />
     </key>
   </component>
   <component name="RunManager">
@@ -725,6 +754,10 @@
       <workItem from="1551775048409" duration="4099000" />
       <workItem from="1551837355066" duration="20098000" />
       <workItem from="1551924423719" duration="61000" />
+      <workItem from="1552010892940" duration="1092000" />
+      <workItem from="1552026096392" duration="71000" />
+      <workItem from="1552027652620" duration="24000" />
+      <workItem from="1552027681876" duration="1474000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -744,13 +777,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3119781000" />
+    <option name="totallyTimeSpent" value="3122442000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09378293" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21654373" sideWeight="0.496208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286334" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16948257" sideWeight="0.503792" order="2" side_tool="true" content_ui="tabs" />
@@ -836,20 +869,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/StatisticsDaily/ConcentratorError.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -1176,8 +1195,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1161">
           <caret line="48" column="74" selection-start-line="48" selection-start-column="41" selection-end-line="48" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/locale/en-US.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5157">
+          <caret line="193" column="22" selection-start-line="193" selection-start-column="22" selection-end-line="193" selection-end-column="23" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#0#48#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1185,20 +1211,25 @@
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
-          <caret line="289" column="98" selection-start-line="289" selection-start-column="98" selection-end-line="289" selection-end-column="98" />
+          <caret line="289" column="18" selection-start-line="289" selection-start-column="18" selection-end-line="289" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/UserLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="182" column="19" selection-start-line="182" selection-start-column="7" selection-end-line="182" selection-end-column="19" />
           <folding>
-            <element signature="e#0#45#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/locale/en-US.js">
+    <entry file="file://$PROJECT_DIR$/src/common/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="114" column="19" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="216">
+          <caret line="8" column="73" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="73" />
+          <folding />
         </state>
       </provider>
     </entry>

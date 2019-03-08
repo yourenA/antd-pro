@@ -70,7 +70,7 @@ class HeaderBodyLayout extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      locale: localStorage.getItem('locale') || "zh-CN"
+      locale: sessionStorage.getItem('locale') || "zh-CN"
     };
   }
   getPageTitle() {
@@ -78,14 +78,15 @@ class HeaderBodyLayout extends React.PureComponent {
     let {pathname} = location;
     const company_name = sessionStorage.getItem('company_name');
     const company_code = sessionStorage.getItem('company_code');
-    let title = company_name + projectName;
+    const projectName=this.state.locale === 'en' ? `${enUS['intl.project_name']}`: `${zhCN['intl.project_name']}`;
+    let title = company_name + projectName
     getRouteData('HeaderBodyLayout').forEach((item) => {
       // console.log(`/${company_code}/main${item.path}`)
       if (`/${company_code}/main${item.path}` === pathname) {
-        title = `${item.name} - ${company_name + projectName}`;
+        title = `${this.state.locale === 'en' ? `${enUS[`intl.${item.name}`]}`: `${zhCN[`intl.${item.name}`]}`} - ${company_name + projectName}`;
       }
       if (pathname.indexOf(`system_setup`) > 0) {
-        title = `系统设置 - ${company_name + projectName}`;
+        title = `${this.state.locale === 'en' ? `${enUS[`intl.system`]}`: `${zhCN[`intl.system`]}`} - ${company_name + projectName}`;
       }
     });
     return title;

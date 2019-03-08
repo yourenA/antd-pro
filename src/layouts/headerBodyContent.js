@@ -68,7 +68,7 @@ class TestLayout extends React.PureComponent {
       voltage_status_abnormality_count: false,
       concentrator_offline_abnormality_count: false,
       mobileVisible: false,
-      locale: localStorage.getItem('locale') || "zh-CN"
+      locale: sessionStorage.getItem('locale') || "zh-CN"
     };
   }
 
@@ -83,7 +83,7 @@ class TestLayout extends React.PureComponent {
   }
 
   componentDidMount() {
-    console.log(this.props)
+    const {intl:{formatMessage}} = this.props;
     const {location} = this.props;
     let {pathname} = location;
     const pathArr = pathname.split('/')
@@ -105,38 +105,45 @@ class TestLayout extends React.PureComponent {
     const notificationText = {
       consumption_abnormality: {
         name: 'consumption_abnormality',
-        title: '用水量异常报警',
-        text: '个水表出现用水量异常',
+        title: formatMessage({id: 'intl.water_consumption_abnormal_analysis'}) ,
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.water_consumption_abnormal_analysis'})}),
         urlSuffix: 'consumption_abnormality'
       },
-      zero_abnormality: {name: 'zero_abnormality', title: '零流量异常报警', text: '个水表出现零流量异常', urlSuffix: 'zero_abnormality'},
+      zero_abnormality: {name: 'zero_abnormality', title:formatMessage({id: 'intl.zero_consumption_abnormal_analysis'}) ,
+        text: '个水表出现零流量异常', urlSuffix: 'zero_abnormality'},
       night_abnormality: {
         name: 'night_abnormality',
-        title: '夜间流量异常报警',
-        text: '个水表出现夜间流量异常',
+        title: formatMessage({id: 'intl.night_consumption_abnormal_analysis'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.night_consumption_abnormal_analysis'})}),
         urlSuffix: 'night_abnormality'
       },
-      leak_abnormality: {name: 'leak_abnormality', title: '漏水异常报警', text: '个水表出现漏水异常报警', urlSuffix: 'leak_abnormality'},
+      leak_abnormality: {name: 'leak_abnormality', title:formatMessage({id: 'intl.water_leak_abnormal_analysis'}) ,
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.water_leak_abnormal_analysis'})}),
+        urlSuffix: 'leak_abnormality'},
       valve_status_abnormality: {
         name: 'valve_status_abnormality',
-        title: '水表阀控异常报警',
-        text: '个水表出现阀控异常报警',
+        title: formatMessage({id: 'intl.valve_status_abnormal_analysis'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.valve_status_abnormal_analysis'})}),
         urlSuffix: 'valve_status_abnormality'
       },
       voltage_status_abnormality: {
         name: 'voltage_status_abnormality',
-        title: '水表电池电压异常报警',
-        text: '个水表出现电池电压异常报警',
+        title: formatMessage({id: 'intl.voltage_status_abnormal_analysis'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.voltage_status_abnormal_analysis'})}),
         urlSuffix: 'voltage_status_abnormality'
       },
       concentrator_offline_abnormality: {
         name: 'concentrator_offline_abnormality',
-        title: '集中器离线异常报警',
-        text: '个集中器出现离线异常',
+        title: formatMessage({id: 'intl.concentrator_abnormal_analysis'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.concentrator_abnormal_analysis'})}),
         urlSuffix: 'statistics_daily/concentrator_error'
       },
-      error_upload: {name: 'error_upload', title: '水表错报预警', text: '个水表出现错报', urlSuffix: 'meter_unusual_analysis'},
-      missing_upload: {name: 'missing_upload', title: '水表漏报预警', text: '个水表出现漏报', urlSuffix: 'meter_unusual_analysis'},
+      error_upload: {name: 'error_upload', title: formatMessage({id: 'intl.water_meter'})+formatMessage({id: 'intl.error'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.water_meter'})+formatMessage({id: 'intl.error'})}),
+        urlSuffix: 'meter_unusual_analysis'},
+      missing_upload: {name: 'missing_upload', title: formatMessage({id: 'intl.water_meter'})+formatMessage({id: 'intl.missing'}),
+        text: formatMessage({id: 'intl.alert_type'},{type: formatMessage({id: 'intl.water_meter'})+formatMessage({id: 'intl.missing'})}),
+        urlSuffix: 'meter_unusual_analysis'},
     }
     request(`/summary_abnormality`, {
       method: 'get',
@@ -151,6 +158,7 @@ class TestLayout extends React.PureComponent {
   }
 
   renderNotification = (key, data, notificationText)=> {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const NotifyDay = localStorage.getItem(company_code + key);
     const dispatch = this.props.dispatch;
@@ -173,10 +181,11 @@ class TestLayout extends React.PureComponent {
               localStorage.setItem(company_code + key, date);
               notification.close(key)
             }
-            }>今天不再提醒</a><span className="ant-divider"/><a href="javascript:;" onClick={()=> {
+            }>{ formatMessage({id: 'intl.no_longer_reminded_today'})}</a><span className="ant-divider"/><a
+            href="javascript:;" onClick={()=> {
             dispatch(routerRedux.push(`/${company_code}/main/unusual_analysis/${notificationText.urlSuffix}`));
           }
-          }>查看详情</a>
+          }>{ formatMessage({id: 'intl.show_details'})}</a>
           </p>
         </div>,
       };
@@ -214,7 +223,6 @@ class TestLayout extends React.PureComponent {
     notification.destroy();
     window.removeEventListener('resize', this.resize)
   }
-
 
 
   handleClick = (e) => {
@@ -275,7 +283,7 @@ class TestLayout extends React.PureComponent {
                   <Icon type={item.icon}/>
                     <FormattedMessage id={`intl.${item.name}`}/>
                     {showBadge && <span>
-                <Tooltip placement="right" title="红点表示当天存在异常报警">
+                <Tooltip placement="right" title={ formatMessage({id: 'intl.nav_tip'})}>
                   <span> < Badge status="error"/></span>
                 </Tooltip>
               </span>}
@@ -322,6 +330,7 @@ class TestLayout extends React.PureComponent {
   }
 
   handleEditPassword = ()=> {
+    const {intl:{formatMessage}} = this.props;
     const that = this;
     const formValues = this.editFormRef.props.form.getFieldsValue();
     console.log(formValues)
@@ -331,7 +340,12 @@ class TestLayout extends React.PureComponent {
     }).then((response)=> {
       console.log(response)
       if (response.status === 200) {
-        message.success('修改密码成功');
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.password'})}
+          )
+        )
         that.setState({
           editModal: false
         })
@@ -340,8 +354,9 @@ class TestLayout extends React.PureComponent {
       console.log(err)
     });
   }
+
   render() {
-    const {login, dispatch,intl:{formatMessage} } = this.props;
+    const {login, dispatch, intl:{formatMessage}} = this.props;
     const {isMobile} =this.props.global;
     const company_code = sessionStorage.getItem('company_code');
     const company_name = sessionStorage.getItem('company_name');
@@ -360,7 +375,7 @@ class TestLayout extends React.PureComponent {
       >
         {company_code === 'mys' && <Menu.Item key={'main'}>
           <Link className={`${styles.homepage}`} to={`/${company_code}/main`}>
-            <Icon type={'home'}/><span>首页</span>
+            <Icon type={'home'}/><span>{ formatMessage({id: 'intl.home'})}</span>
           </Link>
         </Menu.Item>}
         {this.getNavMenuItems(this.menus, company_code + '/main/')}

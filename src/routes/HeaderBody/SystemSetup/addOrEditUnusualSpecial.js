@@ -8,7 +8,8 @@ import moment from 'moment'
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +22,7 @@ class AddPoliciesForm extends Component {
 
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel2 = {
       labelCol: {
         xs: {span: 24},
@@ -41,12 +43,12 @@ class AddPoliciesForm extends Component {
                 {...formItemLayoutWithLabel2}
                 label={(
                   <span>
-              水表号
+              {formatMessage({id: 'intl.water_meter_number'})}
             </span>
                 )}>
                 {getFieldDecorator('meter_number', {
                   initialValue: this.props.editSpecialRecord ? this.props.editSpecialRecord.meter_number : "",
-                  rules: [{required: true, message: '水表号不能为空'}],
+                  rules: [{required: true, message: formatMessage({id: 'intl.water_meter_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
                 })(
                   <Input disabled={this.props.editSpecialRecord ? true:false}   />
                 )}
@@ -58,13 +60,13 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel2}
             label={(
               <span>
-              水表异常判断值
+                 {formatMessage({id: 'intl.judgment_value'})}
                   </span>
             )}
           >
             {getFieldDecorator('value', {
               initialValue: this.props.editSpecialRecord ? this.props.editSpecialRecord.value : 0,
-              rules: [{required: true, message: '判断值不能为空'}],
+              rules: [{required: true, message: formatMessage({id: 'intl.judgment_value'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <InputNumber min={0}/>
             )}

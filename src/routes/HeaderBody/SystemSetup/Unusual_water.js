@@ -89,6 +89,7 @@ class EditPassword extends Component {
     });
   }
   handleSubmit=()=>{
+    const that=this;
     this.props.form.validateFields({ force: false },
       (err, values) => {
         console.log('values',values)
@@ -100,22 +101,27 @@ class EditPassword extends Component {
             }
           }).then((response)=> {
             console.log(response);
+
             if(response.status===200){
-              message.success(`修改${this.state.consumption_abnormality_normal_meter_value.display_name}成功`)
+              const {intl:{formatMessage}} = that.props;
+              message.success(`${formatMessage({id: 'intl.edit'})} ${this.state.consumption_abnormality_normal_meter_value.display_name} ${formatMessage({id: 'intl.successful'})}`)
             }
           })
       }
     );
   }
   handleSubmitModel=()=>{
+    const that=this;
+    const {intl:{formatMessage}} = that.props;
     const formValues = this.formRef.props.form.getFieldsValue();
     console.log(formValues)
     if(!formValues.meter_model_id.key ){
-      message.error(`水表类型不能为空`)
+      message.error(`${formatMessage({id: 'intl.water_meter_type'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
     if(formValues.value === undefined ){
-      message.error(`判断值不能为空`)
+      message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
+
       return false
     }
     const isExit=find(this.state.consumption_abnormality_meter_models.value, function(o) { return o.id ===formValues.meter_model_id.key; });
@@ -140,18 +146,19 @@ class EditPassword extends Component {
             }),
 
           })
-          message.success(`添加${this.state.consumption_abnormality_meter_models.display_name}成功`)
+          message.success(`${formatMessage({id: 'intl.add'})} ${this.state.consumption_abnormality_meter_models.display_name} ${formatMessage({id: 'intl.successful'})}`)
         }
       })
     }else{
-      message.error(`该水表类型规则已经存在`)
+      message.error(`${formatMessage({id: 'intl.water_meter_type'})}${formatMessage({id: 'intl.already_exists'})}`)
       return false
     }
   }
   handleSubmitEditModel=()=>{
+    const {intl:{formatMessage}} = this.props;
     const formValues = this.EditformRef.props.form.getFieldsValue();
     if(formValues.value === undefined ){
-      message.error(`判断值不能为空`)
+      message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
     const that=this;
@@ -176,11 +183,12 @@ class EditPassword extends Component {
             return o.name === 'consumption_abnormality_meter_models'
           }),
         })
-        message.success(`修改${this.state.consumption_abnormality_meter_models.display_name}成功`)
+        message.success(`${formatMessage({id: 'intl.edit'})} ${this.state.consumption_abnormality_meter_models.display_name} ${formatMessage({id: 'intl.successful'})}`)
       }
     })
   }
   handleRemoveModel=(id)=>{
+    const {intl:{formatMessage}} = this.props;
     const deleteIndex=findIndex(this.state.consumption_abnormality_meter_models.value, function(o) { return o.id ===id; });
     console.log('deleteIndex',deleteIndex)
     if(deleteIndex !== -1){
@@ -203,7 +211,7 @@ class EditPassword extends Component {
               return o.name === 'consumption_abnormality_meter_models'
             }),
           })
-          message.success(`删除${this.state.consumption_abnormality_meter_models.display_name}成功`)
+          message.success(`${formatMessage({id: 'intl.delete'})} ${this.state.consumption_abnormality_meter_models.display_name} ${formatMessage({id: 'intl.successful'})}`)
         }
       })
     }
@@ -211,14 +219,16 @@ class EditPassword extends Component {
 
 
   handleSubmitSpecial=()=>{
+    const that=this;
+    const {intl:{formatMessage}} = that.props;
     const formValues = this.specialFormRef.props.form.getFieldsValue();
     console.log(formValues)
     if(!formValues.meter_number ){
-      message.error(`水表号不能为空`)
+      message.error(`${formatMessage({id: 'intl.water_meter_number'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
     if(formValues.value === undefined ){
-      message.error(`判断值不能为空`)
+      message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
     const isExit=find(this.state.consumption_abnormality_special_meters.value, function(o) { return o.number ===formValues.meter_number.key; });
@@ -240,16 +250,19 @@ class EditPassword extends Component {
             }),
 
           })
-          message.success(`添加${this.state.consumption_abnormality_special_meters.display_name}成功`)
+          message.success(`${formatMessage({id: 'intl.add'})} ${this.state.consumption_abnormality_special_meters.display_name} ${formatMessage({id: 'intl.successful'})}`)
+
         }
       })
     }else{
-      message.error(`该水表规则已经存在`)
+      message.error(`${formatMessage({id: 'intl.already_exists'})}`)
       return false
     }
   }
 
   handleRemoveSpecial=(number)=>{
+    const that=this;
+    const {intl:{formatMessage}} = that.props;
     const deleteIndex=findIndex(this.state.consumption_abnormality_special_meters.value, function(o) { return o.number ===number; });
     console.log('deleteIndex',deleteIndex)
     if(deleteIndex !== -1){
@@ -269,18 +282,20 @@ class EditPassword extends Component {
               return o.name === 'consumption_abnormality_special_meters'
             }),
           })
-          message.success(`删除${this.state.consumption_abnormality_special_meters.display_name}成功`)
+          message.success(`${formatMessage({id: 'intl.delete'})} ${this.state.consumption_abnormality_special_meters.display_name} ${formatMessage({id: 'intl.successful'})}`)
         }
       })
     }
   }
   handleSubmitEditSpecial=()=>{
+    const that=this;
+    const {intl:{formatMessage}} = that.props;
     const formValues = this.specialEditFormRef.props.form.getFieldsValue();
     if(formValues.value === undefined ){
-      message.error(`判断值不能为空`)
+      message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
-    const that=this;
+
     const editIndex=findIndex(this.state.consumption_abnormality_special_meters.value, function(o) { return o.number ===that.state.editSpecialRecord.number; });
     console.log('editIndex',editIndex)
     this.state.consumption_abnormality_special_meters.value[editIndex].value=formValues.value;
@@ -302,7 +317,8 @@ class EditPassword extends Component {
             return o.name === 'consumption_abnormality_special_meters'
           }),
         })
-        message.success(`修改${this.state.consumption_abnormality_special_meters.display_name}成功`)
+        message.success(`${formatMessage({id: 'intl.edit'})} ${this.state.consumption_abnormality_special_meters.display_name} ${formatMessage({id: 'intl.successful'})}`)
+
       }
     })
   }
@@ -492,7 +508,7 @@ class EditPassword extends Component {
                   </TabPane>
                 </Tabs>
                 <Modal
-                  title="添加水表类型异常规则"
+                  title={formatMessage({id: 'intl.add'})+" "+this.state.consumption_abnormality_meter_models.display_name}
                   visible={this.state.modelModal}
                   onOk={this.handleSubmitModel}
                   onCancel={() => this.setState({modelModal: false})}
@@ -501,7 +517,7 @@ class EditPassword extends Component {
                 </Modal>
                 <Modal
                   key={ Date.parse(new Date())+1}
-                  title="修改水表类型异常规则"
+                  title={formatMessage({id: 'intl.edit'})+" "+this.state.consumption_abnormality_meter_models.display_name}
                   visible={this.state.editModelModal}
                   onOk={this.handleSubmitEditModel}
                   onCancel={() => this.setState({editModelModal: false,editModelRecord:{}})}
@@ -509,7 +525,7 @@ class EditPassword extends Component {
                   <AddOrEditUnusualModels meter_models={meter_models} editModelRecord={this.state.editModelRecord}  wrappedComponentRef={(inst) => this.EditformRef = inst}/>
                 </Modal>
                 <Modal
-                  title="添加特殊水表异常规则"
+                  title={formatMessage({id: 'intl.add'})+" "+this.state.consumption_abnormality_special_meters.display_name}
                   visible={this.state.specialModal}
                   onOk={this.handleSubmitSpecial}
                   onCancel={() => this.setState({specialModal: false})}
@@ -518,7 +534,7 @@ class EditPassword extends Component {
                 </Modal>
                 <Modal
                   key={ Date.parse(new Date())+2}
-                  title="修改特殊水表异常规则"
+                  title={formatMessage({id: 'intl.edit'})+" "+this.state.consumption_abnormality_special_meters.display_name}
                   visible={this.state.editSpecialModal}
                   onOk={this.handleSubmitEditSpecial}
                   onCancel={() => this.setState({editSpecialModal: false,editSpecialRecord:{}})}

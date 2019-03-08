@@ -82,7 +82,7 @@ class Vendor extends PureComponent {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 17)
     }, function () {
-      if (localStorage.getItem('locale') === 'en') {
+      if (sessionStorage.getItem('locale') === 'en') {
         this.setState({
           tableY: this.state.tableY - 20
         })

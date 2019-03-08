@@ -65,6 +65,7 @@ class EditPassword extends Component {
     });
   }
   handleSubmit=()=>{
+    const that=this;
     this.props.form.validateFields({ force: true },
       (err, values) => {
         console.log('values',values)
@@ -79,7 +80,13 @@ class EditPassword extends Component {
           }).then((response)=> {
             console.log(response);
             if(response.status===200){
-              message.success('修改漏水异常报警成功')
+              const {intl:{formatMessage}} = that.props;
+              message.success(
+                formatMessage(
+                  {id: 'intl.operate_successful'},
+                  {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.leak_warning_setup'})}
+                )
+              )
             }
           })
         }

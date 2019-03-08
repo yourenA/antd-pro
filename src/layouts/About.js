@@ -2,11 +2,11 @@
  * Created by Administrator on 2018/1/2.
  */
 import React from 'react';
-import {Breadcrumb, Collapse, Icon, Anchor} from 'antd';
-import { connect } from 'dva';
-const { Link } = Anchor;
+import {Breadcrumb, Collapse, Icon, Anchor,LocaleProvider} from 'antd';
+import {connect} from 'dva';
+const {Link} = Anchor;
 import DocumentTitle from 'react-document-title';
-import { ContainerQuery } from 'react-container-query';
+import {ContainerQuery} from 'react-container-query';
 import manufater from './../images/about/manufater.png'
 import area from './../images/about/area.png'
 import server from './../images/about/server.png'
@@ -20,6 +20,14 @@ import open2 from './../images/about/open2.png'
 
 import classNames from 'classnames';
 import './About.less'
+import en_US from 'antd/lib/locale-provider/en_US';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import {IntlProvider, addLocaleData, injectIntl, FormattedMessage} from 'react-intl';
+import zhCN from './../locale/zh-CN.js';  //导入 i18n 配置文件,需要手动创建并填入语言转换信息
+import enUS from './../locale/en-US.js';
+import en from 'react-intl/locale-data/en';
+import zh from 'react-intl/locale-data/zh';
+addLocaleData([...en, ...zh]);
 const query = {
   'screen-xs': {
     maxWidth: 575,
@@ -46,59 +54,62 @@ class TestLayout extends React.PureComponent {
     super(props);
     this.state = {
       current: '',
-      editModal:false
+      editModal: false
     };
   }
+
   componentDidMount = ()=> {
-    let items=document.querySelectorAll('.about-content-item img');
-    let imgObj=document.querySelectorAll(".about-content-item img");
-    let l=0;
-    window.onscroll=function(){
+    let items = document.querySelectorAll('.about-content-item img');
+    let imgObj = document.querySelectorAll(".about-content-item img");
+    let l = 0;
+    window.onscroll = function () {
       var seeHeight = document.documentElement.clientHeight;
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      for(let i=0;i<items.length;i++){
-        if(items[i].offsetTop +50 < seeHeight + scrollTop){
-          if(imgObj[i].getAttribute("src") == ""){
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].offsetTop + 50 < seeHeight + scrollTop) {
+          if (imgObj[i].getAttribute("src") == "") {
             imgObj[i].src = imgObj[i].getAttribute("data-src");
           }
         }
-        if(imgObj[i].offsetTop + 50 > seeHeight + scrollTop){
-          l=i;
+        if (imgObj[i].offsetTop + 50 > seeHeight + scrollTop) {
+          l = i;
           break;
         }
 
       }
     }
   }
-  componentWillUnmount=()=>{
+  componentWillUnmount = ()=> {
   }
+
   getPageTitle() {
-    let title = '说明文档';
-    return title;
+    return this.state.locale === 'en' ? `${enUS['intl.document']}`: `${zhCN['intl.document']}`
   }
-  scrollToAnchor= (id)=>{
+
+  scrollToAnchor = (id)=> {
     document.getElementById(id).scrollIntoView();
   }
+
   render() {
     const company_code = sessionStorage.getItem('company_code');
-    const layout= (
+    const layout = (
       <div className="about-container">
         <div className="about-anchor">
           <Anchor>
-            <Link href="#/about/#system-desc"    title={<span  >1.系统概述</span>} />
-            <Link href="#/about/#import"   title={<span >2.数据导入流程</span>}>
-              <Link  href="#/about/#manufater"    title={<span >2.2 添加安装小区</span>} />
-              <Link  href="#/about/#server"    title={<span  >2.3 添加服务器地址</span>} />
-              <Link  href="#/about/#concentratorModel"    title={<span >2.4 添加集中器类型</span>} />
-              <Link  href="#/about/#concentrator"    title={<span >2.5 添加集中器</span>} />
-              <Link  href="#/about/#meterModel"     title={<span  >2.6 添加水表类型</span>} />
-              <Link href="#/about/#meter"     title={<span  >2.7 导入用户和水表数据</span>} />
-              <Link href="#/about/#process"     title={<span >2.8 一站添加数据</span>} />
+            <Link href="#/about/#system-desc" title={<span  >1.系统概述</span>}/>
+            <Link href="#/about/#import" title={<span >2.数据导入流程</span>}>
+              <Link href="#/about/#manufater" title={<span >2.2 添加安装小区</span>}/>
+              <Link href="#/about/#server" title={<span  >2.3 添加服务器地址</span>}/>
+              <Link href="#/about/#concentratorModel" title={<span >2.4 添加集中器类型</span>}/>
+              <Link href="#/about/#concentrator" title={<span >2.5 添加集中器</span>}/>
+              <Link href="#/about/#meterModel" title={<span  >2.6 添加水表类型</span>}/>
+              <Link href="#/about/#meter" title={<span  >2.7 导入用户和水表数据</span>}/>
+              <Link href="#/about/#process" title={<span >2.8 一站添加数据</span>}/>
             </Link>
-            <Link href="#/about/#openMeter"     title={<span  >3.开关阀操作</span>} />
+            <Link href="#/about/#openMeter" title={<span  >3.开关阀操作</span>}/>
           </Anchor>
         </div>
-        <div className="about-content" >
+        <div className="about-content">
           <div className="about-content-item" id="/about/#system-desc">
             <h2>1.系统概述</h2>
             <div className="item-desc">
@@ -109,7 +120,7 @@ class TestLayout extends React.PureComponent {
               </ul>
             </div>
           </div>
-          <div className="about-content-item"  id="/about/#import">
+          <div className="about-content-item" id="/about/#import">
             <h2>2.数据导入流程</h2>
             <div className="item-desc" id="/about/#manufater">
               <h3>2.1 添加厂商</h3>
@@ -215,16 +226,21 @@ class TestLayout extends React.PureComponent {
             </div>
           </div>
         </div>
-        </div>
+      </div>
     )
     return (
-      <DocumentTitle title={this.getPageTitle()}>
-        <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
-      </DocumentTitle>
+      <IntlProvider locale={this.state.locale === 'en' ? 'en' : 'zh'}
+                    messages={this.state.locale === 'en' ? enUS : zhCN}>
+
+        <LocaleProvider locale={this.state.locale === 'en' ? en_US : zh_CN}>
+          <DocumentTitle title={this.getPageTitle()}>
+            <ContainerQuery query={query}>
+              {params => <div className={classNames(params)}>{layout}</div>}
+            </ContainerQuery>
+          </DocumentTitle>
+        </LocaleProvider>
+      </IntlProvider>
     );
   }
 }
-export default connect(state => ({
-}))(TestLayout);
+export default connect(state => ({}))(TestLayout);
