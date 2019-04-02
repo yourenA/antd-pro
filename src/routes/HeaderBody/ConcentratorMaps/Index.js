@@ -8,6 +8,8 @@ import defaultIcon from './default.png'
 import warmingIcon from './warming.png'
 import errorIcon from './error.png'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   concentrator_maps: state.concentrator_maps,
 }))
@@ -173,27 +175,28 @@ class ConcentratorManage extends PureComponent {
     this.timer=setTimeout(this.getPoint, 10000)
   }
   showInfo = (point)=> {
+    const {intl:{formatMessage}} = this.props;
     let dot = new this.BMap.Point(point.longitude, point.latitude);
     let status_text = "正常";
     switch (point.status) {
       case  1:
-        status_text = "正常";
+        status_text =  formatMessage({id: 'intl.only_normal'});
         break;
       case  -1:
-        status_text = "漏报";
+        status_text =  formatMessage({id: 'intl.missing'});
         break;
       case  -2:
-        status_text = "错报";
+        status_text =  formatMessage({id: 'intl.error'});
         break;
     }
     let content = `<div class="table-content">
 <table class="custom-table">
-                    <thead> <tr><th class="table-header-1">大表信息&nbsp&nbsp&nbsp</th><th  ></th></tr></thead>
+                    <thead> <tr><th class="table-header-1">${ formatMessage({id: 'intl.big_meter_info'})}&nbsp&nbsp&nbsp</th><th  ></th></tr></thead>
                     <tbody>
-                    <tr><td >大表编号 : </td><td>${point.meter_number}</td></tr>
-                    <tr><td >所属集中器号 : </td><td>${point.concentrator_number}</td></tr>
-                    <tr><td >状态 : </td><td>${status_text}</td></tr>
-                    <tr><td >读值 : </td><td>${point.value}</td></tr>
+                    <tr><td >${ formatMessage({id: 'intl.big_meter_number'})} : </td><td>${point.meter_number}</td></tr>
+                    <tr><td >${ formatMessage({id: 'intl.concentrator_number'})} : </td><td>${point.concentrator_number}</td></tr>
+                    <tr><td >${ formatMessage({id: 'intl.status'})} : </td><td>${status_text}</td></tr>
+                    <tr><td >${ formatMessage({id: 'intl.value'})} : </td><td>${point.value}</td></tr>
                     </tbody>
                     </table>
 `
@@ -202,6 +205,7 @@ class ConcentratorManage extends PureComponent {
     let info = this.map.openInfoWindow(infoWindow, dot); //开启信息窗口
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     return (
       <Layout className="layout">
         <Sider refreshSider={this.state.refreshSider} showSiderCon={this.state.showSiderCon}
@@ -210,13 +214,14 @@ class ConcentratorManage extends PureComponent {
         />
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '大表数据分析地图'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+              {name: formatMessage({id: 'intl.big_meter_analysis_map'})}]}>
               <div style={{position:'relative'}}>
                 <div id="mapData" className="mapData" style={{margin: '-16px'}}></div>
                 <div className="map-tip">
-                  <Badge status="processing"  text="正常" /><br/>
-                  <Badge status="warning"  text="漏报" /><br/>
-                  <Badge status="error"  text="错报" />
+                  <Badge status="processing"  text={ formatMessage({id: 'intl.only_normal'})} /><br/>
+                  <Badge status="warning"  text={ formatMessage({id: 'intl.missing'})} /><br/>
+                  <Badge status="error"  text={ formatMessage({id: 'intl.error'})} />
                 </div>
               </div>
 

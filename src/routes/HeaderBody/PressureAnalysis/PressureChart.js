@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 import {fixedZero} from './../../../utils/utils'
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class DMArate extends PureComponent {
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ export default class DMArate extends PureComponent {
   }
   dynamic = (data)=> {
     console.log('data',data)
+    const {intl:{formatMessage}} = this.props;
     if(this.myChart){
       this.myChart.clear();
     }
@@ -90,7 +93,7 @@ export default class DMArate extends PureComponent {
         },
         label: {
           normal: {
-            formatter: '最小有效\n压力值: '+this.props.minimum_pressure_value,
+            formatter:   formatMessage({id: 'intl.min_effective_value'})+' '+this.props.minimum_pressure_value,
           }
         },
         data: [
@@ -109,7 +112,7 @@ export default class DMArate extends PureComponent {
         },
         label: {
           normal: {
-            formatter: '最大有效\n压力值: '+this.props.maximum_pressure_value,
+            formatter:  formatMessage({id: 'intl.max_effective_value'})+' '+this.props.maximum_pressure_value,
           }
         },
         data: [

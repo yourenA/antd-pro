@@ -40,6 +40,7 @@ class SearchForm extends Component {
   render() {
     const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
+    const that=this
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
@@ -80,12 +81,19 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
           </FormItem>
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})} style={{float:'right'}} className="openOperate">
+            <Switch defaultChecked={localStorage.getItem('canOperateConcentratorError')==='true'?true:false} onChange={(checked)=>{
+              localStorage.setItem('canOperateConcentratorError',checked);
+              that.props.changeShowOperate()
+            }} />
+          </FormItem>
           <FormItem style={{float:'right'}}>
             <Badge status="success" />{ formatMessage({id: 'intl.online'})} <Divider type="vertical"/>
             <Badge status="error" />{ formatMessage({id: 'intl.offline'})} <Divider type="vertical"/>
             <Badge status="warning" />{ formatMessage({id: 'intl.sleep'})} <Divider type="vertical"/>
             <Badge status="default" />{ formatMessage({id: 'intl.no_record'})}
           </FormItem>
+
         </Row>
       </Form>
     )

@@ -8,6 +8,8 @@ import {getTimeDistance,disabledDate,errorNumber,renderIndex} from './../../../u
 import request from './../../../utils/request'
 import moment from 'moment'
 const TabPane = Tabs.TabPane;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   member_meter_data: state.member_meter_data,
 }))
@@ -51,6 +53,7 @@ class Detail extends PureComponent {
     });
   }
   dynamic=(data1)=>{
+    const {intl:{formatMessage}} = this.props;
     const data=[...data1].reverse();
     let uploaded_at=[];
     let value=[];
@@ -89,13 +92,13 @@ class Detail extends PureComponent {
         splitArea: {
           show: false
         },
-        name: '时间',
+        name: formatMessage({id: 'intl.time'}) ,
       },
       yAxis: {
         splitArea: {
           show: false
         },
-        name: '单位0.01米',
+        name: formatMessage({id: 'intl.unit'}) +' 0.01m',
         max:this.props.maxValue
       },
       series: [{
@@ -128,9 +131,10 @@ class Detail extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const columns = [
       {
-        title: '序号',
+        title:  formatMessage({id: 'intl.index'}),
         dataIndex: 'id',
         key: 'id',
         width: 50,
@@ -139,21 +143,21 @@ class Detail extends PureComponent {
           return (index+1)
         }
       },
-      {title: '时间', dataIndex: 'uploaded_at', key: 'uploaded_at'},
-      {title: '液位实际值', dataIndex: 'value', key: 'value'},
+      {title:  formatMessage({id: 'intl.time'}), dataIndex: 'uploaded_at', key: 'uploaded_at'},
+      {title: formatMessage({id: 'intl.current_liquid_value'}), dataIndex: 'value', key: 'value'},
       {
-        title: '状态', dataIndex: 'status', key: 'status',
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status',
         render: (val, record, index) => {
           let status='success';
           let explain='';
           switch (val){
             case -2:
               status='error'
-              explain='错报'
+              explain= formatMessage({id: 'intl.error'})
               break;
             default:
               status='success'
-              explain='正常'
+              explain= formatMessage({id: 'intl.only_normal'})
           }
           return (
             <p>
@@ -166,18 +170,19 @@ class Detail extends PureComponent {
     return (
       <div>
         <div >
-         选择日期:<DatePicker
+          { formatMessage({id: 'intl.date'})}:<DatePicker
             value={this.state.date}
             allowClear={false}
             disabledDate={disabledDate}
             format="YYYY-MM-DD"
             style={{width: 150}}
-            placeholder="选择日期"
             onChange={(e)=>this.fetch(e)}
           />
           <Tabs defaultActiveKey="1">
-            <TabPane tab="折线图" key="1">   <div className="liquid-history" style={{width:'100%',height:'500px'}}></div></TabPane>
-            <TabPane tab="表格" key="2">
+            <TabPane tab={ formatMessage({id: 'intl.line_chart'})} key="1">
+              <div className="liquid-history" style={{width:'100%',height:'500px'}}></div>
+            </TabPane>
+            <TabPane tab={ formatMessage({id: 'intl.table'})} key="2">
               <Table
                 className={'meter-table'}
                 bordered

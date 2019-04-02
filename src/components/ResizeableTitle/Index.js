@@ -66,7 +66,7 @@ class Demo extends React.Component {
   handleResize = index => (e, {size}) => {
     this.setState(({columns}) => {
       const nextColumns = [...columns];
-      if (nextColumns[index].title === '序号') {
+      if (nextColumns[index].title === this.props.intl.formatMessage({id: 'intl.index'})) {
         nextColumns[index] = {
           ...nextColumns[index],
           width: size.width,
@@ -97,19 +97,19 @@ class Demo extends React.Component {
                   width: size.width,
                   render: (val, record, index) => {
                     let status = "success";
-                    let status_text = "是";
+                    let status_text = this.props.intl.formatMessage({id: 'intl.yes'});
                     switch (val) {
                       case  1:
                         status = 'success';
-                        status_text = "是";
+                        status_text = this.props.intl.formatMessage({id: 'intl.yes'});
                         break;
                       case  -1:
                         status = 'error';
-                        status_text = "否";
+                        status_text =this.props.intl.formatMessage({id: 'intl.no'}) ;
                         break;
                       case  -2:
                         status = 'warning';
-                        status_text = "休眠";
+                        status_text =this.props.intl.formatMessage({id: 'intl.sleep'}) ;
                         break;
                     }
                     return (
@@ -153,7 +153,7 @@ class Demo extends React.Component {
                   render: (val, record, index) => {
                     return (
                       <p>
-                        <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? "是" : "否"}
+                        <Badge status={val === 1 ? "success" : "error"}/>{val === 1 ? this.props.intl.formatMessage({id: 'intl.yes'}) : this.props.intl.formatMessage({id: 'intl.no'})}
                       </p>
                     )
                   }

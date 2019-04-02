@@ -4,6 +4,8 @@ import {Card, Modal} from 'antd';
 import {Row, Col,Button} from 'antd';
 import  Detail from './ValveHistory'
 import request from "./../../../utils/request";
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class LiquidPosition extends PureComponent {
   constructor(props) {
     super(props);
@@ -63,6 +65,7 @@ export default class LiquidPosition extends PureComponent {
     }
 
     const that = this;
+    const {intl:{formatMessage}} = this.props;
     setTimeout(function () {
       for (let i = 0; i < data.length; i++) {
         that['myChart' + i] = that.echarts.init(document.querySelector(`.valve-item-${i}`));
@@ -81,7 +84,7 @@ export default class LiquidPosition extends PureComponent {
           legend: {
             orient: 'vertical',
             left: 'left',
-            data: ['当前阀门开度', '']
+            data: [formatMessage({id: 'intl.current_valve_open_value'}) , '']
           },
           series: [
             {
@@ -91,7 +94,7 @@ export default class LiquidPosition extends PureComponent {
               center: ['50%', '60%'],
               data: [
                 {
-                  value: parseFloat(data[i].current_value), name: '当前阀门开度'
+                  value: parseFloat(data[i].current_value), name: formatMessage({id: 'intl.current_valve_open_value'})
                   ,
                   itemStyle: {
                   normal: {
@@ -151,29 +154,30 @@ export default class LiquidPosition extends PureComponent {
   }
   render() {
     const that = this;
-
+    const {intl:{formatMessage}} = this.props;
     return (
       <div className="content">
-        <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '数据分析 '}, {name: '液位/比例阀控传感器分析'}, {name: '比例阀控传感器分析'}]}>
+        <PageHeaderLayout title="系统管理 " breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+          {name: formatMessage({id: 'intl.liquid/valve_analysis'})}, {name: formatMessage({id: 'intl.valve_sensors'}) }]}>
           <Card bordered={false} style={{margin: '-16px -16px 0'}}>
             {this.state.data.length>0?
               <Row gutter={24}>
                 {this.state.data.map((item, index)=> {
                   return <Col xs={1} sm={24} md={12} lg={12} xl={8} key={index}>
                     <div className={ `valve-item-${index}`} style={{width: '100%', height: '250px'}}></div>
-                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>查看详情</Button>
+                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
                   </Col>
                 })}
 
               </Row>
-            :<h3 style={{textAlign:'center'}}>无数据</h3>}
+            :<h3 style={{textAlign:'center'}}>{formatMessage({id: 'intl.no_data'})}</h3>}
 
           </Card>
         </PageHeaderLayout>
         <Modal
           width="950px"
           destroyOnClose={true}
-          title={`${this.state.number}  详细信息`}
+          title={`${this.state.number} ${formatMessage({id: 'intl.detail'})}`}
           visible={this.state.showModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({showModal: false})}

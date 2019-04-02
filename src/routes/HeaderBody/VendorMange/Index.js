@@ -230,7 +230,7 @@ class Vendor extends PureComponent {
       //     return renderIndex(meta,this.state.initPage,index)
       //   }
       // },
-      {title:  formatMessage({id: 'intl.vendor_number'}), width: 120, dataIndex: 'code', key: 'code',
+      {title:  formatMessage({id: 'intl.vendor_number'}), width: 130, dataIndex: 'code', key: 'code',
         fixed:'left',
         render: (val, record, index) => {
           return ellipsis2(val,130)

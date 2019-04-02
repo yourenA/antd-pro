@@ -4,6 +4,8 @@ import {Row, Col,Card, Modal,Button} from 'antd';
 import  Detail from './LiquidHistory'
 import request from "./../../../utils/request";
 import max from 'lodash/max'
+import {injectIntl} from 'react-intl';
+@injectIntl
 export default class LiquidPosition extends PureComponent {
   constructor(props) {
     super(props);
@@ -63,7 +65,9 @@ export default class LiquidPosition extends PureComponent {
     }
 
     const that = this;
+    const {intl:{formatMessage}} = this.props;
     setTimeout(function () {
+
       for (let i = 0; i < data.length; i++) {
         that['myChart' + i] = that.echarts.init(document.querySelector(`.valve-item-${i}`));
         that.myChart.push(that['myChart' + i])
@@ -88,11 +92,11 @@ export default class LiquidPosition extends PureComponent {
           xAxis: {
             type: 'category',
             data: xData,
-            name: '液位传感器编号',
+            name:formatMessage({id: 'intl.liquid_sensors_number'}) ,
           },
           yAxis: {
             type: 'value',
-            name: '单位0.01米',
+            name: formatMessage({id: 'intl.unit'})+' 0.01m',
             max:maxValue
           },
           series: [{
@@ -124,27 +128,29 @@ export default class LiquidPosition extends PureComponent {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     return (
       <div className="content">
-        <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '数据分析 '}, {name: '液位/比例阀控传感器分析'}, {name: '液位传感器分析'}]}>
+        <PageHeaderLayout title="系统管理 " breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+          {name: formatMessage({id: 'intl.liquid/valve_analysis'})}, {name: formatMessage({id: 'intl.liquid_sensors'}) }]}>
           <Card bordered={false} style={{margin: '-16px -16px 0'}}>
             {this.state.data.length>0?
               <Row gutter={24}>
                 {this.state.data.map((item, index)=> {
                   return <Col xs={1} sm={24} md={12} lg={12} xl={8} key={index}>
                     <div className={ `valve-item-${index}`} style={{width: '100%', height: '300px'}}></div>
-                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>查看详情</Button>
+                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
                   </Col>
                 })}
 
               </Row>
-              :<h3 style={{textAlign:'center'}}>无数据</h3>}
+              :<h3 style={{textAlign:'center'}}>{formatMessage({id: 'intl.no_data'})}</h3>}
           </Card>
         </PageHeaderLayout>
         <Modal
           width="950px"
           destroyOnClose={true}
-          title={`${this.state.number}  详细信息`}
+          title={`${this.state.number} ${formatMessage({id: 'intl.detail'})}`}
           visible={this.state.showModal}
           onOk={this.handleEdit}
           onCancel={() => this.setState({showModal: false})}

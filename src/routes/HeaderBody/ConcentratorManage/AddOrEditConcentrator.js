@@ -11,7 +11,6 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
 import {injectIntl} from 'react-intl';
-@injectIntl
 class AddConcentrator extends Component {
   constructor(props) {
     super(props);
@@ -459,4 +458,4 @@ class VillageCascader  extends React.Component {
 
 
 const AddConcentratorFormWrap = Form.create()(AddConcentrator);
-export default connect()(AddConcentratorFormWrap);
+export default injectIntl(connect()(AddConcentratorFormWrap));

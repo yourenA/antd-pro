@@ -361,7 +361,7 @@ class Detail extends PureComponent {
             style={{width: 256}}
           />*/}
         </div>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={(company_code!=='hy'&&this.props.showExtra&&(this.state.showEditBtn||this.state.showdelBtn))?
+        <Tabs defaultActiveKey="1" tabBarExtraContent={(this.props.showExtra&&(this.state.showEditBtn||this.state.showdelBtn))?
           <div>
             <Button  type="danger" size="small" onClick={()=>{this.setState({editMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_correct'})}</Button>
             <Button  type="danger" size="small"  onClick={()=>{this.setState({delMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_clear'})}</Button>

@@ -317,7 +317,7 @@ class FunctionContent extends PureComponent {
               <Modal
                 width="750px"
                 key={ Date.parse(new Date())}
-                title={`${this.state.show_member_number} 当天用水量 (红色表示异常时间)`}
+                title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}
@@ -326,7 +326,7 @@ class FunctionContent extends PureComponent {
               </Modal>
               <Modal
                 key={ Date.parse(new Date())+1}
-                title={`确认异常`}
+                title={ formatMessage({id: 'intl.confirm_abnormal'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('3')}
                 onCancel={() => this.setState({processed_model: false})}

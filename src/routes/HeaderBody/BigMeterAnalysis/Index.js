@@ -24,10 +24,13 @@ import styles from './../../PlatformManagement/CardList.less';
 import Detail from './../UserMeterAnalysis/Detail'
 import AnalysisDetail from './AnalysisDetail'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   big_meter_analysis: state.big_meter_analysis,
   global: state.global,
 }))
+
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
     super(props);
@@ -197,6 +200,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {big_meter_analysis: {data, meta, loading}, concentrators, meters} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const {isMobile} =this.props.global;
@@ -213,7 +217,8 @@ class UserMeterAnalysis extends PureComponent {
 
           <div className="content" id="content">
             <BackTop target={()=>{return document.querySelector('#content')} }/>
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '大用户水量分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+              {name: formatMessage({id: 'intl.big_meter_volume'})}]}>
 
               <Card bordered={false} style={{margin: '-16px -16px 0', background: '#f5f5f5'}}>
                 <div className='tableList'>
@@ -258,17 +263,17 @@ class UserMeterAnalysis extends PureComponent {
                             }
                             description={(
                               <div className="big-meter-description">
-                                <p>时间 : <Tooltip title={item.collected_at}><span>{item.collected_at}</span>
+                                <p>${ formatMessage({id: 'intl.date'})} : <Tooltip title={item.collected_at}><span>{item.collected_at}</span>
                                 </Tooltip></p>
                                 <Divider className="big-meter-divider"/>
-                                <p>瞬时流量 : <Tooltip title={item.instantaneous_value}><span className={styles.wordValue}>{item.instantaneous_value}</span></Tooltip>
+                                <p>${ formatMessage({id: 'intl.instantaneous_flow_rate'})} : <Tooltip title={item.instantaneous_value}><span className={styles.wordValue}>{item.instantaneous_value}</span></Tooltip>
                                 </p>
                                 <Divider className="big-meter-divider"/>
-                                <p>正向流量 : <Tooltip title={item.forward_cumulative_value}><span
+                                <p>${ formatMessage({id: 'intl.forward_flow_rate'})} : <Tooltip title={item.forward_cumulative_value}><span
                                   className={styles.wordValue}>{item.forward_cumulative_value}</span></Tooltip>
                                 </p>
                                 <Divider className="big-meter-divider"/>
-                                <p>反向流量 : <Tooltip title={item.reverse_cumulative_value}><span
+                                <p>${ formatMessage({id: 'intl.reverse_flow_rate'})} : <Tooltip title={item.reverse_cumulative_value}><span
                                   className={styles.wordValue}>{item.reverse_cumulative_value}</span></Tooltip></p>
                                 <Divider className="big-meter-divider"/>
                               </div>
@@ -289,7 +294,7 @@ class UserMeterAnalysis extends PureComponent {
         <Modal
           destroyOnClose={true}
           width="1100px"
-          title={`大用户水表 ${this.state.site_name} 水量分析`}
+          title={`${ formatMessage({id: 'intl.big_meter_volume'})} ${this.state.site_name} `}
           visible={this.state.valueAnalysisModal}
           onOk={() => this.setState({valueAnalysisModal: false})}
           onCancel={() => this.setState({valueAnalysisModal: false})}

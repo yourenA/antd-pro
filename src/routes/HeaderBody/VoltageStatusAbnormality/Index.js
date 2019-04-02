@@ -322,7 +322,7 @@ class Leak_abnormality extends PureComponent {
               </Modal>
               <Modal
                 key={ Date.parse(new Date())+1}
-                title={`确认异常`}
+                title={ formatMessage({id: 'intl.confirm_abnormal'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('6')}
                 onCancel={() => this.setState({processed_model: false})}

@@ -2,7 +2,7 @@
  * Created by Administrator on 2019/3/4.
  */
 const en_US = {
-  'intl.project_name':' Monitoring System',//远传水表监控系统
+  'intl.project_name':' ',//远传水表监控系统
   'intl.power_name':'Zhu Hua Water Industry',//珠华水工业
   'intl.sign_in': 'Sign in',//登录
   'intl.sign_out': 'Sign out',//退出
@@ -381,6 +381,46 @@ const en_US = {
   'intl.nav_tip': 'Red dot indicates that there is an abnormal alarm on the day',//红点表示当天存在异常报警
   'intl.water_meter':'water meter',//水表
   'intl.alert_type':' water meters have {type} alarm',//个水表出现{type}报警
+
+  'intl.pressure_sensors':'pressure sensor',//压力传感
+  'intl.pressure_sensors_index':'pressure sensor index',//压力传感器序号
+  'intl.pressure_sensors_number':'pressure sensor number',//压力传感器编号
+  'intl.temperature_sensors':'temperature sensor',//温度传感器
+  'intl.temperature_sensors_index':'temperature sensor index',//压力传感器序号
+  'intl.temperature_sensors_number':'temperature sensor number',//压力传感器编号
+  'intl.liquid_sensors':'liquid sensor',//液位传感器
+  'intl.liquid_sensors_number':'liquid sensor number',//液位传感器编号
+  'intl.valve_sensors':'valve sensor',//比例阀控传感器
+  'intl.valve_sensors_number':'valve sensor number',//比例阀控传感器编号
+  'intl.valve_sensors_index':'valve sensor index',//比例阀控传感器序号
+  'intl.no_data':'no data',//无数据
+  'intl.value':'value',//读值
+  'intl.positive/negative_feedback':'Positive/negative feedback',//正/负反馈
+  'intl.positive_feedback':'positive feedback',//正反馈
+  'intl.negative_feedback':'negative feedback',//负反馈
+  'intl.big_meter_info':'big meter info',//大表信息
+  'intl.big_meter_number':'big meter number',//大表标号
+  'intl.current_data_date':'current data date',//当前数据日期
+  'intl.max_effective_value':'max effective value',//最大有效值
+  'intl.max_actual_value':'max actual  value',//最大有效值
+  'intl.min_actual_value':'min actual value',//最小有效值
+  'intl.current_valve_open_value':'current valve open value',//当前阀门开度
+  'intl.sett_valve_open_value':'Set valve open value',//阀门开度
+  'intl.instantaneous_flow_rate':'instantaneous flow',//瞬时流量
+  'intl.forward_flow_rate':'forward flow',//正向流量
+  'intl.reverse_flow_rate':'reverse flow',//反向流量
+  'intl.Synchronize':'Synchronize big meter',//同步大用户表
+  'intl.current_liquid_value':'current liquid value',//当前液位值
+  'intl.is_automatic_linkage':'is automatic linkage',//是否自动联动
+  'intl.number_of_associated_level_sensor':'number of associated liquid sensor',//关联液位传感器编号
+  'intl.number_of_associated_valve_sensor':'number of associated valve sensor',//关联比例传感器编号
+  'intl.associated_level_sensor':'Associated liquid sensor',//关联液位传感器
+
+  'intl.level_valve_control_threshold_value':'valve control threshold value',//液位阀控门限值
+
+  'intl.associated_valve_sensor':'Associated valve sensor',//关联比例阀控传感器
+  'intl.liquid_sensors_index':'liquid sensor index',//液位传感器序号
+  'intl.unit_meter':'m',//米
 
 }
 export default en_US;

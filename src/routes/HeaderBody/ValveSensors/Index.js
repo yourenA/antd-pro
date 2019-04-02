@@ -14,6 +14,8 @@ import ConnectForm from './ConnectSensor'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   valve_sensors: state.valve_sensors,
   global: state.global,
@@ -93,6 +95,12 @@ class LiquidSensors extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (sessionStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
 
@@ -195,7 +203,13 @@ class LiquidSensors extends PureComponent {
         enabled_date: formValues.enabled_date ? moment(formValues.enabled_date).format('YYYY-MM-DD') : '',
       },
       callback: function () {
-        message.success('添加比例阀控传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.valve_sensors'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -223,7 +237,13 @@ class LiquidSensors extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改比例阀控传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.valve_sensors'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -246,7 +266,13 @@ class LiquidSensors extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除比例阀控传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.valve_sensors'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -268,7 +294,13 @@ class LiquidSensors extends PureComponent {
         ...formValues,
       },
       callback: function () {
-        message.success('修改液位和比例阀控传感器关联成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate:'', type: formatMessage({id: 'intl.associated_level_sensor'})}
+          )
+        )
         that.setState({
           connectModal: false,
         });
@@ -292,7 +324,14 @@ class LiquidSensors extends PureComponent {
         feature:"set_valve_position"
       },
       callback: function () {
-        message.success('设置比例阀控传感器值成功')
+        // message.success('设置比例阀控传感器值成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate:'', type: formatMessage({id: 'intl.sett_valve_open_value'})}
+          )
+        )
         that.setState({
           valveModal: false,
         });
@@ -306,80 +345,81 @@ class LiquidSensors extends PureComponent {
     });
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const { selectedRowKeys } = this.state;
     const {valve_sensors: {data, meta, loading},  sider_regions} = this.props;
     const {isMobile} =this.props.global;
     const columns = [
       {
-        title: '比例阀控传感器编号', width: 150, dataIndex: 'number', key: 'number', fixed: 'left',
+        title:formatMessage({id: 'intl.valve_sensors_number'}) , width: 150, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }
       },
       {
-        title: '传感器序号', dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.valve_sensors_index'}), dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '正/负反馈', dataIndex: 'is_positive_feedback', key: 'is_positive_feedback', width: 80, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.positive/negative_feedback'}) , dataIndex: 'is_positive_feedback', key: 'is_positive_feedback', width: 125, render: (text, record, index) => {
         if (text === 1) {
           return (
-            <div><Badge status="success"/>正反馈</div>
+            <div><Badge status="success"/>{formatMessage({id: 'intl.positive_feedback'})}</div>
           )
         } else if (text === -1) {
           return (
-            <div><Badge status="error"/>负反馈</div>
+            <div><Badge status="error"/>{formatMessage({id: 'intl.negative_feedback'})}</div>
           )
         }
       }
       },
       {
-        title: '当前阀门开度', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.current_valve_open_value'}), dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '最小实际值', dataIndex: 'min_actual_value', key: 'min_actual_value', width: 100, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.min_actual_value'}) , dataIndex: 'min_actual_value', key: 'min_actual_value', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '最大实际值', dataIndex: 'max_actual_value', key: 'max_actual_value', width: 100, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.max_actual_value'}) , dataIndex: 'max_actual_value', key: 'max_actual_value', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '液位阀控门限值', dataIndex: 'thresholds', key: 'thresholds', width: 120, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.level_valve_control_threshold_value'}) , dataIndex: 'thresholds', key: 'thresholds', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '计量单位', dataIndex: 'unit', key: 'unit', width: 80, render: (text, record, index) => {
+        title:formatMessage({id: 'intl.unit'}) , dataIndex: 'unit', key: 'unit', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
       },
       {
-        title: '关联液位传感器编号', width: 160, dataIndex: 'liquid_sersor_number', key: 'liquid_sersor_number',
+        title:formatMessage({id: 'intl.number_of_associated_level_sensor'}) , width: 160, dataIndex: 'liquid_sersor_number', key: 'liquid_sersor_number',
         render: (val, record, index) => {
           return ellipsis2(val, 160)
         }
       },
       {
-        title: '是否自动联动', dataIndex: 'is_automatic_linkage', key: 'is_automatic_linkage', width: 120, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.is_automatic_linkage'}), dataIndex: 'is_automatic_linkage', key: 'is_automatic_linkage', width: 120, render: (text, record, index) => {
         if (text === 1) {
           return (
-            <div><Badge status="success"/>是</div>
+            <div><Badge status="success"/>{formatMessage({id: 'intl.yes'})}</div>
           )
         } else if (text === -1) {
           return (
-            <div><Badge status="error"/>否</div>
+            <div><Badge status="error"/>{formatMessage({id: 'intl.no'})}</div>
           )
         }
       }
       },
       {
-        title: '地址',
+        title:formatMessage({id: 'intl.install_address'}) ,
         dataIndex: 'address',
         key: 'address',
         width: 140,
@@ -388,7 +428,7 @@ class LiquidSensors extends PureComponent {
         }
       },
       {
-        title: '集中器号',
+        title:formatMessage({id: 'intl.concentrator_number'}) ,
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 100,
@@ -398,22 +438,22 @@ class LiquidSensors extends PureComponent {
       },
 
       {
-        title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        title: formatMessage({id: 'intl.enabled_date'}), width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '创建时间', width: 140, dataIndex: 'created_at', key: 'created_at', render: (text, record, index) => {
+        title:formatMessage({id: 'intl.created_time'}) , width: 140, dataIndex: 'created_at', key: 'created_at', render: (text, record, index) => {
         return ellipsis2(text, 140)
       }
       },
       {
-        title:'备注', dataIndex: 'remark', key: 'remark'
+        title:formatMessage({id: 'intl.remark'}), dataIndex: 'remark', key: 'remark'
       }
 
     ];
     const operate={
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}),
       width:280 ,
       fixed: 'right',
       render: (val, record, index) => (
@@ -428,7 +468,7 @@ class LiquidSensors extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
@@ -442,7 +482,7 @@ class LiquidSensors extends PureComponent {
                             valveModal: true
                           }
                         )
-                      }}>阀门开度</a>
+                      }}>{formatMessage({id: 'intl.sett_valve_open_value'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
@@ -456,15 +496,15 @@ class LiquidSensors extends PureComponent {
                             connectModal: true
                           }
                         )
-                      }}>关联液体传感器</a>
+                      }}>{formatMessage({id: 'intl.associated_level_sensor'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn&&
-            <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p></div>}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -482,7 +522,7 @@ class LiquidSensors extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '比例阀控传感器管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name:formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.valve_sensors_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -515,7 +555,7 @@ class LiquidSensors extends PureComponent {
           </div>
           <Modal
             width="60%"
-            title="添加比例阀控传感器"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -525,7 +565,7 @@ class LiquidSensors extends PureComponent {
           <Modal
             width="60%"
             key={ Date.parse(new Date())}
-            title="修改比例阀控传感器"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
@@ -535,7 +575,7 @@ class LiquidSensors extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())+1}
-            title="关联传感器"
+            title={formatMessage({id: 'intl.associated_level_sensor'})}
             visible={this.state.connectModal}
             onOk={this.handleConnect}
             onCancel={() => this.setState({connectModal: false})}
@@ -545,7 +585,7 @@ class LiquidSensors extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())+2}
-            title="设置比例阀门开度"
+            title={formatMessage({id: 'intl.sett_valve_open_value'})}
             visible={this.state.valveModal}
             onOk={this.handleCommand}
             onCancel={() => this.setState({valveModal: false})}

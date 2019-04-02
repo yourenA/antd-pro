@@ -56,7 +56,7 @@ class SearchForm extends Component {
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}</Button>
             {(this.props.showAddBtn)?<Button  style={{marginLeft: 8}}   type="primary"   onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>:null}
           </FormItem>
-          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})}  style={{float:'right'}}  className="openOperate">
+          <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})}   style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateServer')==='true'?true:false} onChange={(checked)=>{
               localStorage.setItem('canOperateServer',checked);
               this.props.changeShowOperate()

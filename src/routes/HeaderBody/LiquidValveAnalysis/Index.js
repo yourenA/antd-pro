@@ -7,6 +7,7 @@ import './index.less'
 import LiquidAnalysis from './LiquidAnalysis'
 import ValveAnalysis from './ValveAnalysis'
 const { Content} = Layout;
+
 @connect(state => ({
   endpoints: state.endpoints,
 }))

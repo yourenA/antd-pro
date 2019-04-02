@@ -8,7 +8,8 @@ import request from "./../../../utils/request";
 
 const Option= Select.Option
 const FormItem = Form.Item;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +33,7 @@ class AddPoliciesForm extends Component {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -56,7 +58,7 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              比例阀控传感器编号
+              {formatMessage({id: 'intl.valve_sensors_number'})}
             </span>
             )}
           >
@@ -70,7 +72,7 @@ class AddPoliciesForm extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              液位传感器编号
+              {formatMessage({id: 'intl.liquid_sensors_number'})}
             </span>
               )}
             >
@@ -89,7 +91,7 @@ class AddPoliciesForm extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              液位传感器编号
+              {formatMessage({id: 'intl.liquid_sensors_number'})}
             </span>
               )}
             >
@@ -105,7 +107,7 @@ class AddPoliciesForm extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              比例阀控传感器编号
+              {formatMessage({id: 'intl.valve_sensors_number'})}
             </span>
               )}
             >

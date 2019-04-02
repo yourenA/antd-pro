@@ -444,7 +444,7 @@ class UserMeterAnalysis extends PureComponent {
       type: 'members/exportConcentratorCSV',
       payload: {
         ...formValues,
-        village_id: formValues.village_id[formValues.village_id.length - 1]
+        village_id: formValues.village_id?formValues.village_id[formValues.village_id.length - 1]:''
       },
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)

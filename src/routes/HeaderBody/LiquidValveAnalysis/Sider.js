@@ -3,6 +3,8 @@ import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
 const { Sider} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   global:state.global,
 }))
@@ -10,9 +12,10 @@ class SiderNav extends PureComponent {
   constructor(props) {
     super(props);
     const {isMobile} =this.props.global;
+    const {intl:{formatMessage}} = this.props;
     this.state = {
       collapsed: isMobile,
-      siderNav: [{name: '液位传感器分析', url: 'liquid_sensors_analysis'}, {name: '比例阀控传感器分析', url: 'valve_sensors_analysis'}],
+      siderNav: [{name: formatMessage({id: 'intl.liquid_sensors'}), url: 'liquid_sensors_analysis'}, {name:  formatMessage({id: 'intl.valve_sensors'}), url: 'valve_sensors_analysis'}],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
 
     }
@@ -36,6 +39,7 @@ class SiderNav extends PureComponent {
     })
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const that=this;
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
@@ -48,7 +52,7 @@ class SiderNav extends PureComponent {
     return (
       <Sider collapsed={this.state.collapsed}  collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
-          选项
+          { formatMessage({id: 'intl.option'})}
         </div>
         <div className="siderNav">
           {renderSiderNav}

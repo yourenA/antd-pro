@@ -9,6 +9,8 @@ import RealDataTable from './RealData'
 import request from '../../../utils/request';
 import find from 'lodash/find'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   village_meter_data: state.village_meter_data,
   global: state.global,
@@ -196,6 +198,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   showInfo = (point)=> {
+    const {intl:{formatMessage}} = this.props;
     let dot = new this.BMap.Point(point.longitude, point.latitude);
     let content = `<div class="table-content">
 <table class="custom-table">
@@ -244,7 +247,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   render() {
-    console.log('maximum_pressure_value',this.state.maximum_pressure_value)
+    const {intl:{formatMessage}} = this.props;
     return (
       <Layout className="layout">
         <Sider
@@ -255,7 +258,8 @@ class UserMeterAnalysis extends PureComponent {
         />
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '实时数据分析'}, {name: '地图展示'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+              {name: formatMessage({id: 'intl.pressure/temperature_map'})}]}>
               <div id="mapData" className="mapData" style={{margin: '-16px'}}></div>
               <div className={`realData ${this.state.collapsed?'realData-collapsed':''}`} >
                 <div className="showToggle"   onClick={()=>{

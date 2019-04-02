@@ -382,6 +382,45 @@ const zh_CN = {
   'intl.water_meter':'水表',//水表
   'intl.alert_type':'个水表出现{type}报警',//个水表出现{type}报警
 
+  'intl.pressure_sensors':'压力传感',//压力传感
+  'intl.pressure_sensors_index':'压力传感器序号',//压力传感器序号
+  'intl.pressure_sensors_number':'压力传感器编号',//压力传感器编号
+  'intl.temperature_sensors':'温度传感器',//温度传感器
+  'intl.temperature_sensors_index':'压力传感器序号',//压力传感器序号
+  'intl.temperature_sensors_number':'压力传感器编号',//压力传感器编号
+  'intl.liquid_sensors':'液位传感器',//液位传感器
+  'intl.liquid_sensors_number':'液位传感器编号',//液位传感器编号
+  'intl.valve_sensors':'比例阀控传感器',//比例阀控传感器
+  'intl.valve_sensors_number':'比例阀控传感器编号',//比例阀控传感器编号
+  'intl.valve_sensors_index':'比例阀控传感器序号',//比例阀控传感器序号
+  'intl.no_data':'无数据',//无数据
+  'intl.value':'读值',//读值
+  'intl.positive/negative_feedback':'正/负反馈k',//正/负反馈
+  'intl.positive_feedback':'正反馈',//正反馈
+  'intl.negative_feedback':'负反馈',//负反馈
+  'intl.big_meter_info':'大表信息',//大表信息
+  'intl.big_meter_number':'大表标号',//大表标号
+  'intl.current_data_date':'当前数据日期',//当前数据日期
+  'intl.max_effective_value':'最大有效值',//最大有效值
+  'intl.max_actual_value':'最大有效值',//最大有效值
+  'intl.min_effective_value':'最小有效值',//最小有效值
+  'intl.current_valve_open_value':'当前阀门开度',//当前阀门开度
+  'intl.sett_valve_open_value':'阀门开度',//阀门开度
+  'intl.instantaneous_flow_rate':'瞬时流量',//瞬时流量
+  'intl.forward_flow_rate':'正向流量',//正向流量
+  'intl.reverse_flow_rate':'反向流量',//反向流量
+  'intl.Synchronize':'同步大用户表',//同步大用户表
+  'intl.current_liquid_value':'当前液位值',//当前液位值
+  'intl.is_automatic_linkage':'是否自动联动',//是否自动联动
+  'intl.number_of_associated_level_sensor':'关联液位传感器编号',//关联液位传感器编号
+  'intl.associated_level_sensor':'关联液位传感器',//关联液位传感器
+  'intl.level_valve_control_threshold_value':'当前液位值',//当前液位值
+  'intl.number_of_associated_valve_sensor':'关联比例传感器编号',//关联比例传感器编号
+  'intl.min_actual_value':'最小有效值',//最小有效值
+  'intl.associated_valve_sensor':'关联比例阀控传感器',//关联比例阀控传感器
+  'intl.liquid_sensors_index':'液位传感器序号',//液位传感器序号
+  'intl.unit_meter':'米',//米
+
 }
 export default zh_CN;
 

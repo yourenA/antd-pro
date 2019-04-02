@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {Form, Input,  Radio, InputNumber} from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
-
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class AddPoliciesForm extends Component {
     };
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -32,13 +34,14 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              比例阀门传感器编号
+               {formatMessage({id: 'intl.valve_sensors_number'})}
             </span>
           )}
         >
           {getFieldDecorator('meter_number', {
             initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-            rules: [{required: true, message: '编号不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.valve_sensors_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
           })(
             <Input disabled/>
           )}
@@ -47,13 +50,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              传感值
+              {formatMessage({id: 'intl.value'})}
             </span>
           )}
         >
           {getFieldDecorator('value', {
             initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.current_value) : '',
-            rules: [{required: true, message: '名称不能为空'}],
+            rules: [{required: true, message:  formatMessage({id: 'intl.value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <InputNumber
               min={0}

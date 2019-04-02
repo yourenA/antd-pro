@@ -60,7 +60,7 @@ export default class Demo extends React.Component {
   handleResize = index => (e, { size }) => {
     this.setState(({ columns }) => {
       const nextColumns = [...columns];
-      if(nextColumns[index].title==='序号'){
+      if(nextColumns[index].title=== this.props.intl.formatMessage({id: 'intl.index'})){
         nextColumns[index] = {
           ...nextColumns[index],
           width: size.width,

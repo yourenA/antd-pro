@@ -319,14 +319,14 @@ const data = [{
           path: 'hy_community_analysis',
           component: HYCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         },
         {
           name: 'village_meter_data_manual',
           path: 'manually_community_analysis',
           component: ManuallyCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         }, {
           name: 'meter_volume_data',
           path: 'user_meter_analysis',
@@ -338,7 +338,7 @@ const data = [{
           path: 'big_meter_analysis',
           component: BigMeterAnalysis,
           permissions: ['member_meter_data'],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         },{
           name: 'user_meter_volume',
           path: 'member_consumption',
@@ -351,21 +351,21 @@ const data = [{
           path: 'map_demo',
           component: MapDemo,
           permissions: ['concentrator_real_time_data',],
-          showCompany: ['zhsgy']
+          showCompany: ['zhsgy','amwares']
         },
         {
           name: 'big_meter_analysis_map',
           path: 'big_meter_map',
           component: ConcentratorMaps,
           permissions: ['concentrator_maps',],
-          showCompany: ['mys']
+          showCompany: ['mys','amwares']
         },
         {
           name: 'pressure_history',
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy']
+          showCompany: ['zhsgy','amwares']
         },
         // {
         //   name: '温度传感器历史分析',
@@ -399,7 +399,7 @@ const data = [{
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
-          showCompany: ['mys','test']
+          showCompany: ['mys','test','amwares']
         }
         // ,{
         //   name: '产销差分析',
@@ -453,14 +453,14 @@ const data = [{
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
-          showCompany: ['mys','test']
+          showCompany: ['mys','test','amwares']
         },
         {
           name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
-          showCompany: ['mys','test']
+          showCompany: ['mys','test','amwares']
         },
         {
           name: 'monitor_meter_manage',
@@ -474,21 +474,21 @@ const data = [{
           path: 'manually_meter_manage',
           component: ManuallyMeterManage,
           permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         },
         {
           name: 'pressure_sensors_manage',
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy']
+          showCompany: ['zhsgy','amwares']
         },
         {
           name: 'temperature_sensors_manage',
           path: 'temperature_sensors',
           component: Temperature,
           permissions: [ 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
-          showCompany: ['zhsgy']
+          showCompany: ['zhsgy','amwares']
         },
         //   {
         //   name: '指令和状态查看',
@@ -501,7 +501,7 @@ const data = [{
           path: 'flow_meters',
           component: FlowMeters,
           permissions: [ 'flow_meter_add_and_edit', 'flow_meter_delete'],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         }
 
       ],
@@ -547,14 +547,14 @@ const data = [{
           path: 'DMA',
           component: DMA,
           permissions: [ 'area_add_and_edit', 'area_delete'],
-          showCompany: ['hy']
+          showCompany: ['hy','amwares']
         },
         {
           name: 'meter_reading_path',
           path: 'locations_manage',
           component: Locations,
           permissions: [ 'location_edit'],
-          showCompany: ['qc']
+          showCompany: ['amwares']
         },
 
         {

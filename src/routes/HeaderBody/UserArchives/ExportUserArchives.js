@@ -19,6 +19,7 @@ class EditUserArchives extends Component {
     };
   }
   componentDidMount() {
+    this.onChangeCasader()
   }
   renderTreeNodes=(data)=>{
     return data.map((item) => {
@@ -42,6 +43,7 @@ class EditUserArchives extends Component {
       return item
     })
   }
+
   onChangeCasader=(value)=>{
     console.log('value',value);
     const that=this;
@@ -50,7 +52,8 @@ class EditUserArchives extends Component {
     request(`/concentrators`, {
       method: 'get',
       params: {
-        village_id:value[value.length-1]
+        village_id:value?value[value.length-1]:'',
+        return:'all'
       }
     }).then((response)=> {
       console.log(response);
@@ -111,7 +114,6 @@ class EditUserArchives extends Component {
             </span>
           )}>
           {getFieldDecorator('village_id', {
-            rules: [{required: true, message: '安装小区不能为空'}],
           })(
             <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(this.props.sider_regions.data)} placeholder="请选择"/>
           )}
@@ -136,9 +138,8 @@ class EditUserArchives extends Component {
         >
           {getFieldDecorator('meter_model_id', {
             initialValue: '',
-            rules: [{required: true, message: '水表类型不能为空'}],
           })(
-            <Select >
+            <Select  allowClear={true}>
               { this.props.meter_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
             </Select>
           )}

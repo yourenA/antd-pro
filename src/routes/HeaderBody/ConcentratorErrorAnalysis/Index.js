@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Badge, Layout, message, Modal, Button, Progress} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
-import {renderIndex, ellipsis, GetQueryString,ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis, GetQueryString,ellipsis2,fillZero} from './../../../utils/utils'
 
 import Search from './Search'
 import Sider from './../Sider'
@@ -12,13 +12,16 @@ import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
 import debounce from 'lodash/throttle'
+import Detail from './../ConcentratorManage/Detail'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
+import request from "./../../../utils/request";
 const {Content} = Layout;
 import {injectIntl} from 'react-intl';
 @injectIntl
 @connect(state => ({
   concentrator_errors: state.concentrator_errors,
   manufacturers: state.manufacturers,
+  servers: state.servers,
 }))
 class UserMeterAnalysis extends PureComponent {
   constructor(props) {
@@ -28,6 +31,7 @@ class UserMeterAnalysis extends PureComponent {
     this.initConcentrator = GetQueryString('concentrator', this.props.history.location.search)
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
+      commandBtn: find(this.permissions, {name: 'user_send_command'}),
       showAddBtnByCon: false,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY: 0,
@@ -44,6 +48,7 @@ class UserMeterAnalysis extends PureComponent {
       member_number: '',
       per_page:30,
       canLoadByScroll:true,
+      canOperateConcentrator: localStorage.getItem('canOperateConcentratorError') === 'true' ? true : false,
     }
   }
 
@@ -57,6 +62,13 @@ class UserMeterAnalysis extends PureComponent {
       },
       callback: ()=> {
         this.changeTableY()
+      }
+    });
+    dispatch({
+      type: 'servers/fetch',
+      payload: {
+        display_type: 'only_enabled',
+        return: 'all'
       }
     });
     if (this.initConcentrator) {
@@ -218,10 +230,118 @@ class UserMeterAnalysis extends PureComponent {
       return null
     }
   }
+  changeShowOperate = ()=> {
+    console.log('change')
+    this.setState({canOperateConcentrator: !this.state.canOperateConcentrator})
+  }
+  handleOrder=()=>{
+    const that = this;
+    console.log('this.orderFormRef.state',this.orderFormRef)
+    const state = this.orderFormRef.state;
+    if (state.tabsActiveKey === 'editUpload') {
+      this.handleEditConfig()
+    } else if (state.tabsActiveKey === 'editSleep') {
+      this.handleEditSleep()
+    } else if (state.tabsActiveKey === 'setGPRS') {
+      this.handleSetGPRS()
+    }
+  }
+  handleEditConfig = ()=> {
+    const that = this;
+    const formValues = this.orderFormRef.state;
+    console.log('formValues', this.orderFormRef.state);
+    let upload_time = '';
+    switch (formValues.value) {
+      case  'monthly':
+        upload_time = `${fillZero(formValues.day)} ${fillZero(formValues.hour)}:${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+      case   'daily':
+        upload_time = `${fillZero(formValues.hour)}:${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+      case  'hourly':
+        upload_time = `${fillZero(formValues.minute)}:${fillZero(formValues.second)}`;
+        break;
+      case  'every_fifteen_minutes':
+        upload_time = `00:00`;
+        break;
+    }
+    console.log(this.state.editRecord.id)
+    let putData = {
+      upload_cycle_unit: formValues.value,
+      id: this.state.editRecord.id,
+      upload_time: upload_time
+    }
+    // if (formValues.day || formValues.hour || formValues.minute || formValues.second) {
+    //   putData.upload_time = upload_time
+    // }
+    this.props.dispatch({
+      type: 'concentrators/editConfig',
+      payload: putData,
+      callback: function () {
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.upload_time'})}
+          )
+        )
+        that.setState({
+          orderModal: false,
+        });
+      }
+    });
+  }
+  handleEditSleep = ()=> {
+    const that = this;
+    const formValues = this.orderFormRef.state;
+    this.props.dispatch({
+      type: 'concentrators/editConfig',
+      payload: {
+        id: this.state.editRecord.id,
+        sleep_hours: formValues.checkedList
+      },
+      callback: function () {
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.sleep_hours'})}
+          )
+        )
+        that.setState({
+          orderModal: false,
+        });
+      }
+    });
 
+  }
+  handleSetGPRS=()=>{
+    const {dispatch} = this.props;
+    const that = this;
+    const formValues = this.orderFormRef.state;
+    console.log('formValues',formValues)
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        concentrator_number:this.state.editRecord.number,
+        feature: 'set_gprs',
+        server_id:formValues.server_id.key,
+        apn:formValues.apn
+      },
+      callback:()=>{
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
+      }
+    });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
-    const {concentrator_errors: {data, meta, loading}, manufacturers} = this.props;
+    const {concentrator_errors: {data, meta, loading}, manufacturers,servers} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
@@ -401,6 +521,44 @@ class UserMeterAnalysis extends PureComponent {
       }
       },
     ];
+    const operate = {
+      title: formatMessage({id: 'intl.operate'}),
+      key: 'operation',
+      fixed: 'right',
+      className: 'operation',
+      width: 80,
+      render: (val, record, index) => {
+        return (
+          <p>
+            {
+              this.state.commandBtn &&
+              <span>
+                      <a href="javascript:;" onClick={()=> {
+                        const that=this;
+                        request(`/concentrators/${record.concentrator_number}`, {
+                          method: 'GET',
+                        }).then((response)=> {
+                          console.log(response);
+                          if (response.status === 200) {
+                            that.setState(
+                              {
+                                editRecord: response.data,
+                                orderModal: true
+                              }
+                            )
+                          }
+                        })
+
+                      }}>{ formatMessage({id: 'intl.command'})}</a>
+                </span>
+            }
+          </p>
+        )
+      }
+    }
+    if (this.state.canOperateConcentrator) {
+      columns.push(operate)
+    }
     return (
       <Layout className="layout">
         <Sider noClickSider={this.initConcentrator} changeArea={this.changeArea}
@@ -413,6 +571,7 @@ class UserMeterAnalysis extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search
+                      changeShowOperate={this.changeShowOperate }
                       initConcentrator={this.initConcentrator}
                       wrappedComponentRef={(inst) => this.searchFormRef = inst}
                       initRange={this.state.initRange}
@@ -426,8 +585,10 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:2300,y: this.state.tableY}}
+                                 scroll={{x:2400,y: this.state.tableY}}
                                  history={this.props.history}
+                                 canOperate={this.state.canOperateConcentrator}
+                                 operate={operate}
                                  className={'meter-table error-analysis padding-6'}
                />
                {/*  <Table
@@ -447,6 +608,18 @@ class UserMeterAnalysis extends PureComponent {
                 />*/}
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
+              <Modal
+                width={'60%'}
+                key={ Date.parse(new Date()) + 1}
+                title={ formatMessage({id: 'intl.concentrator'})+" "+ (this.state.editRecord ? this.state.editRecord.number : '') +" "+ formatMessage({id: 'intl.command'})}
+                visible={this.state.orderModal}
+                onOk={this.handleOrder}
+                onCancel={() => this.setState({orderModal: false})}
+              >
+                <Detail
+                  wrappedComponentRef={(inst) => this.orderFormRef = inst}
+                  editRecord={this.state.editRecord}  servers={servers.data} />
+              </Modal>
             </PageHeaderLayout>
           </div>
         </Content>

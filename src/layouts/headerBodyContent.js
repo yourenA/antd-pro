@@ -379,11 +379,11 @@ class TestLayout extends React.PureComponent {
           </Link>
         </Menu.Item>}
         {this.getNavMenuItems(this.menus, company_code + '/main/')}
-        <Menu.Item key={'about'}>
+     {/*   <Menu.Item key={'about'}>
           <Link className={`${styles.homepage}`} to={`/about`} target="_blank">
             <Icon type={'book'}/><span>{formatMessage({id: 'intl.document'})}</span>
           </Link>
-        </Menu.Item>
+        </Menu.Item>*/}
         <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
                      <Avatar icon="user" className={styles.avatar}/>
           {login.username}

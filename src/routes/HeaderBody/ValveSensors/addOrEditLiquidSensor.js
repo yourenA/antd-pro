@@ -11,6 +11,8 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
+import {injectIntl} from 'react-intl';
+@injectIntl
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
@@ -64,6 +66,7 @@ class AddPoliciesForm extends Component {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
@@ -84,13 +87,13 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              液位传感器编号
+               {formatMessage({id: 'intl.valve_sensors_number'})}
             </span>
             )}
           >
             {getFieldDecorator('number', {
               initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-              rules: [{required: true, message: '编号不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.valve_sensors_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <Input />
             )}
@@ -98,11 +101,11 @@ class AddPoliciesForm extends Component {
           <FormItem
             style={{width: '50%', display: 'inline-block'}}
             {...formItemLayoutWithLabel}
-            label="传感器序号"
+            label= {formatMessage({id: 'intl.valve_sensors_index'})}
           >
             {getFieldDecorator('index', {
               initialValue: this.props.editRecord ? this.props.editRecord.index : '',
-              rules: [{required: true, message: '传感器序号不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.valve_sensors_index'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <InputNumber min={1}/>
             )}
@@ -112,13 +115,14 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              阀门联动最低液位值
+               {formatMessage({id: 'intl.min_actual_value'})}
             </span>
             )}
           >
             {getFieldDecorator('min_actual_value', {
               initialValue: this.props.editRecord ? this.props.editRecord.min_actual_value : '',
-              rules: [{required: true, message: '阀门联动最低液位值不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.min_actual_value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
             })(
               <InputNumber  />
             )}
@@ -129,13 +133,14 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-             阀门联动最高液位值
+              {formatMessage({id: 'intl.max_actual_value'})}
             </span>
             )}
           >
             {getFieldDecorator('max_actual_value', {
               initialValue: this.props.editRecord ? this.props.editRecord.max_actual_value : '',
-              rules: [{required: true, message: '阀门联动最高液位值不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.max_actual_value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
             })(
               <InputNumber  />
             )}
@@ -146,13 +151,14 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-             液位阀控门限值
+              {formatMessage({id: 'intl.level_valve_control_threshold_value'})}
             </span>
             )}
           >
             {getFieldDecorator('thresholds', {
               initialValue: this.props.editRecord ? this.props.editRecord.thresholds : '',
-              rules: [{required: true, message: '液位阀控门限值不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.level_valve_control_threshold_value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
             })(
               <InputNumber  />
             )}
@@ -162,7 +168,7 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              计量单位
+               {formatMessage({id: 'intl.unit'})}
             </span>
             )}
           >
@@ -175,30 +181,30 @@ class AddPoliciesForm extends Component {
           <FormItem
             style={{width: '50%', display: 'inline-block'}}
             {...formItemLayoutWithLabel}
-            label="正/负反馈"
+            label= {formatMessage({id: 'intl.positive/negative_feedback'})}
           >
             {getFieldDecorator('is_positive_feedback', {
               initialValue: this.props.editRecord ? this.props.editRecord.is_positive_feedback.toString() : '1',
-              rules: [{required: true, message: '正/负反馈不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.positive/negative_feedback'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <RadioGroup>
-                <Radio value="1">正反馈</Radio>
-                <Radio value="-1">负反馈</Radio>
+                <Radio value="1">{formatMessage({id: 'intl.positive_feedback'})}</Radio>
+                <Radio value="-1">{formatMessage({id: 'intl.negative_feedback'})}</Radio>
               </RadioGroup>
             )}
           </FormItem>
           <FormItem
             style={{width: '50%', display: 'inline-block'}}
             {...formItemLayoutWithLabel}
-            label="是否自动联动"
+            label= {formatMessage({id: 'intl.is_automatic_linkage'})}
           >
             {getFieldDecorator('is_automatic_linkage', {
               initialValue: this.props.editRecord ? this.props.editRecord.is_automatic_linkage.toString() : '1',
-              rules: [{required: true, message: '正/负反馈不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.is_automatic_linkage'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <RadioGroup>
-                <Radio value="1">是</Radio>
-                <Radio value="-1">否</Radio>
+                <Radio value="1"> {formatMessage({id: 'intl.yes'})}</Radio>
+                <Radio value="-1"> {formatMessage({id: 'intl.no'})}</Radio>
               </RadioGroup>
             )}
           </FormItem>
@@ -207,12 +213,12 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              安装小区
+               {formatMessage({id: 'intl.village_name'})}
             </span>
             )}>
             {getFieldDecorator('village_id', {
               initialValue: this.props.editRecord ? this.props.editRecord.village_id : '',
-              rules: [{required: true, message: '安装小区不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.village_name'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <TreeSelect
                 onChange={this.onChangeCasader}
@@ -226,12 +232,13 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              集中器编号
+               {formatMessage({id: 'intl.concentrator_number'})}
             </span>
             )}>
             {getFieldDecorator('concentrator_number', {
               initialValue: this.props.editRecord ? this.props.editRecord.concentrator_number : '',
-              rules: [{required: true, message: '集中器编号不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.concentrator_number'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
             })(
               <Select >
                 { this.state.concentrators.map(item => <Option key={item.id}
@@ -243,12 +250,11 @@ class AddPoliciesForm extends Component {
           <FormItem
             style={{width: '50%', display: 'inline-block'}}
             {...formItemLayoutWithLabel}
-            label="地址"
+            label= {formatMessage({id: 'intl.install_address'})}
           >
             {getFieldDecorator('address', {
               initialValue: this.props.editRecord ? this.props.editRecord.address : '',
-
-              rules: [{required: true, message: '地址不能为空'}],
+              rules: [{required: true, message:  formatMessage({id: 'intl.install_address'})+formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
               <Input />
             )}
@@ -260,7 +266,7 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              开始使用日期
+               {formatMessage({id: 'intl.enabled_date'})}
             </span>
             )}
           >
@@ -279,7 +285,7 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-              备注
+               {formatMessage({id: 'intl.remark'})}
             </span>
             )}
           >

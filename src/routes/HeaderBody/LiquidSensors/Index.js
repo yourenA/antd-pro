@@ -13,6 +13,8 @@ import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 import ConnectForm from './../ValveSensors/ConnectSensor'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   liquid_sensors: state.liquid_sensors,
   global: state.global,
@@ -91,6 +93,12 @@ class LiquidSensors extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (sessionStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
 
@@ -193,7 +201,13 @@ class LiquidSensors extends PureComponent {
         enabled_date: formValues.enabled_date ? moment(formValues.enabled_date).format('YYYY-MM-DD') : '',
       },
       callback: function () {
-        message.success('添加液位传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.liquid_sensors'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -219,7 +233,13 @@ class LiquidSensors extends PureComponent {
         ...formValues,
       },
       callback: function () {
-        message.success('修改液位和比例阀控传感器关联成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate:'', type: formatMessage({id: 'intl.associated_valve_sensor'})}
+          )
+        )
         that.setState({
           connectModal: false,
         });
@@ -244,37 +264,15 @@ class LiquidSensors extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改液位传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.liquid_sensors'})}
+          )
+        )
         that.setState({
           editModal: false,
-        });
-        that.handleSearch({
-          page: that.state.page,
-          number: that.state.number,
-          member_number: that.state.member_number,
-          address: that.state.address,
-          real_name: that.state.real_name,
-          per_page:that.state.per_page
-        })
-      }
-    });
-  }
-  handleChangeMeter = ()=> {
-    const formValues = this.changeFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    const that = this;
-    this.props.dispatch({
-      type: 'liquid_sensors/change',
-      payload: {
-        ...formValues,
-        initial_water: parseFloat(formValues.initial_water),
-        meter_model_id: formValues.meter_model_id.key,
-        is_valve: formValues.is_valve.key ? parseInt(formValues.is_valve.key) : -1,
-      },
-      callback: function () {
-        message.success('更换水表成功')
-        that.setState({
-          changeModal: false,
         });
         that.handleSearch({
           page: that.state.page,
@@ -295,7 +293,13 @@ class LiquidSensors extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除液位传感器成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.liquid_sensors'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -309,49 +313,50 @@ class LiquidSensors extends PureComponent {
   }
 
   render() {
+    const {intl:{formatMessage}} = this.props;
     const { selectedRowKeys } = this.state;
     const {liquid_sensors: {data, meta, loading},  sider_regions} = this.props;
     const {isMobile} =this.props.global;
     const columns = [
       {
-        title: '液位传感器编号', width: 140, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: formatMessage({id: 'intl.liquid_sensors_number'}) , width: 140, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (val, record, index) => {
           return ellipsis2(val, 140)
         }
       },
       {
-        title: '传感器序号', dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.liquid_sensors_index'}) , dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '当前液位实际值', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.current_liquid_value'}) , dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '最小实际值', dataIndex: 'min_actual_value', key: 'min_actual_value', width: 100, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.min_actual_value'}) , dataIndex: 'min_actual_value', key: 'min_actual_value', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '最大实际值', dataIndex: 'max_actual_value', key: 'max_actual_value', width: 100, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.max_actual_value'}) , dataIndex: 'max_actual_value', key: 'max_actual_value', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       },
       {
-        title: '计量单位', dataIndex: 'unit', key: 'unit', width: 80, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.unit'}) , dataIndex: 'unit', key: 'unit', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
       }
       },
       {
-        title: '关联比例传感器编号', width: 160, dataIndex: 'valve_sersor_number', key: 'valve_sersor_number',
+        title: formatMessage({id: 'intl.number_of_associated_valve_sensor'}) , width: 160, dataIndex: 'valve_sersor_number', key: 'valve_sersor_number',
         render: (val, record, index) => {
           return ellipsis2(val, 160)
         }
       },
       {
-        title: '地址',
+        title: formatMessage({id: 'intl.install_address'}) ,
         dataIndex: 'address',
         key: 'address',
         width: 140,
@@ -360,7 +365,7 @@ class LiquidSensors extends PureComponent {
         }
       },
       {
-        title: '集中器号',
+        title: formatMessage({id: 'intl.concentrator_number'}) ,
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 100,
@@ -370,22 +375,22 @@ class LiquidSensors extends PureComponent {
       },
 
       {
-        title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        title:  formatMessage({id: 'intl.enabled_date'}), width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '创建时间', width: 140, dataIndex: 'created_at', key: 'created_at', render: (text, record, index) => {
+        title: formatMessage({id: 'intl.created_time'}) , width: 140, dataIndex: 'created_at', key: 'created_at', render: (text, record, index) => {
         return ellipsis2(text, 140)
       }
       },
       {
-        title:'备注', dataIndex: 'remark', key: 'remark'
+        title: formatMessage({id: 'intl.remark'}), dataIndex: 'remark', key: 'remark'
       }
 
     ];
     const operate={
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}),
       width:225 ,
       fixed: 'right',
       render: (val, record, index) => (
@@ -400,7 +405,7 @@ class LiquidSensors extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
@@ -414,15 +419,15 @@ class LiquidSensors extends PureComponent {
                             connectModal: true
                           }
                         )
-                      }}>关联比例阀控传感器</a>
+                      }}>{formatMessage({id: 'intl.associated_valve_sensor'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn&&
-            <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p></div>}
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -440,7 +445,7 @@ class LiquidSensors extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="系统管理 " breadcrumb={[{name: '设备管理 '}, {name: '液位传感器管理'}]}>
+            <PageHeaderLayout title="系统管理 " breadcrumb={[{name:formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.liquid_sensors_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -473,7 +478,7 @@ class LiquidSensors extends PureComponent {
           </div>
           <Modal
             width="60%"
-            title="添加液位传感器"
+            title={formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -483,7 +488,7 @@ class LiquidSensors extends PureComponent {
           <Modal
             width="60%"
             key={ Date.parse(new Date())}
-            title="修改液位传感器"
+            title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
             onCancel={() => this.setState({editModal: false})}
@@ -493,7 +498,7 @@ class LiquidSensors extends PureComponent {
           </Modal>
           <Modal
             key={ Date.parse(new Date())+1}
-            title="关联传感器"
+            title={formatMessage({id: 'intl.associated_valve_sensor'})}
             visible={this.state.connectModal}
             onOk={this.handleConnect}
             onCancel={() => this.setState({connectModal: false})}

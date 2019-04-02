@@ -14,6 +14,8 @@ import PressureChart from './PressureChart.js'
 import request from '../../../utils/request';
 
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   pressure_analysis: state.pressure_analysis,
 }))
@@ -205,15 +207,16 @@ class UserMeterAnalysis extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const {intl:{formatMessage}} = this.props;
     const columns = [
-      {title: '压力传感器编号', width: 150, dataIndex: 'pressure_sensor_number', key: 'pressure_sensor_number',
+      {title:formatMessage({id: 'intl.pressure_sensors_number'}) , width: 150, dataIndex: 'pressure_sensor_number', key: 'pressure_sensor_number',
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }},
-      {title: '集中器号', width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number',},
-      {title: '当前数据日期', width: 150, dataIndex: 'date', key: 'date',},
+      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number',},
+      {title: formatMessage({id: 'intl.current_data_date'}), width: 150, dataIndex: 'date', key: 'date',},
       {
-        title: '传感器上传时间', dataIndex: 'uploaded_at', key: 'uploaded_at',
+        title:formatMessage({id: 'intl.upload_time'}) , dataIndex: 'uploaded_at', key: 'uploaded_at',
       },
     ];
     return (
@@ -222,7 +225,8 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: '数据分析'}, {name: '压力传感器历史分析'}]}>
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+              {name: formatMessage({id: 'intl.pressure_history'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>

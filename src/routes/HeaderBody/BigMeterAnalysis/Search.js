@@ -9,7 +9,10 @@ import {connect} from 'dva';
 import DataRangePickers from './../../../components/DataRangePickers/Index'
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
+
 }))
 class SearchForm extends Component {
   constructor(props) {
@@ -90,6 +93,7 @@ class SearchForm extends Component {
     return    moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD'))||  endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
   }
   render() {
+    const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
 
@@ -104,7 +108,7 @@ class SearchForm extends Component {
           <FormItem >
          {/*   <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>*/}
-            {this.props.showSyncBtn&&<Button type="primary" style={{marginLeft: 14}} onClick={this.props.handleSync}  className="btn-cyan">同步大用户表</Button>}
+            {this.props.showSyncBtn&&<Button type="primary" style={{marginLeft: 14}} onClick={this.props.handleSync}  className="btn-cyan">{formatMessage({id: 'intl.Synchronize'})}</Button>}
           </FormItem>
         </Row>
       </Form>

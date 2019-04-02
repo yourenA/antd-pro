@@ -13,6 +13,8 @@ import {getPreDay, parseHistory, renderErrorData, renderIndex2} from './../../..
 import uuid from 'uuid/v4'
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   manually_monitoring_meter_data: state.manually_monitoring_meter_data,
   global: state.global,
@@ -220,7 +222,7 @@ class UserMeterAnalysis extends PureComponent {
 
   render() {
     const {manually_monitoring_meter_data: {data, historyData, loading, historyLoading}, concentrators, meters} = this.props;
-
+    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const columns = [
       {

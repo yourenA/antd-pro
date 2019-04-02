@@ -12,6 +12,8 @@ import AddOrEditForm from './addOrEditMeterModels'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
+import {injectIntl} from 'react-intl';
+@injectIntl
 @connect(state => ({
   temperature: state.temperature,
   sider_regions: state.sider_regions,
@@ -94,6 +96,12 @@ class MeterModel extends PureComponent {
   changeTableY = ()=> {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+    }, function () {
+      if (sessionStorage.getItem('locale') === 'en') {
+        this.setState({
+          tableY: this.state.tableY - 20
+        })
+      }
     })
   }
 
@@ -185,7 +193,13 @@ class MeterModel extends PureComponent {
         enabled_date:formValues.enabled_date?moment(formValues.enabled_date).format('YYYY-MM-DD'):'',
       },
       callback: function () {
-        message.success('添加水表成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.temperature_sensors'})}
+          )
+        )
         that.setState({
           addModal: false,
         });
@@ -211,7 +225,13 @@ class MeterModel extends PureComponent {
         id: this.state.editRecord.id,
       },
       callback: function () {
-        message.success('修改压力计成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.temperature_sensors'})}
+          )
+        )
         that.setState({
           editModal: false,
         });
@@ -232,7 +252,13 @@ class MeterModel extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除压力计成功')
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.temperature_sensors'})}
+          )
+        )
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -259,18 +285,18 @@ class MeterModel extends PureComponent {
   }
 
   render() {
-
+    const {intl:{formatMessage}} = this.props;
     const {temperature: {data, meta, loading},sider_regions} = this.props;
     const columns = [
       {
-        title: '温度传感器编号', width: 140, dataIndex: 'number', key: 'number',
+        title:formatMessage({id: 'intl.temperature_sensors_number'}) , width: 140, dataIndex: 'number', key: 'number',
         render: (val, record, index) => {
           return ellipsis2(val, 140)
         }
       },
 
       {
-        title: '温度传感器序号',
+        title:formatMessage({id: 'intl.temperature_sensors_index'}) ,
         dataIndex: 'index',
         key: 'index',
         width: 140,
@@ -279,7 +305,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '计量单位',
+        title: formatMessage({id: 'intl.unit'}) ,
         dataIndex: 'unit',
         key: 'unit',
         width: 120,
@@ -288,7 +314,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '集中器号',
+        title: formatMessage({id: 'intl.concentrator_number'}) ,
         dataIndex: 'concentrator_number',
         key: 'concentrator_number',
         width: 100,
@@ -297,7 +323,7 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '地址',
+        title:formatMessage({id: 'intl.install_address'}) ,
         dataIndex: 'address',
         key: 'address',
         width: 140,
@@ -306,19 +332,19 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: '开始使用日期', width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        title: formatMessage({id: 'intl.enabled_date'}) ,  width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
       {
-        title: '备注', dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
+        title:  formatMessage({id: 'intl.remark'}) ,dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
         return ellipsis2(text, 100)
       }
       }
 
     ];
     const operate={
-      title: '操作',
+      title: formatMessage({id: 'intl.operate'}) ,
       width:  90 ,
       fixed: 'right',
       render: (val, record, index) => (
@@ -333,15 +359,15 @@ class MeterModel extends PureComponent {
                             editModal: true
                           }
                         )
-                      }}>编辑</a>
+                      }}>{formatMessage({id: 'intl.edit'})}</a>
             <span className="ant-divider"/>
                 </span>
           }
           {
             this.state.showdelBtn &&
-            <Popconfirm placement="topRight" title={ <div><p>确定要删除吗?</p></div>}
+            <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">删除</a>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
 
@@ -358,7 +384,8 @@ class MeterModel extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content >
           <div className="content">
-            <PageHeaderLayout title="设备管理 " breadcrumb={[{name: '设备管理 '}, {name: '温度传感器管理'}]}>
+            <PageHeaderLayout title="设备管理 "  breadcrumb={[{name: formatMessage({id: 'intl.device'})},
+              {name: formatMessage({id: 'intl.temperature_sensors_manage'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -386,7 +413,7 @@ class MeterModel extends PureComponent {
             </PageHeaderLayout>
           </div>
           <Modal
-            title="添加温度传感器"
+            title={ formatMessage({id: 'intl.add'})}
             visible={this.state.addModal}
             onOk={this.handleAdd}
             onCancel={() => this.setState({addModal: false})}
@@ -395,7 +422,7 @@ class MeterModel extends PureComponent {
 
           </Modal>
           <Modal
-            key={ Date.parse(new Date())}
+            key={ formatMessage({id: 'intl.edit'})}
             title="修改温度传感器"
             visible={this.state.editModal}
             onOk={this.handleEdit}

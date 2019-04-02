@@ -7,7 +7,7 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
 import {injectIntl} from 'react-intl';
-
+@injectIntl
 class Detail extends PureComponent {
   constructor(props) {
     super(props);
@@ -21,7 +21,7 @@ class Detail extends PureComponent {
       minute:'',
       second:'',
       time:new Date().getTime(),
-      server_id:{key:this.props.editRecord.server_id,lebal:this.props.editRecord.server_ip},
+      server_id:{key:'',lebal:''},
       apn:'CMNET'
     }
   }
@@ -405,4 +405,4 @@ class Detail extends PureComponent {
   }
 }
 const DetailFormWrap = Form.create()(Detail);
-export default injectIntl(connect()(DetailFormWrap));
+export default connect()(DetailFormWrap);
