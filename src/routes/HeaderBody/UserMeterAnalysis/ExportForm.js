@@ -81,7 +81,19 @@ class AddPoliciesForm extends Component {
             </TreeSelect>
           )}
         </FormItem>
-        <FormItem label=   {formatMessage({id: 'intl.start'})}
+        {(company_code === 'dy') ? <FormItem label=   {formatMessage({id: 'intl.date'})}
+                                             {...formItemLayoutWithLabel}>
+          {getFieldDecorator('date', {
+            initialValue: moment(),
+
+          })(
+            <DatePicker
+              allowClear={false}
+              disabledDate={disabledDate}
+              format="YYYY-MM-DD"
+            />
+          )}
+        </FormItem> :<FormItem label=   {formatMessage({id: 'intl.start'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('started_at', {
             initialValue: company_code==='hy'?moment().add(-1, 'days'):moment(),
@@ -94,7 +106,8 @@ class AddPoliciesForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem label=   {formatMessage({id: 'intl.end'})}
+        }
+        {(company_code === 'dy') ? null : <FormItem label=   {formatMessage({id: 'intl.end'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('ended_at', {
             initialValue: moment(),
@@ -106,7 +119,8 @@ class AddPoliciesForm extends Component {
             />
           )}
         </FormItem>
-        {company_code === 'hy' ? null : <FormItem
+        }
+        {(company_code === 'hy'||company_code === 'dy') ? null : <FormItem
           {...formItemLayoutWithLabel}
           label= {formatMessage({id: 'intl.export_type'})}
         >

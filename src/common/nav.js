@@ -59,7 +59,8 @@ import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Inde
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
-import PressureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
+import PressureAnalysis from './../routes/HeaderBody/MYSPressureAnalysis/Index'
+import MYSBigMeterAnalysis from './../routes/HeaderBody/MYSBigMeterAnalysis/Index'
 // import TemperatureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
 import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
 
@@ -361,11 +362,17 @@ const data = [{
           showCompany: ['mys','amwares']
         },
         {
+          name: 'mys_big_meter_analysis',
+          path: 'mys_big_meter_analysis',
+          component: MYSBigMeterAnalysis,
+          showCompany: ['mys','amwares','zhsgy']
+        },
+        {
           name: 'pressure_history',
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy','amwares']
+          showCompany: ['zhsgy','amwares','mys']
         },
         // {
         //   name: '温度传感器历史分析',
@@ -481,7 +488,7 @@ const data = [{
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy','amwares']
+          showCompany: ['zhsgy','amwares','mys','zhsgy']
         },
         {
           name: 'temperature_sensors_manage',

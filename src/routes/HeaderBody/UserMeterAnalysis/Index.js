@@ -251,16 +251,22 @@ class UserMeterAnalysis extends PureComponent {
   }
   exportCSV = ()=> {
     const that = this;
+    const company_code = sessionStorage.getItem('company_code');
     const formValues = this.ExportformRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
+    const payload=(company_code==='dy')?{
+      village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
+      started_at:  moment(formValues.date).format('YYYY-MM-DD'),
+      ended_at:  moment(formValues.date).format('YYYY-MM-DD'),
+    }:{
+      village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
+      started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
+      ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+      export_type: formValues.export_type
+    }
     this.props.dispatch({
       type: 'member_meter_data/exportCSV',
-      payload: {
-        village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
-        started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
-        ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
-        export_type: formValues.export_type
-      },
+      payload: payload,
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)
       }

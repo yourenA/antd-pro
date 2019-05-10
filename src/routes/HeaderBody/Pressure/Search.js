@@ -34,7 +34,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline" style={{overflow: 'hidden'}}>
         <Row >
-          <FormItem label={formatMessage({id: 'intl.display_type'})}>
+          <FormItem label={formatMessage({id: 'intl.pressure_sensors_number'})}>
             {getFieldDecorator('number')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
@@ -47,7 +47,7 @@ class SearchForm extends Component {
           <FormItem >
             <Button type="primary" htmlType="submit">{formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}</Button>
-            {(this.props.showAddBtn)?<Button  type="primary"   onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>:null}
+            {(this.props.showAddBtn)?<Button style={{marginLeft: 8}}  type="primary"   onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>:null}
 
           </FormItem>
           <FormItem label={formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}>

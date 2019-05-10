@@ -370,6 +370,12 @@ class UserMeterAnalysis extends PureComponent {
           return ellipsis2(val, 130)
         }
       },
+      {
+        title: formatMessage({id: 'intl.signal'}), dataIndex: 'signal', key: 'signal', width: 80,
+        render: (val, record, index) => {
+          return ellipsis2(val, 80)
+        }
+      },
       {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date', key: 'date', width: 120,
         render: (val, record, index) => {
           return ellipsis2(val, 120)

@@ -685,6 +685,12 @@ class ConcentratorManage extends PureComponent {
           return ellipsis2(val, 100)
         }
       },
+      {
+        title: formatMessage({id: 'intl.signal'}), dataIndex: 'signal', key: 'signal', width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
       {title: formatMessage({id: 'intl.last_logined_time'}), dataIndex: 'last_logined_at', key: 'last_logined_at', width: 150,},
       {title: formatMessage({id: 'intl.last_onlined_time'}), dataIndex: 'last_onlined_at', key: 'last_onlined_at', width: 150,},
       {

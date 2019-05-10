@@ -422,6 +422,9 @@ const en_US = {
   'intl.liquid_sensors_index':'liquid sensor index',//液位传感器序号
   'intl.unit_meter':'m',//米
 
+  'intl.mys_big_meter_analysis':'Big meter analysis',//大表数据分析
+  'intl.signal':'signal',//信号
+
 }
 export default en_US;
 

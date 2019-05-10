@@ -246,7 +246,7 @@ class UserMeterAnalysis extends PureComponent {
 
         return ellipsis2(val.join('|'), 100)
       }},
-      {title:  formatMessage({id: 'intl.concentrator_type_manage'}), dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100, render: (text, record, index) => {
+      {title:  formatMessage({id: 'intl.concentrator_type'}), dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100, render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
       {title:  formatMessage({id: 'intl.meter_type_manage'}), dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100, render: (text, record, index) => {

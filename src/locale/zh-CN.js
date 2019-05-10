@@ -47,7 +47,7 @@ const zh_CN = {
   'intl.valve_sensors_manage':'阀控传感器管理',//阀控传感器管理
   'intl.monitor_meter_manage':'监控表管理',//监控表管理
   'intl.manually_meter_manage':'手工监控表管理',//手工监控表管理
-  'intl.pressure_sensors_manage':'压力传感器',//压力传感器
+  'intl.pressure_sensors_manage':'压力传感器管理',//压力传感器
   'intl.temperature_sensors_manage':'温度传感器',//温度传感器
   'intl.flow_meters_manage':'流量计管理',//流量计管理
   'intl.system':'系统管理',//系统管理
@@ -328,7 +328,7 @@ const zh_CN = {
   'intl.meter_consumption_last_12_months': '过去12月各类型水表用水量',//过去12月各类型水表用水量
   'intl.average_value': '平均值',//平均值
   'intl.hot_water_meter': '热水表',//热水表
-  'intl.cold_water_meter': '热水表',//热水表
+  'intl.cold_water_meter': '冷水表',//冷水表
   'intl.this_week': '本周',//本周
   'intl.this_month': '本月',//本月
   'intl.this_year': '本年',//本年
@@ -420,6 +420,10 @@ const zh_CN = {
   'intl.associated_valve_sensor':'关联比例阀控传感器',//关联比例阀控传感器
   'intl.liquid_sensors_index':'液位传感器序号',//液位传感器序号
   'intl.unit_meter':'米',//米
+
+  'intl.mys_big_meter_analysis':'大表15分钟数据',//大表数据分析
+  'intl.signal':'当前信号',//当前信号
+
 
 }
 export default zh_CN;
