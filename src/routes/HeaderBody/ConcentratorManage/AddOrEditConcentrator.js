@@ -31,6 +31,11 @@ class AddConcentrator extends Component {
   }
   componentDidMount() {
     const editRecord=this.props.editRecord
+    if(['中国移动','中国电信','中国联通',''].indexOf(editRecord.sim_operator)<0){
+      this.setState({
+        otherOperator:true
+      })
+    }
     if(editRecord.upload_time){
       switch (editRecord.upload_cycle_unit){
         case 'monthly':
@@ -308,16 +313,59 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-              { formatMessage({id: 'intl.sim_operator'})}
+                SIM卡号码类型
+            </span>
+              )}
+            >
+              {getFieldDecorator('sim_number_type', {
+                initialValue:this.props.editRecord ? this.props.editRecord.sim_number_type.toString() : '',
+              })(
+                <Select >
+                  <Option value="1">物联卡号码</Option>
+                  <Option value="2">IC卡的唯一识别号码</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
+                 { formatMessage({id: 'intl.sim_operator'})}
             </span>
               )}
             >
               {getFieldDecorator('sim_operator', {
-                initialValue: this.props.editRecord ? this.props.editRecord.sim_operator : '',
+                initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?this.props.editRecord.sim_operator : 'other',
               })(
-                <Input />
+                <Select onChange={(e)=>{
+                  this.setState({
+                    otherOperator:e==='other'
+                  })
+                }} >
+                  <Option value="中国移动">中国移动</Option>
+                  <Option value="中国电信">中国电信</Option>
+                  <Option value="中国联通">中国联通</Option>
+                  <Option value="">无</Option>
+                  <Option value="other">其它</Option>
+                </Select>
               )}
             </FormItem>
+            {
+              this.state.otherOperator&&<FormItem
+                {...formItemLayoutWithLabel}
+                label={(
+                  <span>
+             其它SIM卡运营商
+            </span>
+                )}
+              >
+                {getFieldDecorator('other_sim_operator', {
+                  initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?'' :this.props.editRecord.sim_operator,
+                })(
+                  <Input />
+                )}
+              </FormItem>
+            }
             <FormItem
               {...formItemLayoutWithLabel}
               label={(

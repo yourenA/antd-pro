@@ -78,7 +78,7 @@ class HeaderBodyLayout extends React.PureComponent {
     let {pathname} = location;
     const company_name = sessionStorage.getItem('company_name');
     const company_code = sessionStorage.getItem('company_code');
-    const projectName=this.state.locale === 'en' ? `${enUS['intl.project_name']}`: `${zhCN['intl.project_name']}`;
+    const projectName=this.state.locale === 'en' ? `${enUS['intl.project_name']}`: (company_code==='hz_test'||company_code==='wm_test'||company_code==='sc_test')?'远传水表测试平台':`${zhCN['intl.project_name']}`;
     let title = company_name + projectName
     getRouteData('HeaderBodyLayout').forEach((item) => {
       // console.log(`/${company_code}/main${item.path}`)
@@ -93,7 +93,7 @@ class HeaderBodyLayout extends React.PureComponent {
   }
 
   render() {
-
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <IntlProvider locale={this.state.locale === 'en' ? 'en' : 'zh'}
                     messages={this.state.locale === 'en' ? enUS : zhCN}>

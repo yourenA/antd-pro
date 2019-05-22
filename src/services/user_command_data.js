@@ -19,6 +19,12 @@ export async function queryMeterDataDetail(params) {
   });
 }
 
+export async function fetchSimInfo(params) {
+  return request(`/concentrators/${params.id}/sim_card`,{
+    method:'PUT',
+  });
+}
+
 export async function remove({id}) {
   return request(`/concentrators/${id}`, {
     method: 'DELETE',

@@ -1,4 +1,4 @@
-import { query,add,remove,edit,queryMeterDataDetail } from '../services/user_command_data';
+import { query,add,remove,edit,queryMeterDataDetail,fetchSimInfo } from '../services/user_command_data';
 
 export default {
   namespace: 'user_command_data',
@@ -59,6 +59,13 @@ export default {
           type: 'changeCommandMsg',
           payload: response.data,
         });
+        if (callback) callback();
+      }
+    },
+    *fetchSimInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSimInfo, payload);
+      console.log(response)
+      if(response.status===200){
         if (callback) callback();
       }
     },

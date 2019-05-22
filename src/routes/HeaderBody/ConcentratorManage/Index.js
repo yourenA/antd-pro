@@ -223,6 +223,11 @@ class ConcentratorManage extends PureComponent {
     })
     const that = this;
     const formValues = this.formRef.props.form.getFieldsValue();
+
+    if(formValues.sim_operator==='other'){
+      formValues.sim_operator=formValues.other_sim_operator
+    }
+    formValues.sim_number_type=formValues.sim_number_type?Number(formValues.sim_number_type):'';
     formValues.villages = [];
     for (let k in formValues) {
       if (k.indexOf('villages-') >= 0) {
@@ -356,6 +361,10 @@ class ConcentratorManage extends PureComponent {
     if (state.tabsActiveKey === 'edit') {
       const formValues = this.editFormRef.props.form.getFieldsValue();
       console.log('formValues', formValues)
+      if(formValues.sim_operator==='other'){
+        formValues.sim_operator=formValues.other_sim_operator
+      }
+      formValues.sim_number_type=formValues.sim_number_type?Number(formValues.sim_number_type):'';
       formValues.villages = [];
       for (let k in formValues) {
         if (k.indexOf('villages-') >= 0) {
@@ -686,6 +695,56 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
+        title:'SIM卡余额', dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title:'SIM卡剩余流量(KB)', dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val, 150)
+        }
+      },
+      {
+        title:'SIM卡查询时间', dataIndex: 'sim_queried_at', key: 'sim_queried_at', width: 150,
+        render: (val, record, index) => {
+          if (record.sim_is_linked=='-1') {
+            return '无正确关联查询平台'
+          } else {
+            return ellipsis2(val, 150)
+          }
+
+        }
+      },
+      {
+        title: 'SIM卡是否在线', dataIndex: 'sim_is_online', key: 'sim_is_online', width: 120,
+        render: (val, record, index) => {
+
+          let status = "success";
+          let status_text = formatMessage({id: 'intl.yes'});
+          switch (val) {
+            case  1:
+              status = 'success';
+              status_text = formatMessage({id: 'intl.yes'})
+              break;
+            case  -1:
+              status = 'error';
+              status_text = formatMessage({id: 'intl.no'});
+              break;
+            case  -2:
+              status = 'warning';
+              status_text =  '未知';
+              break;
+          }
+          return (
+            <p>
+              <Badge status={status}/>{status_text}
+            </p>
+          )
+        }
+      },
+      {
         title: formatMessage({id: 'intl.signal'}), dataIndex: 'signal', key: 'signal', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
@@ -824,7 +883,7 @@ class ConcentratorManage extends PureComponent {
                       </div>
                       <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                        dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                       scroll={{x: 2650, y: this.state.tableY}}
+                                       scroll={{x: 3200, y: this.state.tableY}}
                                        history={this.props.history}
                                        canOperate={this.state.canOperateConcentrator}
                                        operate={operate}
@@ -849,7 +908,6 @@ class ConcentratorManage extends PureComponent {
         </Content>
         <Modal
           width={650}
-          key={ Date.parse(new Date()) + 3}
           title={ formatMessage({id: 'intl.add'})+" "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.addModal}
           //onOk={this.handleAdd}
@@ -886,6 +944,13 @@ class ConcentratorManage extends PureComponent {
           onCancel={() => this.setState({orderModal: false})}
         >
           <Detail
+            handleSearch={()=>{
+              this.setState({orderModal: false})
+              this.handleSearch({
+              page: this.state.page,
+              per_page: this.state.per_page,
+              size_type:this.state.size_type
+            })}}
             wrappedComponentRef={(inst) => this.orderFormRef = inst}
             editRecord={this.state.editRecord}  servers={servers.data} />
         </Modal>

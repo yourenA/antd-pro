@@ -62,6 +62,7 @@ class UserLayout extends React.PureComponent {
     super(props);
     this.state = {
       company_name: '',
+      company_code: '',
       company: [],
       locale: sessionStorage.getItem('locale') || 'zh-CN'
     };
@@ -85,17 +86,19 @@ class UserLayout extends React.PureComponent {
           const company_name = find(this.state.company, function (o) {
             return o.code === url_code;
           });
-          if (window.location.hostname === '124.228.9.126' && url_code !== 'hy') {
-            console.log('试图在124.228.9.126登陆非衡阳用户')
-            return false
-          }
+          // if (window.location.hostname === '124.228.9.126' && url_code !== 'hy') {
+          //   console.log('试图在124.228.9.126登陆非衡阳用户')
+          //   return false
+          // }
           if (window.location.hostname === '182.61.56.51' && url_code === 'hy') {
             console.log('试图在182.61.56.51登陆衡阳用户')
             return false
           }
+          console.log('company_name',company_name)
           if (company_name) {
             this.setState({
               company_name: company_name.name,
+              company_code: company_name.code,
               locale: company_name.language,
             }, function () {
               if (company_name.language) {
@@ -128,6 +131,7 @@ class UserLayout extends React.PureComponent {
       if (company_name) {
         this.setState({
           company_name: company_name.name,
+          company_code: company_name.code,
           locale: company_name.language,
         },function () {
           if (company_name.language) {
@@ -154,7 +158,7 @@ class UserLayout extends React.PureComponent {
   }
 
   render() {
-    console.log('this.state.locale',<FormattedMessage id="intl.project_name"/>)
+    console.log('this.state.company_code',this.state.company_code)
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
           <div className={styles.login_mask}></div>
@@ -164,7 +168,7 @@ class UserLayout extends React.PureComponent {
               <span>
                 <img alt="" className={styles.logo}
                      src={window.location.hostname.indexOf('124.228.9.126') >= 0 ? hyLogo : waterLogo}/>
-                <span className={styles.title}>{this.state.company_name }<FormattedMessage id="intl.project_name"/></span>
+                <span className={styles.title}>{this.state.company_name }{(this.state.company_code==='hz_test'||this.state.company_code==='wm_test'||this.state.company_code==='sc_test')?'远传水表测试平台':<FormattedMessage id="intl.project_name"/>}</span>
 
               </span>
               </div>

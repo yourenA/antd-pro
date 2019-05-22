@@ -128,6 +128,20 @@ class Detail extends PureComponent {
       }
     });
   }
+  UpdateSimInfo=()=>{
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+    type: 'user_command_data/fetchSimInfo',
+      payload:{
+      id:this.props.editRecord.id,
+    },
+    callback:()=>{
+      message.success('更新SIM卡信息成功')
+      this.props.handleSearch()
+    }
+  });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const editRecord=this.props.editRecord
@@ -221,6 +235,12 @@ class Detail extends PureComponent {
               {...formItemLayoutWithLabel}
             >
               {renderInitBtn()}<label htmlFor="">  { formatMessage({id: 'intl.concentrator_tip'})}</label>
+            </FormItem>
+            <FormItem
+              label= '更新SIM卡信息'
+              {...formItemLayoutWithLabel}
+            >
+              <Button   type="primary"  style={{marginRight: 10}} onClick={this.UpdateSimInfo}>更新</Button>
             </FormItem>
           </Form>
         </TabPane>

@@ -376,6 +376,18 @@ class UserMeterAnalysis extends PureComponent {
           return ellipsis2(val, 80)
         }
       },
+      {
+        title:'SIM卡余额', dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title:'SIM卡剩余流量(KB)', dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
+        render: (val, record, index) => {
+          return ellipsis2(val, 150)
+        }
+      },
       {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date', key: 'date', width: 120,
         render: (val, record, index) => {
           return ellipsis2(val, 120)
@@ -623,6 +635,16 @@ class UserMeterAnalysis extends PureComponent {
                 onCancel={() => this.setState({orderModal: false})}
               >
                 <Detail
+                  handleSearch={()=>{
+                    this.setState({orderModal: false})
+                    this.handleSearch({
+                      page: this.state.page,
+                      manufacturer_id: this.state.manufacturer_id,
+                      ended_at: this.state.ended_at,
+                      started_at: this.state.started_at,
+                      per_page:this.state.per_page
+                    })
+                  }}
                   wrappedComponentRef={(inst) => this.orderFormRef = inst}
                   editRecord={this.state.editRecord}  servers={servers.data} />
               </Modal>

@@ -262,6 +262,10 @@ class Vendor extends PureComponent {
   handleAddConcentrator = (current) => {
     const that = this;
     const formValues = this.ConcentratorformRef.props.form.getFieldsValue();
+    if(formValues.sim_operator==='other'){
+      formValues.sim_operator=formValues.other_sim_operator
+    }
+    formValues.sim_number_type=formValues.sim_number_type?Number(formValues.sim_number_type):'';
     formValues.villages = [];
     for (let k in formValues) {
       if (k.indexOf('villages-') >= 0) {
