@@ -238,8 +238,8 @@ const en_US = {
   'intl.server_address':'server address',//服务器地址
   'intl.server_ip':'server IP',//服务器IP
   'intl.server_port':'server port',//服务器端口
-  'intl.sim_number':'sim number',//SIm卡号码
-  'intl.sim_operator':'sim operator',//SIM卡运营商
+  'intl.sim_number':'SIM number',//SIm卡号码
+  'intl.sim_operator':'SIM operator',//SIM卡运营商
   'intl.last_logined_time':'last logined time',//本轮登录时间
   'intl.last_onlined_time':'last onlined time',//最后访问时间
   'intl.upload_cycle_unit_explain':'upload cycle',//上传周期
@@ -424,6 +424,28 @@ const en_US = {
 
   'intl.mys_big_meter_analysis':'Big meter analysis',//大表数据分析
   'intl.signal':'signal',//信号
+
+  'intl.sim_balance':'SIM card balance',//SIM卡余额
+  'intl.sim_traffic':'SIM card traffic(KB)',//SIM卡剩余流量(KB)
+  'intl.sim_queried_at':'SIM card queried time',//SIM卡查询时间
+  'intl.sim_is_online':'SIM card is online',//SIM卡是否在线
+  'intl.no_correct_association':'no correct association query platform',//无正确关联查询平台
+  'intl.unknow':'unknow',//未知
+  'intl.China_Mobile':'China Mobile',//中国移动
+  'intl.China_Telecom':'China Telecom',//中国电信
+  'intl.China_Unicom':'China Unicom',//中国联通
+  'intl.null':'null',//无
+  'intl.other':'other',//其它
+  'intl.other_SIM_card_operators':'other SIM card operators',//其它SIM卡运营商
+  'intl.SIM_card_number_type':'SIM card number type',//SIM卡号码类型
+  'intl.ICC_card_number':'ICC card number',//物联卡号码
+  'intl.identification_number':'IC card unique identification number',//IC卡的唯一识别号码
+  'intl.update_SIM_card_information':'Update SIM card information',//更新SIM卡信息
+  'intl.update':'update',//更新
+
+
+
+
 
 }
 export default en_US;

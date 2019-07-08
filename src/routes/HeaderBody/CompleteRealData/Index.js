@@ -7,7 +7,7 @@ import Sider from './../Sider'
 import {connect} from 'dva';
 import moment from 'moment'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import Detail from './Chart'
 import find from 'lodash/find'
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';
@@ -46,6 +46,7 @@ class UserMeterAnalysis extends PureComponent {
       display_type: 'only_latest',
       per_page:30,
       canLoadByScroll: true,
+      editRecord:{}
       // concentrator_number:''
     }
   }
@@ -78,6 +79,7 @@ class UserMeterAnalysis extends PureComponent {
             ended_at: this.state.ended_at,
             started_at: this.state.started_at,
             per_page:this.state.per_page,
+            display_type: this.state.display_type,
             // area: this.state.area
           }, function () {
             that.setState({
@@ -202,6 +204,12 @@ class UserMeterAnalysis extends PureComponent {
       display_type: this.state.display_type,
       per_page:per_page
       // area: this.state.area
+    })
+  }
+  operate = (record)=> {
+    this.setState({
+      editRecord: record,
+      editModal: true
     })
   }
   render() {
@@ -367,6 +375,20 @@ class UserMeterAnalysis extends PureComponent {
         }
         return ellipsis2(showText,90)
       }},
+      {
+        title: formatMessage({id: 'intl.operate'}),
+        key: 'operation',
+        fixed: 'right',
+        width: 110,
+        render: (val, record, index) => {
+          return (
+            <div>
+              <Button type="primary" size='small'
+                      onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
+            </div>
+          )
+        }
+      }
 
     ];
     const lastWidth = 100;
@@ -422,6 +444,16 @@ class UserMeterAnalysis extends PureComponent {
               </Card>
             </PageHeaderLayout>
           </div>
+          <Modal
+            width="950px"
+            key={ Date.parse(new Date())}
+            title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.editRecord.meter_number} ${ formatMessage({id: 'intl.details'})}`}
+            visible={this.state.editModal}
+            onOk={() => this.setState({editModal: false})}
+            onCancel={() => this.setState({editModal: false})}
+          >
+            <Detail editRecord={this.state.editRecord}/>
+          </Modal>
         </Content>
 
       </Layout>

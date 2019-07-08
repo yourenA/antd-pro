@@ -417,7 +417,7 @@ class TestLayout extends React.PureComponent {
         <div className={styles.header}>
           <div className="logo">
             <Link to={`/${company_code}/main`} className="logo-up animated bounceInLeft ">{company_code === 'hy' &&
-            <img src={HyLogo} style={{marginRight: '5px'}}/>}{company_name}{(company_code==='hz_test'||company_code==='wm_test'||company_code==='sc_test')?'远传水表测试平台':<FormattedMessage id="intl.project_name"/>}</Link>
+            <img src={HyLogo} style={{marginRight: '5px'}}/>}{company_name}<FormattedMessage id="intl.project_name"/></Link>
           </div>
           {
             isMobile ? <Popover className="mobile" content={renderMobileMenu} trigger="click" placement="bottomRight"

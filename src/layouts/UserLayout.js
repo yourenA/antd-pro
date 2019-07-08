@@ -154,7 +154,7 @@ class UserLayout extends React.PureComponent {
 
   getPageTitle() {
 
-    return  this.state.locale === 'en' ? `Sign in-${enUS['intl.project_name']}`: `登陆-${zhCN['intl.project_name']}`;
+    return  this.state.locale === 'en' ? `Sign in`: `登陆`;
   }
 
   render() {
@@ -168,7 +168,7 @@ class UserLayout extends React.PureComponent {
               <span>
                 <img alt="" className={styles.logo}
                      src={window.location.hostname.indexOf('124.228.9.126') >= 0 ? hyLogo : waterLogo}/>
-                <span className={styles.title}>{this.state.company_name }{(this.state.company_code==='hz_test'||this.state.company_code==='wm_test'||this.state.company_code==='sc_test')?'远传水表测试平台':<FormattedMessage id="intl.project_name"/>}</span>
+                <span className={styles.title}>{this.state.company_name }<FormattedMessage id="intl.project_name"/></span>
 
               </span>
               </div>

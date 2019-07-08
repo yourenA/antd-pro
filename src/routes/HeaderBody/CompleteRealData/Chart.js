@@ -19,9 +19,10 @@ export default class DMArate extends PureComponent {
   }
 
   componentDidMount() {
-    this.fetch(this.state.date)
-    window.addEventListener('resize', this.resizeChart)
-
+    console.log('this.props.editRecord.body',this.props.editRecord.body)
+    if(this.props.editRecord.body){
+      this.dynamic(this.props.editRecord.body)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,55 +45,51 @@ export default class DMArate extends PureComponent {
     this.setState({date:date})
     this.fetch(date)
   }
-  fetch = (date)=> {
-    const that = this;
-    request(`/meter_detailed_data`, {
-      method: 'GET',
-      params: {
-        meter_number: this.props.meter_number,
-        date: moment(date).format('YYYY-MM-DD')
-      }
-    }).then((response)=> {
-
-      console.log(response);
-      if (response.status === 200) {
-        let data=[]
-        for (let j = 0; j < response.data.values.length; j++) {
-          let hour = Math.floor((j * 15) / 60);
-          let min = (j * 15) % 60;
-          data.push({time:`${fixedZero(hour)}:${fixedZero(min)}`,value:response.data.values[j],temperature_values:response.data.temperature_values[j]})
-
-        }
-        this.setState({
-          data: data
-        })
-        that.dynamic(response.data)
-      }
-
-    });
-  }
 
   dynamic = (data)=> {
     const {intl:{formatMessage}} = this.props;
     if (this.myChart) {
       this.myChart.clear();
     }
+
     const company_code = sessionStorage.getItem('company_code');
     this.myChart = this.echarts.init(document.querySelector('.PressureLineChart'));
-    let series = [];
-    let legend = [];
     let xAxis = [];
-    let textColor = '#eee'
-    for (let j = 0; j < (24 * 4); j++) {
-      let hour = Math.floor((j * 15) / 60);
-      let min = (j * 15) % 60;
-      xAxis.push(`${fixedZero(hour)}:${fixedZero(min)}`)
+    let textColor = '#eee';
+    let parseDate=[];
+    parseDate.push(data.fmv0)
+    parseDate.push(data.fmv1)
+    parseDate.push(data.fmv2)
+    parseDate.push(data.fmv3)
+    parseDate.push(data.fmv4)
+    parseDate.push(data.fmv5)
+    parseDate.push(data.fmv6)
+    parseDate.push(data.fmv7)
+    parseDate.push(data.fmv8)
+    parseDate.push(data.fmv9)
+    parseDate.push(data.fmv10)
+    parseDate.push(data.fmv11)
+    parseDate.push(data.fmv12)
+    parseDate.push(data.fmv13)
+    parseDate.push(data.fmv14)
+    parseDate.push(data.fmv15)
+    parseDate.push(data.fmv16)
+    parseDate.push(data.fmv17)
+    parseDate.push(data.fmv18)
+    parseDate.push(data.fmv19)
+    parseDate.push(data.fmv20)
+    parseDate.push(data.fmv21)
+    parseDate.push(data.fmv22)
+    parseDate.push(data.fmv23)
+
+    for (let j = 0; j <24; j++) {
+      xAxis.push(`${j} 点`)
 
     }
     let option = {
       color: ['#1890ff', '#d48265', '#FF69B4', '#ca8622'],
       title: {
-        text: '每15分钟数据',
+        text: '每小时使用量',
         x: 'left',
         textStyle: {
           color: textColor
@@ -139,7 +136,7 @@ export default class DMArate extends PureComponent {
       yAxis: [
         {
           type: 'value',
-          name: formatMessage({id: 'intl.water_consumption'}),
+          name: '使用量',
           axisLine: {
             lineStyle: {
               color:textColor
@@ -150,29 +147,9 @@ export default class DMArate extends PureComponent {
       series: [{
         name: formatMessage({id: 'intl.water_consumption'}),
         type: 'bar',
-        data: data.values
+        data: parseDate
       }]
     };
-    if(company_code==='mys'||company_code==='amwares'||company_code==='zhsgy'){
-      option.yAxis.push( {
-        type: 'value',
-        name: formatMessage({id: 'intl.water_temperature'}) ,
-        axisLine: {
-          lineStyle: {
-            color:textColor
-          }
-        },
-        splitLine: {
-          show: false
-        }
-      })
-      option.series.push( {
-        name: formatMessage({id: 'intl.water_temperature'}) ,
-        type: 'line',
-        yAxisIndex: 1,
-        data: data.temperature_values
-      })
-    }
     const that = this;
     that.myChart.setOption(option);
   }
@@ -201,22 +178,7 @@ export default class DMArate extends PureComponent {
     }
     return (
       <div>
-        <DatePicker value={this.state.date} onChange={this.changeDate} disabledDate={disabledDate}/>
-
-        <Tabs defaultActiveKey="1" >
-          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1"> <div className="PressureLineChart"></div></TabPane>
-          <TabPane tab={formatMessage({id: 'intl.table'})} key="2">
-            <Table
-              className={'meter-table'}
-              bordered
-              columns={columns}
-              dataSource={this.state.data}
-              pagination={false}
-              size="small"
-              rowKey={record => record.time}
-            />
-          </TabPane>
-        </Tabs>
+        <div className="PressureLineChart"></div>
 
       </div>
 

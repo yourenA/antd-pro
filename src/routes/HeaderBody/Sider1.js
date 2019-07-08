@@ -250,9 +250,10 @@ class SiderTree extends PureComponent {
             <Tree
                //defaultExpandAll={true}
               //loadData={this.onLoadData}
-                 onExpand={this.onExpandNode}
+              onExpand={this.onExpandNode}
                   expandedKeys={this.state.expandedKeys}
-                  showLine onSelect={this.onSelect}
+                  showLine
+              onSelect={this.onSelect}
                   selectedKeys={this.state.selectedKeys}
                   autoExpandParent={this.state.autoExpandParent}
                   //defaultExpandedKeys={[data[0].id]}

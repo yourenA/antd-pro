@@ -695,22 +695,22 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title:'SIM卡余额', dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
+        title:  formatMessage({id: 'intl.sim_balance'}), dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
         render: (val, record, index) => {
           return ellipsis2(val, 100)
         }
       },
       {
-        title:'SIM卡剩余流量(KB)', dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
+        title: formatMessage({id: 'intl.sim_traffic'}), dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }
       },
       {
-        title:'SIM卡查询时间', dataIndex: 'sim_queried_at', key: 'sim_queried_at', width: 150,
+        title: formatMessage({id: 'intl.sim_queried_at'}), dataIndex: 'sim_queried_at', key: 'sim_queried_at', width: 180,
         render: (val, record, index) => {
           if (record.sim_is_linked=='-1') {
-            return '无正确关联查询平台'
+            return  formatMessage({id: 'intl.no_correct_association'})
           } else {
             return ellipsis2(val, 150)
           }
@@ -718,7 +718,7 @@ class ConcentratorManage extends PureComponent {
         }
       },
       {
-        title: 'SIM卡是否在线', dataIndex: 'sim_is_online', key: 'sim_is_online', width: 120,
+        title:  formatMessage({id: 'intl.sim_is_online'}), dataIndex: 'sim_is_online', key: 'sim_is_online', width: 120,
         render: (val, record, index) => {
 
           let status = "success";
@@ -734,7 +734,7 @@ class ConcentratorManage extends PureComponent {
               break;
             case  -2:
               status = 'warning';
-              status_text =  '未知';
+              status_text =  formatMessage({id: 'intl.unknow'});
               break;
           }
           return (
@@ -908,6 +908,7 @@ class ConcentratorManage extends PureComponent {
         </Content>
         <Modal
           width={650}
+          centered={true}
           title={ formatMessage({id: 'intl.add'})+" "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.addModal}
           //onOk={this.handleAdd}
@@ -924,6 +925,8 @@ class ConcentratorManage extends PureComponent {
         </Modal>
         <Modal
           width={650}
+          centered={true}
+
           key={ Date.parse(new Date())}
           title={ formatMessage({id: 'intl.edit'})+ " "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.editModal}

@@ -313,21 +313,21 @@ const data = [{
           path: 'community_analysis',
           component: CommunityAnalysis,
           permissions: ['village_meter_data',],
-          noShowCompany: ['hy']
+          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'village_meter_data',
           path: 'hy_community_analysis',
           component: HYCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy','amwares']
+          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'village_meter_data_manual',
           path: 'manually_community_analysis',
           component: ManuallyCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy','amwares']
+          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         }, {
           name: 'meter_volume_data',
           path: 'user_meter_analysis',
@@ -345,7 +345,7 @@ const data = [{
           path: 'member_consumption',
           component: MemberConsumption,
           permissions: ['member_consumption'],
-          noShowCompany: ['hy']
+          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'pressure/temperature_map',
@@ -359,20 +359,20 @@ const data = [{
           path: 'big_meter_map',
           component: ConcentratorMaps,
           permissions: ['concentrator_maps',],
-          showCompany: ['mys','amwares']
+          showCompany: ['mys','gxcz','amwares']
         },
         {
           name: 'mys_big_meter_analysis',
           path: 'mys_big_meter_analysis',
           component: MYSBigMeterAnalysis,
-          showCompany: ['mys','amwares','zhsgy']
+          showCompany: ['mys','gxcz','amwares','zhsgy']
         },
         {
           name: 'pressure_history',
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy','amwares','mys']
+          showCompany: ['zhsgy','amwares','mys','gxcz']
         },
         // {
         //   name: '温度传感器历史分析',
@@ -393,7 +393,7 @@ const data = [{
           path: 'complete_realData',
           component: CompleteRealData,
           permissions: ['complete_meter_data'],
-          noShowCompany: ['hy']
+          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'vendor_concentrator_statistics',
@@ -406,7 +406,7 @@ const data = [{
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares']
         }
         // ,{
         //   name: '产销差分析',
@@ -460,35 +460,35 @@ const data = [{
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares']
         },
         {
           name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
-          showCompany: ['mys','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares']
         },
         {
           name: 'monitor_meter_manage',
           path: 'monitor_meter_manage',
           component: MonitoringMeterManage,
           permissions: [ 'monitoring_meter_edit'],
-          showCompany: ['hy']
+          showCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'manually_meter_manage',
           path: 'manually_meter_manage',
           component: ManuallyMeterManage,
           permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
-          showCompany: ['hy','amwares']
+          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'pressure_sensors_manage',
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy','amwares','mys','zhsgy']
+          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy']
         },
         {
           name: 'temperature_sensors_manage',

@@ -715,7 +715,7 @@ class MeterModel extends PureComponent {
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
-                                 rowSelection={company_code!=='hy'?rowSelection:null}
+                                 rowSelection={['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411'].indexOf(company_code)>=0?null:rowSelection}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>

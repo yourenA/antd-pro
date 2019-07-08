@@ -137,7 +137,12 @@ class Detail extends PureComponent {
       id:this.props.editRecord.id,
     },
     callback:()=>{
-      message.success('更新SIM卡信息成功')
+      message.success(
+        formatMessage(
+          {id: 'intl.operate_successful'},
+          {operate: formatMessage({id: 'intl.update'}), type: formatMessage({id: 'intl.update_SIM_card_information'})}
+        )
+      )
       this.props.handleSearch()
     }
   });
@@ -237,10 +242,10 @@ class Detail extends PureComponent {
               {renderInitBtn()}<label htmlFor="">  { formatMessage({id: 'intl.concentrator_tip'})}</label>
             </FormItem>
             <FormItem
-              label= '更新SIM卡信息'
+              label={ formatMessage({id: 'intl.update_SIM_card_information'})}
               {...formItemLayoutWithLabel}
             >
-              <Button   type="primary"  style={{marginRight: 10}} onClick={this.UpdateSimInfo}>更新</Button>
+              <Button   type="primary"  style={{marginRight: 10}} onClick={this.UpdateSimInfo}>{ formatMessage({id: 'intl.update'})}</Button>
             </FormItem>
           </Form>
         </TabPane>

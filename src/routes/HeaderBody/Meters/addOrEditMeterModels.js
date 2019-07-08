@@ -75,6 +75,20 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
+              {formatMessage({id: 'intl.vendor_code'})}
+            </span>
+            )}
+          >
+            {getFieldDecorator('manufacturer_prefix', {
+              initialValue: this.props.editRecord ? this.props.editRecord.manufacturer_prefix : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               {formatMessage({id: 'intl.manufactured_date'})}
             </span>
             )}>

@@ -268,6 +268,8 @@ class SiderTree extends PureComponent {
           {(this.state.treeData.length)
             ?
             <Tree
+              showLine
+              className="hide-file-icon"
               showIcon={true}
               //loadData={this.onLoadData}
               onExpand={this.onExpandNode}

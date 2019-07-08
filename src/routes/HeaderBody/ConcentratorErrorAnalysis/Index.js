@@ -345,7 +345,7 @@ class UserMeterAnalysis extends PureComponent {
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const columns = [
+    let columns = [
       // {
       //   title: '序号',
       //   dataIndex: 'id',
@@ -368,24 +368,6 @@ class UserMeterAnalysis extends PureComponent {
         title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address', width: 130,
         render: (val, record, index) => {
           return ellipsis2(val, 130)
-        }
-      },
-      {
-        title: formatMessage({id: 'intl.signal'}), dataIndex: 'signal', key: 'signal', width: 80,
-        render: (val, record, index) => {
-          return ellipsis2(val, 80)
-        }
-      },
-      {
-        title:'SIM卡余额', dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
-        render: (val, record, index) => {
-          return ellipsis2(val, 100)
-        }
-      },
-      {
-        title:'SIM卡剩余流量(KB)', dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
-        render: (val, record, index) => {
-          return ellipsis2(val, 150)
         }
       },
       {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date', key: 'date', width: 120,
@@ -533,12 +515,56 @@ class UserMeterAnalysis extends PureComponent {
         return this.renderStatus(record.is_onlines[22])
       }
       },
-      {
-        title: '23', dataIndex: 'hours_status', key: '23', render: (val, record, index) => {
-        return this.renderStatus(record.is_onlines[23])
-      }
-      },
     ];
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code!=='hy'){
+      columns.splice(3,0 ,{
+        title: formatMessage({id: 'intl.signal'}), dataIndex: 'signal', key: 'signal', width: 80,
+        render: (val, record, index) => {
+          return ellipsis2(val, 80)
+        }
+      }, {
+          title:formatMessage({id: 'intl.sim_balance'}), dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
+          render: (val, record, index) => {
+            return ellipsis2(val, 100)
+          }
+        },
+        {
+          title:formatMessage({id: 'intl.sim_traffic'}), dataIndex: 'sim_traffic', key: 'sim_traffic', width: 150,
+          render: (val, record, index) => {
+            return ellipsis2(val, 150)
+          }
+        })
+    }
+    if(company_code==='hy'){
+      columns.push(
+        {
+          title: '23', dataIndex: 'hours_status', key: '23', width: 40,  render: (val, record, index) => {
+          return this.renderStatus(record.is_onlines[23])
+        }
+        },
+        {
+          title:formatMessage({id: 'intl.sim_balance'}), dataIndex: 'sim_balance', key: 'sim_balance', width: 100,
+          render: (val, record, index) => {
+            return ellipsis2(val, 100)
+          }
+        },
+        {
+          title:formatMessage({id: 'intl.sim_traffic'}), dataIndex: 'sim_traffic', key: 'sim_traffic',
+          render: (val, record, index) => {
+            return ellipsis2(val, 150)
+          }
+        }
+      )
+    }else{
+      columns.push(
+        {
+          title: '23', dataIndex: 'hours_status', key: '23', render: (val, record, index) => {
+          return this.renderStatus(record.is_onlines[23])
+          }
+        }
+      )
+    }
     const operate = {
       title: formatMessage({id: 'intl.operate'}),
       key: 'operation',

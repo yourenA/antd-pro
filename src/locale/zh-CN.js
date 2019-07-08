@@ -2,7 +2,7 @@
  * Created by Administrator on 2019/3/4.
  */
 const zh_CN = {
-  'intl.project_name':'远传水表监控系统',//远传水表监控系统
+  'intl.project_name':' ',//远传水表监控系统
   'intl.power_name':'珠华水工业',//珠华水工业
   'intl.sign_in': '登录',//登录
   'intl.sign_out': '退出',//退出
@@ -209,7 +209,7 @@ const zh_CN = {
   'intl.reverse_flow_alarm_time':'反向流量报警时间',//反向流量报警时间
   'intl.0_clock_total_flow_data':'0点总流量数据',//0点总流量数据
   'intl.battery_voltage':'{number}电池电压(V)',//电池电压(V)
-  'intl.water_temperature':'水温(℃)',//水温(℃)
+  'intl.water_temperature':'水温',//水温(℃)
   'intl.signal_strength':'信号强度',//信号强度
   'intl.abnormal':'异常',//异常
   'intl.fault':'错误',//错误
@@ -424,6 +424,23 @@ const zh_CN = {
   'intl.mys_big_meter_analysis':'大表15分钟数据',//大表数据分析
   'intl.signal':'当前信号',//当前信号
 
+  'intl.sim_balance':'SIM卡余额',//SIM卡余额
+  'intl.sim_traffic':'SIM卡剩余流量(KB)',//SIM卡剩余流量(KB)
+  'intl.sim_queried_at':'SIM卡查询时间',//SIM卡查询时间
+  'intl.sim_is_online':'SIM卡是否在线',//SIM卡是否在线
+  'intl.no_correct_association':'无正确关联查询平台',//无正确关联查询平台
+  'intl.unknow':'未知',//未知
+  'intl.China_Mobile':'中国移动',//中国移动
+  'intl.China_Telecom':'中国电信',//中国电信
+  'intl.China_Unicom':'中国联通',//中国联通
+  'intl.null':'无',//无
+  'intl.other':'其它',//无
+  'intl.other_SIM_card_operators':'其它SIM卡运营商',//其它SIM卡运营商
+  'intl.SIM_card_number_type':'SIM卡号码类型',//SIM卡号码类型
+  'intl.ICC_card_number':'物联卡号码',//物联卡号码
+  'intl.identification_number':'IC卡的唯一识别号码',//IC卡的唯一识别号码
+  'intl.update_SIM_card_information':'更新SIM卡信息',//更新SIM卡信息
+  'intl.update':'更新',//更新
 
 }
 export default zh_CN;

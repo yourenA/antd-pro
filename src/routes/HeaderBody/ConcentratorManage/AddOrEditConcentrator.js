@@ -313,7 +313,7 @@ class AddConcentrator extends Component {
               {...formItemLayoutWithLabel}
               label={(
                 <span>
-                SIM卡号码类型
+                   { formatMessage({id: 'intl.SIM_card_number_type'})}
             </span>
               )}
             >
@@ -321,8 +321,8 @@ class AddConcentrator extends Component {
                 initialValue:this.props.editRecord ? this.props.editRecord.sim_number_type.toString() : '',
               })(
                 <Select >
-                  <Option value="1">物联卡号码</Option>
-                  <Option value="2">IC卡的唯一识别号码</Option>
+                  <Option value="1">{ formatMessage({id: 'intl.ICC_card_number'})}</Option>
+                  <Option value="2">{ formatMessage({id: 'intl.identification_number'})}</Option>
                 </Select>
               )}
             </FormItem>
@@ -342,11 +342,11 @@ class AddConcentrator extends Component {
                     otherOperator:e==='other'
                   })
                 }} >
-                  <Option value="中国移动">中国移动</Option>
-                  <Option value="中国电信">中国电信</Option>
-                  <Option value="中国联通">中国联通</Option>
-                  <Option value="">无</Option>
-                  <Option value="other">其它</Option>
+                  <Option value="中国移动"> { formatMessage({id: 'intl.China_Mobile'})}</Option>
+                  <Option value="中国电信"> { formatMessage({id: 'intl.China_Telecom'})}</Option>
+                  <Option value="中国联通"> { formatMessage({id: 'intl.China_Unicom'})}</Option>
+                  <Option value=""> { formatMessage({id: 'intl.null'})}</Option>
+                  <Option value="other"> { formatMessage({id: 'intl.other'})}</Option>
                 </Select>
               )}
             </FormItem>
@@ -355,7 +355,7 @@ class AddConcentrator extends Component {
                 {...formItemLayoutWithLabel}
                 label={(
                   <span>
-             其它SIM卡运营商
+                { formatMessage({id: 'intl.other_SIM_card_operators'})}
             </span>
                 )}
               >

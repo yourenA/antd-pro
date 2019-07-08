@@ -126,7 +126,7 @@ class SearchForm extends Component {
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
           </FormItem>
           {
-            company_code!=='hy'&&
+            ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411'].indexOf(company_code)<0&&
             <FormItem
             >
               <span style={{ marginRight:   8 }}>{formatMessage({id: 'intl.water_meters_selected'},{number:this.props.selectedRowKeys.length})}</span>
