@@ -129,8 +129,8 @@ const en_US = {
   'intl.disable':'disable',//禁用
   'intl.more':'more',//更多
   'intl.only_error':'error',//错报
-  'intl.expand_condition':'Expand condition',//展开条件
-  'intl.collapse_condition':'Collapse condition',//收起条件
+  'intl.expand_condition':'Collapse condition',//展开条件(_)
+  'intl.collapse_condition':'Expand condition',//收起条件(_)
   'intl.ton':'Ton',//吨
   'intl.index':'index',//序号
   'intl.meter':' meter ',//水表
@@ -442,6 +442,8 @@ const en_US = {
   'intl.identification_number':'IC card unique identification number',//IC卡的唯一识别号码
   'intl.update_SIM_card_information':'Update SIM card information',//更新SIM卡信息
   'intl.update':'update',//更新
+  'intl.open':'open',//开
+  'intl.close':'closure',//关
 
 
 

@@ -10,7 +10,7 @@ const zh_CN = {
   'intl.password':'密码',//密码
   'intl.please_input':'请输入',//请输入
   'intl.change_password':'修改密码',//修改密码
-  'intl.old_password':'o旧密码',//旧密码
+  'intl.old_password':'旧密码',//旧密码
   'intl.new_password':'新密码',//新密码
   'intl.repeat_password':'重复密码',//重复密码
   'intl.reset_password':'重置密码',//重置密码
@@ -129,8 +129,8 @@ const zh_CN = {
   'intl.disable':'禁用',//禁用
   'intl.more':'更多',//更多
   'intl.only_error':'错报',//错报
-  'intl.expand_condition':'展开条件',//展开条件
-  'intl.collapse_condition':'收起条件',//收起条件
+  'intl.expand_condition':'收起条件',//展开条件(_)
+  'intl.collapse_condition':'展开条件',//收起条件(_)
   'intl.ton':'吨',//吨
   'intl.index':'序号',//序号
   'intl.meter':'水表',//水表
@@ -395,7 +395,7 @@ const zh_CN = {
   'intl.valve_sensors_index':'比例阀控传感器序号',//比例阀控传感器序号
   'intl.no_data':'无数据',//无数据
   'intl.value':'读值',//读值
-  'intl.positive/negative_feedback':'正/负反馈k',//正/负反馈
+  'intl.positive/negative_feedback':'正/负反馈',//正/负反馈
   'intl.positive_feedback':'正反馈',//正反馈
   'intl.negative_feedback':'负反馈',//负反馈
   'intl.big_meter_info':'大表信息',//大表信息
@@ -442,6 +442,8 @@ const zh_CN = {
   'intl.update_SIM_card_information':'更新SIM卡信息',//更新SIM卡信息
   'intl.update':'更新',//更新
 
+  'intl.open':'开',//开
+  'intl.close':'关',//关
 }
 export default zh_CN;
 

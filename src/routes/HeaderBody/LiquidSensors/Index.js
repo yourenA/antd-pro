@@ -319,18 +319,28 @@ class LiquidSensors extends PureComponent {
     const {isMobile} =this.props.global;
     const columns = [
       {
-        title: formatMessage({id: 'intl.liquid_sensors_number'}) , width: 140, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: formatMessage({id: 'intl.install_address'}) ,
+        dataIndex: 'address',
+        key: 'address',
+        fixed: 'left',
+        width: 140,
+        render: (text, record, index) => {
+          return ellipsis2(text, 140)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.current_liquid_value'}) ,fixed: 'left', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }
+      },
+      {
+        title: formatMessage({id: 'intl.liquid_sensors_number'}) , width: 140, dataIndex: 'number', key: 'number',
         render: (val, record, index) => {
           return ellipsis2(val, 140)
         }
       },
       {
-        title: formatMessage({id: 'intl.liquid_sensors_index'}) , dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
-        return ellipsis2(text, 100)
-      }
-      },
-      {
-        title: formatMessage({id: 'intl.current_liquid_value'}) , dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.liquid_sensors_index'}) , dataIndex: 'index', key: 'index2', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
@@ -355,15 +365,7 @@ class LiquidSensors extends PureComponent {
           return ellipsis2(val, 160)
         }
       },
-      {
-        title: formatMessage({id: 'intl.install_address'}) ,
-        dataIndex: 'address',
-        key: 'address',
-        width: 140,
-        render: (text, record, index) => {
-          return ellipsis2(text, 140)
-        }
-      },
+
       {
         title: formatMessage({id: 'intl.concentrator_number'}) ,
         dataIndex: 'concentrator_number',

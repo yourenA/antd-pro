@@ -280,8 +280,11 @@ class UserMeterAnalysis extends PureComponent {
           }} >{val}</p>
         )
       }},
-      {title:formatMessage({id: 'intl.water_meter_number'}) , width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (text, record, index) => {
-        return ellipsis2(text,110)
+      {title:formatMessage({id: 'intl.water_meter_number'}) , width: 130, dataIndex: 'meter_number', key: 'meter_number',render: (text, record, index) => {
+        return ellipsis2(text,130)
+      }},
+      {title:formatMessage({id: 'intl.install_address'}) , width: 280, dataIndex: 'address', key: 'address',render: (text, record, index) => {
+        return ellipsis2(text,280)
       }},
       {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number',render: (text, record, index) => {
         return ellipsis2(text,100)
@@ -290,9 +293,7 @@ class UserMeterAnalysis extends PureComponent {
       {title: formatMessage({id: 'intl.user_name'}), width: 100, dataIndex: 'real_name', key: 'real_name',render: (text, record, index) => {
         return ellipsis2(text,100)
       }},
-      {title:formatMessage({id: 'intl.install_address'}) , width: 150, dataIndex: 'address', key: 'address',render: (text, record, index) => {
-        return ellipsis2(text,150)
-      }},
+
       {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date',  key: 'date',width:100,render: (text, record, index) => {
         return ellipsis2(text,100)
       }},

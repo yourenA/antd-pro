@@ -365,14 +365,14 @@ const data = [{
           name: 'mys_big_meter_analysis',
           path: 'mys_big_meter_analysis',
           component: MYSBigMeterAnalysis,
-          showCompany: ['mys','gxcz','amwares','zhsgy']
+          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx']
         },
         {
           name: 'pressure_history',
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy','amwares','mys','gxcz']
+          showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx']
         },
         // {
         //   name: '温度传感器历史分析',
@@ -406,7 +406,7 @@ const data = [{
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
-          showCompany: ['mys','gxcz','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares','hngydx']
         }
         // ,{
         //   name: '产销差分析',
@@ -460,14 +460,14 @@ const data = [{
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
-          showCompany: ['mys','gxcz','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares','hngydx']
         },
         {
           name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
-          showCompany: ['mys','gxcz','test','amwares']
+          showCompany: ['mys','gxcz','test','amwares','hngydx']
         },
         {
           name: 'monitor_meter_manage',
@@ -488,7 +488,7 @@ const data = [{
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy']
+          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx']
         },
         {
           name: 'temperature_sensors_manage',

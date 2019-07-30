@@ -351,14 +351,28 @@ class LiquidSensors extends PureComponent {
     const {isMobile} =this.props.global;
     const columns = [
       {
-        title:formatMessage({id: 'intl.valve_sensors_number'}) , width: 150, dataIndex: 'number', key: 'number', fixed: 'left',
+        title:formatMessage({id: 'intl.install_address'}) ,fixed: 'left',
+        dataIndex: 'address',
+        key: 'address',
+        width: 140,
+        render: (text, record, index) => {
+          return ellipsis2(text, 140)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.current_valve_open_value'}),fixed: 'left', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }
+      },
+      {
+        title:formatMessage({id: 'intl.valve_sensors_number'}) , width: 150, dataIndex: 'number', key: 'number',
         render: (val, record, index) => {
           return ellipsis2(val, 150)
         }
       },
       {
-        title: formatMessage({id: 'intl.valve_sensors_index'}), dataIndex: 'index', key: 'index2', width: 100, render: (text, record, index) => {
-        return ellipsis2(text, 100)
+        title: formatMessage({id: 'intl.valve_sensors_index'}), dataIndex: 'index', key: 'index2', width: 150, render: (text, record, index) => {
+        return ellipsis2(text, 150)
       }
       },
       {
@@ -374,11 +388,7 @@ class LiquidSensors extends PureComponent {
         }
       }
       },
-      {
-        title: formatMessage({id: 'intl.current_valve_open_value'}), dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
-        return ellipsis2(text, 120)
-      }
-      },
+
       {
         title:formatMessage({id: 'intl.min_actual_value'}) , dataIndex: 'min_actual_value', key: 'min_actual_value', width: 100, render: (text, record, index) => {
         return ellipsis2(text, 100)
@@ -418,15 +428,7 @@ class LiquidSensors extends PureComponent {
         }
       }
       },
-      {
-        title:formatMessage({id: 'intl.install_address'}) ,
-        dataIndex: 'address',
-        key: 'address',
-        width: 140,
-        render: (text, record, index) => {
-          return ellipsis2(text, 140)
-        }
-      },
+
       {
         title:formatMessage({id: 'intl.concentrator_number'}) ,
         dataIndex: 'concentrator_number',

@@ -147,18 +147,22 @@ class AddPoliciesForm extends Component {
               </Select>
             )}
           </FormItem>
-          <FormItem
-            {...formItemLayoutWithLabel}
-            label={formatMessage({id: 'intl.valve_status'})}
-          >
-            {getFieldDecorator('valve_status',
-              {
-                initialValue: this.props.editRecord ? (this.props.editRecord.valve_status === 1 ? true : false) : false
-                , valuePropName: 'checked'
-              })(
-              <Switch />
-            )}
-          </FormItem>
+          {
+            (company_code !== 'hy') &&
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={formatMessage({id: 'intl.valve_status'})}
+            >
+              {getFieldDecorator('valve_status',
+                {
+                  initialValue: this.props.editRecord ? (this.props.editRecord.valve_status === 1 ? true : false) : false
+                  , valuePropName: 'checked'
+                })(
+                <Switch />
+              )}
+            </FormItem>
+          }
+
           <FormItem
             {...formItemLayoutWithLabel}
             label={(

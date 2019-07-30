@@ -114,7 +114,7 @@ class SearchForm extends Component {
           </FormItem>
           <FormItem>
             {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
-              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'collapse_condition.end'})} <Icon type={this.state.expand ? 'up' : 'down'} />
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'intl.collapse_condition'})} <Icon type={this.state.expand ? 'up' : 'down'} />
             </Button>}
             <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>

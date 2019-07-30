@@ -340,9 +340,9 @@ class UserMeterAnalysis extends PureComponent {
       {title:formatMessage({id: 'intl.valve_status'}) , dataIndex: 'state_valve', key: 'state_valve',  width: 100,render: (text, record, index) => {
         let showText='';
         if(record['body'].state_valve==0){
-          showText=formatMessage({id: 'intl.yes'})
+          showText=formatMessage({id: 'intl.open'})
         }else if(record['body'].state_valve==1){
-          showText=formatMessage({id: 'intl.no'})
+          showText=formatMessage({id: 'intl.close'})
         }else if(record['body'].state_valve==3){
           showText=formatMessage({id: 'intl.abnormal'})
         }

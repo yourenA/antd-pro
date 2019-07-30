@@ -397,6 +397,8 @@ class UserMeterAnalysis extends PureComponent {
     })
     let file=this.file();
     const formValues =this.importFormRef.props.form.getFieldsValue();
+    const that=this;
+    const {intl:{formatMessage}} = this.props;
     console.log('formValues',formValues)
     if(!formValues.file){
       message.error(formatMessage({id: 'intl.please_choose_Excel'}));
@@ -413,14 +415,12 @@ class UserMeterAnalysis extends PureComponent {
     formData.append("is_reset", formValues.is_reset.key);
     formData.append("concentrator_number", formValues.concentrator_number);
     formData.append("village_id", formValues.village_id[formValues.village_id.length - 1]);
-    const that=this;
     request(`/meter_import`, {
       method: 'POST',
       data: formData
     }).then((response)=> {
       console.log(response);
       if(response.status===200){
-        const {intl:{formatMessage}} = that.props;
         message.success(
           formatMessage(
             {id: 'intl.operate_successful'},
@@ -489,18 +489,6 @@ class UserMeterAnalysis extends PureComponent {
         )
         return renderRowSpan(children,record)
       }},
-      { title: formatMessage({id: 'intl.id_card'}), dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
-        const children=  (
-          ellipsis2(val, 170)
-        )
-        return renderRowSpan(children,record)
-      }},
-      { title: formatMessage({id: 'intl.telephone'}), dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
-        const children=  (
-          ellipsis2(val, 130)
-        )
-        return renderRowSpan(children,record)
-      }},
       { title: formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
       { title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val, 110)
@@ -551,13 +539,25 @@ class UserMeterAnalysis extends PureComponent {
         )
         return renderRowSpan(children,record)
       }},
+      { title: formatMessage({id: 'intl.id_card'}), dataIndex: 'id_card', key: 'id_card' ,width: 170,  render: (val, record, index) => {
+        const children=  (
+          ellipsis2(val, 170)
+        )
+        return renderRowSpan(children,record)
+      }},
+      { title: formatMessage({id: 'intl.telephone'}), dataIndex: 'phone', key: 'phone' ,width: 130,render: (val, record, index) => {
+        const children=  (
+          ellipsis2(val, 130)
+        )
+        return renderRowSpan(children,record)
+      }},
       { title:formatMessage({id: 'intl.reader'}) , dataIndex: 'reader', key: 'reader',  render: (val, record, index) => {
         return renderRowSpan(val,record)
       }}
 
     ];
     if(company_code==='hy') {
-      columns.splice(8, 1)
+      columns.splice(6, 1)
     }
     const operate={
       title: formatMessage({id: 'intl.operate'}),

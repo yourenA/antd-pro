@@ -191,6 +191,7 @@ class EditUserArchives extends Component {
             <Select >
               <Option  value="14">14</Option>
               <Option  value="12">12</Option>
+              <Option  value="8">8</Option>
             </Select>
           )}
         </FormItem>

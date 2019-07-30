@@ -289,6 +289,16 @@ class MeterModel extends PureComponent {
     const {pressure: {data, meta, loading},sider_regions} = this.props;
     const columns = [
       {
+        title: formatMessage({id: 'intl.install_address'}) ,
+        dataIndex: 'address',
+        key: 'address',
+        fixed: 'left',
+        width: 140,
+        render: (text, record, index) => {
+          return ellipsis2(text, 140)
+        }
+      },
+      {
         title: formatMessage({id: 'intl.pressure_sensors_number'}), width: 140, dataIndex: 'number', key: 'number',
         render: (val, record, index) => {
           return ellipsis2(val, 140)
@@ -322,15 +332,7 @@ class MeterModel extends PureComponent {
           return ellipsis2(text, 100)
         }
       },
-      {
-        title: formatMessage({id: 'intl.install_address'}) ,
-        dataIndex: 'address',
-        key: 'address',
-        width: 140,
-        render: (text, record, index) => {
-          return ellipsis2(text, 140)
-        }
-      },
+
       {
         title:formatMessage({id: 'intl.enabled_date'}) , width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
         return ellipsis2(text, 120)

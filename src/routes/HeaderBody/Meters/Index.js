@@ -44,9 +44,11 @@ class MeterModel extends PureComponent {
       addModal: false,
       commandModal: false,
       canOperateMeter: localStorage.getItem('canOperateMeter') === 'true' ? true : false,
+      sort_field: 'member_number',
       per_page:30,
       canLoadByScroll:true,
       selectedRowKeys: [],
+      sort_direction: 'asc'
     }
   }
 
@@ -91,6 +93,8 @@ class MeterModel extends PureComponent {
             member_number: this.state.member_number,
             install_address: this.state.install_address,
             real_name: this.state.real_name,
+            sort_field: this.state.sort_field,
+            sort_direction: this.state.sort_direction,
             per_page:this.state.per_page,
 
           },function () {
@@ -127,6 +131,8 @@ class MeterModel extends PureComponent {
         member_number: this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        sort_field: this.state.sort_field,
+        sort_direction: this.state.sort_direction,
         per_page:this.state.per_page
       })
     })
@@ -143,6 +149,8 @@ class MeterModel extends PureComponent {
         member_number: this.state.member_number,
         install_address: this.state.install_address,
         real_name: this.state.real_name,
+        sort_field: this.state.sort_field,
+        sort_direction: this.state.sort_direction,
         per_page:this.state.per_page
       })
     })
@@ -155,6 +163,8 @@ class MeterModel extends PureComponent {
       member_number: '',
       install_address: '',
       real_name: '',
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction,
       per_page:30
     })
   }
@@ -189,6 +199,8 @@ class MeterModel extends PureComponent {
       member_number: this.state.member_number,
       install_address: this.state.install_address,
       real_name: this.state.real_name,
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction,
       per_page:this.state.per_page
     })
   }
@@ -199,6 +211,8 @@ class MeterModel extends PureComponent {
       member_number: this.state.member_number,
       install_address: this.state.install_address,
       real_name: this.state.real_name,
+      sort_field: this.state.sort_field,
+      sort_direction: this.state.sort_direction,
       per_page:per_page
     })
   }
@@ -233,6 +247,8 @@ class MeterModel extends PureComponent {
           member_number: that.state.member_number,
           install_address: that.state.install_address,
           real_name: that.state.real_name,
+          sort_field: that.state.sort_field,
+          sort_direction: that.state.sort_direction,
           per_page:that.state.per_page
         })
       }
@@ -271,6 +287,8 @@ class MeterModel extends PureComponent {
           member_number: that.state.member_number,
           install_address: that.state.install_address,
           real_name: that.state.real_name,
+          sort_field: that.state.sort_field,
+          sort_direction: that.state.sort_direction,
           per_page:that.state.per_page
         })
       }
@@ -305,6 +323,8 @@ class MeterModel extends PureComponent {
           member_number: that.state.member_number,
           install_address: that.state.install_address,
           real_name: that.state.real_name,
+          sort_field: that.state.sort_field,
+          sort_direction: that.state.sort_direction,
           per_page:that.state.per_page
         })
       }
@@ -331,10 +351,39 @@ class MeterModel extends PureComponent {
           member_number: that.state.member_number,
           install_address: that.state.install_address,
           real_name: that.state.real_name,
-          per_page:that.state.per_page
+          sort_field: that.state.sort_field,
+          sort_direction: that.state.sort_direction,
+          per_page:that.state.per_page,
         })
       }
     });
+  }
+  handleTableSort = (pagination, filters, sorter) => {
+    console.log('sorter', sorter);
+    let order = '';
+    let columnkey = sorter.columnKey;
+    if(columnkey==='number'){
+      columnkey='meter_number'
+    }
+    if (sorter.order === 'descend') {
+      order = 'desc'
+    } else if (sorter.order === 'ascend') {
+      order = 'asc'
+    }
+
+    // if (sorter.columnKey === 'install_address') {
+    //   columnkey = 'address'
+    // }
+    this.handleSearch({
+      page: this.state.page,
+      number: this.state.number,
+      member_number: this.state.member_number,
+      install_address: this.state.install_address,
+      real_name: this.state.real_name,
+      per_page:this.state.per_page,
+      sort_field: columnkey,
+      sort_direction: order,
+    })
   }
   handleCommand = (record, command)=> {
     console.log('command ', command);
@@ -415,30 +464,31 @@ class MeterModel extends PureComponent {
       //   }
       // },
       {
-        title: formatMessage({id: 'intl.water_meter_number'}), width: 90, dataIndex: 'number', key: 'number', fixed: 'left',
+        title: formatMessage({id: 'intl.water_meter_number'}), sorter: true, width: 130, dataIndex: 'number', key: 'number', fixed: 'left',
         render: (val, record, index) => {
-          return ellipsis2(val, 90)
+          return ellipsis2(val, 130)
         }
-      },
-      {
-        title:formatMessage({id: 'intl.user_name'}) , dataIndex: 'real_name', key: 'real_name', width: 80, render: (text, record, index) => {
-        return ellipsis2(text, 80)
-      }
-      },
-      {
-        title: formatMessage({id: 'intl.user_number'}), dataIndex: 'member_number', key: 'member_number', width: 80, render: (text, record, index) => {
-        return ellipsis2(text, 80)
-      }
       },
       {
         title: formatMessage({id: 'intl.install_address'}),
         dataIndex: 'install_address',
-        key: 'install_address',
-        width: 100,
+        key: 'install_address', sorter: true,
+        width: 200,
         render: (text, record, index) => {
-          return ellipsis2(text, 100)
+          return ellipsis2(text, 200)
         }
       },
+      {
+        title:formatMessage({id: 'intl.user_name'}), sorter: true, dataIndex: 'real_name', key: 'real_name', width: 100, render: (text, record, index) => {
+        return ellipsis2(text, 100)
+      }
+      },
+      {
+        title: formatMessage({id: 'intl.user_number'}) , sorter: true, dataIndex: 'member_number', key: 'member_number', width: 100, render: (text, record, index) => {
+        return ellipsis2(text, 100)
+      }
+      },
+
       {
         title: formatMessage({id: 'intl.water_meter_index'}), dataIndex: 'index', key: 'index', width: 80, render: (text, record, index) => {
         return ellipsis2(text, 80)
@@ -486,7 +536,7 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: formatMessage({id: 'intl.water_meter_number'}), dataIndex: 'status', key: 'status', width: 80,
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 80,
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
@@ -605,6 +655,7 @@ class MeterModel extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     if(company_code==='hy') {
       columns.splice(7, 1)
+      columns.splice(10, 1)
     }
     const operate={
       title:formatMessage({id: 'intl.operate'}),
@@ -700,6 +751,8 @@ class MeterModel extends PureComponent {
                                    per_page={this.state.per_page}
                                    isMobile={isMobile}
                                    valveCommand={this.valveCommand}
+                                   sort_field={this.state.sort_field}
+                                   sort_direction={this.state.sort_direction}
                                    selectedRowKeys={selectedRowKeys}
                                    handleFormReset={this.handleFormReset} initRange={this.state.initRange}
                                    showAddBtn={this.state.showAddBtn} clickAdd={()=>this.setState({addModal: true})}
@@ -715,6 +768,7 @@ class MeterModel extends PureComponent {
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
+                                 onChange={this.handleTableSort}
                                  rowSelection={['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411'].indexOf(company_code)>=0?null:rowSelection}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
