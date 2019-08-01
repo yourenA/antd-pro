@@ -444,6 +444,9 @@ const zh_CN = {
 
   'intl.open':'开',//开
   'intl.close':'关',//关
+
+  'intl.last_date':'最后上报时间',//最后上报时间
+
 }
 export default zh_CN;
 

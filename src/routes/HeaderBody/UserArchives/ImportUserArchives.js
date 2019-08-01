@@ -50,7 +50,8 @@ class EditUserArchives extends Component {
         this.renderTreeSelect(item.children)
       }
       item.value=item.id;
-      item.label=item.name
+      item.label=item.name;
+      item.disabled=item.is_available===-1
       return item
     })
   }

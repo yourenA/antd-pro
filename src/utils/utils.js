@@ -246,7 +246,7 @@ export function getPreMonth() {
   }
   day = new Date(year, month, 0).getDate();
 
-  return [moment(year + '-' + month + '-' + '0', 'YYYY-MM-DD'), moment(year + '-' + month + '-' + day, 'YYYY-MM-DD')]
+  return [moment().add(-2, 'days'), moment(year + '-' + month + '-' + day, 'YYYY-MM-DD')]
 }
 
 export function getPreDay() {

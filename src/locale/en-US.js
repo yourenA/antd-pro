@@ -444,6 +444,7 @@ const en_US = {
   'intl.update':'update',//更新
   'intl.open':'open',//开
   'intl.close':'closure',//关
+  'intl.last_date':'Last collected at',//最后上报时间
 
 
 

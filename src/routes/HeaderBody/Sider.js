@@ -146,7 +146,6 @@ class SiderTree extends PureComponent {
     });
   }
   renderTreeNodes = (data) => {
-    // console.log(data)
     return data.map((item) => {
       const index = item.name ? item.name.indexOf(this.state.searchValue) : item.number.indexOf(this.state.searchValue);
       const beforeStr = item.name ? item.name.substr(0, index) : item.number.substr(0, index);
@@ -160,7 +159,7 @@ class SiderTree extends PureComponent {
       ) : <span title={item.name ? item.name : item.number}>{item.name ? item.name : item.number}</span>;
       if (item.children && !this.props.onlyShowOneLevel) {
         return (
-          <TreeNode title={<span>{title}{item.tooltip ?
+          <TreeNode disabled={item.is_available===-1} title={<span>{title}{item.tooltip ?
             <Tooltip placement="top" title={item.tooltip}><Icon style={{marginLeft: '5px'}} type="question-circle-o"/>
             </Tooltip> : ''}</span>} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="treeItem">
             {this.renderTreeNodes(item.children)}
@@ -168,14 +167,14 @@ class SiderTree extends PureComponent {
         );
       }
       if (item.number) {
-        return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode disabled={item.is_available===-1}  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="setting"/>}/>;
       }
       if (item.site_id) {
-        return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode disabled={item.is_available===-1}  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="line-chart"/>}/>;
       }
-      return <TreeNode title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
+      return <TreeNode  disabled={item.is_available===-1} title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
     });
   }
   onCollapse = () => {

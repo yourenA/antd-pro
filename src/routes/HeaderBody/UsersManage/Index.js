@@ -144,14 +144,23 @@ class Vendor extends PureComponent {
     })
     const that = this;
     const formValues =this.formRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
     this.formRef.props.form.validateFields({force: true},
       (err, values) => {
         if (!err) {
+          let management_data={}
+          management_data.type=formValues.type;
+          management_data.custom_rules={
+            villages:formValues.villages,
+            manufacturers:formValues.manufacturers,
+            concentrators:formValues.concentrators,
+          }
           this.props.dispatch({
             type: 'user/add',
             payload: {
               data: {
                 ...formValues,
+                management_data,
                 is_email_notify: formValues.is_email_notify?1:-1,
                 is_sms_notify: formValues.is_sms_notify?1:-1,
                 role_id: formValues.role_id.key,
@@ -196,11 +205,19 @@ class Vendor extends PureComponent {
     const formValues =this.editFormRef.props.form.getFieldsValue();
     console.log('formValues',formValues)
     const that = this;
+    let management_data={}
+    management_data.type=formValues.type;
+    management_data.custom_rules={
+      villages:formValues.villages,
+      manufacturers:formValues.manufacturers,
+      concentrators:formValues.concentrators,
+    }
     this.props.dispatch({
       type: 'user/edit',
       payload: {
         data: {
           ...formValues,
+          management_data,
           is_email_notify: formValues.is_email_notify?1:-1,
           is_sms_notify: formValues.is_sms_notify?1:-1,
           role_id: formValues.role_id?formValues.role_id.key:'',
@@ -208,6 +225,7 @@ class Vendor extends PureComponent {
         },
       },
       callback: function () {
+        const {intl:{formatMessage}} = that.props;
         message.success(
           formatMessage(
             {id: 'intl.operate_successful'},
@@ -332,10 +350,15 @@ class Vendor extends PureComponent {
         render: (val, record, index) => {
           return ellipsis2(val,100)
         }},
+      {title: formatMessage({id: 'intl.role_name'}), dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,
+        render: (val, record, index) => {
+          return ellipsis2(val,100)
+        }},
       {title: formatMessage({id: 'intl.real_name'}), width: 100, dataIndex: 'real_name', key: 'real_name',
         render: (val, record, index) => {
           return ellipsis2(val,100)
         }},
+
       {title: formatMessage({id: 'intl.telephone'}), dataIndex: 'mobile', key: 'mobile', width: 150,
         render: (val, record, index) => {
           return ellipsis2(val,150)
@@ -355,10 +378,7 @@ class Vendor extends PureComponent {
             <Switch checked={record.is_email_notify===1?true:false}  />
         )
       },
-      {title: formatMessage({id: 'intl.role_name'}), dataIndex: 'role_display_name', key: 'role_display_name',  width: 100,
-        render: (val, record, index) => {
-          return ellipsis2(val,100)
-        }},
+
       {
         title: formatMessage({id: 'intl.status'}),
         dataIndex: 'status',

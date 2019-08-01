@@ -280,6 +280,9 @@ class UserMeterAnalysis extends PureComponent {
           }} >{val}</p>
         )
       }},
+      {title:formatMessage({id: 'intl.water_meter_index'}) , width: 80, dataIndex: 'meter_index', key: 'meter_index',render: (text, record, index) => {
+        return ellipsis2(text,80)
+      }},
       {title:formatMessage({id: 'intl.water_meter_number'}) , width: 130, dataIndex: 'meter_number', key: 'meter_number',render: (text, record, index) => {
         return ellipsis2(text,130)
       }},
@@ -296,6 +299,9 @@ class UserMeterAnalysis extends PureComponent {
 
       {title:formatMessage({id: 'intl.date'}) , dataIndex: 'date',  key: 'date',width:100,render: (text, record, index) => {
         return ellipsis2(text,100)
+      }},
+      {title:formatMessage({id: 'intl.last_date'}) , dataIndex: 'last_collected_at',  key: 'last_collected_at',width:160,render: (text, record, index) => {
+        return ellipsis2(text,160)
       }},
       {
         title: formatMessage({id: 'intl.status'}), width: 100, dataIndex: 'status', key: 'status'
@@ -395,7 +401,7 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:1750,y: this.state.tableY}}
+                                 scroll={{x:2000,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}
