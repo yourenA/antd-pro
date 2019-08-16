@@ -395,6 +395,7 @@ const en_US = {
   'intl.valve_sensors_index':'valve sensor index',//比例阀控传感器序号
   'intl.no_data':'no data',//无数据
   'intl.value':'value',//读值
+  'intl.current__value':'current set value',//当前设置值
   'intl.positive/negative_feedback':'Positive/negative feedback',//正/负反馈
   'intl.positive_feedback':'positive feedback',//正反馈
   'intl.negative_feedback':'negative feedback',//负反馈
@@ -445,6 +446,7 @@ const en_US = {
   'intl.open':'open',//开
   'intl.close':'closure',//关
   'intl.last_date':'Last collected at',//最后上报时间
+  'intl.change_record':'change record',//换表记录
 
 
 

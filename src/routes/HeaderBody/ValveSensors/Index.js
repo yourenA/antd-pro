@@ -360,10 +360,16 @@ class LiquidSensors extends PureComponent {
         }
       },
       {
-        title: formatMessage({id: 'intl.current_valve_open_value'}),fixed: 'left', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        title: formatMessage({id: 'intl.current__value'}),fixed: 'left', dataIndex: 'current_value', key: 'current_value', width: 120, render: (text, record, index) => {
+        return ellipsis2(text, 100)
+      }
+      },
+      {
+        title: formatMessage({id: 'intl.value'}),fixed: 'left', dataIndex: 'target_value', key: 'target_value', width: 120, render: (text, record, index) => {
         return ellipsis2(text, 120)
       }
       },
+
       {
         title:formatMessage({id: 'intl.valve_sensors_number'}) , width: 150, dataIndex: 'number', key: 'number',
         render: (val, record, index) => {
@@ -545,7 +551,7 @@ class LiquidSensors extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.number}
-                                 scroll={{x:2300,y: this.state.tableY}}
+                                 scroll={{x:2500,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}

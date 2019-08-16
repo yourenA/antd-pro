@@ -34,6 +34,22 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
+               {formatMessage({id: 'intl.install_address'})}
+            </span>
+          )}
+        >
+          {getFieldDecorator('address', {
+            initialValue: this.props.editRecord ? this.props.editRecord.address : '',
+            rules: [{required: true, message:  formatMessage({id: 'intl.install_address'})+formatMessage({id: 'intl.can_not_be_empty'})}],
+
+          })(
+            <Input disabled/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
                {formatMessage({id: 'intl.valve_sensors_number'})}
             </span>
           )}
@@ -50,12 +66,28 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
+              {formatMessage({id: 'intl.current__value'})}
+            </span>
+          )}
+        >
+          {getFieldDecorator('target_value', {
+            initialValue: this.props.editRecord ? this.props.editRecord.current_value : '',
+          })(
+            <Input
+              disabled={true}
+            />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
               {formatMessage({id: 'intl.value'})}
             </span>
           )}
         >
           {getFieldDecorator('value', {
-            initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.current_value) : '',
+            initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.target_value) : '',
             rules: [{required: true, message:  formatMessage({id: 'intl.value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <InputNumber

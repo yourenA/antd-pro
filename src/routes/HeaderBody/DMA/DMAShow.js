@@ -66,7 +66,7 @@ class Vendor extends PureComponent {
           dmaArea: this.dmaArea
         })
         that.changeTableY();
-        // this.renderMap()
+        this.clickNode('珠晖区')
       }
     });
     window.addEventListener('resize', this.resiz)
@@ -107,115 +107,6 @@ class Vendor extends PureComponent {
     })
   }
 
-  /*  /!*renderMap() {
-   var map = new this.BMap.Map("DMA-map");          // 创建地图实例
-   this.map = map;
-   map.centerAndZoom(new BMap.Point(112.69113, 26.77524), 11);
-   map.enableScrollWheelZoom();
-   const data = [[{"lng": 112.585346, "lat": 26.88485}, {"lng": 112.621278, "lat": 26.887685}, {
-   "lng": 112.630477,
-   "lat": 26.871186
-   }, {"lng": 112.668709, "lat": 26.8601}, {"lng": 112.668134, "lat": 26.823224}, {
-   "lng": 112.664109,
-   "lat": 26.817291
-   }, {"lng": 112.64485, "lat": 26.818323}, {"lng": 112.618978, "lat": 26.820128}, {
-   "lng": 112.606043,
-   "lat": 26.811101
-   }, {"lng": 112.591382, "lat": 26.827092}, {"lng": 112.582184, "lat": 26.858553}, {
-   "lng": 112.580747,
-   "lat": 26.876085
-   }],
-   [{"lng": 112.630477, "lat": 26.888458}, {"lng": 112.705503, "lat": 26.89284}, {
-   "lng": 112.714414,
-   "lat": 26.871702
-   }, {"lng": 112.71269, "lat": 26.846434}, {"lng": 112.70694, "lat": 26.832766}, {
-   "lng": 112.690268,
-   "lat": 26.830961
-   }, {"lng": 112.679919, "lat": 26.831993}, {"lng": 112.678482, "lat": 26.837666}, {
-   "lng": 112.681644,
-   "lat": 26.85778
-   }, {"lng": 112.679345, "lat": 26.864483}, {"lng": 112.664397, "lat": 26.87196}, {
-   "lng": 112.648012,
-   "lat": 26.875054
-   }, {"lng": 112.634501, "lat": 26.881241}],
-   [{"lng": 112.674745, "lat": 26.95211}, {"lng": 112.637663, "lat": 26.919129}, {
-   "lng": 112.626165,
-   "lat": 26.908047
-   }, {"lng": 112.629902, "lat": 26.892325}, {"lng": 112.705791, "lat": 26.896191}, {
-   "lng": 112.706078,
-   "lat": 26.925056
-   }, {"lng": 112.70694, "lat": 26.964475}, {"lng": 112.673883, "lat": 26.964732}],
-   [{"lng": 112.664684, "lat": 26.96499}, {"lng": 112.649161, "lat": 26.936651}, {
-   "lng": 112.616966,
-   "lat": 26.91449
-   }, {"lng": 112.620991, "lat": 26.893356}, {"lng": 112.578447, "lat": 26.890778}, {
-   "lng": 112.572698,
-   "lat": 26.963444
-   }],
-   [{"lng": 112.716427, "lat": 26.96396}, {"lng": 112.787716, "lat": 26.965505}, {
-   "lng": 112.840608,
-   "lat": 26.993837
-   }, {"lng": 112.83141, "lat": 26.906759}, {"lng": 112.826235, "lat": 26.862936}, {
-   "lng": 112.739998,
-   "lat": 26.829929
-   }, {"lng": 112.718151, "lat": 26.824255}],
-   [{"lng": 112.502558, "lat": 26.972202}, {"lng": 112.560624, "lat": 26.963444}, {
-   "lng": 112.581321,
-   "lat": 26.808779
-   }, {"lng": 112.533603, "lat": 26.764918}, {"lng": 112.497959, "lat": 26.732915}, {
-   "lng": 112.410572,
-   "lat": 26.864999
-   }, {"lng": 112.428394, "lat": 26.98405}],
-   [{"lng": 112.593395, "lat": 26.803104}, {"lng": 112.706078, "lat": 26.8062}, {
-   "lng": 112.83141,
-   "lat": 26.852623
-   }, {"lng": 112.941793, "lat": 26.605845}, {"lng": 112.908448, "lat": 26.540704}, {
-   "lng": 112.561199,
-   "lat": 26.498291
-   }, {"lng": 112.583046, "lat": 26.623416}, {"lng": 112.5543, "lat": 26.62755}, {
-   "lng": 112.546252,
-   "lat": 26.755628
-   }]];
-
-   const that = this;
-   for (let i = 0; i < data.length; i++) {
-   let points = [];
-   for (let j = 0; j < data[i].length; j++) {
-   points.push(new this.BMap.Point(data[i][j].lng, data[i][j].lat))
-   }
-   let polygon = new this.BMap.Polygon(points, {
-   strokeColor: "blue",
-   strokeWeight: 1,
-   strokeOpacity: 0.5,
-   fillOpacity: 0.4
-   });  //创建多边形
-   let center = polygon.getBounds().getCenter();
-   var opts = {
-   position: center,    // 指定文本标注所在的地理位置
-   }
-   var label = new BMap.Label("1234", opts);  // 创建文本标注对象
-   label.setStyle({
-   color: "red",
-   fontSize: "12px",
-   height: "20px",
-   lineHeight: "20px",
-   fontFamily: "微软雅黑"
-   });
-   map.addOverlay(label);
-   map.addOverlay(polygon);   //增加多边形
-   polygon.addEventListener("click", function (e) {
-   that.showInfo(e)
-   });
-   }
-   }*!/
-   showInfo = (e)=> {
-   var parsePoint = e.point;
-   var dot = new BMap.Point(parsePoint.lng, parsePoint.lat);
-   var content = '<div><p>这里是DMA信息</p>' +
-   '<table><tr><td>供水量</td><td>10000T</td></tr><tr><td>出水量</td><td>1000T</td></tr><tr><td>产销差</td><td>9000</td></tr><tr><td>产销差率</td><td>90%</td></tr></table></div>'
-   var infoWindow = new this.BMap.InfoWindow(content);  // 创建信息窗口对象
-   this.map.openInfoWindow(infoWindow, dot); //开启信息窗口
-   }*/
   handleSearch = (values) => {
     const {dispatch} = this.props;
     dispatch({

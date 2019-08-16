@@ -178,15 +178,15 @@ class SiderTree extends PureComponent {
       ) : <span>{item.name}</span>;
       if (item.children) {
         return (
-          <TreeNode  disabled={item.is_available===-1} title={title} key={item.id} dataRef={item} className="treeItem">
+          <TreeNode  title={title} key={item.id} dataRef={item} className="treeItem">
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
       if(item.number){
-        return  <TreeNode  disabled={item.is_available===-1} title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
+        return  <TreeNode   title={item.number} key={item.id} dataRef={item} className="concentrator"/>;
       }
-      return <TreeNode  disabled={item.is_available===-1} title={title} key={item.id} dataRef={item} className="village"/>;
+      return <TreeNode   title={title} key={item.id} dataRef={item} className="village"/>;
     });
   }
   onCollapse = () => {

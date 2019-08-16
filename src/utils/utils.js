@@ -406,6 +406,7 @@ function renderRowSpan(children, record) {
 exports.renderRowSpan = renderRowSpan;
 
 function parseRowSpanData(data) {
+  const company_code = sessionStorage.getItem('company_code');
   for (let i = 0; i < data.length; i++) {
     data[i].index = i
   }
@@ -413,7 +414,7 @@ function parseRowSpanData(data) {
   data.map((item, index)=> {
     if (item.meters.data) {
       if (item.meters.data.length > 0) {
-        for (let i = 0; i < item.meters.data.length; i++) {
+        for (let i = 0; i < (company_code==='hy'?1:item.meters.data.length); i++) {
           if (item.meters.data.length === 1) {
             resetMeterData.push({
               ...item, ...item.meters.data[i],

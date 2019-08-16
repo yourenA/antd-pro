@@ -313,21 +313,21 @@ const data = [{
           path: 'community_analysis',
           component: CommunityAnalysis,
           permissions: ['village_meter_data',],
-          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          noShowCompany: ['hy','sj_test','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'village_meter_data',
           path: 'hy_community_analysis',
           component: HYCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          showCompany: ['hy','amwares','sj_test','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'village_meter_data_manual',
           path: 'manually_community_analysis',
           component: ManuallyCommunityAnalysis,
           permissions: ['village_meter_data',],
-          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          showCompany: ['hy','amwares','sj_test','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         }, {
           name: 'meter_volume_data',
           path: 'user_meter_analysis',
@@ -345,7 +345,7 @@ const data = [{
           path: 'member_consumption',
           component: MemberConsumption,
           permissions: ['member_consumption'],
-          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          noShowCompany: ['hy','hz_test','sj_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'pressure/temperature_map',
@@ -393,7 +393,7 @@ const data = [{
           path: 'complete_realData',
           component: CompleteRealData,
           permissions: ['complete_meter_data'],
-          noShowCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          noShowCompany: ['hy','hz_test','sj_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'vendor_concentrator_statistics',
@@ -474,14 +474,14 @@ const data = [{
           path: 'monitor_meter_manage',
           component: MonitoringMeterManage,
           permissions: [ 'monitoring_meter_edit'],
-          showCompany: ['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          showCompany: ['hy','sj_test','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'manually_meter_manage',
           path: 'manually_meter_manage',
           component: ManuallyMeterManage,
           permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
-          showCompany: ['hy','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+          showCompany: ['hy','sj_test','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
         {
           name: 'pressure_sensors_manage',

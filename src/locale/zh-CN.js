@@ -394,7 +394,8 @@ const zh_CN = {
   'intl.valve_sensors_number':'比例阀控传感器编号',//比例阀控传感器编号
   'intl.valve_sensors_index':'比例阀控传感器序号',//比例阀控传感器序号
   'intl.no_data':'无数据',//无数据
-  'intl.value':'读值',//读值
+  'intl.value':'阀门开度设置值',//读值
+  'intl.current__value':'阀门开度返回值',//当前设置值
   'intl.positive/negative_feedback':'正/负反馈',//正/负反馈
   'intl.positive_feedback':'正反馈',//正反馈
   'intl.negative_feedback':'负反馈',//负反馈
@@ -446,6 +447,8 @@ const zh_CN = {
   'intl.close':'关',//关
 
   'intl.last_date':'最后上报时间',//最后上报时间
+  'intl.change_record':'换表记录',//换表记录
+
 
 }
 export default zh_CN;

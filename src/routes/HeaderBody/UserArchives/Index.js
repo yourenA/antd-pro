@@ -65,6 +65,7 @@ class UserMeterAnalysis extends PureComponent {
       canImport:true,
       per_page:30,
       canLoadByScroll: true,
+      changeRecord:[]
     }
   }
 
@@ -563,7 +564,7 @@ class UserMeterAnalysis extends PureComponent {
       title: formatMessage({id: 'intl.operate'}),
       key: 'operation',
       fixed: 'right',
-      width: 90,
+      width:  company_code==='hy'?150:90,
       render: (val, record, index) => {
         const children= (
           <p>
@@ -586,8 +587,30 @@ class UserMeterAnalysis extends PureComponent {
               <span>
                   <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                               onConfirm={()=>this.handleRemove(record.id)}>
-                <a href="">{formatMessage({id: 'intl.delete'})}</a>
+                <a href="javascript:;">{formatMessage({id: 'intl.delete'})}</a>
               </Popconfirm>
+                </span>
+            }
+            {
+              (company_code==='hy'&&record.meters.data.length>1) &&
+              <span>
+                   <span className="ant-divider"/>
+                    <a href="javascript:;" onClick={()=>{
+                      this.setState(
+                        {
+                          changeRecord: record.meters.data.reduce((pre,item)=>{
+                            pre.push({
+                              ...record,
+                              ...item,
+                            })
+                            return pre
+                          },[]),
+                          changeModal: true
+                        },function () {
+                          console.log('changeRecord',this.state.changeRecord)
+                        }
+                      )
+                    }}>{formatMessage({id: 'intl.change_record'})}</a>
                 </span>
             }
           </p>
@@ -599,6 +622,51 @@ class UserMeterAnalysis extends PureComponent {
       columns.push(operate)
     }
     const {dispatch} =this.props;
+    const changeRecordColumns=[
+      { title: formatMessage({id: 'intl.user_number'}), width: 100, dataIndex: 'number', key: 'number',  fixed: 'left',  render: (val, record, index) => {
+        return  ellipsis2(val, 100)
+      } },
+      { title:formatMessage({id: 'intl.user_name'}) , dataIndex: 'real_name', key: 'real_name' ,width: 100,   render: (val, record, index) => {
+        return  ellipsis2(val, 100)
+      } },
+      { title: formatMessage({id: 'intl.install_address'}), dataIndex: 'address', key: 'address' ,width: 110,   render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
+      { title: formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_number', key: 'concentrator_number' ,width: 100, },
+      { title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
+        return ellipsis2(val, 110)
+      }},
+      { title: formatMessage({id: 'intl.water_meter_index'}), width: 80, dataIndex: 'meter_index', key: 'meter_index' ,render: (val, record, index) => {
+        return ellipsis2(val, 80)
+      }},
+      {
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 80,
+        render: (val, record, index) => {
+          if(val===undefined){
+            return ''
+          }
+          return (
+            <p>
+              <Badge status={val === 1 ? "success" : "error"}/>{record.status_explain}
+            </p>
+          )
+        }
+      },
+      {title: formatMessage({id: 'intl.enabled_date'}), width: 120, dataIndex: 'enabled_date', key: 'enabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: formatMessage({id: 'intl.enabled_value'}), width: 120, dataIndex: 'enabled_value', key: 'enabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: formatMessage({id: 'intl.disabled_date'}), width: 120, dataIndex: 'disabled_date', key: 'disabled_date', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+      {title: formatMessage({id: 'intl.disabled_value'}), dataIndex: 'disabled_value', key: 'disabled_value', render: (text, record, index) => {
+        return ellipsis2(text, 120)
+      }},
+
+
+    ]
     return (
       <Layout className="layout">
         <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}  siderLoadedCallback={this.siderLoadedCallback}/>
@@ -690,6 +758,16 @@ class UserMeterAnalysis extends PureComponent {
           ]}
         >
           <ExportArchives dma={dma} sider_regions={sider_regions}   wrappedComponentRef={(inst) => this.exportFormRef = inst} meter_models={meter_models.data} concentrators={concentrators.data}   />
+        </Modal>
+        <Modal
+          title={formatMessage({id: 'intl.change_record'})}
+          visible={this.state.changeModal}
+          onCancel={() => this.setState({changeModal:false})}
+          //onOk={this.handleImport}
+          width={900}
+          footer={null}
+        >
+          <Table dataSource={this.state.changeRecord} size="small" rowKey={record => record.meter_number} pagination={false} columns={changeRecordColumns} scroll={{x: 1500, y: this.state.tableY}}/>
         </Modal>
       </Layout>
     );

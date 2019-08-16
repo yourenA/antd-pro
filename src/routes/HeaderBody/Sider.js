@@ -159,7 +159,7 @@ class SiderTree extends PureComponent {
       ) : <span title={item.name ? item.name : item.number}>{item.name ? item.name : item.number}</span>;
       if (item.children && !this.props.onlyShowOneLevel) {
         return (
-          <TreeNode disabled={item.is_available===-1} title={<span>{title}{item.tooltip ?
+          <TreeNode title={<span>{title}{item.tooltip ?
             <Tooltip placement="top" title={item.tooltip}><Icon style={{marginLeft: '5px'}} type="question-circle-o"/>
             </Tooltip> : ''}</span>} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="treeItem">
             {this.renderTreeNodes(item.children)}
@@ -167,14 +167,14 @@ class SiderTree extends PureComponent {
         );
       }
       if (item.number) {
-        return <TreeNode disabled={item.is_available===-1}  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode   title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="setting"/>}/>;
       }
       if (item.site_id) {
-        return <TreeNode disabled={item.is_available===-1}  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="line-chart"/>}/>;
       }
-      return <TreeNode  disabled={item.is_available===-1} title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
+      return <TreeNode   title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
     });
   }
   onCollapse = () => {

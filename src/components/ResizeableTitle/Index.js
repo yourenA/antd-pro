@@ -25,7 +25,7 @@ class Demo extends React.Component {
         title:this.props.intl.formatMessage({id: 'intl.index'}),
         dataIndex: 'id',
         key: 'id',
-        width: 50,
+        width: 55,
         fixed: 'left',
         className: 'table-index',
         render: (text, record, index) => {
