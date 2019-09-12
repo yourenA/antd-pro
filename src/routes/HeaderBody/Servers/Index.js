@@ -370,7 +370,7 @@ class MeterModel extends PureComponent {
             <AddOrEditForm  wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
-            key={ Date.parse(new Date())}
+            destroyOnClose={true}
             title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
@@ -380,7 +380,7 @@ class MeterModel extends PureComponent {
                            wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
           <Modal
-            key={ Date.parse(new Date())+1}
+            destroyOnClose={true}
             title={formatMessage({id: 'intl.edit'})+" "+formatMessage({id: 'intl.status'})}
             visible={this.state.editStatusModal}
             onOk={this.handleEditStatus}

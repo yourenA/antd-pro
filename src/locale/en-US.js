@@ -27,6 +27,7 @@ const en_US = {
   'intl.data_analysis':'Data Analysis',//数据分析
   'intl.village_meter_data':'Village Meter Volume',//小区水量分析
   'intl.village_meter_data_manual':'Village Meter Volume(Manual)',//小区水量分析(手工)
+  'intl.meter_relations':'Meter Relations',
   'intl.meter_volume_data':'Water Meter Volume',//水表水量分析
   'intl.big_meter_volume':'Big Meter Volume',//大表水量分析
   'intl.user_meter_volume':'User Meter Volume',//用户水量分析

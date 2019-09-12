@@ -1,7 +1,7 @@
-import { query,add,remove,edit,editStatus,exportCSV } from '../services/meter_errors';
+import { query,add,remove,edit } from '../services/relations';
 
 export default {
-  namespace: 'meter_errors',
+  namespace: 'relations',
   state: {
     data:[],
     meta: {pagination: {total: 0, per_page: 0}},
@@ -10,28 +10,48 @@ export default {
 
   },
   effects: {
-    *fetch({ payload ,callback}, { call, put }) {
+    *fetch({ payload,callback }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
       const response = yield call(query, payload);
-      console.log(response)
       if(response.status===200){
-        yield put({
-          type: 'save',
-          payload:  response.data
-        });
-        if(document.querySelector('.ant-table-body')){
-          document.querySelector('.ant-table-body').scrollTop=0;
+        if(response.data.meta){
+          yield put({
+            type: 'save',
+            payload:  response.data
+          });
+          if(document.querySelector('.ant-table-body')){
+            document.querySelector('.ant-table-body').scrollTop=0;
+          }else{
+            console.log('没找到表格')
+          }
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
+          if(callback)callback()
         }else{
-          console.log('没找到表格')
+          yield put({
+            type: 'save',
+            payload:  {
+              data:response.data.data,
+              meta: {pagination: {total: 0, per_page: 0}},
+            }
+          });
+          if(document.querySelector('.ant-table-body')){
+            document.querySelector('.ant-table-body').scrollTop=0;
+          }else{
+            console.log('没找到表格')
+          }
+          yield put({
+            type: 'changeLoading',
+            payload: false,
+          });
+          if(callback)callback()
+
         }
-        yield put({
-          type: 'changeLoading',
-          payload: false,
-        });
-        if (callback) callback();
       }
     },
     *fetchAndPush({ payload,callback }, { call, put }) {
@@ -45,30 +65,17 @@ export default {
         if (callback) callback();
       }
     },
-    *add({ payload, callback }, { call, put }) {
+    *add({ payload, callback,errorCallback }, { call, put }) {
       const response = yield call(add, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();
-      }
-    },
-    *exportCSV({ payload, callback }, { call, put }) {
-      const response = yield call(exportCSV, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback(response.data.download_key);
+      }else{
+        if (errorCallback) errorCallback();
       }
     },
     *edit({ payload, callback }, { call, put }) {
       const response = yield call(edit, payload);
-      console.log(response)
-      if(response.status===200){
-        if (callback) callback();
-      }
-    },
-    *editStatus({ payload, callback }, { call, put }) {
-      console.log(payload)
-      const response = yield call(editStatus, payload);
       console.log(response)
       if(response.status===200){
         if (callback) callback();
@@ -91,11 +98,7 @@ export default {
       };
     },
     saveAndPush(state, action) {
-      // console.log('[...state.data,...action.payload.data]',[...state.data,...action.payload.data]);
       const data=[...state.data,...action.payload.data];
-      // data.map((item,index)=>{
-      //   item.index=index
-      // })
       return {
         ...state,
         data: data,

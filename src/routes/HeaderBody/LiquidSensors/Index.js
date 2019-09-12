@@ -489,7 +489,7 @@ class LiquidSensors extends PureComponent {
           </Modal>
           <Modal
             width="60%"
-            key={ Date.parse(new Date())}
+            destroyOnClose={true}
             title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
@@ -499,7 +499,7 @@ class LiquidSensors extends PureComponent {
                            wrappedComponentRef={(inst) => this.editFormRef = inst}/>
           </Modal>
           <Modal
-            key={ Date.parse(new Date())+1}
+            destroyOnClose={true}
             title={formatMessage({id: 'intl.associated_valve_sensor'})}
             visible={this.state.connectModal}
             onOk={this.handleConnect}

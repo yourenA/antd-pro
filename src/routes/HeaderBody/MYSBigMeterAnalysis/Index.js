@@ -273,7 +273,7 @@ class UserMeterAnalysis extends PureComponent {
             </PageHeaderLayout>
             <Modal
               width="950px"
-              key={ Date.parse(new Date())}
+              destroyOnClose={true}
               title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.edit_meter_number} ${ formatMessage({id: 'intl.details'})}`}
               visible={this.state.editModal}
               onOk={() => this.setState({editModal: false})}

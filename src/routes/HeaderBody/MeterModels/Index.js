@@ -360,7 +360,7 @@ class MeterModel extends PureComponent {
           </Modal>
           <Modal
             width="900px"
-            key={ Date.parse(new Date())}
+            destroyOnClose={true}
             title={formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}

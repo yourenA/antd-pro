@@ -9,9 +9,11 @@ import { routerRedux} from 'dva/router';
 import moment from 'moment'
 import find from 'lodash/find'
 import './index.less'
+import config from '../../../common/config'
 import uuid from 'uuid/v4'
+import Export from './ExportForm'
 import debounce from 'lodash/throttle'
-import {renderIndex,renderErrorData,ellipsis2} from './../../../utils/utils'
+import {download,renderErrorData,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import Detail from './../UserMeterAnalysis/Detail'
 const {Content} = Layout;
@@ -29,6 +31,7 @@ class UserMeterAnalysis extends PureComponent {
     this.state = {
       showAddBtn: find(this.permissions, {name: 'member_add_and_edit'}),
       showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
+      showExportBtn: find(this.permissions, {name: 'meter_error_export'}),
       showAddBtnByCon: false,
       showdelBtn: find(this.permissions, {name: 'member_delete'}),
       tableY: 0,
@@ -253,6 +256,22 @@ class UserMeterAnalysis extends PureComponent {
       editModal: true
     })
   }
+  handleExport=()=>{
+    const formValues =this.exportFormRef.props.form.getFieldsValue();
+    console.log('formValues',formValues)
+    this.props.dispatch({
+      type: 'meter_errors/exportCSV',
+      payload: {
+        ...formValues,
+        started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
+        ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+        village_id: formValues.village_id?formValues.village_id[formValues.village_id.length - 1]:''
+      },
+      callback: function (download_key) {
+        download(`${config.prefix}/download?download_key=${download_key}`)
+      }
+    });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const {meter_errors: {data, meta, loading}, manufacturers,dispatch} = this.props;
@@ -390,6 +409,12 @@ class UserMeterAnalysis extends PureComponent {
                             manufacturers={manufacturers.data}
                             village_id={this.state.village_id}
                             per_page={this.state.per_page}
+                            showExportBtn={this.state.showExportBtn}
+                            exportConcentratorCSV={()=>{
+                              this.setState({
+                                exportModal:true
+                              })
+                            }}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
                             showAddBtn={this.state.showAddBtn && this.state.showAddBtnByCon}
                             clickAdd={()=>this.setState({addModal: true})}
@@ -440,6 +465,20 @@ class UserMeterAnalysis extends PureComponent {
           >
             <Detail showExtra={true} meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
                     started_at={this.state.started_at}/>
+          </Modal>
+          <Modal
+            title={'导出异常水表'}
+            visible={this.state.exportModal}
+            onCancel={() => this.setState({exportModal:false})}
+            //onOk={this.handleImport}
+            footer={[
+              <Button key="back" onClick={() => this.setState({exportModal:false})}>{formatMessage({id: 'intl.cancel'})}</Button>,
+              <Button key="submit" type="primary"  onClick={this.handleExport}>
+                {formatMessage({id: 'intl.submit'})}
+              </Button>,
+            ]}
+          >
+            <Export    wrappedComponentRef={(inst) => this.exportFormRef = inst}    />
           </Modal>
         </Content>
       </Layout>

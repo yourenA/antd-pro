@@ -786,7 +786,7 @@ class MeterModel extends PureComponent {
           </Modal>
           <Modal
             width="700px"
-            key={ Date.parse(new Date())}
+            destroyOnClose={true}
             title={ formatMessage({id: 'intl.edit'})}
             visible={this.state.editModal}
             onOk={this.handleEdit}
@@ -797,7 +797,7 @@ class MeterModel extends PureComponent {
           </Modal>
           <Modal
             width="700px"
-            key={ Date.parse(new Date()) + 1}
+            destroyOnClose={true}
             title={ formatMessage({id: 'intl.change_meter'})}
             visible={this.state.changeModal}
             onOk={this.handleChangeMeter}

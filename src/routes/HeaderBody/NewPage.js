@@ -10,7 +10,7 @@ import ValvePosition from './HomePage/ValvePosition'
 import VendorConcentrator from './HomePage/VendorConcentrator'
 import DMADate from './HomePage/DMADate'
 import MYSHomepageChart from './HomePage/MYSHomepageChart'
-import {Row, Col, Card, Icon, TreeSelect,Collapse,DatePicker} from 'antd';
+import {Row, Col, Card, Icon, TreeSelect,Collapse,DatePicker,Select} from 'antd';
 import {routerRedux} from 'dva/router';
 import styles from './main.less'
 import moment from 'moment'
@@ -21,10 +21,12 @@ import {fillZero,disabledPreDate} from './../../utils/utils'
 import CountUp from 'react-countup';
 import {injectIntl,FormattedMessage} from 'react-intl';
 const TreeNode = TreeSelect.TreeNode;
+const Option = Select.Option;
 const Panel = Collapse.Panel;
 import {connect} from 'dva';
 @connect(state => ({
   sider_regions: state.sider_regions,
+  manufacturers: state.manufacturers,
 }))
 @injectIntl
 class Main extends PureComponent {
@@ -37,7 +39,9 @@ class Main extends PureComponent {
       server: {},
       last30day: [],
       last12month: [],
-      initDate:moment().add(-1, 'days')
+      initDate:moment().add(-1, 'days'),
+      village_id:'',
+      manufacturer_id:''
     }
   }
 
@@ -46,6 +50,12 @@ class Main extends PureComponent {
     const that = this;
     this.getHomepage(this.state.initDate)
     const {dispatch} = this.props;
+    dispatch({
+      type: 'manufacturers/fetch',
+      payload: {
+        return: 'all'
+      },
+    });
     dispatch({
       type: 'sider_regions/fetch',
       payload: {
@@ -67,7 +77,21 @@ class Main extends PureComponent {
     this.setState({
       date:dateString,
     },function () {
-      this.getHomepage(dateString)
+      this.getHomepage()
+    })
+  }
+  changeVillage=(e)=>{
+    this.setState({
+      village_id:e,
+    },function () {
+      this.getHomepage()
+    })
+  }
+  changeManufacturer=(e)=>{
+    this.setState({
+      manufacturer_id:e,
+    },function () {
+      this.getHomepage()
     })
   }
   getHomepage=(date)=>{
@@ -75,7 +99,10 @@ class Main extends PureComponent {
     request(`/homepage`, {
       method: 'GET',
       params:{
-        date:moment(date).format("YYYY-MM-DD"),
+        date:moment(this.state.date).format("YYYY-MM-DD"),
+        manufacturer_id:this.state.manufacturer_id,
+        village_id:this.state.village_id,
+
       }
     }).then((response)=> {
       console.log(response);
@@ -147,7 +174,18 @@ class Main extends PureComponent {
       return <TreeNode value={item.id} title={item.name} key={item.id}/>
     });
   }
-
+  renderTreeNodes=(data)=>{
+    return data.map((item) => {
+      if (item.children) {
+        return (
+          <TreeNode value={item.id} title={item.name} key={item.id} >
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return  <TreeNode value={item.id}  title={item.name} key={item.id} />
+    });
+  }
   render() {
     const { intl:{formatMessage} } = this.props;
     const dispatch = this.props.dispatch;
@@ -156,9 +194,27 @@ class Main extends PureComponent {
     return (
       <div className={styles.main}>
         <Collapse activeKey={['1']} style={{marginBottom:'16px'}}>
-          <Panel header={<h3 style={{fontSize:'18px'}}><DatePicker allowClear={false}  defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
+          <Panel header={<h3 style={{fontSize:'18px'}}><DatePicker allowClear={false}  style={{marginRight:'8px'}} defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
           </h3>} key="1" showArrow={false}>
+            {
+              company_code==='hy'&&
+              <div   style={{marginBottom:'12px'}}>
+                安装小区 : <TreeSelect
+                  style={{width:"120px",marginRight:'12px'}}
+                  onChange={this.changeVillage}
+                  allowClear
+                >
+                  {this.renderTreeNodes(data)}
+                </TreeSelect>
+                厂商 :      <Select allowClear={true}  style={{width:120}}  onChange={this.changeManufacturer}
+              >
+                { this.props.manufacturers.data.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+              </Select>
+              </div>
+
+            }
             <Row gutter={16}>
+
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem1}`}>
                   <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>

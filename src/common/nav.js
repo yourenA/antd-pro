@@ -59,6 +59,8 @@ import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Inde
 // import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 // )
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
+import Relations from './../routes/HeaderBody/Relations/Index'
+import RelationsAnalysis from './../routes/HeaderBody/RelationsAnalysis/Index'
 import PressureAnalysis from './../routes/HeaderBody/MYSPressureAnalysis/Index'
 import MYSBigMeterAnalysis from './../routes/HeaderBody/MYSBigMeterAnalysis/Index'
 // import TemperatureAnalysis from './../routes/HeaderBody/PressureAnalysis/Index'
@@ -346,6 +348,12 @@ const data = [{
           component: MemberConsumption,
           permissions: ['member_consumption'],
           noShowCompany: ['hy','hz_test','sj_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+        }, {
+          name: 'meter_relations_analysis',
+          path: 'relations_analysis',
+          component: RelationsAnalysis,
+          permissions: ['attrition_rate_analysis'],
+          showCompany: ['amwares','hngydx']
         },
         {
           name: 'pressure/temperature_map',
@@ -454,7 +462,14 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
+        }, {
+          name: 'meter_relations',
+          path: 'relations',
+          component: Relations,
+          permissions: ['attrition_rate_analysis'],
+          showCompany: ['amwares','hngydx']
         },
+
         {
           name: 'liquid_sensors_manage',
           path: 'liquid_sensors_manage',

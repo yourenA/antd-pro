@@ -330,7 +330,7 @@ class Leak_abnormality extends PureComponent {
               </Card>
               <Modal
                 width="750px"
-                key={ Date.parse(new Date())}
+                destroyOnClose={true}
                 title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
@@ -339,7 +339,7 @@ class Leak_abnormality extends PureComponent {
                 <Detail abnormality_hours={this.state.abnormality_hours} difference_values={this.state.difference_values}/>
               </Modal>
               <Modal
-                key={ Date.parse(new Date())+1}
+                destroyOnClose={true}
                 title={ formatMessage({id: 'intl.confirm_abnormal'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('2')}

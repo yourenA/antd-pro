@@ -118,6 +118,7 @@ class SearchForm extends Component {
             </Button>}
             <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
+            {this.props.showExportBtn&&<Button  className="btn-cyan" type="primary" style={{marginLeft: 8}} onClick={()=>this.props.exportConcentratorCSV()} icon='export'>导出异常水表信息</Button>}
           </FormItem>
           <FormItem label={ formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}>
             <Switch defaultChecked={localStorage.getItem('canOperateMeterUnusualAnalysis') === 'true' ? true : false}

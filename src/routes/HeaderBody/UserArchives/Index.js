@@ -723,7 +723,7 @@ class UserMeterAnalysis extends PureComponent {
         </Modal>
         <Modal
           width="650px"
-          key={ Date.parse(new Date())+1}
+          destroyOnClose={true}
           title={formatMessage({id: 'intl.edit'})}
           visible={this.state.editModal}
           onOk={this.handleEdit}

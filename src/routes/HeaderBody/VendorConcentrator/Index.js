@@ -233,7 +233,7 @@ class Vendor extends PureComponent {
             <AddOrEditVendor   wrappedComponentRef={(inst) => this.formRef = inst}/>
           </Modal>
           <Modal
-            key={ Date.parse(new Date())}
+            destroyOnClose={true}
             title="修改厂商"
             visible={this.state.editModal}
             onOk={this.handleEdit}

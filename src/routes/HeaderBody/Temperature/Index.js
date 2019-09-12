@@ -422,7 +422,7 @@ class MeterModel extends PureComponent {
 
           </Modal>
           <Modal
-            key={ formatMessage({id: 'intl.edit'})}
+            destroyOnClose={true}
             title="修改温度传感器"
             visible={this.state.editModal}
             onOk={this.handleEdit}

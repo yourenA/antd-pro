@@ -313,7 +313,7 @@ class FunctionContent extends PureComponent {
               </Card>
               <Modal
                 width="750px"
-                key={ Date.parse(new Date())}
+                destroyOnClose={true}
                 title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
                 visible={this.state.editModal}
                 onOk={this.handleEdit}
@@ -323,7 +323,7 @@ class FunctionContent extends PureComponent {
                         started_at={this.state.started_at}/>
               </Modal>
               <Modal
-                key={ Date.parse(new Date())+1}
+                destroyOnClose={true}
                 title={ formatMessage({id: 'intl.confirm_abnormal'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('1')}
