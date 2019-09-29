@@ -46,7 +46,6 @@ export default class Proportion extends PureComponent {
       //   }
       // },
       legend: {
-        orient: 'vertical',
         left: 'left',
         data: [formatMessage({id: 'intl.meter_successful_upload_count'}),formatMessage({id: 'intl.meter_no_upload_count'}),
           formatMessage({id: 'intl.meter_error_upload_count'}),
@@ -57,7 +56,7 @@ export default class Proportion extends PureComponent {
           name: '昨日水表状态统计',
           type: 'pie',
           radius : '55%',
-          center: ['50%', '60%'],
+          center: ['50%', '50%'],
           data:[
             {value:meter.yesterday_upload_count, name:formatMessage({id: 'intl.meter_successful_upload_count'}),
               itemStyle:{

@@ -259,8 +259,8 @@ class Main extends PureComponent {
                   title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
                     {formatMessage({id: 'intl.concentrator_online_statistics'})}
                   </span>}
-                  bodyStyle={{padding: 24}}
-                  style={{marginBottom: 16, minHeight: 509}}
+                  bodyStyle={{padding: 0}}
+                  style={{ minHeight: 'auto'}}
                 >
                   <ConcentratorOnlife concentrator={this.state.concentrator}/>
                 </Card>
@@ -270,8 +270,8 @@ class Main extends PureComponent {
                   title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
                     {formatMessage({id: 'intl.water_meter_status_statistics'})}
                     </span>}
-                  bodyStyle={{padding: 24}}
-                  style={{marginBottom: 16, minHeight: 509}}
+                  bodyStyle={{padding: 0}}
+                  style={{minHeight: 'auto'}}
                 >
                   <Proportion meter={this.state.meter}/>
                 </Card>
@@ -304,8 +304,8 @@ class Main extends PureComponent {
 
                   {formatMessage({id: 'intl.water_meter_online_rate'})}
                   </span>}
-                bodyStyle={{padding: 24}}
-                style={{marginBottom: 16, minHeight: 509}}
+                bodyStyle={{padding: 0}}
+                style={{marginBottom: 16, minHeight: 'auto'}}
               >
                 <AreaSupplyList/>
               </Card>
@@ -320,8 +320,8 @@ class Main extends PureComponent {
                 title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
                   {formatMessage({id: 'intl.water_meter_online_rate'})}
                   </span>}
-                bodyStyle={{padding: 24}}
-                style={{marginBottom: 16, minHeight: 509}}
+                bodyStyle={{padding: 0}}
+                style={{marginBottom: 16, minHeight: 'auto'}}
               >
                 <DMArate/>
               </Card>
@@ -332,7 +332,7 @@ class Main extends PureComponent {
               bordered={false}
               title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#1890ff'}}/>昨日集中器在线情况统计</span>}
               bodyStyle={{padding: 24}}
-              style={{marginBottom: 16, minHeight: 509}}
+              style={{marginBottom: 16, minHeight: 400}}
             >
               <ConcentratorOnlife concentrator={this.state.concentrator}/>
             </Card>
@@ -342,7 +342,7 @@ class Main extends PureComponent {
               bordered={false}
               title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>昨日水表状态统计</span>}
               bodyStyle={{padding: 24}}
-              style={{marginBottom: 16, minHeight: 509}}
+              style={{marginBottom: 16, minHeight: 400}}
             >
               <Proportion meter={this.state.meter}/>
             </Card>
@@ -364,8 +364,8 @@ class Main extends PureComponent {
                 {this.renderTreeNodes(data)}
                 </TreeSelect>
                 </span>}
-              bodyStyle={{padding: 24}}
-              style={{marginBottom: 16, minHeight: 509}}
+              bodyStyle={{padding: 12}}
+              style={{marginBottom: 16, minHeight: 'auto'}}
             >
               <MYSHomepageChart last30day={this.state.last30day} last12month={this.state.last12month}/>
             </Card>
@@ -376,7 +376,8 @@ class Main extends PureComponent {
               title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
                 {formatMessage({id: 'intl.Manufacturer_concentrator/water_meter_number'})}
                 </span>}
-              style={{marginBottom: 16, minHeight: 509}}
+              bodyStyle={{padding: 12}}
+              style={{marginBottom: 16, minHeight: 'auto'}}
             >
               <VendorConcentrator />
             </Card>
@@ -392,7 +393,7 @@ class Main extends PureComponent {
                                    style={{marginRight: '5px', color: '#1890ff'}}/>
                   {formatMessage({id: 'intl.5_DMA_water_consumption'})}
                   </span>}
-                style={{marginBottom: 16, minHeight: 509}}
+                style={{marginBottom: 16, minHeight: 'auto'}}
               >
                 <DMADate />
               </Card>
@@ -406,8 +407,8 @@ class Main extends PureComponent {
                 title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
                   {formatMessage({id: 'intl.current_level_sensor_value'})}
                   </span>}
-                bodyStyle={{padding: 24}}
-                style={{marginBottom: 16, minHeight: 509}}
+                bodyStyle={{padding: 12}}
+                style={{marginBottom: 16, minHeight: 'auto'}}
               >
                 <LiquidPosition/>
               </Card>
@@ -421,20 +422,20 @@ class Main extends PureComponent {
                 title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#1890ff'}}/>
                   {formatMessage({id: 'intl.current_valve_sensor_opening_value'})}
                   </span>}
-                bodyStyle={{padding: 24}}
-                style={{marginBottom: 16, minHeight: 509}}
+                bodyStyle={{padding: 12}}
+                style={{marginBottom: 16, minHeight: 'auto'}}
               >
                 <ValvePosition/>
               </Card>
             </Col>
           }
           {/*
-           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
            <Card
            bordered={false}
            title="厂商综合对比"
            bodyStyle={{ padding: 24 }}
-           style={{ marginBottom: 24, minHeight: 509 }}
+           style={{ marginBottom: 24, minHeight: 'auto' }}
            >
            <Guage />
            </Card>

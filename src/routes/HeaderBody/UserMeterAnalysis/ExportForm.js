@@ -2,12 +2,14 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, TreeSelect,DatePicker } from 'antd';
+import {Form, Input,  Radio, TreeSelect,DatePicker,Select  } from 'antd';
 import {connect} from 'dva';
 import {disabledDate} from './../../../utils/utils'
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+import request from "./../../../utils/request";
 import moment from 'moment'
 import {injectIntl} from 'react-intl';
 @injectIntl
@@ -18,6 +20,7 @@ class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      concentrators:[]
     };
   }
   componentDidMount() {
@@ -27,7 +30,27 @@ class AddPoliciesForm extends Component {
       payload: {
         return: 'all'
       }
+
     });
+    this.onChangeCasader('')
+  }
+  onChangeCasader=(value)=>{
+    console.log('value',value);
+    const that=this;
+    const {form} = this.props;
+    form.setFieldsValue({ concentrator_number:''}),
+      request(`/concentrators`, {
+        method: 'get',
+        params: {
+          village_id:value,
+          return:'all'
+        }
+      }).then((response)=> {
+        console.log(response);
+        that.setState({
+          concentrators:response.data.data
+        })
+      })
   }
   renderTreeNodes=(data)=>{
     return data.map((item) => {
@@ -75,13 +98,30 @@ class AddPoliciesForm extends Component {
           })(
             <TreeSelect
               allowClear
-              treeDefaultExpandAll={true}
+              onChange={this.onChangeCasader}
             >
               {this.renderTreeNodes(data)}
             </TreeSelect>
           )}
         </FormItem>
-        {(company_code === 'dy') ? <FormItem label=   {formatMessage({id: 'intl.date'})}
+        <FormItem
+          label={formatMessage({id: 'intl.concentrator_number'})}
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('concentrator_number', {
+            initialValue: '',
+          })(
+            <Select   allowClear showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+            >
+              { this.state.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
+            </Select>
+          )}
+        </FormItem>
+        {(company_code === 'dy'||company_code === 'mys') ? <FormItem label=   {formatMessage({id: 'intl.date'})}
                                              {...formItemLayoutWithLabel}>
           {getFieldDecorator('date', {
             initialValue: moment(),
@@ -107,7 +147,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         }
-        {(company_code === 'dy') ? null : <FormItem label=   {formatMessage({id: 'intl.end'})}
+        {(company_code === 'dy'||company_code === 'mys') ? null : <FormItem label=   {formatMessage({id: 'intl.end'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('ended_at', {
             initialValue: moment(),
@@ -120,7 +160,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         }
-        {(company_code === 'hy'||company_code === 'dy') ? null : <FormItem
+        {(company_code === 'hy'||company_code === 'dy'||company_code === 'mys') ? null : <FormItem
           {...formItemLayoutWithLabel}
           label= {formatMessage({id: 'intl.export_type'})}
         >

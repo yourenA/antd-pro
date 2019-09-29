@@ -40,10 +40,9 @@ export default class EndpointsList extends PureComponent {
         }
       },
       grid: {
-        top: 110
+        top: 70
       },
       legend: {
-        orient: 'vertical',
         left: 'left',
         data: [formatMessage({id: 'intl.online'}), formatMessage({id: 'intl.sleep'}),formatMessage({id: 'intl.offline'}) ]
       },

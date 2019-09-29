@@ -83,7 +83,8 @@ export default class MYSHomepageChart extends PureComponent {
     let option = {
       backgroundColor: '#eee',
       title: {
-        text: formatMessage({id: 'intl.meter_consumption_last_30_days'})
+        text: formatMessage({id: 'intl.meter_consumption_last_30_days'}),
+        top:3
       },
       tooltip: {
         trigger: 'axis',
@@ -95,6 +96,9 @@ export default class MYSHomepageChart extends PureComponent {
         data: lengendData,
         x: 'center',
         top:'90%'
+      },
+      grid: {
+        left: 90
       },
       xAxis: [
         {
@@ -163,13 +167,18 @@ export default class MYSHomepageChart extends PureComponent {
     let option = {
       backgroundColor: '#eee',
       title: {
-        text: formatMessage({id: 'intl.meter_consumption_last_12_months'})
+        text: formatMessage({id: 'intl.meter_consumption_last_12_months'}),
+        top:3
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
           type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
         }
+
+      },
+      grid: {
+        left: 90
       },
       legend: {
         data: lengendData,

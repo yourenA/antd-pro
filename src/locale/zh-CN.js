@@ -124,7 +124,7 @@ const zh_CN = {
   'intl.offline':'离线',//离线
   'intl.offline_hours':'离线时间',//离线时间
   'intl.abnormality_hours':'异常时间',//异常时间
-  'intl.no_record':'全部',//无记录
+  'intl.no_record':'无记录',//无记录
   'intl.all':'全部',//全部
   'intl.only_normal':'正常',//正常
   'intl.date':'日期',//日期

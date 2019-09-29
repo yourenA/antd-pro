@@ -144,7 +144,7 @@ class SearchForm extends Component {
                 <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
-            <FormItem label={formatMessage({id: 'intl.user_name'})}
+           {/* <FormItem label={formatMessage({id: 'intl.user_name'})}
                       style={{ display: expand ? 'inline-block' : 'none' }}
             >
               {getFieldDecorator('real_name')(
@@ -157,7 +157,7 @@ class SearchForm extends Component {
             {getFieldDecorator('install_address')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
-          </FormItem>
+          </FormItem>*/}
 
           <FormItem label={formatMessage({id: 'intl.display_type'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}

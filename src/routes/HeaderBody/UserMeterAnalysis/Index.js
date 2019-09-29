@@ -254,14 +254,16 @@ class UserMeterAnalysis extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const formValues = this.ExportformRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
-    const payload=(company_code==='dy')?{
+    const payload=(company_code==='dy'||company_code==='mys')?{
       village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
       started_at:  moment(formValues.date).format('YYYY-MM-DD'),
       ended_at:  moment(formValues.date).format('YYYY-MM-DD'),
+      concentrator_number: formValues.concentrator_number,
     }:{
       village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
       started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
       ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+      concentrator_number: formValues.concentrator_number,
       export_type: formValues.export_type
     }
     this.props.dispatch({
@@ -511,7 +513,7 @@ class UserMeterAnalysis extends PureComponent {
           title: formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
-          width: 110,
+          width: 80,
           render: (val, record, index) => {
             return (
               <div>
@@ -527,7 +529,7 @@ class UserMeterAnalysis extends PureComponent {
           title: formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
-          width: 110,
+          width: 80,
           render: (val, record, index) => {
             return (
               <div>
@@ -564,21 +566,23 @@ class UserMeterAnalysis extends PureComponent {
                                   sort_field={this.state.sort_field}
                                   sort_direction={this.state.sort_direction}
                                   exportCSV={()=> {
-                                    company_code !== 'mys' ?
-                                      this.setState({
-                                        exportModal: true
-                                      }) :
-                                      this.props.dispatch({
-                                        type: 'member_meter_data/exportCSV',
-                                        payload: {
-                                          started_at: moment().format('YYYY-MM-DD'),
-                                          ended_at: moment().format('YYYY-MM-DD'),
-
-                                        },
-                                        callback: function (download_key) {
-                                          download(`${config.prefix}/download?download_key=${download_key}`)
-                                        }
-                                      });
+                                     this.setState({
+                                       exportModal: true
+                                     })
+                                    //company_code !== 'mys' ?
+                                    //  this.setState({
+                                    //    exportModal: true
+                                    //  }) :
+                                    //  this.props.dispatch({
+                                    //    type: 'member_meter_data/exportCSV',
+                                    //    payload: {
+                                    //      started_at: moment().format('YYYY-MM-DD'),
+                                    //      ended_at: moment().format('YYYY-MM-DD'),
+                                    //    },
+                                    //    callback: function (download_key) {
+                                    //      download(`${config.prefix}/download?download_key=${download_key}`)
+                                    //    }
+                                    //  });
                                   }}
                                   per_page={this.state.per_page}
                                   uploadLl={()=> {

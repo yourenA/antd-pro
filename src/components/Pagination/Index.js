@@ -22,7 +22,7 @@ export default class MyPagination extends PureComponent {
     const {meta, handPageChange, initPage}=this.props
     console.log('meta',meta)
     return (
-      <div>
+      <div className="my-pagination">
         <Pagination
           size={isMobile?"small":""}
           showSizeChanger onShowSizeChange={this.onShowSizeChange}
