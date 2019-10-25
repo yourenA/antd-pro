@@ -177,7 +177,7 @@ class FunctionContent extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      show_member_number:record.member_number,
+      show_meter_number:record.meter_number,
       abnormality_hours: record.abnormality_hours,
       difference_values: record.difference_values,
       editModal: true
@@ -258,10 +258,11 @@ class FunctionContent extends PureComponent {
         title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
         fixed:'right',
-        width: 80,
+        width: 150,
         render: (val, record, index) => {
           return (
             <div>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>  {formatMessage({id: 'intl.details'})}</Button>
               {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
                 {formatMessage({id: 'intl.confirm_abnormal'})}
               </Button>}

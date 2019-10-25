@@ -441,7 +441,6 @@ class VillageCascader extends React.Component {
   }
 
   render() {
-    const {size} = this.props;
     const state = this.state;
     return (
       <span>

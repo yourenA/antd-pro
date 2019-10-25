@@ -219,7 +219,6 @@ class Detail extends PureComponent {
     },function () {
       that.fetch()
     });
-
   }
   handleEditMeterValue=()=>{
     const that = this;
@@ -304,6 +303,10 @@ class Detail extends PureComponent {
           let status='success';
           let explain='';
           switch (val){
+            case -4:
+              status='error'
+              explain= formatMessage({id: 'intl.only_fail_upload'})
+              break;
             case -2:
               status='error'
               explain= formatMessage({id: 'intl.error'})

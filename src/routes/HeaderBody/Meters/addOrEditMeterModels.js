@@ -34,6 +34,7 @@ class AddPoliciesForm extends Component {
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -49,6 +50,7 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -72,6 +74,22 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              {formatMessage({id: 'intl.user_name'})}
+            </span>
+            )}
+          >
+            {getFieldDecorator('real_name', {
+              initialValue: this.props.editRecord ? this.props.editRecord.real_name : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -86,6 +104,7 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -99,6 +118,7 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -112,6 +132,22 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              {formatMessage({id: 'intl.install_address'})}
+            </span>
+            )}
+          >
+            {getFieldDecorator('address', {
+              initialValue: this.props.editRecord ? this.props.editRecord.install_address : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -126,6 +162,7 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -150,6 +187,7 @@ class AddPoliciesForm extends Component {
           {
             (company_code !== 'hy') &&
             <FormItem
+              style={{width:'50%',display:'inline-block'}}
               {...formItemLayoutWithLabel}
               label={formatMessage({id: 'intl.valve_status'})}
             >
@@ -164,6 +202,7 @@ class AddPoliciesForm extends Component {
           }
 
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -179,6 +218,7 @@ class AddPoliciesForm extends Component {
           </FormItem>
 
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -193,6 +233,7 @@ class AddPoliciesForm extends Component {
             )}
           </FormItem>
           <FormItem
+            style={{width:'50%',display:'inline-block'}}
             {...formItemLayoutWithLabel}
             label={(
               <span>
@@ -208,6 +249,7 @@ class AddPoliciesForm extends Component {
           </FormItem>
           {
             (company_code === 'hy') && <FormItem
+              style={{width:'50%',display:'inline-block'}}
               {...formItemLayoutWithLabel}
               label={(
                 <span>

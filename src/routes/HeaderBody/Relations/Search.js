@@ -23,7 +23,7 @@ class SearchForm extends Component {
 
         <Row>
           {this.props.showAddBtn &&<FormItem   >
-            <Button type="primary" onClick={this.props.clickAdd} icon='plus'>{formatMessage({id: 'intl.add'})}</Button>
+            <Button type="primary" onClick={this.props.clickAdd} icon='plus'>添加主表</Button>
           </FormItem>
           }
           <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})}  style={{float:'right'}}  className="openOperate">

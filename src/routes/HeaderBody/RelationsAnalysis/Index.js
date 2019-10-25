@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input,Tag,DatePicker} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import Sider from './../Sider'
+import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
 import update from 'immutability-helper'
@@ -12,7 +12,17 @@ import debounce from 'lodash/throttle'
 import Pagination from './../../../components/Pagination/Index'
 import AddOrEditForm from './addOrEditArea'
 import uuid from 'uuid/v4'
+import {disabledDate,getTimeDistance} from './../../../utils/utils'
 import {injectIntl} from 'react-intl';
+
+import SortableTree, {
+  toggleExpandedForAll,
+  getFlatDataFromTree,
+  removeNodeAtPath,
+  addNodeUnderParent,
+  changeNodeAtPath
+} from 'react-sortable-tree';
+const ButtonGroup = Button.Group;
 const {Content} = Layout;
 @connect(state => ({
   relations_analysis: state.relations_analysis,
@@ -34,7 +44,6 @@ class UserMeterAnalysis extends PureComponent {
       install_address: '',
       page: 1,
       initPage: 1,
-      initRange: getPreDay(),
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -43,98 +52,33 @@ class UserMeterAnalysis extends PureComponent {
       area: '',
       canLoadByScroll: true,
       canOperate: localStorage.getItem('canOperateArea') === 'true' ? true : false,
+      rangePickerValue:   [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       expandedRowKeys: [],
       otherMeterValue: '0',
       forwardsMeterValue: '0',
       key: uuid(),
+      searchString: '',
+      searchFocusIndex: 0,
+      searchFoundCount: null,
+      treeData: [],
       // concentrator_number:''
     }
   }
 
   componentDidMount() {
-    // document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
+    this.handleSearch()
   }
 
   componentWillUnmount() {
-    // document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
 
-  scrollTable = ()=> {
-    console.log('scroll')
-    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
-    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
-    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
-    const that = this;
-    if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
-      if (this.state.canLoadByScroll) {
-        const {relations_analysis: {meta}} = this.props;
-        if (this.state.page < meta.pagination.total_pages) {
-          this.setState({
-            canLoadByScroll: false,
-          })
-          this.handleSearch({
-            page: this.state.page + 1,
-            meter_number: this.state.meter_number,
-            member_number: this.state.member_number,
-            install_address: this.state.install_address,
-            ended_at: this.state.ended_at,
-            started_at: this.state.started_at,
-            // area: this.state.area
-          }, true, function () {
-            that.setState({
-              canLoadByScroll: true,
-            })
-          })
-        }
-      }
-    }
-  }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+      tableY: document.body.offsetHeight - document.querySelector('.sort-content').offsetTop - (68 + 54 + 50)
     })
   }
 
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
-    })
-  }
 
-  changeArea = (village_id)=> {
-    // this.searchFormRef.props.form.resetFields();
-    const that = this;
-    this.setState({
-      concentrator_number: '',
-      village_id: village_id
-    }, function () {
-      this.changeTableY();
-      this.handleSearch({
-        started_at:this.state.started_at?this.state.started_at:moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-        ended_at:this.state.ended_at?this.state.ended_at:moment(this.state.initRange[1]).format('YYYY-MM-DD') ,
-      })
-    })
-  }
-  handleFormReset = () => {
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      // concentrator_number:'',
-      install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-    })
-  }
   handleSearch = (values, saveInput) => {
     const that = this;
     const {dispatch} = this.props;
@@ -149,97 +93,190 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: 'relations_analysis/fetch',
       payload: {
-        ...values,
-        village_id: this.state.village_id
+        started_at:that.state.rangePickerValue[0].format("YYYY-MM-DD"),
+        ended_at:that.state.rangePickerValue[1].format("YYYY-MM-DD"),
       },
       callback: function () {
         const {relations_analysis: {data}} = that.props;
         that.setState({
+          treeData: that.parseTree(data),
           ...values,
         })
+        that.changeTableY()
       }
     });
   }
-
+  parseTree = (data)=> {
+    for (var i in data) {
+      data[i].title = data[i].name;
+      data[i].expanded = true
+      data[i].subtitle = data[i].meter_number;
+      if (data[i].children) {
+        this.parseTree(data[i].children)
+      }
+    }
+    return data
+  }
+  toggleNodeExpansion = expanded => {
+    this.setState(prevState => ({
+      treeData: toggleExpandedForAll({
+        treeData: prevState.treeData,
+        expanded,
+      }),
+    }));
+  };
+  handleSearchOnChange = e => {
+    this.setState({
+      searchString: e.target.value,
+    });
+  };
+  isActive(type) {
+    const {rangePickerValue} = this.state;
+    const value = getTimeDistance(type);
+    if (!rangePickerValue[0] || !rangePickerValue[1]) {
+      return false;
+    }
+    if (rangePickerValue[0].isSame(value[0], 'day') && rangePickerValue[1].isSame(value[1], 'day')) {
+      return true;
+    }
+  }
+  handleRangePickerChange = (datePickerValue,type) => {
+    const that=this;
+    if(type==='start'){
+      this.setState({
+        rangePickerValue:[datePickerValue,this.state.rangePickerValue[1]],
+      },function () {
+        that.handleSearch()
+      });
+    }else{
+      this.setState({
+        rangePickerValue:[this.state.rangePickerValue[0],datePickerValue],
+      },function () {
+        that.handleSearch()
+      });
+    }
+  }
+  selectDate = (type) => {
+    const that=this;
+    this.setState({
+      rangePickerValue: getTimeDistance(type),
+    },function () {
+      that.handleSearch()
+    });
+  }
   render() {
     const {relations_analysis: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
-    const {isMobile} =this.props.global;
-    const columns = [
-      {
-        title: formatMessage({id: 'intl.water_meter_number'}),
-        dataIndex: 'meter_number',
-        key: 'meter_number',
-        width: 150,
-      },
-
-      {title: formatMessage({id: 'intl.user_number'}), dataIndex: 'member_number', key: 'member_number', width: 120,
-        render: (val, record, index) => {
-          return ellipsis2(val, 120)
-        }},
-      {title: formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name', width: 150,
-        render: (val, record, index) => {
-          return ellipsis2(val, 150)
-        }},
-      {title:'用水量(T)', dataIndex: 'consumption', key: 'consumption', width: 100,
-        render: (val, record, index) => {
-          return ellipsis2(val, 100)
-        }},
-      {title:'下属分表用水总量(T)', dataIndex: 'child_consumption', key: 'child_consumption', width: 160,
-        render: (val, record, index) => {
-          return ellipsis2(val, 160)
-        }},
-      {title:'损耗量(T)', dataIndex: 'attrition_value', key: 'attrition_value', width: 80,
-        render: (val, record, index) => {
-          return ellipsis2(val, 80)
-        }},
-      {title:'损耗率', dataIndex: 'attrition_rate', key: 'attrition_rate', width: 80,
-        render: (val, record, index) => {
-          return ellipsis2(val, 80)
-        }},
-      {title: formatMessage({id: 'intl.install_address'}), dataIndex: 'address', key: 'address',
-        render: (val, record, index) => {
-          return ellipsis2(val, 200)
-        }},
-    ];
     return (
       <Layout className="layout">
         <Sider
-          showConcentrator={false}
-          changeArea={this.changeArea}
-          changeConcentrator={this.changeConcentrator}
-          siderLoadedCallback={this.siderLoadedCallback}/>
+          />
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析"
                               breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name: formatMessage({id: 'intl.meter_relations_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
-                            initRange={this.state.initRange}
-                            village_id={this.state.village_id}
-                            handleLeak={this.handleLeak}
-                            handleForward={this.handleForward}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn }
-                            changeShowOperate={()=> {
-                              this.setState({canOperate: !this.state.canOperate})
-                            }}
-                            clickAdd={()=>this.setState({addModal: true})}/>
+
+                <div className="sort-content" style={{
+                  height: this.state.tableY,
+                  border: '3px dashed #d9d9d9',
+                  marginTop: '5px',
+                  background: this.state.hadEdit ? '#fce4d6' : '#e2efda'
+                }}>
+                  <div className='tableList'>
+                    <div className='tableListForm' style={{padding: '10px ',  borderBottom: '3px dashed #d9d9d9',marginBottom:'0'}}>
+                      <ButtonGroup>
+                        <Button  onClick={() => this.selectDate('today')} type={this.isActive('today')?'primary':''}>{formatMessage({id: 'intl.today'})}</Button>
+                        <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
+                        <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>{formatMessage({id: 'intl.this_year'})}</Button>
+                      </ButtonGroup>
+
+                      <DatePicker
+                        value={this.state.rangePickerValue[0]}
+                        allowClear={false}
+                        disabledDate={disabledDate}
+                        format="YYYY-MM-DD"
+                        style={{width: 120}}
+                        placeholder={formatMessage({id: 'intl.start'})}
+                        onChange={(e)=>this.handleRangePickerChange(e,'start')}
+                      />
+                      <DatePicker
+                        style={{marginRight: '5px',width: 120}}
+                        allowClear={false}
+                        value={this.state.rangePickerValue[1]}
+                        disabledDate={disabledDate}
+                        format="YYYY-MM-DD"
+                        placeholder={formatMessage({id: 'intl.end'})}
+                        onChange={(e)=>this.handleRangePickerChange(e,'end')}
+                      />
+                      <Button style={{marginRight: '5px'}} onClick={()=>this.toggleNodeExpansion(true)}>
+                        展开全部
+                      </Button>
+                      <Button
+                        style={{marginRight: '5px'}}
+                        onClick={()=>this.toggleNodeExpansion(false)}
+                      >
+                        收起全部
+                      </Button>
+                      <label>搜索: </label>
+                      <Input onChange={this.handleSearchOnChange} style={{width: 150}}/>
+                    </div>
+                  </div>
+                  <div style={{   height: this.state.tableY-61,}}>
+                    <SortableTree
+                      treeData={this.state.treeData}
+                      onChange={treeData => {
+                        this.setState({treeData})
+                      } }
+                      canDrag={false}
+                      searchQuery={this.state.searchString}
+                      searchFocusOffset={this.state.searchFocusIndex}
+                      generateNodeProps={rowInfo => {
+                        let btns=[<Tag
+                          color="#108ee9"
+                          style={{marginRight: '5px',fontSize:'14px'}}
+                        >
+                          用水量 : {rowInfo.node.consumption}
+                        </Tag>,
+                        ];
+                        if(rowInfo.node.children){
+                          btns.push(<Tag
+                            color="#87d068"
+                            style={{marginRight: '5px',fontSize:'14px'}}
+                          >
+                            下属分表用水总量 : {rowInfo.node.child_consumption}
+                          </Tag>,<Tag
+                            color="#f50"
+                            style={{marginRight: '5px',fontSize:'14px'}}
+                          >
+                            损耗量 : {rowInfo.node.attrition_value}
+                          </Tag>,<Tag
+                            color="#f50"
+                            style={{marginRight: '5px',fontSize:'14px'}}
+                          >
+                            损耗率 : {rowInfo.node.attrition_rate}
+                          </Tag>,)
+                        }
+                        return ({
+                          buttons: btns
+                        })
+                      }}
+                      // canDrag={false}
+                    />
                   </div>
                 </div>
-                <Table
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.meter_number}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{x:1100,y: this.state.tableY}}
-                  pagination={false}
-                  defaultExpandAllRows={true}
-                  size="small"
-                />
+                {/*
+                 <Table
+                 className='meter-table'
+                 loading={loading}
+                 rowKey={record => record.meter_number}
+                 dataSource={data}
+                 columns={columns}
+                 scroll={{y: this.state.tableY}}
+                 pagination={false}
+                 size="small"
+                 />
+                 */}
                 {/*    <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}
                  handPageChange={this.handPageChange}/>*/}
               </Card>

@@ -117,7 +117,7 @@ class AddPoliciesForm extends Component {
                   >
                     {
                       this.state.meters.map((item,index)=>{
-                        return <Option key={index} value={item.number}>{item.real_name}/{item.number}</Option>
+                        return <Option key={index} value={`${item.real_name}@${item.number}`}>{item.real_name}/{item.number}</Option>
                       })
                     }
                   </Select>
@@ -138,7 +138,7 @@ class AddPoliciesForm extends Component {
               initialValue: this.props.editSpecialRecord ? this.props.editSpecialRecord.value : 1,
               rules: [{required: true, message: formatMessage({id: 'intl.judgment_value'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
             })(
-              <InputNumber min={0}/>
+              <InputNumber min={0} />
             )}
           </FormItem>
         </Form>

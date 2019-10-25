@@ -158,6 +158,7 @@ class TestLayout extends React.PureComponent {
   }
 
   renderNotification = (key, data, notificationText)=> {
+    if(!notificationText)return false
     const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     const NotifyDay = localStorage.getItem(company_code + key);

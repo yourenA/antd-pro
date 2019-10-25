@@ -10,6 +10,7 @@ import { routerRedux } from 'dva/router';
 import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
+import Detail from './../UserMeterAnalysis/Detail'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
@@ -229,6 +230,12 @@ class Consumption_abnormality extends PureComponent {
       }
     });
   }
+  operate = (record)=> {
+    this.setState({
+      show_meter_number: record.meter_number,
+      editModal: true
+    })
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const {consumption_abnormality: {data, meta, loading}, dma} = this.props;
@@ -268,10 +275,11 @@ class Consumption_abnormality extends PureComponent {
         title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
         fixed:'right',
-        width: 80,
+        width: 150,
         render: (val, record, index) => {
           return (
             <div>
+              <Button type="primary" size='small' onClick={()=>this.operate(record)}>  {formatMessage({id: 'intl.details'})}</Button>
               {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
                 {formatMessage({id: 'intl.confirm_abnormal'})}
               </Button>}
@@ -316,13 +324,24 @@ class Consumption_abnormality extends PureComponent {
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
               <Modal
-                key={ Date.parse(new Date())+1}
+                destroyOnClose={true}
                 title={formatMessage({id: 'intl.confirm_exception'})}
                 visible={this.state.processed_model}
                 onOk={()=>this.processed('4')}
                 onCancel={() => this.setState({processed_model: false})}
               >
                 <ProcessedForm meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
+              </Modal>
+              <Modal
+                width="750px"
+                destroyOnClose={true}
+                title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
+                visible={this.state.editModal}
+                onOk={this.handleEdit}
+                onCancel={() => this.setState({editModal: false})}
+              >
+                <Detail meter_number={this.state.show_meter_number} ended_at={this.state.ended_at}
+                        started_at={this.state.started_at}/>
               </Modal>
             </PageHeaderLayout>
           </div>

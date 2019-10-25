@@ -13,7 +13,7 @@ import uuid from 'uuid/v4'
 import {renderIndex,ellipsis2} from './../../../utils/utils'
 import Detail from './Detail'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
-
+import request from "./../../../utils/request";
 import debounce from 'lodash/throttle'
 const {Content} = Layout;
 import {injectIntl} from 'react-intl';
@@ -49,7 +49,10 @@ class Leak_abnormality extends PureComponent {
       canLoadByScroll:true,
       display_type:'only_unprocessed',
       processed_model:false,
-      editRecord:{}
+      editRecord:{},
+      leak_abnormality_value:'',
+      leak_abnormality_hours:'',
+      leak_abnormality_special_meters:[]
     }
   }
 
@@ -66,6 +69,23 @@ class Leak_abnormality extends PureComponent {
         that.changeTableY()
       }
     });
+    request(`/configs?groups[]=leak_abnormality`, {
+      method: 'GET',
+      query: {}
+    }).then((response)=> {
+      console.log(response);
+      that.setState({
+        leak_abnormality_value: find(response.data.data, function (o) {
+          return o.name === 'leak_abnormality_value'
+        }).value,
+        leak_abnormality_hours: find(response.data.data, function (o) {
+          return o.name === 'leak_abnormality_hours'
+        }).value,
+        leak_abnormality_special_meters: find(response.data.data, function (o) {
+          return o.name === 'leak_abnormality_special_meters'
+        }).value,
+      })
+    })
     this.handleSearch({
       area_id: '',
       page: 1,
@@ -191,7 +211,7 @@ class Leak_abnormality extends PureComponent {
   }
   operate = (record)=> {
     this.setState({
-      show_member_number:record.member_number,
+      show_meter_number:record.meter_number,
       abnormality_hours: record.abnormality_hours,
       difference_values: record.difference_values,
       editModal: true
@@ -243,30 +263,40 @@ class Leak_abnormality extends PureComponent {
     }
     const {isMobile} =this.props.global;
     const columns = [
-      {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
+      {title: formatMessage({id: 'intl.water_meter_number'}), width: 100, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
       {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
-      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }},
-      {title: formatMessage({id: 'intl.water_meter_number'}), width: 110, dataIndex: 'meter_number', key: 'meter_number', render: (val, record, index) => {
-        return ellipsis2(val, 100)
-      }},
-      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', width: 120,  key: 'date', render: (val, record, index) => {
-        return ellipsis2(val, 120)
-      }},
       {title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
       }},
+      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', width: 100,  key: 'date', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+
       {title:formatMessage({id: 'intl.abnormality_hours'}), dataIndex: 'abnormality_hours',  width: 150,  key: 'abnormality_hours',
         render: (val, record, index) => {
           const parseVal=val.join(',');
           return ellipsis2(parseVal,150)
         }},
-
+      {title:'漏水报警值/小时数' , width: 140, dataIndex: 'number', key: 'number', render: (val, record, index) => {
+        let value=this.state.leak_abnormality_value
+        for(let i=0;i<this.state.leak_abnormality_special_meters.length;i++){
+          if(record.meter_number===this.state.leak_abnormality_special_meters[i].number){
+            value=this.state.leak_abnormality_special_meters[i].value;
+            break
+          }
+        }
+        return `${value} / ${this.state.leak_abnormality_hours}`
+      }},
+      {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
+      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark'},
       {
         title:formatMessage({id: 'intl.operate'}) ,
@@ -311,7 +341,7 @@ class Leak_abnormality extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                 scroll={{x:1400,y: this.state.tableY}}
+                                 scroll={{x:1500,y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
                 />
@@ -331,7 +361,7 @@ class Leak_abnormality extends PureComponent {
               <Modal
                 width="750px"
                 destroyOnClose={true}
-                title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
+                title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} (红色表示出现漏水异常)`}
                 visible={this.state.editModal}
                 onOk={() => this.setState({editModal: false})}
                 onCancel={() => this.setState({editModal: false})}

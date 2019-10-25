@@ -20,7 +20,7 @@ export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
-  if (type === 'today') {d
+  if (type === 'today') {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);

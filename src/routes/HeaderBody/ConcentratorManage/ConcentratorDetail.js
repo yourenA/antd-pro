@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Table, Tooltip, Button, Layout, message, Modal} from 'antd';
+import { Table, Tooltip, Button, Layout, message, Modal,Popconfirm } from 'antd';
 import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
@@ -220,6 +220,25 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
+  singleValveCommand=(command,meter)=>{
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        meter_number:[meter],
+        feature: command
+      },
+      callback:()=>{
+        sessionStorage.setItem(`${command}-selected-${meter}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
+        message.success('发送指令成功')
+      }
+    });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const {concentrator_water: {data, meta, loading}} = this.props;
@@ -232,13 +251,31 @@ class UserMeterAnalysis extends PureComponent {
         const isLoading=clickTime&&this.state.time-clickTime<10000
         return(
           <Button loading={isLoading} key={index} type="primary" size="small"
-                  style={{marginLeft: 8,marginBottom:(index===0||record.protocols.length>1)?5:0}}
+                  style={{marginBottom:(index===0||record.protocols.length>1)?5:0}}
                   onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
         )
       })
       return renderCommandBtn
     }
     const company_code = sessionStorage.getItem('company_code');
+    const renderOpenValveBtn=function (record) {
+      const clickTime=sessionStorage.getItem(`open_valve-selected-${record.meter_number}`)
+      const isLoading=clickTime&&that.state.time-clickTime<12000
+      return(
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.singleValveCommand('open_valve',record.meter_number)}}>
+          <Button size="small" loading={isLoading}  type="primary" >{isLoading?'':''}{formatMessage({id: 'intl.open_valve'})}</Button>
+        </Popconfirm>
+      )
+    }
+    const renderCloseValveBtn=function (record) {
+      const clickTime=sessionStorage.getItem(`close_valve-selected-${record.meter_number}`)
+      const isLoading=clickTime&&that.state.time-clickTime<12000
+      return(
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.singleValveCommand( 'close_valve',record.meter_number)}} >
+          <Button size="small"  loading={isLoading}  type="danger" >{isLoading?'':''}{formatMessage({id: 'intl.close_valve'})}</Button>
+        </Popconfirm>
+      )
+    }
     const columns = [
       {title:formatMessage({id: 'intl.water_meter_number'}), width: 120, fixed:'left', dataIndex: 'meter_number', key: 'meter_number',render: (val, record, index) => {
         return ellipsis2(val,120)
@@ -271,6 +308,8 @@ class UserMeterAnalysis extends PureComponent {
         return (
           <div>
             {this.state.showCommandBtn&&renderComandRecord(record)}
+            {['hy'].indexOf(company_code)<0&&this.state.showCommandBtn&&renderOpenValveBtn(record)}
+            {['hy'].indexOf(company_code)<0&&this.state.showCommandBtn&&renderCloseValveBtn(record)}
           </div>
         )
       }
@@ -303,22 +342,6 @@ class UserMeterAnalysis extends PureComponent {
                          operate={operate}
                          history={this.props.history}
                         />
-     {/*   <Table
-          rowClassName={function (record, index) {
-            if (record.description === '') {
-              return 'error'
-            }
-          }}
-          className='meter-table'
-          loading={loading}
-          rowKey={record => record.meter_number}
-          dataSource={data}
-          columns={columns}
-          scroll={isMobile?{x:950}:{x:1050,y: this.state.tableY}}
-          //scroll={{ y: this.state.tableY}}
-          pagination={false}
-          size="small"
-        />*/}
         <Pagination meta={meta}  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} handPageChange={this.handPageChange}/>
       </div>
 

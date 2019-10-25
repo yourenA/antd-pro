@@ -38,6 +38,7 @@ const zh_CN = {
   'intl.pressure_history':'压力传感器分析',//压力传感器分析
   'intl.real_time_data':'完整实时数据',//完整实时数据
   'intl.vendor_concentrator_statistics':'厂商-集中器统计',//厂商-集中器统计
+  'intl.vendor_meter_statistics':'厂商-水表统计',//厂商-水表统计
   'intl.liquid/valve_analysis':'比例阀控传感器分析',//液位/比例阀控传感器分析
   'intl.device':'设备管理',//设备管理
   'intl.map':'地图',//地图
@@ -132,6 +133,8 @@ const zh_CN = {
   'intl.disable':'禁用',//禁用
   'intl.more':'更多',//更多
   'intl.only_error':'错报',//错报
+  'intl.only_missing':'漏报',//漏报
+  'intl.only_fail_upload':'抄表失败',//抄表失败
   'intl.expand_condition':'收起条件',//展开条件(_)
   'intl.collapse_condition':'展开条件',//收起条件(_)
   'intl.ton':'吨',//吨
@@ -251,6 +254,7 @@ const zh_CN = {
   'intl.is_count':'是否做统计日报',//是否做统计日报
   'intl.remark':'备注',//备注
   'intl.option':'选项',//选项
+  'intl.vendor_option':'厂商信息',//厂商信息
   'intl.unit':'单位',//单位
   'intl.small_meter':'小表',//小表
   'intl.big_meter':'大表',//大表
@@ -334,6 +338,7 @@ const zh_CN = {
   'intl.cold_water_meter': '冷水表',//冷水表
   'intl.this_week': '本周',//本周
   'intl.this_month': '本月',//本月
+  'intl.today': '今天',//本日
   'intl.this_year': '本年',//本年
   'intl.line_chart': '折线图',//折线图
   'intl.table': '表格',//表格
@@ -444,6 +449,7 @@ const zh_CN = {
   'intl.ICC_card_number':'物联卡号码',//物联卡号码
   'intl.identification_number':'IC卡的唯一识别号码',//IC卡的唯一识别号码
   'intl.update_SIM_card_information':'更新SIM卡信息',//更新SIM卡信息
+  'intl.download_document':'下载档案',//下载档案
   'intl.update':'更新',//更新
 
   'intl.open':'开',//开

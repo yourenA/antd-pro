@@ -36,6 +36,7 @@ const en_US = {
   'intl.pressure_history':'Pressure History',//压力传感器分析
   'intl.real_time_data':'Real Time Data',//完整实时数据
   'intl.vendor_concentrator_statistics':'Vendor-Concentrator Statistics',//厂商-集中器统计
+  'intl.vendor_meter_statistics':'Vendor-Meter Statistics',//厂商-水表统计
   'intl.liquid/valve_analysis':'liquid/Valve Analysis',//液位/比例阀控传感器分析
   'intl.device':'Device',//设备管理
   'intl.map':'map',//地图
@@ -130,6 +131,8 @@ const en_US = {
   'intl.disable':'disable',//禁用
   'intl.more':'more',//更多
   'intl.only_error':'error',//错报
+  'intl.only_missing':'missing',//漏报
+  'intl.only_fail_upload':'upload fail',//抄表失败
   'intl.expand_condition':'Collapse condition',//展开条件(_)
   'intl.collapse_condition':'Expand condition',//收起条件(_)
   'intl.ton':'Ton',//吨
@@ -249,6 +252,7 @@ const en_US = {
   'intl.is_count':'is count',//是否做统计日报
   'intl.remark':'remark',//备注
   'intl.option':'option',//选项
+  'intl.vendor_option':'manufacturers',//选项
   'intl.unit':'unit',//单位
   'intl.small_meter':'small meter',//小表
   'intl.big_meter':'big meter',//大表
@@ -332,6 +336,7 @@ const en_US = {
   'intl.cold_water_meter': 'cold water meter',//热水表
   'intl.this_week': 'this week',//本周
   'intl.this_month': 'this month',//本月
+  'intl.today': 'today',//本日
   'intl.this_year': 'this year',//本年
   'intl.line_chart': 'line chart',//折线图
   'intl.table': 'table',//表格
@@ -443,6 +448,7 @@ const en_US = {
   'intl.ICC_card_number':'ICC card number',//物联卡号码
   'intl.identification_number':'IC card unique identification number',//IC卡的唯一识别号码
   'intl.update_SIM_card_information':'Update SIM card information',//更新SIM卡信息
+  'intl.download_document':'Download document',//下载档案
   'intl.update':'update',//更新
   'intl.open':'open',//开
   'intl.close':'closure',//关

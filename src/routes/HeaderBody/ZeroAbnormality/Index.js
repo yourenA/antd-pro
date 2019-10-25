@@ -254,7 +254,7 @@ class FunctionContent extends PureComponent {
         title:formatMessage({id: 'intl.operate'}) ,
         key: 'operation',
         fixed:'right',
-        width: 170,
+        width: 150,
         render: (val, record, index) => {
           return (
             <div>

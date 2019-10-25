@@ -91,6 +91,7 @@ import ConcentratorManage from './../routes/HeaderBody/ConcentratorManage/Index'
 // import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
 // )
 import VendorConcentrator from './../routes/HeaderBody/VendorConcentrator/Index'
+import VendorMeter from './../routes/HeaderBody/VendorMeter/Index'
 
 
 // const DMAManage = asyncComponent(() =>
@@ -402,6 +403,12 @@ const data = [{
           component: CompleteRealData,
           permissions: ['complete_meter_data'],
           noShowCompany: ['hy','hz_test','sj_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
+        },
+        {
+          name: 'vendor_meter_statistics',
+          path: 'vendor_meter',
+          component: VendorMeter,
+          permissions: ['manufacturer_status'],
         },
         {
           name: 'vendor_concentrator_statistics',

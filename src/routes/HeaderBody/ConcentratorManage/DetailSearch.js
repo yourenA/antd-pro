@@ -96,8 +96,8 @@ class SearchForm extends Component {
           </FormItem>
           <FormItem>
             {this.props.showCommandBtn&&renderCommandBtn}
-            {company_code!=='hy'&&this.props.showCommandBtn&&renderOpenValveBtn()}
-            {company_code!=='hy'&&this.props.showCommandBtn&&renderCloseValveBtn()}
+            {(company_code !== 'hy'&&company_code.indexOf("test")===-1)&&this.props.showCommandBtn&&renderOpenValveBtn()}
+            {(company_code !== 'hy'&&company_code.indexOf("test")===-1)&&this.props.showCommandBtn&&renderCloseValveBtn()}
           </FormItem>
           <FormItem  label={formatMessage({id: 'intl.open_operating_bar'})} style={{float:'right'}}  className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateConcentratorDetail')==='true'?true:false} onChange={(checked)=>{

@@ -168,7 +168,9 @@ class SearchForm extends Component {
               <RadioGroup>
                 <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
                 <RadioButton value="only_normal">{formatMessage({id: 'intl.only_normal'})}</RadioButton>
-                <RadioButton value="only_error">{formatMessage({id: 'intl.only_error'})}</RadioButton>
+                <RadioButton value="only_missing_upload">{formatMessage({id: 'intl.only_missing'})}</RadioButton>
+                <RadioButton value="only_error_upload">{formatMessage({id: 'intl.only_error'})}</RadioButton>
+                <RadioButton value="only_fail_upload">{formatMessage({id: 'intl.only_fail_upload'})}</RadioButton>
               </RadioGroup>
             )}
           </FormItem>

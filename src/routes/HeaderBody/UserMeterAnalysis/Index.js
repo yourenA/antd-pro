@@ -31,6 +31,7 @@ class UserMeterAnalysis extends PureComponent {
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.company_code = sessionStorage.getItem('company_code');
     this.state = {
+      showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       showExportBtn: find(this.permissions, {name: 'meter_data_export'}),
       showAddBtnByCon: false,
       showConfigBtn: find(this.permissions, {name: 'config_edit'}),
@@ -57,19 +58,28 @@ class UserMeterAnalysis extends PureComponent {
       per_page: 30,
       canLoadByScroll: true,
       sort_field: this.company_code === 'hy' ? 'sort_number' : 'concentrator_number',
-      sort_direction: 'asc'
+      sort_direction: 'asc',
+      time:new Date().getTime(),
     }
   }
 
   componentDidMount() {
     this.changeTableY();
+    const that=this
     document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+    this.timer=setInterval(function () {
+      that.setState({
+        // disabled:false
+        time:new Date().getTime()
+      })
+    },3000)
   }
 
   componentWillUnmount() {
     if (document.querySelector('.ant-table-body')) {
       document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
     }
+    clearInterval(this.timer)
   }
 
   changeTableY = ()=> {
@@ -343,14 +353,54 @@ class UserMeterAnalysis extends PureComponent {
       site_id: site_id
     })
   }
-
+  read_single_901f=(command,meter_number)=>{
+    const company_code = sessionStorage.getItem('company_code');
+    console.log('点抄：',meter_number)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        meter_number,
+        feature:'upload_single',
+        protocol:command
+      },
+      callback:()=>{
+        sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
+      }
+    });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
+    const that=this
     const company_code = sessionStorage.getItem('company_code');
+    const renderComandRecord=(record)=>{
+      if(!record.protocols) return '';
+      const renderCommandBtn=record.protocols.map((item,index)=>{
+        const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
+        const isLoading=clickTime&&this.state.time-clickTime<10000
+        return(
+          <Button loading={isLoading} key={index} type="primary" size="small"
+                  onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
+        )
+      })
+      return renderCommandBtn
+    }
     let columns = [
       {
         title: formatMessage({id: 'intl.water_meter_number'}),
@@ -458,10 +508,13 @@ class UserMeterAnalysis extends PureComponent {
         }
       },
       {
-        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 70,
+        title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 90,
         render: (val, record, index) => {
           let status = 'success';
           switch (val) {
+            case -4:
+              status = 'error'
+              break;
             case -2:
               status = 'error'
               break;
@@ -513,12 +566,13 @@ class UserMeterAnalysis extends PureComponent {
           title: formatMessage({id: 'intl.operate'}),
           key: 'operation',
           fixed: 'right',
-          width: 80,
+          width: 230,
           render: (val, record, index) => {
             return (
               <div>
                 <Button type="primary" size='small'
                         onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
+                {this.state.showCommandBtn&&company_code==='hy'&&renderComandRecord(record)}
               </div>
             )
           }
@@ -628,7 +682,7 @@ class UserMeterAnalysis extends PureComponent {
         </Content>
         <Modal
           width="950px"
-          key={ Date.parse(new Date())}
+          destroyOnClose={true}
           title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.edit_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
           visible={this.state.editModal}
           onOk={this.handleEdit}

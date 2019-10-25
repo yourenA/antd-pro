@@ -54,7 +54,7 @@ class EditPassword extends Component {
               {name: formatMessage({id: 'intl.system_setting'})},
               {name: formatMessage({id: 'intl.export_setup'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" type="card">
+                <Tabs activeKey={this.state.activeKey} onChange={this.onChange} className="system-tabs" >
                   {
                     (company_code!=='hy')&& (company_code!=='jxwa')&&<TabPane tab={formatMessage({id: 'intl.water_meter_value_export'})} key="1">
                       <MeterDataExportIndex />

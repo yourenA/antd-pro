@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import Sider from './../Sider'
+import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
 import update from 'immutability-helper'
@@ -13,6 +13,15 @@ import Pagination from './../../../components/Pagination/Index'
 import AddOrEditForm from './addOrEditArea'
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';
+import 'react-sortable-tree/style.css';
+
+import SortableTree, {
+  toggleExpandedForAll,
+  getFlatDataFromTree,
+  removeNodeAtPath,
+  addNodeUnderParent,
+  changeNodeAtPath
+} from 'react-sortable-tree';
 const {Content} = Layout;
 @connect(state => ({
   relations: state.relations,
@@ -47,11 +56,18 @@ class UserMeterAnalysis extends PureComponent {
       otherMeterValue: '0',
       forwardsMeterValue: '0',
       key: uuid(),
+      searchString: '',
+      searchFocusIndex: 0,
+      searchFoundCount: null,
+      treeData: [],
+      hadEdit: false
+
       // concentrator_number:''
     }
   }
 
   componentDidMount() {
+    this.handleSearch()
     // document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
   }
 
@@ -59,84 +75,13 @@ class UserMeterAnalysis extends PureComponent {
     // document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
   }
 
-  scrollTable = ()=> {
-    console.log('scroll')
-    const scrollTop = document.querySelector('.ant-table-body').scrollTop;
-    const offsetHeight = document.querySelector('.ant-table-body').offsetHeight;
-    const scrollHeight = document.querySelector('.ant-table-body').scrollHeight;
-    console.log('scrollTop', scrollTop)
-    const that = this;
-    if (scrollTop + offsetHeight > scrollHeight - 300) {
-      console.log('到达底部');
-      if (this.state.canLoadByScroll) {
-        const {relations: {meta}} = this.props;
-        if (this.state.page < meta.pagination.total_pages) {
-          this.setState({
-            canLoadByScroll: false,
-          })
-          this.handleSearch({
-            page: this.state.page + 1,
-            meter_number: this.state.meter_number,
-            member_number: this.state.member_number,
-            install_address: this.state.install_address,
-            ended_at: this.state.ended_at,
-            started_at: this.state.started_at,
-            // area: this.state.area
-          }, true, function () {
-            that.setState({
-              canLoadByScroll: true,
-            })
-          })
-        }
-      }
-    }
-  }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5)
+      tableY: document.body.offsetHeight - document.querySelector('.sort-content').offsetTop - (68 + 54 + 50)
     })
   }
 
-  siderLoadedCallback = (village_id)=> {
-    console.log('加载区域', village_id)
-    this.setState({
-      village_id
-    })
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      install_address: '',
-      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-      village_id: village_id
-    })
-  }
 
-  changeArea = (village_id)=> {
-    // this.searchFormRef.props.form.resetFields();
-    const that = this;
-    this.setState({
-      concentrator_number: '',
-      village_id: village_id
-    }, function () {
-      this.changeTableY();
-      this.handleSearch({
-        village_id: village_id
-      })
-    })
-  }
-  handleFormReset = () => {
-    this.handleSearch({
-      page: 1,
-      meter_number: '',
-      member_number: '',
-      // concentrator_number:'',
-      install_address: '',
-      started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
-      ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-    })
-  }
   handleSearch = (values, saveInput) => {
     const that = this;
     const {dispatch} = this.props;
@@ -156,87 +101,166 @@ class UserMeterAnalysis extends PureComponent {
       callback: function () {
         const {relations: {data}} = that.props;
         that.setState({
+          treeData: that.parseTree(data),
           ...values,
         })
+        that.changeTableY()
       }
     });
   }
-  handleAdd = () => {
-
+  parseTree = (data)=> {
+    for (var i in data) {
+      data[i].title = data[i].name;
+      data[i].expanded = true
+      data[i].subtitle = data[i].meter_number;
+      if (data[i].children) {
+        this.parseTree(data[i].children)
+      }
+    }
+    return data
+  }
+  flatten = (data) => {
+    return data.reduce((arr, {subtitle, children = []}) =>
+      arr.concat([{subtitle}], this.flatten(children)), [])
+  }
+  removeNode = (rowInfo)=> {
+    const {node, path, treeIndex} = rowInfo;
+    console.log('node', node)
+    const that = this
+    const newTree = removeNodeAtPath({
+      treeData: this.state.treeData,
+      path,
+      getNodeKey: ({treeIndex}) => treeIndex,
+    });
+    that.setState({
+      hadEdit: true,
+      treeData: newTree
+    });
+  }
+  addNewNode = async ()=> {
     const that = this;
-    const formValues = this.formRef.props.form.getFieldsValue();
-    console.log('formValues', formValues);
+    let formValues = this.formRef.props.form.getFieldsValue();
+    console.log('formValues 1', formValues);
+    const exist = this.flatten(this.state.treeData)
+    let addNodes =formValues.meter_number
+    if(!addNodes){
+      message.error('请选择水表')
+      return false
+    }
+  /*  for (let k in formValues) {
+      if (k.indexOf('meter_number$') >= 0) {
+        if (formValues.hasOwnProperty(k)) {
+          const meter_number = formValues[k]
+          if (meter_number === '') {
+            message.error('请选择水表')
+            return false
+          } else {
+            for (let i = 0; i < exist.length; i++) {
+              if (meter_number.split('@')[0] == exist[i].subtitle) {
+                message.error(`${meter_number.split('@')[1]} 已存在在关系中`)
+                return false
+              }
+            }
+          }
+          addNodes.push(meter_number)
+        }
+      }
+    }*/
+    for (let i = 0; i < exist.length; i++) {
+      for (let j = 0; j < addNodes.length; j++) {
+        if (addNodes[j].split('@')[0] == exist[i].subtitle) {
+          message.error(`${addNodes[j].split('@')[1]} 已存在在关系中`)
+          return false
+        }
+      }
+    }
 
+    let newTree = []
+
+    if (this.state.rowInfo) {
+      const {node, path, treeIndex} = this.state.rowInfo;
+      for (let i = 0; i < addNodes.length; i++) {
+        const NEW_NODE = {
+          title: addNodes[i].split('@')[1], subtitle: addNodes[i].split('@')[0], expanded: true,
+          meter_number: addNodes[i].split('@')[0],
+        };
+        newTree=await addNodeUnderParent({
+          treeData: this.state.treeData,
+          newNode: NEW_NODE,
+          expandParent: true,
+          parentKey: this.state.rowInfo ? treeIndex : undefined,
+          getNodeKey: ({treeIndex}) => treeIndex,
+        }).treeData;
+        this.setState({treeData: newTree})
+      }
+
+    } else {
+      for (let i = 0; i < addNodes.length; i++) {
+        newTree.push({
+          title: addNodes[i].split('@')[1],
+          subtitle: addNodes[i].split('@')[0],
+          expanded: true,
+          meter_number: addNodes[i].split('@')[0]
+        })
+      }
+      newTree=[
+        ...newTree,
+        ...this.state.treeData
+      ]
+      this.setState({treeData: newTree})
+    }
+
+
+    this.setState({hadEdit: true, rowInfo: null, addModal: false});
+  }
+  changeNode = ()=> {
+    const that = this;
+    const formValues = this.editFormRef.props.form.getFieldsValue();
+    console.log('formValues', formValues);
+    if (!formValues.name) {
+      message.error('请输入完整信息')
+      return false
+    }
+    let newTree = []
+    const {node, path, treeIndex} = this.state.rowInfo;
+    const NEW_NODE = {title: formValues.name, subtitle: node.meter_number, expanded: node.expanded, ...formValues};
+    newTree = changeNodeAtPath({
+      treeData: this.state.treeData,
+      path,
+      newNode: NEW_NODE,
+      getNodeKey: ({treeIndex}) => treeIndex,
+    });
+    console.log('newTree', newTree)
+    this.setState({treeData: newTree, hadEdit: true, rowInfo: null, editModal: false});
+  }
+  toggleNodeExpansion = expanded => {
+    this.setState(prevState => ({
+      treeData: toggleExpandedForAll({
+        treeData: prevState.treeData,
+        expanded,
+      }),
+    }));
+  };
+  handleSearchOnChange = e => {
+    this.setState({
+      searchString: e.target.value,
+    });
+  };
+  saveTree = ()=> {
+    const that = this;
     this.props.dispatch({
       type: 'relations/add',
       payload: {
-        ...formValues
+        relations: this.state.treeData
       },
       callback: function () {
         const {intl:{formatMessage}} = that.props;
-        message.success(
-          formatMessage(
-            {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.relations'})}
-          )
-        )
+        message.success('保存成功')
         that.setState({
           addModal: false,
+          rowInfo: null,
+          hadEdit: false
         });
-        that.handleSearch({
-          village_id: that.state.village_id
-        })
-      }
-    });
-
-  }
-  handleEdit = ()=> {
-
-    const formValues = this.editFormRef.props.form.getFieldsValue();
-    console.log('formValues', formValues)
-    const that = this;
-    this.props.dispatch({
-      type: 'relations/edit',
-      payload: {
-        ...formValues,
-        id: this.state.editRecord.meter_number,
-      },
-      callback: function () {
-        const {intl:{formatMessage}} = that.props;
-        message.success(
-          formatMessage(
-            {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.relations'})}
-          )
-        )
-        that.setState({
-          editModal: false,
-        });
-        that.handleSearch({
-          village_id: that.state.village_id
-        })
-      }
-    });
-  }
-  handleRemove = (id)=> {
-    const {intl:{formatMessage}} = this.props;
-    const that = this;
-    this.props.dispatch({
-      type: 'relations/remove',
-      payload: {
-        id: id,
-      },
-      callback: function () {
-        const {intl:{formatMessage}} = that.props;
-        message.success(
-          formatMessage(
-            {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.relations'})}
-          )
-        )
-        that.handleSearch({
-          village_id: that.state.village_id
-          })
       }
     });
   }
@@ -244,98 +268,99 @@ class UserMeterAnalysis extends PureComponent {
   render() {
     const {relations: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
-    const {isMobile} =this.props.global;
-    const columns = [
-      {
-        title: formatMessage({id: 'intl.water_meter_number'}),
-        dataIndex: 'meter_number',
-        key: 'meter_number',
-        width: 150
-      },
-      {title: formatMessage({id: 'intl.user_number'}), dataIndex: 'member_number', key: 'member_number', width: 150},
-      {title: formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name', width: 200},
-      {title: formatMessage({id: 'intl.install_address'}), dataIndex: 'address', key: 'address'},
-    ];
-    if (this.state.canOperate) {
-      columns.push({
-        title: formatMessage({id: 'intl.operate'}),
-        width: 120,
-        render: (val, record, index) => (
-          <p>
-            {
-              this.state.showAddBtn &&
-              <span>
-                      <a href="javascript:;" onClick={()=> {
-                        this.setState(
-                          {
-                            editRecord: record,
-                            editModal: true
-                          }
-                        )
-                      }}>{formatMessage({id: 'intl.edit'})}</a>
-            <span className="ant-divider"/>
-                </span>
-            }
-            {
-              this.state.showdelBtn &&
-              <Popconfirm placement="topRight"
-                          title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
-                          onConfirm={()=>this.handleRemove(record.meter_number)}>
-                <a href="">{formatMessage({id: 'intl.delete'})}</a>
-              </Popconfirm>
-            }
-
-          </p>
-        ),
-      })
-    }
-    const Data1 = data.length > 0 ? data[0] : {}
     return (
       <Layout className="layout">
-        <Sider
-          showConcentrator={false}
-          changeArea={this.changeArea}
-          changeConcentrator={this.changeConcentrator}
-          siderLoadedCallback={this.siderLoadedCallback}/>
+        <Sider/>
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析"
                               breadcrumb={[{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.meter_relations'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
-                <div className='tableList'>
-                  <div className='tableListForm'>
-                    <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
-                            initRange={this.state.initRange}
-                            village_id={this.state.village_id}
-                            handleLeak={this.handleLeak}
-                            handleForward={this.handleForward}
-                            handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
-                            showAddBtn={this.state.showAddBtn }
-                            changeShowOperate={()=> {
-                              this.setState({canOperate: !this.state.canOperate})
-                            }}
-                            clickAdd={()=>this.setState({addModal: true})}/>
+
+                <div className="sort-content" style={{
+                  height: this.state.tableY,
+                  border: '3px dashed #d9d9d9',
+                  marginTop: '5px',
+                  background: this.state.hadEdit ? '#fce4d6' : '#e2efda'
+                }}>
+                  <div className='tableList'>
+                    <div className='tableListForm'
+                         style={{padding: '10px ', borderBottom: '3px dashed #d9d9d9', marginBottom: '0',}}>
+                      <Button type="primary" style={{marginRight: '5px'}}
+                              onClick={() => {
+                                this.setState({
+                                  addModal: true
+                                })
+                              }}
+                      >
+                        添加主表
+                      </Button>
+                      <Button style={{marginRight: '5px'}} onClick={()=>this.toggleNodeExpansion(true)}>
+                        展开全部
+                      </Button>
+                      <Button
+                        style={{marginRight: '5px'}}
+                        onClick={()=>this.toggleNodeExpansion(false)}
+                      >
+                        收起全部
+                      </Button>
+                      <label>搜索: </label>
+                      <Input onChange={this.handleSearchOnChange} style={{width: 150}}/>
+                      {
+                        this.state.hadEdit &&
+                        <Button
+                          type="primary"
+                          style={{float: 'right'}}
+                          onClick={this.saveTree}
+                        >
+                          保存
+                        </Button>
+                      }
+                    </div>
                   </div>
+                  <div style={{height: this.state.tableY - 61,}}>
+                    <SortableTree
+                      treeData={this.state.treeData}
+                      onChange={treeData => {
+                        this.setState({treeData, hadEdit: true})
+                      } }
+                      searchQuery={this.state.searchString}
+                      searchFocusOffset={this.state.searchFocusIndex}
+                      generateNodeProps={rowInfo => ({
+                        buttons: [<Button
+                          size="small"
+                          type="primary"
+                          style={{marginRight: '5px'}}
+                          onClick={() => {
+                            this.setState({rowInfo: rowInfo, addModal: true})
+                          }}
+                        >
+                          添加子节点
+                        </Button>,
+                          <Popconfirm placement="topRight"
+                                      title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
+                                      onConfirm={()=>this.removeNode(rowInfo)}>
+                            <Button
+                              size="small"
+                              type="danger"
+                            >
+                              删除节点
+                            </Button>
+                          </Popconfirm>
+                        ],
+                      })}
+                      // canDrag={false}
+                    />
+                  </div>
+
                 </div>
-                <Table
-                  className='meter-table'
-                  loading={loading}
-                  rowKey={record => record.meter_number}
-                  dataSource={data}
-                  columns={columns}
-                  scroll={{y: this.state.tableY}}
-                  pagination={false}
-                  size="small"
-                />
-                {/*    <Pagination meta={meta} initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange}
-                 handPageChange={this.handPageChange}/>*/}
               </Card>
             </PageHeaderLayout>
             <Modal
               destroyOnClose={true}
               title={formatMessage({id: 'intl.add'})}
               visible={this.state.addModal}
-              onOk={this.handleAdd}
+              onOk={this.addNewNode}
               onCancel={() => this.setState({addModal: false})}
             >
               <AddOrEditForm wrappedComponentRef={(inst) => this.formRef = inst}/>
@@ -344,7 +369,7 @@ class UserMeterAnalysis extends PureComponent {
               destroyOnClose={true}
               title={formatMessage({id: 'intl.edit'})}
               visible={this.state.editModal}
-              onOk={this.handleEdit}
+              onOk={this.changeNode}
               onCancel={() => this.setState({editModal: false})}
             >
               <AddOrEditForm editRecord={this.state.editRecord}

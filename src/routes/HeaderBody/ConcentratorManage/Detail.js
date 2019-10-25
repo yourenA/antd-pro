@@ -137,6 +137,7 @@ class Detail extends PureComponent {
       id:this.props.editRecord.id,
     },
     callback:()=>{
+      const {intl:{formatMessage}} = that.props;
       message.success(
         formatMessage(
           {id: 'intl.operate_successful'},
@@ -146,6 +147,27 @@ class Detail extends PureComponent {
       this.props.handleSearch()
     }
   });
+  }
+  downloadDocument=()=>{
+    console.log('download_document',this.props.editRecord.number)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        concentrator_number:this.props.editRecord.number,
+        feature: 'download_document'
+      },
+      callback:()=>{
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.download_document'}), type: ''}
+          )
+        )
+      }
+    });
   }
   render() {
     const {intl:{formatMessage}} = this.props;
@@ -227,7 +249,7 @@ class Detail extends PureComponent {
             >
               {renderCommandBtn}
             </FormItem>
-            {company_code !== 'hy' && <FormItem
+            {(company_code !== 'hy'&& company_code.indexOf("test")===-1) && <FormItem
               label={ formatMessage({id: 'intl.batch_valve_control'})}
               {...formItemLayoutWithLabel}
             >
@@ -246,6 +268,12 @@ class Detail extends PureComponent {
               {...formItemLayoutWithLabel}
             >
               <Button   type="primary"  style={{marginRight: 10}} onClick={this.UpdateSimInfo}>{ formatMessage({id: 'intl.update'})}</Button>
+            </FormItem>
+            <FormItem
+              label={ formatMessage({id: 'intl.download_document'})}
+              {...formItemLayoutWithLabel}
+            >
+              <Button   type="primary"  style={{marginRight: 10}} onClick={this.downloadDocument}>{ formatMessage({id: 'intl.download_document'})}</Button>
             </FormItem>
           </Form>
         </TabPane>

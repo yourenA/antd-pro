@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Layout, message, Popconfirm, Modal, Badge} from 'antd';
+import {Table, Card, Layout, message, Popconfirm, Modal, Badge,Button } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
@@ -26,9 +26,9 @@ class MeterModel extends PureComponent {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
+      showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       showAddBtn: find(this.permissions, {name: 'meter_model_add_and_edit'}),
       showdelBtn: find(this.permissions, {name: 'meter_model_delete'}),
-      showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       showChangeBtn: find(this.permissions, {name: 'meter_change_record_add'}),
       tableY: 0,
       page: 1,
@@ -54,7 +54,13 @@ class MeterModel extends PureComponent {
 
   componentDidMount() {
     document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
-
+    const that=this;
+    this.timer=setInterval(function () {
+      that.setState({
+        // disabled:false
+        time:new Date().getTime()
+      })
+    },3000)
     const {dispatch} = this.props;
     // dispatch({
     //   type: 'meters/fetch',
@@ -74,6 +80,7 @@ class MeterModel extends PureComponent {
   }
   componentWillUnmount() {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    clearInterval(this.timer)
   }
   scrollTable=()=>{
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
@@ -445,12 +452,52 @@ class MeterModel extends PureComponent {
   onSelectChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys });
   }
-
+  read_single_901f=(command,meter_number)=>{
+    const company_code = sessionStorage.getItem('company_code');
+    console.log('点抄：',meter_number)
+    const {dispatch} = this.props;
+    const that=this;
+    dispatch({
+      type: 'user_command_data/add',
+      payload:{
+        meter_number,
+        feature:'upload_single',
+        protocol:command
+      },
+      callback:()=>{
+        sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
+        that.setState({
+          // disabled:false
+          time:new Date().getTime()
+        });
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
+      }
+    });
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const { selectedRowKeys } = this.state;
+    const that=this;
     const {meters: {data, meta, loading}, meter_models, user_command_data} = this.props;
     const {isMobile} =this.props.global;
+    const renderComandRecord=(record)=>{
+      if(!record.protocols) return '';
+      const renderCommandBtn=record.protocols.map((item,index)=>{
+        const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.number}`)
+        const isLoading=clickTime&&this.state.time-clickTime<10000
+        return(
+          <Button loading={isLoading} key={index} type="primary" size="small"
+                  onClick={()=>{that.read_single_901f(item,record.number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
+        )
+      })
+      return renderCommandBtn
+    }
     const columns = [
       // {
       //   title: '序号',
@@ -659,7 +706,7 @@ class MeterModel extends PureComponent {
     }
     const operate={
       title:formatMessage({id: 'intl.operate'}),
-      width: isMobile ? 100 : 180,
+      width: company_code==='hy' ? 200 : 180,
       fixed: 'right',
       render: (val, record, index) => (
         <p>
@@ -722,6 +769,8 @@ class MeterModel extends PureComponent {
               <a href="">{formatMessage({id: 'intl.delete'})}</a>
             </Popconfirm>
           }
+          <br/>
+          {this.state.showCommandBtn&&company_code==='hy'&&renderComandRecord(record)}
 
         </p>
       ),
@@ -769,7 +818,7 @@ class MeterModel extends PureComponent {
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
                                  onChange={this.handleTableSort}
-                                 rowSelection={['hy','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411'].indexOf(company_code)>=0?null:rowSelection}
+                                 rowSelection={['hy'].indexOf(company_code)>=0?null:rowSelection}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>

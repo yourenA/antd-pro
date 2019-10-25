@@ -263,17 +263,17 @@ class UserMeterAnalysis extends PureComponent {
                             }
                             description={(
                               <div className="big-meter-description">
-                                <p>${ formatMessage({id: 'intl.date'})} : <Tooltip title={item.collected_at}><span>{item.collected_at}</span>
+                                <p>{ formatMessage({id: 'intl.date'})} : <Tooltip title={item.collected_at}><span>{item.collected_at}</span>
                                 </Tooltip></p>
                                 <Divider className="big-meter-divider"/>
-                                <p>${ formatMessage({id: 'intl.instantaneous_flow_rate'})} : <Tooltip title={item.instantaneous_value}><span className={styles.wordValue}>{item.instantaneous_value}</span></Tooltip>
+                                <p>{ formatMessage({id: 'intl.instantaneous_flow_rate'})} : <Tooltip title={item.instantaneous_value}><span className={styles.wordValue}>{item.instantaneous_value}</span></Tooltip>
                                 </p>
                                 <Divider className="big-meter-divider"/>
-                                <p>${ formatMessage({id: 'intl.forward_flow_rate'})} : <Tooltip title={item.forward_cumulative_value}><span
+                                <p>{ formatMessage({id: 'intl.forward_flow_rate'})} : <Tooltip title={item.forward_cumulative_value}><span
                                   className={styles.wordValue}>{item.forward_cumulative_value}</span></Tooltip>
                                 </p>
                                 <Divider className="big-meter-divider"/>
-                                <p>${ formatMessage({id: 'intl.reverse_flow_rate'})} : <Tooltip title={item.reverse_cumulative_value}><span
+                                <p>{ formatMessage({id: 'intl.reverse_flow_rate'})} : <Tooltip title={item.reverse_cumulative_value}><span
                                   className={styles.wordValue}>{item.reverse_cumulative_value}</span></Tooltip></p>
                                 <Divider className="big-meter-divider"/>
                               </div>

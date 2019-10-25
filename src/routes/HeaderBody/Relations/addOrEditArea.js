@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import {injectIntl} from 'react-intl';
+let uuid = 0;
 @injectIntl
 @connect(state => ({
   sider_regions: state.sider_regions,
@@ -22,6 +23,14 @@ class AddPoliciesForm extends Component {
     };
   }
   componentDidMount() {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'sider_regions/fetch',
+      payload: {
+        return: 'all'
+      }
+    });
+
     request(`/meters`, {
       method: 'GET',
       params: {
@@ -36,20 +45,76 @@ class AddPoliciesForm extends Component {
 
     })
   }
+  changeVillage=(e)=>{
+    request(`/meters`, {
+      method: 'GET',
+      params: {
+        return: 'all',
+        village_id:e
+      }
+    }).then(response=>{
+      if(response.status===200){
+        this.setState({
+          meters:response.data.data
+        })
+      }
+
+    })
+  }
+  add = () => {
+    uuid++;
+    const {form} = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(uuid);
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  };
+  remove = (k) => {
+    const {form} = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  }
+  renderTreeNodes=(data)=>{
+    return data.map((item) => {
+      if (item.children) {
+        return (
+          <TreeNode value={item.id} title={item.name} key={item.id} >
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return  <TreeNode value={item.id}  title={item.name} key={item.id} />
+    });
+  }
   render() {
+    const {sider_regions:{data}}=this.props;
     const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 8},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
-        sm: {span: 15},
+        sm: {span: 17},
       }
     };
-    const {getFieldDecorator} = this.props.form;
-    const {sider_regions:{data}}=this.props;
+    const {getFieldDecorator,getFieldValue} = this.props.form;
+    getFieldDecorator('keys', {initialValue: [uuid]});
+    const keys = getFieldValue('keys');
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -57,74 +122,51 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              水表编号
+              小区名称
             </span>
+          )}>
+          {getFieldDecorator('parent_id', {
+          })(
+            <TreeSelect
+              onChange={this.changeVillage}
+              allowClear
+            >
+              {this.renderTreeNodes(data)}
+            </TreeSelect>
           )}
-        >
-          {getFieldDecorator('meter_number', {
-            initialValue: this.props.editRecord ? this.props.editRecord.meter_number : '',
-            rules: [{required: true, message:'水表编号不能为空'}],
+        </FormItem>
+        <FormItem
+          {...formItemLayoutWithLabel}
+          label='用户名称/水表编号'
+         >
+          {getFieldDecorator(`meter_number`, {
+            rules: [{required: true, message: formatMessage({id: 'intl.meter'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <Select
               showSearch
-              style={{ width: 200 }}
+              mode="multiple"
               placeholder="请选择"
               optionFilterProp="children"
               filterOption={(input, option) =>
-              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              {
+                return option.props.children.join('').toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
               }
             >
               {
                 this.state.meters.map((item,index)=>{
-                  return <Option key={index} value={item.number}>{item.number}</Option>
+                  return <Option key={index} value={item.number+'@'+item.real_name}>{item.real_name}/{item.number}</Option>
                 })
               }
             </Select>
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              上级水表编号
-            </span>
-          )}
-        >
-          {getFieldDecorator('parent_meter_number', {
-            initialValue: this.props.editRecord ? this.props.editRecord.parent_meter_number : '',
-          })(
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="请选择"
-              allowClear={true}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {
-                this.state.meters.map((item,index)=>{
-                  return <Option key={index} value={item.number}>{item.number}</Option>
-                })
-              }
-            </Select>
-
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={'提示'}
-        >
-          <p >上级水表编号，空表示该水表是主表</p>
-        </FormItem>
-
-
       </Form>
     </div>
     );
   }
 }
+
 
 const AddPoliciesFormWrap = Form.create()(AddPoliciesForm);
 export default connect()(AddPoliciesFormWrap);

@@ -327,6 +327,9 @@ class UserMeterAnalysis extends PureComponent {
         , render: (val, record, index) => {
           let status='success';
           switch (val){
+            case -4:
+              status = 'error'
+              break;
             case -2:
               status='error'
               break;
