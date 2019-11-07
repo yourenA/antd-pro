@@ -87,7 +87,7 @@ class AddPoliciesForm extends Component {
           )}
         >
           {getFieldDecorator('value', {
-            initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.target_value) : '',
+            initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.target_value).toString()==='NaN'?'': parseFloat(this.props.editRecord.target_value): '',
             rules: [{required: true, message:  formatMessage({id: 'intl.value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
             <InputNumber

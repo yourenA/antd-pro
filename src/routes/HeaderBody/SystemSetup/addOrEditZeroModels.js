@@ -59,32 +59,16 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel2}
             label={(
               <span>
-                异常判断连续小时数
+                异常判断连续天数
                   </span>
             )}
           >
-            {getFieldDecorator('hours', {
-              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.hours :0,
-              rules: [{required: true, message:'异常判断连续小时数'+ formatMessage({id: 'intl.can_not_be_empty'})}],
+            {getFieldDecorator('days', {
+              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.days :2,
+              rules: [{required: true, message:'异常判断连续天数'+ formatMessage({id: 'intl.can_not_be_empty'})}],
 
             })(
-              <InputNumber  min={0}/>
-            )}
-          </FormItem>
-          <FormItem
-            {...formItemLayoutWithLabel2}
-            label={(
-              <span>
-              {formatMessage({id: 'intl.judgment_value'})}
-                  </span>
-            )}
-          >
-            {getFieldDecorator('value', {
-              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.value :1,
-              rules: [{required: true, message: formatMessage({id: 'intl.judgment_value'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
-
-            })(
-              <InputNumber  min={0}/>
+              <InputNumber  min={2}/>
             )}
           </FormItem>
         </Form>

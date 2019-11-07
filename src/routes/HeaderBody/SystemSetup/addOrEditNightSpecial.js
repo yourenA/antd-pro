@@ -2,8 +2,9 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input, Radio, Select, InputNumber, TreeSelect, Switch} from 'antd';
+import {Form, Input, Radio, Select, InputNumber, TreeSelect, TimePicker} from 'antd';
 import {connect} from 'dva';
+import moment from 'moment'
 const FormItem = Form.Item;
 const TreeNode = TreeSelect.TreeNode;
 const Option = Select.Option;
@@ -16,6 +17,7 @@ import {injectIntl} from 'react-intl';
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
+    this.format = 'HH:mm';
     this.state = {
       meters:[]
     };
@@ -59,6 +61,10 @@ class AddPoliciesForm extends Component {
     })
   }
   render() {
+    var arr = new Array(60);
+    for(let i = 0;i < arr.length;i++){
+      arr[i]=i;
+    }
     const {sider_regions:{data}}=this.props;
     const {intl:{formatMessage}} = this.props;
     const formItemLayoutWithLabel2 = {
@@ -127,18 +133,21 @@ class AddPoliciesForm extends Component {
 
           <FormItem
             {...formItemLayoutWithLabel2}
-            label={(
-              <span>
-                异常判断连续小时数
-                  </span>
+            label="开始时间">
+            {getFieldDecorator('started_at', {
+              initialValue:  this.props.editSpecialRecord ? moment(this.props.editSpecialRecord.started_at,'HH:mm') :moment('00:00:00', 'HH:mm'),
+            })(
+              <TimePicker format={this.format}  disabledMinutes={()=>{return arr;}}/>
             )}
-          >
-            {getFieldDecorator('hours', {
-              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.hours :0,
-              rules: [{required: true, message:'异常判断连续小时数'+ formatMessage({id: 'intl.can_not_be_empty'})}],
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel2}
+            label="结束时间">
+            {getFieldDecorator('ended_at', {
+              initialValue:  this.props.editSpecialRecord ?  moment(this.props.editSpecialRecord.ended_at,'HH:mm') :moment('00:00:00','HH:mm'),
 
             })(
-              <InputNumber  min={0}/>
+              <TimePicker format={this.format} disabledMinutes={()=>{return arr;}}/>
             )}
           </FormItem>
           <FormItem

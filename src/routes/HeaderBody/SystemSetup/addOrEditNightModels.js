@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select,InputNumber,DatePicker,Switch } from 'antd';
+import {Form, Input,  Radio, Select,InputNumber,DatePicker,TimePicker  } from 'antd';
 import {connect} from 'dva';
 import moment from 'moment'
 const FormItem = Form.Item;
@@ -13,6 +13,7 @@ import {injectIntl} from 'react-intl';
 class AddPoliciesForm extends Component {
   constructor(props) {
     super(props);
+    this.format = 'HH:mm';
     this.state = {
     };
   }
@@ -29,6 +30,10 @@ class AddPoliciesForm extends Component {
     };
     const {intl:{formatMessage}} = this.props;
     const {getFieldDecorator} = this.props.form;
+    var arr = new Array(60);
+    for(let i = 0;i < arr.length;i++){
+      arr[i]=i;
+    }
     return (
       <div>
         <Form >
@@ -42,6 +47,7 @@ class AddPoliciesForm extends Component {
             </span>
                 )}>
                 {getFieldDecorator('meter_model_ids', {
+
                   rules: [{required: true, message: formatMessage({id: 'intl.water_meter_type'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
                 })(
                   <Select labelInValue={true}   mode="multiple">
@@ -54,21 +60,23 @@ class AddPoliciesForm extends Component {
                 )}
               </FormItem>
           }
-
           <FormItem
             {...formItemLayoutWithLabel2}
-            label={(
-              <span>
-                异常判断连续小时数
-                  </span>
+            label="开始时间">
+            {getFieldDecorator('started_at', {
+              initialValue:  this.props.editModelRecord ? moment(this.props.editModelRecord.started_at,'HH:mm') :moment('00:00:00', 'HH:mm'),
+            })(
+              <TimePicker format={this.format}  disabledMinutes={()=>{return arr;}}/>
             )}
-          >
-            {getFieldDecorator('hours', {
-              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.hours :0,
-              rules: [{required: true, message:'异常判断连续小时数'+ formatMessage({id: 'intl.can_not_be_empty'})}],
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel2}
+            label="结束时间">
+            {getFieldDecorator('ended_at', {
+              initialValue:  this.props.editModelRecord ?  moment(this.props.editModelRecord.ended_at,'HH:mm') :moment('00:00:00','HH:mm'),
 
             })(
-              <InputNumber  min={0}/>
+              <TimePicker format={this.format} disabledMinutes={()=>{return arr;}}/>
             )}
           </FormItem>
           <FormItem

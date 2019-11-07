@@ -148,11 +148,14 @@ class EditPassword extends Component {
     }
     if (formValues.value === undefined) {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
-
+      return false
+    }
+    if (formValues.hours === undefined) {
+      message.error(`异常判断连续小时数${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
 
-    let newModels=[];
+    let newModels = [];
     for (let i = 0; i < formValues.meter_model_ids.length; i++) {
       const isExit = find(this.state.leak_abnormality_meter_models.value, function (o) {
         return o.id === formValues.meter_model_ids[i].key;
@@ -160,15 +163,16 @@ class EditPassword extends Component {
       if (isExit) {
         message.error(`${ formValues.meter_model_ids[i].label}${formatMessage({id: 'intl.already_exists'})}`)
         return false
-      }else{
+      } else {
         newModels.push({
           id: formValues.meter_model_ids[i].key,
           value: formValues.value,
+          hours: formValues.hours,
           name: formValues.meter_model_ids[i].label,
         })
       }
     }
-    this.state.leak_abnormality_meter_models.value= [...newModels, ...this.state.leak_abnormality_meter_models.value]
+    this.state.leak_abnormality_meter_models.value = [...newModels, ...this.state.leak_abnormality_meter_models.value]
 
     this.setState({
       hadEditModel: true,
@@ -185,12 +189,17 @@ class EditPassword extends Component {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
+    if (formValues.hours === undefined) {
+      message.error(`异常判断连续小时数${formatMessage({id: 'intl.can_not_be_empty'})}`)
+      return false
+    }
     const that = this;
     const editIndex = findIndex(this.state.leak_abnormality_meter_models.value, function (o) {
       return o.id === that.state.editModelRecord.id;
     });
     console.log('editIndex', editIndex)
     this.state.leak_abnormality_meter_models.value[editIndex].value = formValues.value;
+    this.state.leak_abnormality_meter_models.value[editIndex].hours = formValues.hours;
 
 
     this.setState({
@@ -220,11 +229,11 @@ class EditPassword extends Component {
     }
   }
 
-  saveModel=()=>{
+  saveModel = ()=> {
     forEach(this.state.leak_abnormality_meter_models.value, function (item, index) {
       delete item.name
     });
-    const that=this
+    const that = this
     request(`/configs`, {
       method: 'PATCH',
       data: {
@@ -233,8 +242,7 @@ class EditPassword extends Component {
     }).then((response)=> {
       console.log(response);
       if (response.status === 200) {
-        this.setState({
-        })
+        this.setState({})
         message.success('保存成功')
         that.setState({
           leak_abnormality_meter_models: find(response.data.data, function (o) {
@@ -250,7 +258,7 @@ class EditPassword extends Component {
     const {intl:{formatMessage}} = that.props;
     const formValues = this.specialFormRef.props.form.getFieldsValue();
     console.log(formValues)
-    if (formValues.meter_numbers.length===0) {
+    if (formValues.meter_numbers.length === 0) {
       message.error(`${formatMessage({id: 'intl.water_meter_number'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
@@ -258,7 +266,11 @@ class EditPassword extends Component {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
-    let newMeters=[];
+    if (formValues.hours === undefined) {
+      message.error(`异常判断连续小时数${formatMessage({id: 'intl.can_not_be_empty'})}`)
+      return false
+    }
+    let newMeters = [];
 
     for (let i = 0; i < formValues.meter_numbers.length; i++) {
       const isExit = find(this.state.leak_abnormality_special_meters.value, function (o) {
@@ -267,16 +279,17 @@ class EditPassword extends Component {
       if (isExit) {
         message.error(`${ formValues.meter_numbers[i]}${formatMessage({id: 'intl.already_exists'})}`)
         return false
-      }else{
+      } else {
         newMeters.push({
           number: formValues.meter_numbers[i].split('@')[1],
           value: formValues.value,
-          name:formValues.meter_numbers[i].split('@')[0],
+          hours: formValues.hours,
+          name: formValues.meter_numbers[i].split('@')[0],
         })
       }
     }
 
-    this.state.leak_abnormality_special_meters.value= [...newMeters, ...this.state.leak_abnormality_special_meters.value]
+    this.state.leak_abnormality_special_meters.value = [...newMeters, ...this.state.leak_abnormality_special_meters.value]
 
     this.setState({
       hadEditSpecial: true,
@@ -312,22 +325,27 @@ class EditPassword extends Component {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
-
+    if (formValues.hours === undefined) {
+      message.error(`异常判断连续小时数${formatMessage({id: 'intl.can_not_be_empty'})}`)
+      return false
+    }
     const editIndex = findIndex(this.state.leak_abnormality_special_meters.value, function (o) {
       return o.number === that.state.editSpecialRecord.number;
     });
     console.log('editIndex', editIndex)
     this.state.leak_abnormality_special_meters.value[editIndex].value = formValues.value;
+    this.state.leak_abnormality_special_meters.value[editIndex].hours = formValues.hours;
     this.setState({
       hadEditSpecial: true,
       editSpecialModal: false,
       leak_abnormality_special_meters: this.state.leak_abnormality_special_meters
     })
   }
-  saveSpecial=()=>{
-    const that=this
+  saveSpecial = ()=> {
+    const that = this
     forEach(this.state.leak_abnormality_special_meters.value, function (item, index) {
-      delete item.name
+      delete item.name;
+      delete item.id
     });
     request(`/configs`, {
       method: 'PATCH',
@@ -347,6 +365,7 @@ class EditPassword extends Component {
       }
     })
   }
+
   render() {
     const {intl:{formatMessage}} = this.props;
     const {meter_models}=this.props
@@ -387,7 +406,7 @@ class EditPassword extends Component {
                         {...formItemLayoutWithLabel}
                       >
                         {getFieldDecorator('leak_abnormality_value', {})(
-                          <InputNumber style={{width:160}} />
+                          <InputNumber style={{width: 160}}/>
                         )}
                       </FormItem>
                       <FormItem
@@ -395,7 +414,7 @@ class EditPassword extends Component {
                         {...formItemLayoutWithLabel}
                       >
                         {getFieldDecorator('leak_abnormality_hours', {})(
-                          <InputNumber  style={{width:160}} />
+                          <InputNumber style={{width: 160}}/>
                         )}
                       </FormItem>
                       <FormItem
@@ -420,7 +439,7 @@ class EditPassword extends Component {
                       </FormItem>
                     </Form>
                   </TabPane>
-           {/*       <TabPane tab={this.state.leak_abnormality_meter_models.display_name} key="2">
+                  <TabPane tab={this.state.leak_abnormality_meter_models.display_name} key="2">
                     <div>
                       <div style={{margin: '0 0 10px 0'}}>
                         <Button onClick={() => {
@@ -441,11 +460,13 @@ class EditPassword extends Component {
                           </Button>
                         }
                       </div>
-                      <div className="alarm-tabs-content" style={{ background: this.state.hadEditModel ? '#fce4d6' : '#e2efda'}}>
+                      <div className="alarm-tabs-content"
+                           style={{background: this.state.hadEditModel ? '#fce4d6' : '#e2efda'}}>
                         {
                           Models_dataSource.map((item, index)=> {
                             return <div key={index} className="alarm-item">
                               <h2 title={item.name}><Icon type="appstore" style={{marginRight: '5px'}}/>{item.name}</h2>
+                              <p className="alarm-item-value">异常判断连续小时数 : <span >{item.hours}</span></p>
                               <p className="alarm-item-value">异常报警值 : <span >{item.value}</span> m³</p>
                               <div className="alarm-item-edit">
                                 <Popconfirm
@@ -466,8 +487,9 @@ class EditPassword extends Component {
                         }
                       </div>
                     </div>
-                  </TabPane>*/}
-                  <TabPane tab={this.state.leak_abnormality_special_meters.display_name} key="3"  style={{ background: this.state.hadEditSpecial ? '#fce4d6' : '#e2efda'}}>
+                  </TabPane>
+                  <TabPane tab={this.state.leak_abnormality_special_meters.display_name} key="3"
+                           style={{background: this.state.hadEditSpecial ? '#fce4d6' : '#e2efda'}}>
                     <div style={{margin: '0 0 10px 0', overflow: 'hidden'}}>
                       <Input placeholder={formatMessage({id: 'intl.water_meter_number'})}
                              style={{width: '150px', marginRight: '10px'}} onChange={(e)=> {
@@ -494,11 +516,12 @@ class EditPassword extends Component {
                       }
                     </div>
                     <div className="alarm-tabs-content">
-                    {
+                      {
                         Special_dataSource.map((item, index)=> {
                           return <div key={index} className="alarm-item">
                             <h2 title={item.name}><Icon type="user" style={{marginRight: '5px'}}/>{item.name}</h2>
-                            <p className="alarm-item-number">{item.number}</p>
+                            <p className="alarm-item-number">水表号:{item.number}</p>
+                            <p className="alarm-item-value">异常判断连续小时数 : <span >{item.hours}</span></p>
                             <p className="alarm-item-value">异常报警值 : <span >{item.value}</span> m³</p>
                             <div className="alarm-item-edit">
                               <Popconfirm

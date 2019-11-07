@@ -215,7 +215,8 @@ class EditPassword extends Component {
 
   saveModel=()=>{
     forEach(this.state.consumption_abnormality_meter_models.value, function (item, index) {
-      delete item.name
+      delete item.name;
+
     });
     const that=this
     request(`/configs`, {
@@ -318,7 +319,8 @@ class EditPassword extends Component {
   }
   saveSpecial=()=>{
     forEach(this.state.consumption_abnormality_special_meters.value, function (item, index) {
-      delete item.name
+      delete item.name;
+      delete item.id;
     });
     const that=this
     request(`/configs`, {
