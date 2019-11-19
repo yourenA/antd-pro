@@ -818,7 +818,7 @@ class MeterModel extends PureComponent {
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}
                                  onChange={this.handleTableSort}
-                                 rowSelection={['hy'].indexOf(company_code)>=0?null:rowSelection}
+                                 rowSelection={rowSelection}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>

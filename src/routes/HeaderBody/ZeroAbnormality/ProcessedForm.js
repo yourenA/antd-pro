@@ -33,20 +33,23 @@ class AddPoliciesForm extends Component {
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
+        {
+          this.props.meter_number&&
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               {formatMessage({id: 'intl.water_meter_number'})}
             </span>
-          )}
-        >
-          {getFieldDecorator('meter_number', {
-            initialValue: this.props.meter_number,
-          })(
-            <Input disabled/>
-          )}
-        </FormItem>
+            )}
+          >
+            {getFieldDecorator('meter_number', {
+              initialValue: this.props.meter_number,
+            })(
+              <Input disabled/>
+            )}
+          </FormItem>
+        }
         <FormItem
           {...formItemLayoutWithLabel}
           label={(

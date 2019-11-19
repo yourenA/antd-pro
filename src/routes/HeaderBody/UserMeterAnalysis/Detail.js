@@ -9,7 +9,9 @@ import request from './../../../utils/request'
 import moment from 'moment'
 import ChangeMeterValueForm from './ChangeMeterValueForm'
 import DelMeterValueForm from './DelMeterValueForm'
+import EditUnusualSpecial from './editUnusualSpecial'
 import find from 'lodash/find'
+import findIndex from 'lodash/findIndex'
 const TabPane = Tabs.TabPane;
 import {injectIntl} from 'react-intl';
 @injectIntl
@@ -279,6 +281,51 @@ class Detail extends PureComponent {
 
     });
   }
+  findChildFunc = (cb)=> { //通过回调将子组件的方法提取到父属性中来
+    this.findChildLocation = cb
+  }
+  handleSubmitEditSpecial = ()=> {
+    const that = this;
+    const {intl:{formatMessage}} = that.props;
+    const formValues = this.specialEditFormRef.props.form.getFieldsValue();
+    if (formValues.value === undefined) {
+      message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
+      return false
+    }
+    const consumption_abnormality_special_meters= this.findChildLocation();
+    const editIndex = findIndex(consumption_abnormality_special_meters.value, function (o) {
+      return o.number === that.props.meter_number;
+    });
+    console.log('editIndex', editIndex)
+    if(editIndex>=0){
+      consumption_abnormality_special_meters.value[editIndex].value = formValues.value;
+    }else{
+      consumption_abnormality_special_meters.value.push({
+        number: that.props.meter_number,
+        value: formValues.value
+      })
+    }
+    forEach(consumption_abnormality_special_meters.value, function (item, index) {
+      delete item.name;
+      delete item.id;
+    });
+    console.log('consumption_abnormality_special_meters',consumption_abnormality_special_meters)
+    request(`/configs`, {
+      method: 'PATCH',
+      data: {
+        consumption_abnormality_special_meters: consumption_abnormality_special_meters.value
+      }
+    }).then((response)=> {
+      console.log(response);
+      if (response.status === 200) {
+        message.success('修改用水量预警成功')
+        that.setState({
+          editModal: false
+        });
+      }
+    })
+
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const Data=[...this.state.Data].reverse()
@@ -293,12 +340,12 @@ class Detail extends PureComponent {
           return (index+1)
         }
       },
-      {title: formatMessage({id: 'intl.date'}), dataIndex: 'date', key: 'date'},
-      {title: formatMessage({id: 'intl.water_consumption'}), dataIndex: 'difference_value', key: 'difference_value'},
-      {title: formatMessage({id: 'intl.meter_reading'}) , dataIndex: 'value', key: 'value'},
-      {title:  formatMessage({id: 'intl.meter_reading_original'}), dataIndex: 'upload_value', key: 'upload_value'},
+      {title: formatMessage({id: 'intl.date'}),  width: 150,dataIndex: 'date', key: 'date'},
+      {title: formatMessage({id: 'intl.water_consumption'}), width: 150,dataIndex: 'difference_value', key: 'difference_value'},
+      {title: formatMessage({id: 'intl.meter_reading'}) , dataIndex: 'value',width: 150, key: 'value'},
+      {title:  formatMessage({id: 'intl.meter_reading_original'}), dataIndex: 'upload_value',width: 150, key: 'upload_value'},
       {
-        title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 100,
+        title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status',
         render: (val, record, index) => {
           let status='success';
           let explain='';
@@ -332,6 +379,7 @@ class Detail extends PureComponent {
     return (
       <div>
         <div >
+            <Button type="primary" style={{marginRight:'12px'}} icon="arrow-left" onClick={this.props.onBack}>{formatMessage({id: 'intl.back'})}</Button>
          <ButtonGroup>
             <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>{formatMessage({id: 'intl.this_week'})}</Button>
             <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
@@ -368,13 +416,15 @@ class Detail extends PureComponent {
           <div>
             <Button  type="danger" size="small" onClick={()=>{this.setState({editMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_correct'})}</Button>
             <Button  type="danger" size="small"  onClick={()=>{this.setState({delMeterValueModal:true})}}>{formatMessage({id: 'intl.meter_reading_clear'})}</Button>
+            <Button  type="primary" style={{marginLeft:'8px'}} size="small"
+                     onClick={()=>{this.setState({editModal:true})}}>用水量异常报警设置</Button>
           </div>:
           this.props.showAnalysis?
           <div>
             <Button  type="primary" onClick={this.props.operateValueAnalysis}>水量分析</Button>
           </div>:null
         } >
-          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1">  <div className="month-analysis"></div></TabPane>
+          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1">  <div className="month-analysis" style={{height:this.props.tableY+'px'}}></div></TabPane>
           <TabPane tab={formatMessage({id: 'intl.table'})} key="2">
             <Table
               className={'meter-table'}
@@ -382,6 +432,7 @@ class Detail extends PureComponent {
               columns={columns}
               dataSource={Data}
               pagination={false}
+              scroll={{x: true, y: this.props.tableY}}
               size="small"
               rowKey={record => record.date}
             />
@@ -428,6 +479,16 @@ class Detail extends PureComponent {
           ]}
         >
           <DelMeterValueForm meter_number={this.props.meter_number}  wrappedComponentRef={(inst) => this.DelMeterValueForm = inst}/>
+        </Modal>
+        <Modal
+          destroyOnClose={true}
+          title={this.props.meter_number+'用水量异常报警设置'}
+          visible={this.state.editModal}
+          //onOk={this.handleEditMeterValue}
+          onCancel={() => this.setState({editModal: false})}
+          onOk={this.handleSubmitEditSpecial}
+        >
+          <EditUnusualSpecial  findChildFunc={this.findChildFunc} meter_number={this.props.meter_number}  wrappedComponentRef={(inst) => this.specialEditFormRef = inst}/>
         </Modal>
       </div>
     );

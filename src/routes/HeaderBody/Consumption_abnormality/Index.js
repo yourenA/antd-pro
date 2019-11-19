@@ -50,7 +50,8 @@ class Consumption_abnormality extends PureComponent {
       canLoadByScroll:true,
       display_type:'only_unprocessed',
       processed_model:false,
-      editRecord:{}
+      editRecord:{},
+      selectedRowKeys: [],
     }
   }
 
@@ -155,7 +156,8 @@ class Consumption_abnormality extends PureComponent {
         })
         if(!fetchAndPush){
           that.setState({
-            initPage:values.page
+            initPage:values.page,
+            selectedRowKeys:[]
           })
         }
         if(cb) cb()
@@ -178,6 +180,9 @@ class Consumption_abnormality extends PureComponent {
       // area: this.state.area
     })
   }
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
+  }
   handPageSizeChange = (per_page)=> {
     this.handleSearch({
       area_id: this.state.area_id,
@@ -197,12 +202,21 @@ class Consumption_abnormality extends PureComponent {
     const {dispatch} = this.props;
     const formValues =this.ProcessedForm.props.form.getFieldsValue();
     console.log('formValues',formValues);
+    let meter_numbers=[]
+    if(!formValues.meter_number){
+      for(let i=0;i<this.state.selectedRowKeys.length;i++){
+        meter_numbers.push(this.state.selectedRowKeys[i].split('@')[0])
+      }
+    }else{
+      meter_numbers=[formValues.meter_number]
+    }
     dispatch({
       type:'zero_abnormality/processed',
       payload: {
-        abnormality_type:abnormality_type,
-        ...formValues,
-        not_reminder_days:String(formValues.not_reminder_days)
+        abnormality_type:4,
+        meter_numbers:meter_numbers,
+        not_reminder_days:String(formValues.not_reminder_days),
+        remark:formValues.remark
       },
       callback: function () {
         const {intl:{formatMessage}} = that.props;
@@ -212,6 +226,11 @@ class Consumption_abnormality extends PureComponent {
             {operate: '', type: formatMessage({id: 'intl.confirm_exception'})}
           )
         )
+        if(!formValues.meter_number){
+            that.setState({
+              selectedRowKeys:[]
+            })
+        }
         that.setState({
           processed_model:false
         })
@@ -237,6 +256,10 @@ class Consumption_abnormality extends PureComponent {
     })
   }
   render() {
+    const rowSelection = {
+      selectedRowKeys:this.state.selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const {intl:{formatMessage}} = this.props;
     const {consumption_abnormality: {data, meta, loading}, dma} = this.props;
     for(let i=0;i<data.length;i++){
@@ -280,7 +303,8 @@ class Consumption_abnormality extends PureComponent {
           return (
             <div>
               <Button type="primary" size='small' onClick={()=>this.operate(record)}>  {formatMessage({id: 'intl.details'})}</Button>
-              {this.state.display_type==='only_unprocessed'&&<Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
+              {this.state.display_type==='only_unprocessed'&&
+              <Button type="primary" size='small'  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
                 {formatMessage({id: 'intl.confirm_abnormal'})}
               </Button>}
             </div>
@@ -304,11 +328,18 @@ class Consumption_abnormality extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <Search
+                      selectedRowKeys={this.state.selectedRowKeys}
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/unusual_water`));
                       }}
                       isMobile={isMobile}
                       per_page={this.state.per_page}
+                      processed={()=>{
+                        this.setState({
+                          processed_model:true,
+                          editRecord:{}
+                        })
+                      }}
                       dma={dma}
                             initRange={this.state.initRange}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
@@ -316,10 +347,12 @@ class Consumption_abnormality extends PureComponent {
                   </div>
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
-                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 dataSource={data} columns={columns}
+                                 rowKey={record => `${record.meter_number}@${record.date}`}
                                  scroll={{x:1800,y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
+                                 rowSelection={rowSelection}
                 />
                 <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
               </Card>
@@ -333,7 +366,7 @@ class Consumption_abnormality extends PureComponent {
                 <ProcessedForm meter_number={this.state.editRecord.meter_number}  wrappedComponentRef={(inst) => this.ProcessedForm = inst}/>
               </Modal>
               <Modal
-                width="750px"
+                width="800px"
                 destroyOnClose={true}
                 title={`${ formatMessage({id: 'intl.water_meter_number'})} ${this.state.show_meter_number} ${ formatMessage({id: 'intl.details'})}${ formatMessage({id: 'intl.detail_info'})}`}
                 visible={this.state.editModal}

@@ -2,34 +2,35 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, Row, Input, Button, Switch,Icon,Modal,Popconfirm ,message} from 'antd';
+import {Form, Row, Input, Button, Switch, Icon, Modal, Popconfirm, message} from 'antd';
 import {injectIntl} from 'react-intl';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 
-@connect(state => ({
-}))
+@connect(state => ({}))
 @injectIntl
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expand: this.props.isMobile?false:true,
-      time:new Date().getTime()
+      expand: this.props.isMobile ? false : true,
+      time: new Date().getTime()
     };
   }
+
   componentDidMount() {
-    const that=this;
-    this.timer=setInterval(function () {
+    const that = this;
+    this.timer = setInterval(function () {
       that.setState({
         // disabled:false
-        time:new Date().getTime()
+        time: new Date().getTime()
       })
-    },10000)
+    }, 10000)
   }
+
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -37,11 +38,11 @@ class SearchForm extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const values = {
-        sort_field:this.props.sort_field,
-        sort_direction:this.props.sort_direction,
+        sort_field: this.props.sort_field,
+        sort_direction: this.props.sort_direction,
         ...fieldsValue,
       };
-      this.props.handleSearch({...values, page: 1,per_page:this.props.per_page})
+      this.props.handleSearch({...values, page: 1, per_page: this.props.per_page})
     });
   }
   handleFormReset = () => {
@@ -49,45 +50,58 @@ class SearchForm extends Component {
     form.resetFields();
     this.props.handleFormReset()
   }
-  valveCommand=(command)=>{
+  valveCommand = (command)=> {
     const {dispatch} = this.props;
-    const that=this;
+    const that = this;
     dispatch({
       type: 'user_command_data/add',
-      payload:{
-        meter_number:this.props.selectedRowKeys,
+      payload: {
+        meter_number: this.props.selectedRowKeys,
         feature: command
       },
-      callback:()=>{
-        sessionStorage.setItem(`${command}-selected`,new Date().getTime())
+      callback: ()=> {
+        sessionStorage.setItem(`${command}-selected`, new Date().getTime())
         that.setState({
           // disabled:false
-          time:new Date().getTime()
+          time: new Date().getTime()
         });
         message.success('发送指令成功')
       }
     });
   }
+
   render() {
     const {intl:{formatMessage}} = this.props;
     const {expand}=this.state
     const {getFieldDecorator} = this.props.form;
-    const that=this;
-    const renderOpenValveBtn=function () {
-      const clickTime=sessionStorage.getItem(`open_valve-selected`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
-      return(
-        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve_batch'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand('open_valve')}}>
-          <Button loading={isLoading}  type="primary" style={{marginLeft: 8}}>{isLoading?'':''}{formatMessage({id: 'intl.open_valve_batch'})} {that.props.concentratorNumber}</Button>
+    const that = this;
+    const renderOpenValveBtn = function () {
+      const clickTime = sessionStorage.getItem(`open_valve-selected`)
+      const isLoading = clickTime && that.state.time - clickTime < 12000
+      return (
+        <Popconfirm
+          title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.open_valve_batch'})})}
+          onConfirm={()=> {
+            that.setState({time: new Date().getTime()});
+            that.valveCommand('open_valve')
+          }}>
+          <Button loading={isLoading} type="primary"
+                  style={{marginLeft: 8}}>{isLoading ? '' : ''}{formatMessage({id: 'intl.open_valve_batch'})} {that.props.concentratorNumber}</Button>
         </Popconfirm>
       )
     }
-    const renderCloseValveBtn=function () {
-      const clickTime=sessionStorage.getItem(`close_valve-selected`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
-      return(
-        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve_batch'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.valveCommand( 'close_valve')}} >
-          <Button loading={isLoading}  type="danger" style={{marginLeft: 8}}>{isLoading?'':''}{formatMessage({id: 'intl.close_valve_batch'})} {that.props.concentratorNumber}</Button>
+    const renderCloseValveBtn = function () {
+      const clickTime = sessionStorage.getItem(`close_valve-selected`)
+      const isLoading = clickTime && that.state.time - clickTime < 12000
+      return (
+        <Popconfirm
+          title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.close_valve_batch'})})}
+          onConfirm={()=> {
+            that.setState({time: new Date().getTime()});
+            that.valveCommand('close_valve')
+          }}>
+          <Button loading={isLoading} type="danger"
+                  style={{marginLeft: 8}}>{isLoading ? '' : ''}{formatMessage({id: 'intl.close_valve_batch'})} {that.props.concentratorNumber}</Button>
         </Popconfirm>
       )
     }
@@ -101,42 +115,42 @@ class SearchForm extends Component {
             )}
           </FormItem>
           <FormItem label={formatMessage({id: 'intl.user_name'})}
-                    style={{ display: expand ? 'inline-block' : 'none' }}>
+                    style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('real_name')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           <FormItem label={formatMessage({id: 'intl.user_number'})}
-                    style={{ display: expand ? 'inline-block' : 'none' }}>
+                    style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('member_number')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           <FormItem label={formatMessage({id: 'intl.install_address'})}
-                    style={{ display: expand ? 'inline-block' : 'none' }}>
+                    style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('install_address')(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           <FormItem >
-            {this.props.isMobile&&<Button type="primary" onClick={this.toggle}  style={{marginRight: 8}}>
-              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'intl.collapse_condition'})} <Icon type={this.state.expand ? 'up' : 'down'} />
+            {this.props.isMobile && <Button type="primary" onClick={this.toggle} style={{marginRight: 8}}>
+              {this.state.expand ? formatMessage({id: 'intl.expand_condition'}) : formatMessage({id: 'intl.collapse_condition'})}
+              <Icon type={this.state.expand ? 'up' : 'down'}/>
             </Button>}
             <Button type="primary" htmlType="submit"> {formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
             {/*{this.props.showAddBtn &&
-            <Button type="primary" style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
+             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.clickAdd} icon='plus'>添加</Button>}*/}
           </FormItem>
-          {
-            ['hy'].indexOf(company_code)<0&&
-            <FormItem
-            >
-              <span style={{ marginRight:   8 }}>{formatMessage({id: 'intl.water_meters_selected'},{number:this.props.selectedRowKeys.length})}</span>
-              {renderOpenValveBtn()}
-              {renderCloseValveBtn()}
-            </FormItem>
-          }
-          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}  className="openOperate">
+          <FormItem
+          >
+            <span
+              style={{marginRight: 8}}>{formatMessage({id: 'intl.water_meters_selected'}, {number: this.props.selectedRowKeys.length})}</span>
+            {renderOpenValveBtn()}
+            {renderCloseValveBtn()}
+          </FormItem>
+          <FormItem label={formatMessage({id: 'intl.open_operating_bar'})} style={{float: 'right'}}
+                    className="openOperate">
             <Switch defaultChecked={localStorage.getItem('canOperateMeter') === 'true' ? true : false}
                     onChange={(checked)=> {
                       localStorage.setItem('canOperateMeter', checked);

@@ -39,7 +39,8 @@ class FunctionContent extends PureComponent {
       canLoadByScroll:true,
       display_type:'only_unprocessed',
       processed_model:false,
-      editRecord:{}
+      editRecord:{},
+      selectedRowKeys: [],
     }
   }
 
@@ -143,12 +144,16 @@ class FunctionContent extends PureComponent {
         })
         if(!fetchAndPush){
           that.setState({
-            initPage:values.page
+            initPage:values.page,
+            selectedRowKeys:[]
           })
         }
         if(cb) cb()
       }
     });
+  }
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
   }
   handPageChange = (page)=> {
     this.handleSearch({
@@ -189,12 +194,21 @@ class FunctionContent extends PureComponent {
     const {dispatch} = this.props;
     const formValues =this.ProcessedForm.props.form.getFieldsValue();
     console.log('formValues',formValues);
+    let meter_numbers=[]
+    if(!formValues.meter_number){
+      for(let i=0;i<this.state.selectedRowKeys.length;i++){
+        meter_numbers.push(this.state.selectedRowKeys[i].split('@')[0])
+      }
+    }else{
+      meter_numbers=[formValues.meter_number]
+    }
     dispatch({
       type:'zero_abnormality/processed',
       payload: {
-        abnormality_type:abnormality_type,
-        ...formValues,
-        not_reminder_days:String(formValues.not_reminder_days)
+        abnormality_type:1,
+        meter_numbers:meter_numbers,
+        not_reminder_days:String(formValues.not_reminder_days),
+        remark:formValues.remark
       },
       callback: function () {
         const {intl:{formatMessage}} = that.props;
@@ -204,6 +218,11 @@ class FunctionContent extends PureComponent {
             {operate: '', type: formatMessage({id: 'intl.confirm_exception'})}
           )
         )
+        if(!formValues.meter_number){
+          that.setState({
+            selectedRowKeys:[]
+          })
+        }
         that.setState({
           processed_model:false
         })
@@ -223,6 +242,10 @@ class FunctionContent extends PureComponent {
     });
   }
   render() {
+    const rowSelection = {
+      selectedRowKeys:this.state.selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const {intl:{formatMessage}} = this.props;
     const {zero_abnormality: {data, meta, loading}, dma} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -282,21 +305,30 @@ class FunctionContent extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch
+                      selectedRowKeys={this.state.selectedRowKeys}
                       isMobile={isMobile}
                       setWarningRule={()=> {
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/zero_warning_setup`));
                       }}
                       per_page={this.state.per_page}
+                      processed={()=>{
+                        this.setState({
+                          processed_model:true,
+                          editRecord:{}
+                        })
+                      }}
                       dma={dma} handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initDate={this.state.initDate}
                       initRange={this.state.initRange}/>
                   </div>
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
-                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 dataSource={data} columns={columns}
+                                 rowKey={record => `${record.meter_number}@${record.date}`}
                                  scroll={{x:1800,y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
+                                 rowSelection={rowSelection}
                 />
                 {/*<Table
                   className='meter-table'

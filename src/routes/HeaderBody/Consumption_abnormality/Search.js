@@ -130,6 +130,11 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>重置</Button>
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>设置报警规则</Button>
+            <span
+              style={{marginRight: 8}}>{formatMessage({id: 'intl.water_meters_selected'}, {number: this.props.selectedRowKeys.length})}</span>
+            <Button type="primary"  className="btn-cyan" onClick={()=>this.setState({processed_model:true,editRecord:record})}>
+              批量确认异常
+            </Button>
           </FormItem>
         </Row>
       </Form>

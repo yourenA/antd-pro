@@ -44,6 +44,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       initPage: 1,
       initRange: getPreDay(),
+      showArea: true,
       started_at: '',
       ended_at: '',
       village_id: '',
@@ -59,29 +60,36 @@ class UserMeterAnalysis extends PureComponent {
       canLoadByScroll: true,
       sort_field: this.company_code === 'hy' ? 'sort_number' : 'concentrator_number',
       sort_direction: 'asc',
-      time:new Date().getTime(),
+      time: new Date().getTime(),
     }
   }
 
   componentDidMount() {
     this.changeTableY();
-    const that=this
-    document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
-    this.timer=setInterval(function () {
+    const that = this
+    // document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+    this.timer = setInterval(function () {
       that.setState({
         // disabled:false
-        time:new Date().getTime()
+        time: new Date().getTime()
       })
-    },3000)
+    }, 3000)
   }
 
   componentWillUnmount() {
     if (document.querySelector('.ant-table-body')) {
-      document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
+      // document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
     }
     clearInterval(this.timer)
   }
 
+  handleBack = ()=> {
+    this.setState({
+      showArea: true,
+    }, function () {
+      // document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+    })
+  }
   changeTableY = ()=> {
     console.log('changeTableY')
     this.setState({
@@ -140,11 +148,13 @@ class UserMeterAnalysis extends PureComponent {
         page: 1,
         meter_number: this.state.meter_number,
         member_number: this.state.member_number,
-        real_name: this.state.real_name,
-        install_address: this.state.install_address,
+        display_type: this.state.display_type,
         started_at: this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD'),
-        display_type: this.state.display_type,
+        real_name: this.state.real_name,
+        install_address: this.state.install_address,
+
+
         per_page: this.state.per_page,
         sort_field: this.state.sort_field,
         sort_direction: this.state.sort_direction
@@ -256,7 +266,8 @@ class UserMeterAnalysis extends PureComponent {
   operate = (record)=> {
     this.setState({
       edit_meter_number: record.meter_number,
-      editModal: true
+      showArea: false
+      // editModal: true
     })
   }
   exportCSV = ()=> {
@@ -264,12 +275,12 @@ class UserMeterAnalysis extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const formValues = this.ExportformRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
-    const payload=(company_code==='dy'||company_code==='mys')?{
+    const payload = (company_code === 'dy' || company_code === 'mys') ? {
       village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
-      started_at:  moment(formValues.date).format('YYYY-MM-DD'),
-      ended_at:  moment(formValues.date).format('YYYY-MM-DD'),
+      started_at: moment(formValues.date).format('YYYY-MM-DD'),
+      ended_at: moment(formValues.date).format('YYYY-MM-DD'),
       concentrator_number: formValues.concentrator_number,
-    }:{
+    } : {
       village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
       started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
       ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
@@ -353,23 +364,23 @@ class UserMeterAnalysis extends PureComponent {
       site_id: site_id
     })
   }
-  read_single_901f=(command,meter_number)=>{
+  read_single_901f = (command, meter_number)=> {
     const company_code = sessionStorage.getItem('company_code');
-    console.log('点抄：',meter_number)
+    console.log('点抄：', meter_number)
     const {dispatch} = this.props;
-    const that=this;
+    const that = this;
     dispatch({
       type: 'user_command_data/add',
-      payload:{
+      payload: {
         meter_number,
-        feature:'upload_single',
-        protocol:command
+        feature: 'upload_single',
+        protocol: command
       },
-      callback:()=>{
-        sessionStorage.setItem(`meter_number-${command}-${meter_number}`,new Date().getTime())
+      callback: ()=> {
+        sessionStorage.setItem(`meter_number-${command}-${meter_number}`, new Date().getTime())
         that.setState({
           // disabled:false
-          time:new Date().getTime()
+          time: new Date().getTime()
         });
         const {intl:{formatMessage}} = that.props;
         message.success(
@@ -381,22 +392,25 @@ class UserMeterAnalysis extends PureComponent {
       }
     });
   }
+
   render() {
     const {intl:{formatMessage}} = this.props;
     const {member_meter_data: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
-    const that=this
+    const that = this
     const company_code = sessionStorage.getItem('company_code');
-    const renderComandRecord=(record)=>{
-      if(!record.protocols) return '';
-      const renderCommandBtn=record.protocols.map((item,index)=>{
-        const clickTime=sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
-        const isLoading=clickTime&&this.state.time-clickTime<10000
-        return(
+    const renderComandRecord = (record)=> {
+      if (!record.protocols) return '';
+      const renderCommandBtn = record.protocols.map((item, index)=> {
+        const clickTime = sessionStorage.getItem(`meter_number-${item}-${record.meter_number}`)
+        const isLoading = clickTime && this.state.time - clickTime < 10000
+        return (
           <Button loading={isLoading} key={index} type="primary" size="small"
-                  onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
+                  onClick={()=> {
+                    that.read_single_901f(item, record.meter_number)
+                  }}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
         )
       })
       return renderCommandBtn
@@ -572,7 +586,7 @@ class UserMeterAnalysis extends PureComponent {
               <div>
                 <Button type="primary" size='small'
                         onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
-                {this.state.showCommandBtn&&company_code==='hy'&&renderComandRecord(record)}
+                {this.state.showCommandBtn && company_code === 'hy' && renderComandRecord(record)}
               </div>
             )
           }
@@ -596,19 +610,27 @@ class UserMeterAnalysis extends PureComponent {
     }
     const {dispatch} =this.props;
     const {isMobile} =this.props.global;
+    const breadcrumb = [{name: formatMessage({id: 'intl.data_analysis'})},
+      {name: formatMessage({id: 'intl.meter_volume_data'})}]
+    if (!this.state.showArea) {
+      breadcrumb.push({
+        name: `水表 ${this.state.edit_meter_number} 详情`
+      })
+    }
     return (
       <Layout className="layout">
         <Sider siderCb={this.changeTableY} showMonitor={true} changeArea={this.changeArea}
                changeConcentrator={this.changeConcentrator}
                changeMonitor={this.changeMonitor}
+               showArea={this.state.showArea}
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析"
-                              breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})}, {name: formatMessage({id: 'intl.meter_volume_data'})}]}>
+                              breadcrumb={breadcrumb}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 {
-                  !this.state.showMonitor
+                  this.state.showArea
                     ?
                     <div>
                       <div className='tableList'>
@@ -619,10 +641,15 @@ class UserMeterAnalysis extends PureComponent {
                                   isMobile={isMobile}
                                   sort_field={this.state.sort_field}
                                   sort_direction={this.state.sort_direction}
+                                  meter_number={this.state.meter_number}
+                                  member_number={this.state.member_number}
+                                  display_type={this.state.display_type}
+                                  started_at={this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD')}
+                                  ended_at={this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD')}
                                   exportCSV={()=> {
-                                     this.setState({
-                                       exportModal: true
-                                     })
+                                    this.setState({
+                                      exportModal: true
+                                    })
                                     //company_code !== 'mys' ?
                                     //  this.setState({
                                     //    exportModal: true
@@ -673,9 +700,10 @@ class UserMeterAnalysis extends PureComponent {
 
                     </div> :
                     <div>
-                      <h2>{this.state.site_name}</h2>
-                      <Divider dashed style={{margin: '10px 0'}}/>
-                      <AnalysisDetail site_id={this.state.site_id}/></div>}
+                      <Detail tableY={this.state.tableY} onBack={this.handleBack} showExtra={true}
+                              meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}
+                              started_at={this.state.started_at}/>
+                    </div>}
               </Card>
             </PageHeaderLayout>
           </div>

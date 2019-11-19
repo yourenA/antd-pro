@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { Table, Card, Badge, Layout, message, Modal, Button} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
-import DefaultSearch  from './Search'
+import DefaultSearch  from './../Leak_abnormality/Search'
 import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
@@ -47,7 +47,8 @@ class Leak_abnormality extends PureComponent {
       canLoadByScroll:true,
       display_type:'only_unprocessed',
       processed_model:false,
-      editRecord:{}
+      editRecord:{},
+      selectedRowKeys: [],
     }
   }
 
@@ -66,6 +67,9 @@ class Leak_abnormality extends PureComponent {
   }
   componentWillUnmount() {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+  }
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
   }
   scrollTable=()=>{
     console.log('scroll')
@@ -141,9 +145,11 @@ class Leak_abnormality extends PureComponent {
         })
         if(!fetchAndPush){
           that.setState({
-            initPage:values.page
+            initPage:values.page,
+            selectedRowKeys:[]
           })
         }
+        that.changeTableY()
         if(cb) cb()
       }
     });
@@ -191,12 +197,21 @@ class Leak_abnormality extends PureComponent {
     const {dispatch} = this.props;
     const formValues =this.ProcessedForm.props.form.getFieldsValue();
     console.log('formValues',formValues);
+    let meter_numbers=[]
+    if(!formValues.meter_number){
+      for(let i=0;i<this.state.selectedRowKeys.length;i++){
+        meter_numbers.push(this.state.selectedRowKeys[i].split('@')[0])
+      }
+    }else{
+      meter_numbers=[formValues.meter_number]
+    }
     dispatch({
       type:'zero_abnormality/processed',
       payload: {
-        abnormality_type:abnormality_type,
-        ...formValues,
-        not_reminder_days:String(formValues.not_reminder_days)
+        abnormality_type:5,
+        meter_numbers:meter_numbers,
+        not_reminder_days:String(formValues.not_reminder_days),
+        remark:formValues.remark
       },
       callback: function () {
         const {intl:{formatMessage}} = that.props;
@@ -209,6 +224,11 @@ class Leak_abnormality extends PureComponent {
         that.setState({
           processed_model:false
         })
+        if(!formValues.meter_number){
+          that.setState({
+            selectedRowKeys:[]
+          })
+        }
         that.handleSearch({
           area_id: that.state.area_id,
           page: that.state.page,
@@ -225,6 +245,10 @@ class Leak_abnormality extends PureComponent {
     });
   }
   render() {
+    const rowSelection = {
+      selectedRowKeys:this.state.selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const {intl:{formatMessage}} = this.props;
     const {valve_status_abnormality: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
@@ -282,20 +306,29 @@ class Leak_abnormality extends PureComponent {
                 <div className='tableList'>
                   <div className='tableListForm'>
                     <DefaultSearch
+                      selectedRowKeys={this.state.selectedRowKeys}
                       setWarningRule={()=>{
                         dispatch(routerRedux.push(`/${company_code}/main/system_manage/system_setup/valve_status_setup`));
                       }}
                       isMobile={isMobile}
+                      processed={()=>{
+                        this.setState({
+                          processed_model:true,
+                          editRecord:{}
+                        })
+                      }}
                       per_page={this.state.per_page}
                       handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
                   </div>
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
-                                 dataSource={data} columns={columns} rowKey={record => record.uuidkey}
+                                 dataSource={data} columns={columns}
+                                 rowKey={record => `${record.meter_number}@${record.date}`}
                                  scroll={{x:1200,y: this.state.tableY}}
                                  history={this.props.history}
                                  className={'meter-table'}
+                                 rowSelection={rowSelection}
                 />
               {/*  <Table
                   className='meter-table'

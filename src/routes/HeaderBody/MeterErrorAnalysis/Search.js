@@ -57,7 +57,7 @@ class SearchForm extends Component {
 
           <FormItem label={this.props.dateText ? this.props.dateText :formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('started_at', {
-              initialValue: this.props.initRange ? this.props.initRange[0] : '',
+              initialValue: moment(this.props.started_at),
             })(
               <DatePicker
                 allowClear={false}
@@ -68,7 +68,7 @@ class SearchForm extends Component {
           </FormItem>
           <FormItem label={this.props.dateText ? this.props.dateText :formatMessage({id: 'intl.start'})}>
             {getFieldDecorator('ended_at', {
-              initialValue: this.props.initRange ? this.props.initRange[1] : '',
+              initialValue: moment(this.props.ended_at),
             })(
               <DatePicker
                 allowClear={false}
@@ -80,21 +80,27 @@ class SearchForm extends Component {
           <FormItem
             label={formatMessage({id: 'intl.water_meter_number'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
-            {getFieldDecorator('meter_number', {})(
+            {getFieldDecorator('meter_number', {
+              initialValue: this.props.meter_number,
+            })(
               <Input/>
             )}
           </FormItem>
           <FormItem
             label={formatMessage({id: 'intl.user_number'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
-            {getFieldDecorator('member_number', {})(
+            {getFieldDecorator('member_number', {
+              initialValue: this.props.member_number,
+            })(
               <Input/>
             )}
           </FormItem>
           <FormItem
             label={formatMessage({id: 'intl.vendor_name'})}
             style={{display: expand ? 'inline-block' : 'none'}}>
-            {getFieldDecorator('manufacturer_id', {})(
+            {getFieldDecorator('manufacturer_id', {
+              initialValue: this.props.manufacturer_id,
+            })(
               <Select allowClear={true} labelInValue={true} style={{width: 120}}>
                 { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
               </Select>
@@ -103,7 +109,7 @@ class SearchForm extends Component {
           <FormItem label={formatMessage({id: 'intl.display_type'})}
                     style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('display_type', {
-              initialValue: 'all',
+              initialValue:this.props.display_type,
             })(
               <RadioGroup>
                 <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>

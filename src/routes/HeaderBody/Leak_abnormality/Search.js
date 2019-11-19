@@ -137,6 +137,11 @@ class SearchForm extends Component {
             <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>{ formatMessage({id: 'intl.reset'})}</Button>
             <Button type="primary" style={{marginLeft: 8}} onClick={this.props.setWarningRule}>{ formatMessage({id: 'intl.set_alarm_rule'})}</Button>
+            <span
+              style={{marginRight: 8,marginLeft:8}}>{formatMessage({id: 'intl.water_meters_selected'}, {number: this.props.selectedRowKeys.length})}</span>
+            <Button type="primary"  className="btn-cyan" onClick={this.props.processed}>
+              批量确认异常
+            </Button>
           </FormItem>
         </Row>
       </Form>

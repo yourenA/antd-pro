@@ -15,8 +15,8 @@ class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startValue: this.props.initRange[0],
-      endValue: this.props.initRange[1],
+      startValue: moment(this.props.started_at),
+      endValue: moment(this.props.ended_at),
       expand: this.props.isMobile?false:true,
     };
   }
@@ -128,7 +128,9 @@ class SearchForm extends Component {
           <FormItem label={formatMessage({id: 'intl.user_number'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
-            {getFieldDecorator('member_number')(
+            {getFieldDecorator('member_number',{
+              initialValue: this.props.member_number,
+            })(
               <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
@@ -140,7 +142,9 @@ class SearchForm extends Component {
             <FormItem label={formatMessage({id: 'intl.water_meter_number'})}
                       style={{ display: expand ? 'inline-block' : 'none' }}
             >
-              {getFieldDecorator('meter_number')(
+              {getFieldDecorator('meter_number',{
+                initialValue: this.props.meter_number,
+              })(
                 <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
@@ -163,7 +167,7 @@ class SearchForm extends Component {
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('display_type',{
-              initialValue:  'all',
+              initialValue:this.props.display_type,
             })(
               <RadioGroup>
                 <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
