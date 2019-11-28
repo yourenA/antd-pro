@@ -269,6 +269,9 @@ class Consumption_abnormality extends PureComponent {
       {title:formatMessage({id: 'intl.user_number'}) , width: 100, dataIndex: 'member_number', key: 'member_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
+      {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
+        return ellipsis2(val, 100)
+      }},
       {title:formatMessage({id: 'intl.concentrator_number'}) , width: 100, dataIndex: 'concentrator_number', key: 'concentrator_number', render: (val, record, index) => {
         return ellipsis2(val, 100)
       }},
@@ -289,9 +292,6 @@ class Consumption_abnormality extends PureComponent {
       }},
       {title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address',width: 150, key: 'install_address', render: (val, record, index) => {
         return ellipsis2(val, 150)
-      }},
-      {title: formatMessage({id: 'intl.user_name'}),  dataIndex: 'real_name', key: 'real_name', width: 100, render: (val, record, index) => {
-        return ellipsis2(val, 100)
       }},
       {title:formatMessage({id: 'intl.remark'}) , dataIndex: 'remark', key: 'remark'},
       {

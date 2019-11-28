@@ -608,6 +608,115 @@ class UserMeterAnalysis extends PureComponent {
           }
         }]
     }
+    if (company_code === 'hngydx') {
+      //用户名、地址、水量、时间数据
+      columns=[
+        {
+          title: formatMessage({id: 'intl.user_name'}),
+          width: 100,
+          dataIndex: 'real_name',
+          key: 'real_name',
+          render: (val, record, index) => {
+            return ellipsis2(val, 100)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.install_address'}),
+          dataIndex: 'install_address',
+          key: 'install_address',
+          sorter: true,
+          width: 130,
+          render: (val, record, index) => {
+            return ellipsis2(val, 130)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.water_consumption'}),
+          dataIndex: 'difference_value',
+          key: 'difference_value',
+          sorter: true,
+          width: 100,
+          render: (val, record, index) => {
+            return ellipsis2(val, 100)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.latest_reading'}),
+          dataIndex: 'latest_value',
+          key: 'latest_value',
+          width: 100,
+          render: (val, record, index) => {
+            return ellipsis2(renderErrorData(val), 100)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.latest_reading_time'}),
+          dataIndex: 'latest_collected_at',
+          key: 'latest_collected_at',
+          width: 150,
+          render: (val, record, index) => {
+            return ellipsis2(val, 150)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.previous_reading'}),
+          dataIndex: 'previous_value',
+          key: 'previous_value',
+          width: 100,
+          render: (val, record, index) => {
+            return ellipsis2(renderErrorData(val), 100)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.previous_reading_time'}),
+          dataIndex: 'previous_collected_at',
+          key: 'previous_collected_at',
+          width: 150,
+          render: (val, record, index) => {
+            return ellipsis2(val, 150)
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status',
+          render: (val, record, index) => {
+            let status = 'success';
+            switch (val) {
+              case -4:
+                status = 'error'
+                break;
+              case -2:
+                status = 'error'
+                break;
+              case -1:
+                status = 'warning'
+                break;
+              default:
+                status = 'success'
+            }
+            return (
+              <p>
+                <Badge status={status}/>{record.status_explain}
+              </p>
+            )
+          }
+        },
+        {
+          title: formatMessage({id: 'intl.operate'}),
+          key: 'operation',
+          fixed: 'right',
+          width: 90,
+          render: (val, record, index) => {
+            return (
+              <div>
+                <Button type="primary" size='small'
+                        onClick={()=>this.operate(record)}>{ formatMessage({id: 'intl.details'})}</Button>
+              </div>
+            )
+          }
+        }
+      ]
+
+    }
     const {dispatch} =this.props;
     const {isMobile} =this.props.global;
     const breadcrumb = [{name: formatMessage({id: 'intl.data_analysis'})},
@@ -683,7 +792,7 @@ class UserMeterAnalysis extends PureComponent {
                       </div>
                       <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                        dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                       scroll={{x: 2200, y: this.state.tableY}}
+                                       scroll={{x: company_code === 'hngydx'?1100:2200, y: this.state.tableY}}
                                        history={this.props.history}
                                        className={'meter-table'}
                                        rowClassName={function (record, index) {

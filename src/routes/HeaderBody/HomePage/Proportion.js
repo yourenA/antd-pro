@@ -49,7 +49,7 @@ export default class Proportion extends PureComponent {
         left: 'left',
         data: [formatMessage({id: 'intl.meter_successful_upload_count'}),formatMessage({id: 'intl.meter_no_upload_count'}),
           formatMessage({id: 'intl.meter_error_upload_count'}),
-          formatMessage({id: 'intl.meter_stop_upload_count'})]
+          formatMessage({id: 'intl.meter_stop_upload_count'}),'抄表失败'],
       },
       series : [
         {
@@ -80,6 +80,12 @@ export default class Proportion extends PureComponent {
               itemStyle:{
                 normal: {
                   color: '#2f4554',
+                }
+              },},
+            {value:meter.yesterday_fail_upload_count, name:'抄表失败',
+              itemStyle:{
+                normal: {
+                  color: 'red',
                 }
               },},
           ],

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input} from 'antd';
+import {Tabs, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../EmptySider'
@@ -23,6 +23,7 @@ import SortableTree, {
   changeNodeAtPath
 } from 'react-sortable-tree';
 const {Content} = Layout;
+const TabPane = Tabs.TabPane;
 @connect(state => ({
   relations: state.relations,
   global: state.global,
@@ -60,8 +61,8 @@ class UserMeterAnalysis extends PureComponent {
       searchFocusIndex: 0,
       searchFoundCount: null,
       treeData: [],
-      hadEdit: false
-
+      hadEdit: false,
+      tabArr: [],
       // concentrator_number:''
     }
   }
@@ -100,10 +101,18 @@ class UserMeterAnalysis extends PureComponent {
       },
       callback: function () {
         const {relations: {data}} = that.props;
+
         that.setState({
-          treeData: that.parseTree(data),
           ...values,
         })
+        for (let i = 0; i < data.length; i++) {
+          let tabArr = that.state.tabArr;
+          tabArr.push({name: data[i].name})
+          that.setState({
+            tabArr: tabArr,
+            [data[i].name + 'treeData']: that.parseTree([data[i]]),
+          })
+        }
         that.changeTableY()
       }
     });
@@ -111,8 +120,8 @@ class UserMeterAnalysis extends PureComponent {
   parseTree = (data)=> {
     for (var i in data) {
       data[i].title = data[i].name;
-      data[i].expanded = true
-      data[i].subtitle = data[i].meter_number;
+      data[i].expanded = data[i].expanded === '1' ? true : false;
+      data[i].subtitle2 = data[i].meter_number;
       if (data[i].children) {
         this.parseTree(data[i].children)
       }
@@ -120,55 +129,40 @@ class UserMeterAnalysis extends PureComponent {
     return data
   }
   flatten = (data) => {
-    return data.reduce((arr, {subtitle, children = []}) =>
-      arr.concat([{subtitle}], this.flatten(children)), [])
+    return data.reduce((arr, {subtitle2, children = []}) =>
+      arr.concat([{subtitle2}], this.flatten(children)), [])
   }
   removeNode = (rowInfo)=> {
     const {node, path, treeIndex} = rowInfo;
     console.log('node', node)
     const that = this
     const newTree = removeNodeAtPath({
-      treeData: this.state.treeData,
+      treeData: this.state[this.state.nowItem],
       path,
       getNodeKey: ({treeIndex}) => treeIndex,
     });
     that.setState({
       hadEdit: true,
-      treeData: newTree
+      [this.state.nowItem]: newTree
     });
   }
-  addNewNode = async ()=> {
+  addNewNode = async()=> {
     const that = this;
     let formValues = this.formRef.props.form.getFieldsValue();
     console.log('formValues 1', formValues);
-    const exist = this.flatten(this.state.treeData)
-    let addNodes =formValues.meter_number
-    if(!addNodes){
+    let   exist=[]
+    for(let i=0;i<this.state.tabArr.length;i++){
+      exist=exist.concat(this.flatten(this.state[this.state.tabArr[i].name+ 'treeData']))
+    }
+
+    let addNodes = formValues.meter_number
+    if (!addNodes) {
       message.error('请选择水表')
       return false
     }
-  /*  for (let k in formValues) {
-      if (k.indexOf('meter_number$') >= 0) {
-        if (formValues.hasOwnProperty(k)) {
-          const meter_number = formValues[k]
-          if (meter_number === '') {
-            message.error('请选择水表')
-            return false
-          } else {
-            for (let i = 0; i < exist.length; i++) {
-              if (meter_number.split('@')[0] == exist[i].subtitle) {
-                message.error(`${meter_number.split('@')[1]} 已存在在关系中`)
-                return false
-              }
-            }
-          }
-          addNodes.push(meter_number)
-        }
-      }
-    }*/
     for (let i = 0; i < exist.length; i++) {
       for (let j = 0; j < addNodes.length; j++) {
-        if (addNodes[j].split('@')[0] == exist[i].subtitle) {
+        if (addNodes[j].split('@')[0] == exist[i].subtitle2) {
           message.error(`${addNodes[j].split('@')[1]} 已存在在关系中`)
           return false
         }
@@ -181,33 +175,37 @@ class UserMeterAnalysis extends PureComponent {
       const {node, path, treeIndex} = this.state.rowInfo;
       for (let i = 0; i < addNodes.length; i++) {
         const NEW_NODE = {
-          title: addNodes[i].split('@')[1], subtitle: addNodes[i].split('@')[0], expanded: true,
+          title: addNodes[i].split('@')[1], subtitle2: addNodes[i].split('@')[0], expanded: true,
           meter_number: addNodes[i].split('@')[0],
         };
-        newTree=await addNodeUnderParent({
-          treeData: this.state.treeData,
+        newTree = await addNodeUnderParent({
+          treeData: this.state[this.state.nowItem],
           newNode: NEW_NODE,
           expandParent: true,
           parentKey: this.state.rowInfo ? treeIndex : undefined,
           getNodeKey: ({treeIndex}) => treeIndex,
         }).treeData;
-        this.setState({treeData: newTree})
+        this.setState({[this.state.nowItem]: newTree})
       }
 
     } else {
       for (let i = 0; i < addNodes.length; i++) {
         newTree.push({
           title: addNodes[i].split('@')[1],
-          subtitle: addNodes[i].split('@')[0],
+          subtitle2: addNodes[i].split('@')[0],
           expanded: true,
           meter_number: addNodes[i].split('@')[0]
         })
       }
-      newTree=[
-        ...newTree,
-        ...this.state.treeData
-      ]
-      this.setState({treeData: newTree})
+      for (let i = 0; i < newTree.length; i++) {
+        let tabArr = that.state.tabArr;
+        tabArr.push({name: newTree[i].title})
+        that.setState({
+          tabArr: tabArr,
+          [newTree[i].title + 'treeData']: [newTree[i]],
+        })
+      }
+      // this.setState({treeData: newTree})
     }
 
 
@@ -223,23 +221,36 @@ class UserMeterAnalysis extends PureComponent {
     }
     let newTree = []
     const {node, path, treeIndex} = this.state.rowInfo;
-    const NEW_NODE = {title: formValues.name, subtitle: node.meter_number, expanded: node.expanded, ...formValues};
+    const NEW_NODE = {title: formValues.name, subtitle2: node.meter_number, expanded: node.expanded, ...formValues};
     newTree = changeNodeAtPath({
-      treeData: this.state.treeData,
+      treeData: this.state[this.state.nowItem],
       path,
       newNode: NEW_NODE,
       getNodeKey: ({treeIndex}) => treeIndex,
     });
     console.log('newTree', newTree)
-    this.setState({treeData: newTree, hadEdit: true, rowInfo: null, editModal: false});
+    this.setState({[this.state.nowItem]: newTree, hadEdit: true, rowInfo: null, editModal: false});
   }
   toggleNodeExpansion = expanded => {
-    this.setState(prevState => ({
-      treeData: toggleExpandedForAll({
-        treeData: prevState.treeData,
-        expanded,
-      }),
-    }));
+    for(let i=0;i<this.state.tabArr.length;i++){
+      console.log([this.state.tabArr[i].name+'treeData'])
+      this.setState(prevState => {
+        console.log(prevState[this.state.tabArr[i].name+'treeData'])
+        return {
+          [this.state.tabArr[i].name+'treeData']:  toggleExpandedForAll({
+            treeData: prevState[this.state.tabArr[i].name+'treeData'],
+            expanded,
+          })
+        }
+      })
+
+    }
+    // this.setState(prevState => ({
+    //   treeData: toggleExpandedForAll({
+    //     treeData: prevState.treeData,
+    //     expanded,
+    //   }),
+    // }));
   };
   handleSearchOnChange = e => {
     this.setState({
@@ -248,10 +259,15 @@ class UserMeterAnalysis extends PureComponent {
   };
   saveTree = ()=> {
     const that = this;
+    let saveDate=[]
+    for(let i=0;i<this.state.tabArr.length;i++){
+      saveDate=saveDate.concat(this.state[this.state.tabArr[i].name+ 'treeData'])
+    }
+    console.log('saveDate',saveDate)
     this.props.dispatch({
       type: 'relations/add',
       payload: {
-        relations: this.state.treeData
+        relations: saveDate
       },
       callback: function () {
         const {intl:{formatMessage}} = that.props;
@@ -277,15 +293,10 @@ class UserMeterAnalysis extends PureComponent {
                               breadcrumb={[{name: formatMessage({id: 'intl.device'})}, {name: formatMessage({id: 'intl.meter_relations'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
 
-                <div className="sort-content" style={{
-                  height: this.state.tableY,
-                  border: '3px dashed #d9d9d9',
-                  marginTop: '5px',
-                  background: this.state.hadEdit ? '#fce4d6' : '#e2efda'
-                }}>
+                <div className="sort-content" >
                   <div className='tableList'>
                     <div className='tableListForm'
-                         style={{padding: '10px ', borderBottom: '3px dashed #d9d9d9', marginBottom: '0',}}>
+                        >
                       <Button type="primary" style={{marginRight: '5px'}}
                               onClick={() => {
                                 this.setState({
@@ -318,19 +329,86 @@ class UserMeterAnalysis extends PureComponent {
                       }
                     </div>
                   </div>
-                  <div style={{height: this.state.tableY - 61,}}>
+                  <Tabs defaultActiveKey="1" style={{
+                    height: this.state.tableY-35,
+                    border: '3px dashed #d9d9d9',
+                    marginTop: '5px',
+                    background: this.state.hadEdit ? '#fce4d6' : '#e2efda'
+                  }}>
+                    {
+                      this.state.tabArr.map((item,index)=>{
+                        return   <TabPane tab={item.name}  key={index} >
+                          <div style={{
+                            height: this.state.tableY-85,
+                          }}>
+                            <SortableTree
+                              treeData={this.state[item.name+'treeData']?this.state[item.name+'treeData']:[]}
+                              onChange={treeData => {
+                                console.log('treeData',treeData)
+                                if(treeData.length>1){
+                                  console.log('不能添加在最外层')
+                                  message.error('不能拖动在最外层')
+                                  return false
+                                }
+                                this.setState({[item.name+'treeData']:treeData, hadEdit: true})
+                              } }
+                              canDrag={true}
+                              rowHeight={40}
+                              scaffoldBlockPxWidth={34}
+                              searchQuery={this.state.searchString}
+                              searchFocusOffset={this.state.searchFocusIndex}
+                              generateNodeProps={rowInfo => ({
+                                buttons: [<Button
+                                  size="small"
+                                  type="primary"
+                                  style={{marginRight: '5px', fontSize: '12px'}}
+                                  onClick={() => {
+                                    this.setState({nowItem:item.name+'treeData',rowInfo: rowInfo, addModal: true})
+                                  }}
+                                >
+                                  添加子节点
+                                </Button>,
+                                  <Popconfirm placement="topRight"
+                                              title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
+                                              onConfirm={()=>{
+                                                this.setState({nowItem:item.name+'treeData'},function () {
+                                                  this.removeNode(rowInfo)
+                                                })
+
+                                              }}>
+                                    <Button
+                                      style={{fontSize: '12px'}}
+                                      size="small"
+                                      type="danger"
+                                    >
+                                      删除节点
+                                    </Button>
+                                  </Popconfirm>
+                                ],
+                              })}
+                              // canDrag={false}
+                            />
+                          </div>
+                        </TabPane>
+                      })
+                    }
+
+                  </Tabs>
+            {/*      <div style={{height: this.state.tableY - 61,}}>
                     <SortableTree
                       treeData={this.state.treeData}
                       onChange={treeData => {
                         this.setState({treeData, hadEdit: true})
                       } }
                       searchQuery={this.state.searchString}
+                      rowHeight={40}
+                      scaffoldBlockPxWidth={34}
                       searchFocusOffset={this.state.searchFocusIndex}
                       generateNodeProps={rowInfo => ({
                         buttons: [<Button
                           size="small"
                           type="primary"
-                          style={{marginRight: '5px'}}
+                          style={{marginRight: '5px', fontSize: '12px'}}
                           onClick={() => {
                             this.setState({rowInfo: rowInfo, addModal: true})
                           }}
@@ -341,6 +419,7 @@ class UserMeterAnalysis extends PureComponent {
                                       title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
                                       onConfirm={()=>this.removeNode(rowInfo)}>
                             <Button
+                              style={{fontSize: '12px'}}
                               size="small"
                               type="danger"
                             >
@@ -352,7 +431,7 @@ class UserMeterAnalysis extends PureComponent {
                       // canDrag={false}
                     />
                   </div>
-
+*/}
                 </div>
               </Card>
             </PageHeaderLayout>

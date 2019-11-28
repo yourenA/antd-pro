@@ -190,9 +190,11 @@ class AddConcentrator extends Component {
       )
     })
     const keysArr=[]
+    console.log('his.props.editRecord.village_ids',this.props.editRecord.village_ids)
     for(let k in this.props.editRecord.village_ids){
       keysArr.push(parseInt(k))
     }
+    console.log('keysArr',keysArr)
     getFieldDecorator('keys', {initialValue: keysArr});
     const keys = getFieldValue('keys');
     const formItems = keys.map((k, index) => {

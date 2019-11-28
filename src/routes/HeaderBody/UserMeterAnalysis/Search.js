@@ -125,37 +125,42 @@ class SearchForm extends Component {
             />
           </FormItem>
 
-          <FormItem label={formatMessage({id: 'intl.user_number'})}
-                    style={{ display: expand ? 'inline-block' : 'none' }}
-          >
-            {getFieldDecorator('member_number',{
-              initialValue: this.props.member_number,
-            })(
-              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
-            )}
-          </FormItem>
+          {
+            company_code !=='hngydx'&&<FormItem label={formatMessage({id: 'intl.user_number'})}
+                                                style={{ display: expand ? 'inline-block' : 'none' }}
+            >
+              {getFieldDecorator('member_number',{
+                initialValue: this.props.member_number,
+              })(
+                <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
+              )}
+            </FormItem>
+          }
           {/*<FormItem label="集中器编号">
             {getFieldDecorator('concentrator_number')(
               <Input placeholder="请输入"/>
             )}
           </FormItem>*/}
+          {
+            company_code !== 'hngydx' &&
             <FormItem label={formatMessage({id: 'intl.water_meter_number'})}
-                      style={{ display: expand ? 'inline-block' : 'none' }}
+                      style={{display: expand ? 'inline-block' : 'none'}}
             >
-              {getFieldDecorator('meter_number',{
+              {getFieldDecorator('meter_number', {
                 initialValue: this.props.meter_number,
               })(
                 <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
-           {/* <FormItem label={formatMessage({id: 'intl.user_name'})}
+          }
+          <FormItem label={formatMessage({id: 'intl.user_name'})}
                       style={{ display: expand ? 'inline-block' : 'none' }}
             >
               {getFieldDecorator('real_name')(
                 <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
               )}
             </FormItem>
-          <FormItem label={formatMessage({id: 'intl.install_address'})}
+          {/* <FormItem label={formatMessage({id: 'intl.install_address'})}
                     style={{ display: expand ? 'inline-block' : 'none' }}
           >
             {getFieldDecorator('install_address')(

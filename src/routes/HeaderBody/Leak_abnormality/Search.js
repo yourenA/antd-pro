@@ -103,6 +103,13 @@ class SearchForm extends Component {
               />
             )}
           </FormItem>
+          <FormItem label={'用户名'}
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
+            {getFieldDecorator('real_name')(
+              <Input placeholder='请输入'/>
+            )}
+          </FormItem>
           <FormItem label={ formatMessage({id: 'intl.user_number'})} style={{display: expand ? 'inline-block' : 'none'}}>
             {getFieldDecorator('member_number')(
               <Input placeholder={ formatMessage({id: 'intl.please_input'})}/>

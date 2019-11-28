@@ -40,6 +40,12 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row>
+          <FormItem label={'用户名'}
+          >
+            {getFieldDecorator('real_name')(
+              <Input placeholder='请输入'/>
+            )}
+          </FormItem>
           <FormItem label={formatMessage({id: 'intl.water_meter_number'})}>
             {getFieldDecorator('number')(
               <Input />

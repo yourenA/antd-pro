@@ -145,6 +145,7 @@ class MeterModel extends PureComponent {
       payload: {
         ...formValues,
         manufacturer_id: formValues.manufacturer_id.key,
+        protocol_number: formValues.protocol_number?formValues.protocol_number.key:'',
         is_control:formValues.is_control.key?parseInt(formValues.is_control.key):-1
       },
       callback: function () {
@@ -176,6 +177,7 @@ class MeterModel extends PureComponent {
         ...formValues,
         manufacturer_id: formValues.manufacturer_id.key,
         is_control: formValues.is_control.key,
+          protocol_number: formValues.protocol_number?formValues.protocol_number.key:'',
         id: this.state.editRecord.id,
       },
       callback: function () {

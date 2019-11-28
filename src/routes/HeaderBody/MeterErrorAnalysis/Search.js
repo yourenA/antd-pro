@@ -31,6 +31,7 @@ class SearchForm extends Component {
       if (err) return;
       console.log(fieldsValue)
       const values = {
+        ...fieldsValue,
         display_type: fieldsValue.display_type,
         member_number: fieldsValue.member_number,
         meter_number: fieldsValue.meter_number,
@@ -75,6 +76,13 @@ class SearchForm extends Component {
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
               />
+            )}
+          </FormItem>
+          <FormItem label={formatMessage({id: 'intl.user_name'})}
+                    style={{ display: expand ? 'inline-block' : 'none' }}
+          >
+            {getFieldDecorator('real_name')(
+              <Input placeholder={formatMessage({id: 'intl.please_input'})}/>
             )}
           </FormItem>
           <FormItem

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Row, Col,Button,Modal} from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Row, Col, Button, Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -36,7 +36,7 @@ class UserMeterAnalysis extends PureComponent {
       install_address: '',
       page: 1,
       initPage: 1,
-      initDate:moment(moment().add(-1, 'days'), 'YYYY-MM-DD'),
+      initDate: moment(moment().add(-1, 'days'), 'YYYY-MM-DD'),
       date: moment().add(-1, 'days').format('YYYY-MM-DD'),
       started_at: '',
       ended_at: '',
@@ -46,9 +46,9 @@ class UserMeterAnalysis extends PureComponent {
       area: '',
       per_page: 30,
       canLoadByScroll: true,
-      data:[],
-      minimum_pressure_value:0,
-      maximum_pressure_value:0
+      data: [],
+      minimum_pressure_value: 0,
+      maximum_pressure_value: 0
     }
   }
 
@@ -105,7 +105,7 @@ class UserMeterAnalysis extends PureComponent {
   }
   changeTableY = ()=> {
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 5 )
+      tableY: document.body.offsetHeight - document.querySelector('.meter-table').offsetTop - (68 + 54 + 50 + 38 + 60 )
     })
   }
 
@@ -142,7 +142,8 @@ class UserMeterAnalysis extends PureComponent {
       this.handleSearch({
         page: 1,
         number: this.state.number,
-        per_page: this.state.per_page
+        per_page: this.state.per_page,
+        real_name: this.state.real_name,
         // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       })
@@ -154,6 +155,7 @@ class UserMeterAnalysis extends PureComponent {
       page: 1,
       per_page: 30,
       number: '',
+      real_name: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -167,7 +169,7 @@ class UserMeterAnalysis extends PureComponent {
       payload: {
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
-        protocol_number:5,
+        protocol_number: 5,
         ...values,
       },
       callback: function () {
@@ -190,14 +192,17 @@ class UserMeterAnalysis extends PureComponent {
       page: page,
       number: this.state.number,
       per_page: this.state.per_page,
+      real_name: this.state.real_name,
     })
   }
   handPageSizeChange = (per_page)=> {
     this.handleSearch({
       page: 1,
       per_page: per_page,
-        number: this.state.number,
+      number: this.state.number,
+      real_name: this.state.real_name,
     })
+
   }
   operate = (record)=> {
     this.setState({
@@ -205,23 +210,37 @@ class UserMeterAnalysis extends PureComponent {
       editModal: true
     })
   }
+
   render() {
-    const {big_meters: { data,meta, loading}} = this.props;
+    const {big_meters: {data, meta, loading}} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
     const {intl:{formatMessage}} = this.props;
     const columns = [
-      {title:formatMessage({id: 'intl.water_meter_number'}) , width: 150, dataIndex: 'number', key: 'number',
-        render: (val, record, index) => {
-          return ellipsis2(val, 150)
-        }},
-      {title:formatMessage({id: 'intl.concentrator_number'}) , width: 150, dataIndex: 'concentrator_number', key: 'concentrator_number',
-        render: (val, record, index) => {
-          return ellipsis2(val, 150)
-        }},
       {
-        title:formatMessage({id: 'intl.install_address'}) , dataIndex: 'install_address', key: 'install_address',
+        title: formatMessage({id: 'intl.user_name'}), width: 100, dataIndex: 'real_name', key: 'real_name',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.water_meter_number'}), width: 100, dataIndex: 'number', key: 'number',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.concentrator_number'}),
+        width: 100,
+        dataIndex: 'concentrator_number',
+        key: 'concentrator_number',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.install_address'}), dataIndex: 'install_address', key: 'install_address',
       },
       {
         title: formatMessage({id: 'intl.operate'}),
@@ -244,7 +263,7 @@ class UserMeterAnalysis extends PureComponent {
                siderLoadedCallback={this.siderLoadedCallback}/>
         <Content style={{background: '#fff'}}>
           <div className="content">
-            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
+            <PageHeaderLayout title="实时数据分析" breadcrumb={[{name: formatMessage({id: 'intl.data_analysis'})},
               {name: formatMessage({id: 'intl.mys_big_meter_analysis'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
@@ -260,12 +279,13 @@ class UserMeterAnalysis extends PureComponent {
                 </div>
                 <Row >
                   <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    <ResizeableTable loading={loading}  initPage={this.state.initPage}
+                    <ResizeableTable loading={loading} initPage={this.state.initPage}
                                      meta={meta}
                                      dataSource={data} columns={columns} rowKey={record => record.uuidkey}
                                      history={this.props.history}
-                                     scroll={{ y: this.state.tableY}}/>
-                    <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
+                                     scroll={{y: this.state.tableY}}/>
+                    <Pagination initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta}
+                                handPageChange={this.handPageChange}/>
 
                   </Col>
                 </Row>
@@ -279,8 +299,8 @@ class UserMeterAnalysis extends PureComponent {
               onOk={() => this.setState({editModal: false})}
               onCancel={() => this.setState({editModal: false})}
             >
-              <Chart  meter_number={this.state.edit_meter_number}
-                      />
+              <Chart meter_number={this.state.edit_meter_number}
+              />
             </Modal>
           </div>
         </Content>

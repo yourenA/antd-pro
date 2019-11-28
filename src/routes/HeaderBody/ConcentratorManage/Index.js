@@ -927,7 +927,7 @@ class ConcentratorManage extends PureComponent {
           width={650}
           centered={true}
 
-          key={ Date.parse(new Date())}
+          destroyOnClose={true}
           title={ formatMessage({id: 'intl.edit'})+ " "+ formatMessage({id: 'intl.concentrator'})}
           visible={this.state.editModal}
           onOk={this.handleEdit}
@@ -940,7 +940,7 @@ class ConcentratorManage extends PureComponent {
         </Modal>
         <Modal
           width={'60%'}
-          key={ Date.parse(new Date()) + 1}
+          destroyOnClose={true}
           title={ formatMessage({id: 'intl.concentrator'})+" "+ (this.state.editRecord ? this.state.editRecord.number : '') +" "+ formatMessage({id: 'intl.command'})}
           visible={this.state.orderModal}
           onOk={this.handleOrder}
@@ -960,7 +960,7 @@ class ConcentratorManage extends PureComponent {
         <Modal
           style={{ top: 20 }}
           width="90%"
-          key={ Date.parse(new Date()) + 2}
+          destroyOnClose={true}
           title={ formatMessage({id: 'intl.concentrator'})+" "+ (this.state.editRecord ? this.state.editRecord.number : '') +" "+ formatMessage({id: 'intl.map'})}
           visible={this.state.mapModal}
           onOk={() => this.setState({mapModal: false})}

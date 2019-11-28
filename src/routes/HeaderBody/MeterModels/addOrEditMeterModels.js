@@ -29,6 +29,7 @@ class AddPoliciesForm extends Component {
     };
 
     const {getFieldDecorator} = this.props.form;
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <div>
       <Form onSubmit={this.handleSubmit} className="model-form">
@@ -198,6 +199,35 @@ class AddPoliciesForm extends Component {
             initialValue: this.props.editRecord ? this.props.editRecord.down_protocol : '',
           })(
             <Input />
+          )}
+        </FormItem>
+          <FormItem
+          style={{width:'50%',display:'inline-block'}}
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              protocol number
+            </span>
+          )}
+        >
+          {getFieldDecorator('protocol_number', {
+            initialValue: this.props.editRecord?{key:this.props.editRecord.protocol_number.toString(),label:this.props.editRecord.protocol_number.toString()}:
+            company_code==='nxzw'?{key:'8',label:'东剑水表'}:{key:'',label:''},
+          })(
+            <Select allowClear={true} labelInValue={true} >
+              { [
+              {name:'901F小表',key:1},
+              {name:'90EF小表',key:2},
+              {name:'90EF带每小时用水量大表',key:3},
+              {name:'90EF不带每小时用水量大表',key:4},
+              {name:'90EF带15分钟用水量大表',key:5},
+              {name:'Lorawan',key:7},
+              {name:'东剑水表',key:8}].map((item, key) => {
+                return (
+                  <Option key={item.key} value={item.key.toString()}>{item.name}</Option>
+                )
+              }) }
+            </Select>
           )}
         </FormItem>
         <FormItem
