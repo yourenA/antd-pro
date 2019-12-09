@@ -3,12 +3,13 @@ import {Icon, Tree, Layout, Input, Tooltip} from 'antd';
 import siderJson from './sider.json'
 import {connect} from 'dva';
 import request from '../../utils/request';
-import forEach from 'lodash/forEach'
+import {Resizable, ResizableBox} from 'react-resizable';
 import {injectIntl, FormattedMessage} from 'react-intl';
-
+// import '/node_modules/react-resizable/css/styles.css';
 const TreeNode = Tree.TreeNode;
 const {Sider} = Layout;
 const Search = Input.Search;
+
 @connect(state => ({
   sider_regions: state.sider_regions,
   global: state.global,
@@ -18,7 +19,7 @@ class SiderTree extends PureComponent {
   constructor(props) {
     super(props);
     this.dataList = [];
-    const {isMobile} =this.props.global;
+    const {isMobile} = this.props.global;
     this.state = {
       collapsed: isMobile,
       treeData: [],
@@ -30,35 +31,40 @@ class SiderTree extends PureComponent {
   }
 
   componentDidMount() {
-    const {dispatch}=this.props;
+    const {dispatch} = this.props;
     this.queryVillages(true);
   }
 
-  componentWillReceiveProps = (nextProps)=> {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.refreshSider !== this.props.refreshSider) {
       console.log('刷新sider');
       this.queryVillages(true);
     }
   }
-  queryVillages = (initial)=> {
+  queryVillages = (initial) => {
     const that = this;
     request(`/villages`, {
       method: 'GET',
       params: {
         return: 'all'
       }
-    }).then((response)=> {
+    }).then((response) => {
       console.log('response', response.data.data);
       request(`/concentrators`, {
         method: 'GET',
         params: {
           return: 'all'
         }
-      }).then((concentratorsResponse)=> {
+      }).then((concentratorsResponse) => {
         console.log('concentratorsResponse', concentratorsResponse)
         if (that.props.showConcentrator !== false) {
-          const { intl:{formatMessage} } = this.props;
-          response.data.data.unshift({id: 'null', name: formatMessage({id: 'intl.all_concentrator'}), tooltip:formatMessage({id: 'intl.sider_help'}), children: []})
+          const {intl: {formatMessage}} = this.props;
+          response.data.data.unshift({
+            id: 'null',
+            name: formatMessage({id: 'intl.all_concentrator'}),
+            tooltip: formatMessage({id: 'intl.sider_help'}),
+            children: []
+          })
           for (let i = 0; i < concentratorsResponse.data.data.length; i++) {
             response.data.data[0].children.push({
               id: concentratorsResponse.data.data[i].id + '5',
@@ -82,7 +88,7 @@ class SiderTree extends PureComponent {
             if (that.props.noClickSider) {
             } else {
               if (this.props.cantSelectArea) {
-                if(response.data.data[0].children.length>0){
+                if (response.data.data[0].children.length > 0) {
                   that.setState({
                     selectedKeys: [`${response.data.data[0].children[0].id}#`]
                   })
@@ -108,7 +114,7 @@ class SiderTree extends PureComponent {
 
     })
   }
-  transilate = (data)=> {
+  transilate = (data) => {
     if (!data) return null;
     return data.map((item) => {
       if (item.concentrators && this.props.showConcentrator !== false) {
@@ -139,7 +145,7 @@ class SiderTree extends PureComponent {
       return item
     });
   }
-  onExpandNode = (expandedKeys, expanded)=> {
+  onExpandNode = (expandedKeys, expanded) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false,
@@ -151,7 +157,7 @@ class SiderTree extends PureComponent {
       const beforeStr = item.name ? item.name.substr(0, index) : item.number.substr(0, index);
       const afterStr = item.name ? item.name.substr(index + this.state.searchValue.length) : item.number.substr(index + this.state.searchValue.length);
       const title = index > -1 ? (
-        <span title={beforeStr+this.state.searchValue+afterStr}>
+        <span title={beforeStr + this.state.searchValue + afterStr}>
           {beforeStr}
           <span style={{color: '#f50'}}>{this.state.searchValue}</span>
           {afterStr}
@@ -161,27 +167,27 @@ class SiderTree extends PureComponent {
         return (
           <TreeNode title={<span>{title}{item.tooltip ?
             <Tooltip placement="top" title={item.tooltip}><Icon style={{marginLeft: '5px'}} type="question-circle-o"/>
-            </Tooltip> : ''}</span>} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="treeItem">
+            </Tooltip> : ''}</span>} key={item.id} dataRef={item} icon={<Icon type="home"/>} className="treeItem">
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
       if (item.number) {
-        return <TreeNode   title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="setting"/>}/>;
       }
       if (item.site_id) {
-        return <TreeNode  title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
+        return <TreeNode title={title} key={`${item.id}#${item.parent_village_id}`} dataRef={item}
                          className="concentrator" icon={<Icon type="line-chart"/>}/>;
       }
-      return <TreeNode   title={title} key={item.id} dataRef={item}  icon={<Icon type="home" />} className="village"/>;
+      return <TreeNode title={title} key={item.id} dataRef={item} icon={<Icon type="home"/>} className="village"/>;
     });
   }
   onCollapse = () => {
-    const that=this;
+    const that = this;
     this.setState({
       collapsed: !this.state.collapsed,
-    },function () {
+    }, function () {
     });
   }
   onSelect = (selectedKeys, info) => {
@@ -196,9 +202,9 @@ class SiderTree extends PureComponent {
       console.log('集中器', info.node.props.dataRef);
       console.log('父级id', info.node.props.dataRef.parent_village_id)
       this.props.changeConcentrator(info.node.props.dataRef.number, info.node.props.dataRef.parent_village_id)
-    }else if(info.node.props.dataRef.site_id){
-      console.log('点击监控表',info.node.props.dataRef.site_id)
-      this.props.changeMonitor(info.node.props.dataRef.site_id,info.node.props.dataRef.site_name)
+    } else if (info.node.props.dataRef.site_id) {
+      console.log('点击监控表', info.node.props.dataRef.site_id)
+      this.props.changeMonitor(info.node.props.dataRef.site_id, info.node.props.dataRef.site_name)
     } else {
       console.log('地区')
       if (selectedKeys[0] === 'null') {
@@ -255,42 +261,54 @@ class SiderTree extends PureComponent {
   };
 
   render() {
-    const {sider_regions:{data},intl:{formatMessage}}=this.props;
+    const sider_width = Number(sessionStorage.getItem('sider_width')||200);
+    const {sider_regions: {data}, intl: {formatMessage}} = this.props;
     return (
-      <Sider collapsed={this.state.collapsed} collapsedWidth={0} className="sider" width="210">
-        <div className="sider-title">
-          <FormattedMessage id="intl.village_info"/>
-        </div>
-        <Search style={{marginTop: '20px', marginLeft: '12px', marginBottom: '8px', width: '88%'}}
-                placeholder={formatMessage({id:'intl.search_village_or_concentrator'})} onChange={this.onChange}/>
-        <div className="sider-content">
-          {(this.state.treeData.length)
-            ?
-            <Tree
-              showLine
-              className="hide-file-icon"
-              showIcon={true}
-              //loadData={this.onLoadData}
-              onExpand={this.onExpandNode}
-              expandedKeys={this.state.expandedKeys}
-              autoExpandParent={this.state.autoExpandParent}
-               onSelect={this.onSelect}
-              selectedKeys={this.state.selectedKeys}
-              //defaultExpandedKeys={[data[0].id]}
-              //defaultSelectedKeys={[this.state.treeData[0].id]}
-            >
-              {this.renderTreeNodes(this.state.treeData)}
-            </Tree>
-            : null}
-          {
-            this.props.showArea === false ? <div className="hideSider"></div> : null
-          }
-        </div>
+      <ResizableBox className="sider-resize sider" width={sider_width} height={0}
+                    handle={<span className={`custom-handle`}/>}
+                    minConstraints={[100, 0]}
+                    maxConstraints={[500, 0]}
+                    onResizeStop={(e,data)=>{
+                      sessionStorage.setItem('sider_width',data.size.width)
+                    }}
+                    axis="x">
+        {/* <Sider collapsed={this.state.collapsed} collapsedWidth={0} className="sider" width="210">*/}
+        <div>
+          <div className="sider-title">
+            <FormattedMessage id="intl.village_info"/>
+          </div>
+          <Search style={{marginTop: '20px', marginLeft: '12px', marginBottom: '8px', width: '88%'}}
+                  placeholder={formatMessage({id: 'intl.search_village_or_concentrator'})} onChange={this.onChange}/>
+          <div className="sider-content">
+            {(this.state.treeData.length)
+              ?
+              <Tree
+                showLine
+                className="hide-file-icon"
+                showIcon={true}
+                //loadData={this.onLoadData}
+                onExpand={this.onExpandNode}
+                expandedKeys={this.state.expandedKeys}
+                autoExpandParent={this.state.autoExpandParent}
+                onSelect={this.onSelect}
+                selectedKeys={this.state.selectedKeys}
+                //defaultExpandedKeys={[data[0].id]}
+                //defaultSelectedKeys={[this.state.treeData[0].id]}
+              >
+                {this.renderTreeNodes(this.state.treeData)}
+              </Tree>
+              : null}
+            {
+              this.props.showArea === false ? <div className="hideSider"></div> : null
+            }
+          </div>
 
-        <div className="showToggle" onClick={this.onCollapse}>
-          <Icon type={this.state.collapsed ? "right" : "left"}/>
+        {/*  <div className="showToggle" onClick={this.onCollapse}>
+            <Icon type={this.state.collapsed ? "right" : "left"}/>
+          </div>*/}
         </div>
-      </Sider>
+      </ResizableBox>
+
     );
   }
 }

@@ -376,14 +376,26 @@
   .layout {
     height: calc(~'100vh - 68px');
     overflow: hidden;
+    flex-direction: row;
+    display: -webkit-box !important;
     .sider {
       //position: fixed;
       background: url("./images/sider-water.png") no-repeat bottom;
       background-size: 100%;
       background-color: #f1f1f1 !important;
       height: 100%;
-      border-right: 2px solid #ccc;
       width: 210px;
+      position: relative;
+      &::after{
+        content:' ';
+        width: 2px;
+        height: 100%;
+        display: block;
+        position: absolute;
+        right: 0;
+        background: #ccc;
+        top: 0;
+      }
       .sider-title {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.65);
@@ -439,6 +451,8 @@
 
     .ant-layout-content {
       background: rgb(255, 255, 255);
+      flex: 1;
+      height: 100%;
     }
     .content {
       .content-container {
@@ -796,6 +810,25 @@
   .rst__rowWrapper {
     padding: 8px 8px 0 0
   }
+  .sider-resize{
+    width:210px ;
+    position: relative;
+    min-height: calc(~'100vh - 68px');
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden ;
+  }
+  .custom-handle{
+    width: 3px;
+    height: 100%;
+    display: block;
+    position: absolute;
+    background: #ccc;
+    right: 0;
+    bottom: 0;
+    cursor: e-resize;
+    z-index: 89;
+  }
 
 }
 
@@ -839,6 +872,5 @@
     }
   }
 }
-
 
 

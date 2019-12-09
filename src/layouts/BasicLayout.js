@@ -322,6 +322,7 @@ class BasicLayout extends React.PureComponent {
       openKeys: this.state.openKeys,
     };
     const company_code = sessionStorage.getItem('company_code');
+    console.log('company_code',company_code)
     const layout = (
       <div>
         <Sider
@@ -455,7 +456,7 @@ class BasicLayout extends React.PureComponent {
               <GlobalFooter
                 copyright={
                   <div>
-                    powered by {poweredBy}
+                    powered by {company_code==='hngydx'?'珠华水工业、湖南工业大学':poweredBy}
                   </div>
                 }
               />

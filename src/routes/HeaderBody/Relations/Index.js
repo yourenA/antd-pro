@@ -440,18 +440,20 @@ class UserMeterAnalysis extends PureComponent {
               title={formatMessage({id: 'intl.add'})}
               visible={this.state.addModal}
               onOk={this.addNewNode}
+              width={600}
               onCancel={() => this.setState({addModal: false})}
             >
-              <AddOrEditForm wrappedComponentRef={(inst) => this.formRef = inst}/>
+              <AddOrEditForm {...this.state} wrappedComponentRef={(inst) => this.formRef = inst}/>
             </Modal>
             <Modal
               destroyOnClose={true}
               title={formatMessage({id: 'intl.edit'})}
               visible={this.state.editModal}
               onOk={this.changeNode}
+              width={600}
               onCancel={() => this.setState({editModal: false})}
             >
-              <AddOrEditForm editRecord={this.state.editRecord}
+              <AddOrEditForm {...this.state}  editRecord={this.state.editRecord}
                              wrappedComponentRef={(inst) => this.editFormRef = inst}/>
             </Modal>
           </div>

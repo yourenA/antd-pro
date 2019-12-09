@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
-import {fixedZero} from './../../../utils/utils'
+import {disabledDate,getTimeDistance} from './../../../utils/utils'
 import request from './../../../utils/request'
+import { DatePicker,Button} from 'antd';
 import {injectIntl} from 'react-intl';
-import {disabledDate} from './../../../utils/utils'
-import {DatePicker,Tabs,Table} from 'antd'
 import moment from 'moment';
-const TabPane = Tabs.TabPane;
+const ButtonGroup = Button.Group;
 @injectIntl
 export default class DMArate extends PureComponent {
   constructor(props) {
@@ -14,17 +13,33 @@ export default class DMArate extends PureComponent {
     this.myChart = null;
     this.state = {
       date: moment(),
-      data:[]
+      data:[],
+      rangePickerValue: [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
     }
   }
 
   componentDidMount() {
-    console.log('this.props.editRecord.body',this.props.editRecord.body)
-    if(this.props.editRecord.body){
-      this.dynamic(this.props.editRecord.body)
-    }
+    this.fetch()
+    // if(this.props.editRecord.body){
+    //   this.dynamic(this.props.editRecord.body)
+    // }
   }
+  fetch=(cb)=> {
+    const that = this;
+    request(`/complete_meter_data/`, {
+      method: 'GET',
+      params:{
+        meter_number:this.props.editRecord.meter_number,
+        started_at:that.state.rangePickerValue[0].format("YYYY-MM-DD"),
+        ended_at:that.state.rangePickerValue[1].format("YYYY-MM-DD"),
 
+      }
+    }).then((response)=>{
+      if(response.status===200){
+        this.dynamic(response.data.data)
+      }
+    });
+  }
   componentWillReceiveProps(nextProps) {
     if ((nextProps.data !== this.props.data) && nextProps.data) {
       console.log('重新渲染')
@@ -57,33 +72,36 @@ export default class DMArate extends PureComponent {
     let xAxis = [];
     let textColor = '#eee';
     let parseDate=[];
-    parseDate.push(data.fmv0)
-    parseDate.push(data.fmv1)
-    parseDate.push(data.fmv2)
-    parseDate.push(data.fmv3)
-    parseDate.push(data.fmv4)
-    parseDate.push(data.fmv5)
-    parseDate.push(data.fmv6)
-    parseDate.push(data.fmv7)
-    parseDate.push(data.fmv8)
-    parseDate.push(data.fmv9)
-    parseDate.push(data.fmv10)
-    parseDate.push(data.fmv11)
-    parseDate.push(data.fmv12)
-    parseDate.push(data.fmv13)
-    parseDate.push(data.fmv14)
-    parseDate.push(data.fmv15)
-    parseDate.push(data.fmv16)
-    parseDate.push(data.fmv17)
-    parseDate.push(data.fmv18)
-    parseDate.push(data.fmv19)
-    parseDate.push(data.fmv20)
-    parseDate.push(data.fmv21)
-    parseDate.push(data.fmv22)
-    parseDate.push(data.fmv23)
+    for(let i=0;i<data.length;i++){
+      parseDate.push(data[i].body.fmv0)
+      parseDate.push(data[i].body.fmv1)
+      parseDate.push(data[i].body.fmv2)
+      parseDate.push(data[i].body.fmv3)
+      parseDate.push(data[i].body.fmv4)
+      parseDate.push(data[i].body.fmv5)
+      parseDate.push(data[i].body.fmv6)
+      parseDate.push(data[i].body.fmv7)
+      parseDate.push(data[i].body.fmv8)
+      parseDate.push(data[i].body.fmv9)
+      parseDate.push(data[i].body.fmv10)
+      parseDate.push(data[i].body.fmv11)
+      parseDate.push(data[i].body.fmv12)
+      parseDate.push(data[i].body.fmv13)
+      parseDate.push(data[i].body.fmv14)
+      parseDate.push(data[i].body.fmv15)
+      parseDate.push(data[i].body.fmv16)
+      parseDate.push(data[i].body.fmv17)
+      parseDate.push(data[i].body.fmv18)
+      parseDate.push(data[i].body.fmv19)
+      parseDate.push(data[i].body.fmv20)
+      parseDate.push(data[i].body.fmv21)
+      parseDate.push(data[i].body.fmv22)
+      parseDate.push(data[i].body.fmv23)
+    }
 
-    for (let j = 0; j <24; j++) {
-      xAxis.push(`${j} 点`)
+
+    for (let j = 0; j <24*data.length; j++) {
+      xAxis.push(`${j%24} 点`)
 
     }
     let option = {
@@ -153,7 +171,41 @@ export default class DMArate extends PureComponent {
     const that = this;
     that.myChart.setOption(option);
   }
-
+  selectDate = (type) => {
+    const that=this;
+    this.setState({
+      rangePickerValue: getTimeDistance(type),
+    },function () {
+      that.fetch()
+    });
+  }
+  handleRangePickerChange = (datePickerValue,type) => {
+    const that=this;
+    if(type==='start'){
+      this.setState({
+        rangePickerValue:[datePickerValue,this.state.rangePickerValue[1]],
+      },function () {
+        that.fetch()
+      });
+    }else{
+      this.setState({
+        rangePickerValue:[this.state.rangePickerValue[0],datePickerValue],
+      },function () {
+        that.fetch()
+      });
+    }
+  }
+  isActive(type) {
+    const {rangePickerValue} = this.state;
+    const value = getTimeDistance(type);
+    console.log('value',value)
+    if (!rangePickerValue[0] || !rangePickerValue[1]) {
+      return false;
+    }
+    if (rangePickerValue[0].isSame(value[0], 'day') && rangePickerValue[1].isSame(value[1], 'day')) {
+      return true;
+    }
+  }
   render() {
     const {intl:{formatMessage}} = this.props;
     const columns = [
@@ -178,6 +230,39 @@ export default class DMArate extends PureComponent {
     }
     return (
       <div>
+        <div style={{marginBottom:'12px '}}>
+          <ButtonGroup>
+            <Button  onClick={() => this.selectDate('today')} type={this.isActive('today')?'primary':''}>{formatMessage({id: 'intl.today'})}</Button>
+            <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>{formatMessage({id: 'intl.this_week'})}</Button>
+            <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
+          </ButtonGroup>
+
+          <DatePicker
+            value={this.state.rangePickerValue[0]}
+            allowClear={false}
+            disabledDate={disabledDate}
+            format="YYYY-MM-DD"
+            style={{width: 150}}
+            placeholder={formatMessage({id: 'intl.start'})}
+            onChange={(e)=>this.handleRangePickerChange(e,'start')}
+          />
+          <DatePicker
+            allowClear={false}
+            value={this.state.rangePickerValue[1]}
+            disabledDate={disabledDate}
+            format="YYYY-MM-DD"
+            style={{width: 150}}
+            placeholder={formatMessage({id: 'intl.end'})}
+            onChange={(e)=>this.handleRangePickerChange(e,'end')}
+          />
+          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>{formatMessage({id: 'intl.total_water_consumption'})}:{this.state.difference_value}</span>
+          {/*<RangePicker
+            disabledDate={disabledDate}
+            value={this.state.rangePickerValue}
+            onChange={this.handleRangePickerChange}
+            style={{width: 256}}
+          />*/}
+        </div>
         <div className="PressureLineChart"></div>
 
       </div>

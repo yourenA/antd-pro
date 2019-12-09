@@ -180,7 +180,7 @@ class UserLayout extends React.PureComponent {
           </div>
 
         </div>
-        <GlobalFooter className={styles.footer} links={links} copyright={copyright}/>
+        <GlobalFooter className={styles.footer} links={links} copyright={this.state.company_code==='hngydx'?'珠华水工业、湖南工业大学':"珠华水工业"}/>
       </div>
     )
     return (

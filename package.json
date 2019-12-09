@@ -53,6 +53,7 @@
     "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
     "react-fittext": "^1.0.0",
+    "react-resizable": "^1.10.1",
     "react-sortable-tree": "^2.6.2",
     "react-treebeard": "^2.1.0",
     "react-virtualized": "^9.21.1",

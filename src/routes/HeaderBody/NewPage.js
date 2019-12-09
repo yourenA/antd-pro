@@ -444,7 +444,7 @@ class Main extends PureComponent {
         <GlobalFooter
           copyright={
             <div>
-              powered by {formatMessage({id: 'intl.power_name'})}
+              powered by  {company_code==='hngydx'?'珠华水工业、湖南工业大学':poweredBy}
             </div>
           }
         />

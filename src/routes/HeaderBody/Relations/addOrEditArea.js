@@ -2,9 +2,10 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, Select,Upload,Button ,Icon,TreeSelect } from 'antd';
+import {Form, Input,  Radio, Select,Upload,Button ,Icon,TreeSelect,Divider } from 'antd';
 import {connect} from 'dva';
 import request from '../../../utils/request';
+import filter from 'lodash/filter'
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -20,6 +21,7 @@ class AddPoliciesForm extends Component {
     super(props);
     this.state = {
       meters: [],
+      selectedItems:[]
     };
   }
   componentDidMount() {
@@ -38,8 +40,26 @@ class AddPoliciesForm extends Component {
       }
     }).then(response=>{
       if(response.status===200){
+        let exist=[]
+        for(let i=0;i<this.props.tabArr.length;i++){
+          exist=exist.concat(this.flatten(this.props[this.props.tabArr[i].name+ 'treeData']))
+        }
+        // console.log('exist',exist.length)
+
+        let afterFilter=filter(response.data.data, o=>{
+          let exitBool=true;
+          for(let i=0;i<exist.length;i++){
+            if(o.number===exist[i].subtitle2){
+
+              exitBool=false;
+              break;
+            }
+          }
+          return exitBool
+        });
+        // console.log('afterFilter',afterFilter)
         this.setState({
-          meters:response.data.data
+          meters:afterFilter
         })
       }
 
@@ -54,8 +74,27 @@ class AddPoliciesForm extends Component {
       }
     }).then(response=>{
       if(response.status===200){
+
+        let exist=[]
+        for(let i=0;i<this.props.tabArr.length;i++){
+          exist=exist.concat(this.flatten(this.props[this.props.tabArr[i].name+ 'treeData']))
+        }
+        // console.log('exist',exist.length)
+        let afterFilter=filter(response.data.data, o=>{
+          let exitBool=true;
+          for(let i=0;i<exist.length;i++){
+            if(o.number===exist[i].subtitle2){
+
+              exitBool=false;
+              break;
+            }
+          }
+          return exitBool
+        });
+
+        // console.log('afterFilter',afterFilter)
         this.setState({
-          meters:response.data.data
+          meters:afterFilter
         })
       }
 
@@ -98,6 +137,13 @@ class AddPoliciesForm extends Component {
       }
       return  <TreeNode value={item.id}  title={item.name} key={item.id} />
     });
+  }
+  flatten = (data) => {
+    return data.reduce((arr, {subtitle2, children = []}) =>
+      arr.concat([{subtitle2}], this.flatten(children)), [])
+  }
+  AddAll=()=>{
+    console.log('add all')
   }
   render() {
     const {sider_regions:{data}}=this.props;
@@ -152,6 +198,29 @@ class AddPoliciesForm extends Component {
                 return option.props.children.join('').toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
               }
+
+              dropdownRender={menu => (
+                <div>
+                  {menu}
+                  <Divider style={{ margin: '4px 0' }} />
+                  <div
+                    style={{ padding: '4px 8px', cursor: 'pointer' }}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={()=>{
+                      let allItem=[];
+                      for(let i=0;i<this.state.meters.length;i++){
+                        allItem.push(this.state.meters[i].number+'@'+this.state.meters[i].real_name)
+                      }
+                      this.props.form.setFieldsValue({
+                        meter_number:allItem,
+                      });
+                      // this.setState({ selectedItems:allItem });
+                    }}
+                  >
+                    <Icon type="plus" /> 全选
+                  </div>
+                </div>
+              )}
             >
               {
                 this.state.meters.map((item,index)=>{
