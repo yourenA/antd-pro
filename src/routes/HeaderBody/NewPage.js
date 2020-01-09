@@ -191,6 +191,20 @@ class Main extends PureComponent {
     const dispatch = this.props.dispatch;
     const company_code = sessionStorage.getItem('company_code');
     const {sider_regions:{data}}=this.props;
+    let pawerByText=poweredBy;
+    switch(company_code){
+      case 'hngydx':
+        pawerByText='珠华水工业、湖南工业大学';
+        break;
+      case 'demo':
+        pawerByText='广州辂轺信息科技有限公司';
+        break;
+      default:
+        break;
+    }
+    if(company_code&&!pawerByText){
+      pawerByText='珠华水工业';
+    }
     return (
       <div className={styles.main}>
         <Collapse activeKey={['1']} style={{marginBottom:'16px'}}>
@@ -444,7 +458,7 @@ class Main extends PureComponent {
         <GlobalFooter
           copyright={
             <div>
-              powered by  {company_code==='hngydx'?'珠华水工业、湖南工业大学':poweredBy}
+              powered by  {pawerByText}
             </div>
           }
         />

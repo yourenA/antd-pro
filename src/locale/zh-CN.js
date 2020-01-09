@@ -52,6 +52,7 @@ const zh_CN = {
   'intl.monitor_meter_manage':'监控表管理',//监控表管理
   'intl.manually_meter_manage':'手工监控表管理',//手工监控表管理
   'intl.pressure_sensors_manage':'压力传感器管理',//压力传感器
+  'intl.electric_valves_manage':'远程电控阀门管理',//远程电控阀门
   'intl.temperature_sensors_manage':'温度传感器',//温度传感器
   'intl.flow_meters_manage':'流量计管理',//流量计管理
   'intl.system':'系统管理',//系统管理

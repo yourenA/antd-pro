@@ -78,13 +78,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              压力传感器编号
+              远程电控阀门编号
             </span>
           )}
         >
           {getFieldDecorator('number', {
             initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-            rules: [{required: true, message: '压力传感器编号不能为空'}],
+            rules: [{required: true, message: '远程电控阀门编号不能为空'}],
           })(
             <Input />
           )}
@@ -93,13 +93,13 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              压力传感器序号
+              远程电控阀门序号
             </span>
           )}
         >
           {getFieldDecorator('index', {
             initialValue: this.props.editRecord ? this.props.editRecord.index : '',
-            rules: [{required: true, message: '压力传感器序号不能为空'}],
+            rules: [{required: true, message: '远程电控阀门序号不能为空'}],
           })(
             <Input />
           )}
@@ -108,7 +108,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              压力传感器名称
+              远程电控阀门名称
             </span>
           )}
         >
@@ -118,20 +118,20 @@ class AddPoliciesForm extends Component {
             <Input />
           )}
         </FormItem>
-       {/* <FormItem
+        <FormItem
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              安装小区
+              规格
             </span>
-          )}>
-          {getFieldDecorator('village_id', {
-            initialValue: this.props.editRecord ? [this.props.editRecord.village_id] : '',
-            rules: [{required: true, message: '安装小区不能为空'}],
-          })(
-            <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(this.props.sider_regions.data)} placeholder="请选择"/>
           )}
-        </FormItem>*/}
+        >
+          {getFieldDecorator('specification', {
+            initialValue: this.props.editRecord ? this.props.editRecord.specification : '',
+          })(
+            <Input />
+          )}
+        </FormItem>
         <FormItem
           {...formItemLayoutWithLabel}
           label={(
@@ -162,20 +162,6 @@ class AddPoliciesForm extends Component {
             <Select >
               { this.state.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
             </Select>
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayoutWithLabel}
-          label={(
-            <span>
-              计量单位
-            </span>
-          )}
-        >
-          {getFieldDecorator('unit', {
-            initialValue: this.props.editRecord ? this.props.editRecord.unit : 'kPa',
-          })(
-            <Input />
           )}
         </FormItem>
         <FormItem

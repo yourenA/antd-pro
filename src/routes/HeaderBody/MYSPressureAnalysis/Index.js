@@ -212,12 +212,13 @@ class UserMeterAnalysis extends PureComponent {
     const {intl:{formatMessage}} = this.props;
     const columns = [
       {
-        title: formatMessage({id: 'intl.install_address'}) ,
-        dataIndex: 'address',
-        key: 'address',
-        width: 140,
+        title: '压力传感器名称',
+        dataIndex: 'name',
+        key: 'name',
+        fixed: 'left',
+        width: 120,
         render: (text, record, index) => {
-          return ellipsis2(text, 140)
+          return ellipsis2(text, 120)
         }
       },
       {title:formatMessage({id: 'intl.pressure_sensors_number'}) , width: 150, dataIndex: 'number', key: 'number',
@@ -229,7 +230,17 @@ class UserMeterAnalysis extends PureComponent {
           return ellipsis2(val, 150)
         }},
       {
-        title:formatMessage({id: 'intl.concentrator_number'}) , dataIndex: 'concentrator_number', key: 'install_address',
+        title:formatMessage({id: 'intl.concentrator_number'}) , dataIndex: 'concentrator_number', key: 'concentrator_number',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
+        }
+      },
+      {
+        title: formatMessage({id: 'intl.install_address'}) ,
+        dataIndex: 'address',
+        key: 'address',
+
       },
       {
         title: formatMessage({id: 'intl.operate'}),

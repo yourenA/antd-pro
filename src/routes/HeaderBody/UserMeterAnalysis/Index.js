@@ -741,6 +741,7 @@ class UserMeterAnalysis extends PureComponent {
                 {
                   this.state.showArea
                     ?
+                    !this.state.showMonitor?
                     <div>
                       <div className='tableList'>
                         <div className='tableListForm'>
@@ -807,7 +808,12 @@ class UserMeterAnalysis extends PureComponent {
                                   handPageSizeChange={this.handPageSizeChange}
                                   handPageChange={this.handPageChange}/>
 
-                    </div> :
+                    </div>:
+                    <div>
+                      <h2>{this.state.site_name}</h2>
+                      <Divider dashed style={{margin: '10px 0'}}/>
+                      <AnalysisDetail site_id={this.state.site_id}/>
+                    </div>:
                     <div>
                       <Detail tableY={this.state.tableY} onBack={this.handleBack} showExtra={true}
                               meter_number={this.state.edit_meter_number} ended_at={this.state.ended_at}

@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d96c74b-f7fb-43ba-9b15-f52313778234" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Endpoints.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/Endpoints.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/BasicLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/BasicLayout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/UserLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/UserLayout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Chart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Chart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Relations/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Relations/Index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Relations/addOrEditArea.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Relations/addOrEditArea.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" afterDir="false" />
     </list>
     <ignored path="ant-pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,12 +29,46 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="177">
+              <caret line="704" column="27" selection-start-line="704" selection-start-column="27" selection-end-line="704" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+                <element signature="e#24039#28378#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/common/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="232">
+              <caret line="8" column="73" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="73" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Sider.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5800">
+              <caret line="206" column="30" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/MyPageHeader/index.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -59,30 +85,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Fo</find>
-      <find>company_code</find>
-      <find>meters</find>
-      <find>flatten</find>
-      <find>Divider</find>
-      <find>AddAll</find>
-      <find>selectedItems</find>
-      <find>\n</find>
-      <find>前比例阀控传感器阀门开度</find>
-      <find>layout-conten</find>
-      <find>sider</find>
-      <find>calc</find>
-      <find>ResizableBox</find>
-      <find>code</find>
-      <find>rangePickerValue</find>
-      <find>ButtonGroup</find>
-      <find>handleRangePickerChange</find>
-      <find>isActive</find>
-      <find>fetch</find>
-      <find>disabledDate</find>
-      <find>getTimeDistance</find>
+      <find>pressure_sensors_manage</find>
+      <find>pressure_sensors</find>
+      <find>add</find>
+      <find>status</find>
+      <find>canOperateelectric_valves</find>
+      <find>canOperateMeter</find>
+      <find>timer</find>
+      <find>editModal</find>
+      <find>user</find>
+      <find>Button</find>
+      <find>handleCommand</find>
+      <find>500</find>
+      <find>ElectricValve</find>
+      <find>pressure_analysis</find>
+      <find>PressureAnalysis</find>
+      <find>electric_valves</find>
+      <find>pawerByText</find>
+      <find>data</find>
+      <find>Pagination</find>
+      <find>onChange</find>
+      <find>main</find>
+      <find>meta.page</find>
+      <find>广州辂轺信息科技有限公司</find>
+      <find>getChildContext</find>
+      <find>珠华水工业</find>
+      <find>handleSearch</find>
+      <find>tabs</find>
+      <find>poweredBy</find>
+      <find>changeMonitor</find>
+      <find>showMonitor</find>
     </findStrings>
     <replaceStrings>
       <replace />
+      <replace>electric_valves</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -91,34 +127,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/DetailSearch.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/ConcentratorDetail.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ValveSensors/ValveCommand.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditLeakModels.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditLeakSpecial.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/LeakWarningSetup.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/Unusual_water.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditNightModels.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/NightWarningSetup.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditNightSpecial.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditZeroSpecial.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditZeroModels.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ZeroWarningSetup.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Search.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Meters/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/editUnusualSpecial.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/ProcessedForm.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NightAbnormality/Index.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/VoltageStatusAbnormality/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Valve_status_abnormality/Index.js" />
         <option value="D:/药材/HomepageSwiper.json" />
         <option value="D:/药材/NavTitle.json" />
         <option value="D:/药材/Dunpin.json" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" />
         <option value="$PROJECT_DIR$/node_modules/react-sortable-tree/dist/index.cjs.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
@@ -131,9 +144,6 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MYSBigMeterAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MYSBigMeterAnalysis/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js" />
-        <option value="$PROJECT_DIR$/src/layouts/UserLayout.js" />
-        <option value="$PROJECT_DIR$/src/layouts/BasicLayout.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Relations/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Relations/addOrEditArea.js" />
         <option value="D:/药材/其它.json" />
@@ -142,6 +152,32 @@
         <option value="$PROJECT_DIR$/src/Endpoints.less" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Chart.js" />
+        <option value="$PROJECT_DIR$/src/locale/zh-CN.js" />
+        <option value="$PROJECT_DIR$/src/services/electric_valves.js" />
+        <option value="$PROJECT_DIR$/src/models/electric_valves.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/Search.js" />
+        <option value="$PROJECT_DIR$/src/models/global.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/addOrEditMeterModels.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Pressure/addOrEditMeterModels.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Pressure/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MYSPressureAnalysis/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/PlatformManagement/PlatformSetting.js" />
+        <option value="$PROJECT_DIR$/src/common/nav.js" />
+        <option value="$PROJECT_DIR$/src/models/organization.js" />
+        <option value="$PROJECT_DIR$/src/components/Pagination/Index.js" />
+        <option value="$PROJECT_DIR$/src/routes/PlatformManagement/OrganizationManage.js" />
+        <option value="$PROJECT_DIR$/src/layouts/BasicLayout.less" />
+        <option value="$PROJECT_DIR$/src/components/PageHeader/index.less" />
+        <option value="$PROJECT_DIR$/src/layouts/PageHeaderLayout.less" />
+        <option value="$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less" />
+        <option value="$PROJECT_DIR$/src/layouts/BasicLayout.js" />
+        <option value="$PROJECT_DIR$/src/layouts/UserLayout.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
+        <option value="$PROJECT_DIR$/src/common/config.js" />
+        <option value="$PROJECT_DIR$/src/components/MyPageHeader/index.less" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js" />
       </list>
     </option>
   </component>
@@ -163,12 +199,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
               <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
@@ -181,11 +223,31 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="HeaderBody" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="HeaderBody" type="462c0819:PsiDirectoryNode" />
+              <item name="UserMeterAnalysis" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -197,25 +259,25 @@
     <property name="editor.config.accepted" value="true" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
-    <property name="last_opened_file_path" value="E:/dh-pro" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/services" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="E:\ant-pro\y\ant-pro\node_modules\mocha" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\UserMeterAnalysis" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup" />
-      <recent name="E:\ant-pro\y\ant-pro\src\services" />
-      <recent name="E:\ant-pro\y\ant-pro\src\models" />
-      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\VendorMeter" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup\ExportSetup" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\DMA\images" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\FlowMeters" />
       <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\HomePage" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\ant-pro\y\ant-pro\src\services" />
+      <recent name="E:\ant-pro\y\ant-pro\src\models" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\UserMeterAnalysis" />
+      <recent name="E:\ant-pro\y\ant-pro\src\routes\HeaderBody\SystemSetup" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -886,6 +948,28 @@
       <workItem from="1575619468887" duration="563000" />
       <workItem from="1575621630110" duration="240000" />
       <workItem from="1575861194316" duration="463000" />
+      <workItem from="1575861830146" duration="689000" />
+      <workItem from="1575863457572" duration="20000" />
+      <workItem from="1576053360326" duration="4233000" />
+      <workItem from="1576122519311" duration="1436000" />
+      <workItem from="1576228723755" duration="1629000" />
+      <workItem from="1576480582954" duration="137000" />
+      <workItem from="1577066826433" duration="4793000" />
+      <workItem from="1577158396467" duration="1013000" />
+      <workItem from="1577438352880" duration="255000" />
+      <workItem from="1577929734792" duration="5289000" />
+      <workItem from="1577945662488" duration="2202000" />
+      <workItem from="1578017390219" duration="972000" />
+      <workItem from="1578018513701" duration="565000" />
+      <workItem from="1578036293999" duration="729000" />
+      <workItem from="1578038265803" duration="613000" />
+      <workItem from="1578104263658" duration="377000" />
+      <workItem from="1578276737290" duration="2368000" />
+      <workItem from="1578282949202" duration="616000" />
+      <workItem from="1578297003851" duration="612000" />
+      <workItem from="1578364764186" duration="872000" />
+      <workItem from="1578385403640" duration="849000" />
+      <workItem from="1578387505451" duration="607000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -905,7 +989,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3563654000" />
+    <option name="totallyTimeSpent" value="3594530000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
@@ -923,7 +1007,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.3286334" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3275488" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32719395" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.329718" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -975,6 +1059,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
     <MESSAGE value="test webstorm commit" />
     <MESSAGE value="test webstorm commit 2" />
     <option name="LAST_COMMIT_MESSAGE" value="test webstorm commit 2" />
@@ -996,234 +1083,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="80" column="8" selection-start-line="80" selection-start-column="8" selection-end-line="86" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="30" column="23" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Consumption_abnormality/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="273" column="9" selection-start-line="273" selection-start-column="9" selection-end-line="273" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ValveStatusSetup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="27" column="18" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/SmsNotice.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/ZeroWarningSetup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="32" selection-start-line="32" selection-end-line="32" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="401" column="37" selection-start-line="401" selection-start-column="13" selection-end-line="401" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-648" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddConcentrator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3363">
-          <caret line="455" column="15" selection-start-line="455" selection-start-column="15" selection-end-line="455" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="922" column="19" selection-start-line="922" selection-start-column="19" selection-end-line="922" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ConcentratorManage/AddOrEditConcentrator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-39">
-          <caret line="193" column="50" selection-start-line="193" selection-start-column="50" selection-end-line="193" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/RelationsAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="134" selection-start-line="134" selection-end-line="154" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/big_meters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ZeroAbnormality/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7884">
-          <caret line="306" column="27" selection-start-line="306" selection-start-column="27" selection-end-line="306" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Leak_abnormality/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2727">
-          <caret line="105" column="8" selection-start-line="105" selection-start-column="8" selection-end-line="111" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MYSBigMeterAnalysis/Search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="47" column="21" selection-start-line="47" selection-start-column="21" selection-end-line="47" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MYSBigMeterAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6048">
-          <caret line="238" column="35" selection-start-line="238" selection-start-column="35" selection-end-line="238" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Guage.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/LiquidPosition.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MapData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="52" column="8" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/AreaSupplyList.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/ConcentratorOnlife.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/DynamicData.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/EditPassword.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2175">
-          <caret line="115" lean-forward="true" selection-start-line="115" selection-end-line="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/UserLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="182" column="129" selection-start-line="182" selection-start-column="129" selection-end-line="182" selection-end-column="129" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/BasicLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="458" column="81" lean-forward="true" selection-start-line="458" selection-start-column="30" selection-end-line="458" selection-end-column="81" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#13056#14256#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/headerBodyContent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="452" column="39" selection-start-line="452" selection-start-column="39" selection-end-line="452" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/NewPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-462">
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Relations/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12470">
-          <caret line="453" selection-start-line="453" selection-end-line="453" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Relations/Search.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1282,20 +1141,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="821" column="12" selection-start-line="821" selection-start-column="12" selection-end-line="821" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="191" column="4" lean-forward="true" selection-start-line="191" selection-start-column="4" selection-end-line="191" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/index.less">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1313,16 +1158,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="348">
           <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="14" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Sider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="267" column="28" selection-start-line="267" selection-start-column="28" selection-end-line="267" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1350,10 +1185,259 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
+    <entry file="file://$PROJECT_DIR$/src/services/electric_valves.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="28" column="34" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/electric_valves.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
-          <caret line="50" selection-start-line="48" selection-start-column="1" selection-end-line="50" />
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ValveSensors/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="385" column="7" lean-forward="true" selection-start-line="385" selection-start-column="7" selection-end-line="393" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/Search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="48" column="74" lean-forward="true" selection-start-line="48" selection-start-column="74" selection-end-line="48" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/addOrEditMeterModels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3190">
+          <caret line="114" column="34" selection-start-line="114" selection-start-column="34" selection-end-line="114" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/global.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Pressure/addOrEditMeterModels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="641">
+          <caret line="114" column="34" selection-start-line="114" selection-start-column="34" selection-end-line="114" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="812">
+          <caret line="210" column="21" selection-start-line="210" selection-start-column="21" selection-end-line="210" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/ElectricValve/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1305">
+          <caret line="358" selection-start-line="358" selection-end-line="358" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Pressure/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="290" column="2" selection-start-line="290" selection-start-column="2" selection-end-line="299" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MYSPressureAnalysis/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="227" column="30" selection-start-line="227" selection-start-column="30" selection-end-line="227" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/locale/zh-CN.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="815">
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/SystemManagement/UserManage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/PlatformSetting.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="15" column="10" lean-forward="true" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="209" column="15" selection-start-line="209" selection-start-column="15" selection-end-line="209" selection-end-column="15" />
+          <folding>
+            <element signature="e#3010#3088#0" expanded="true" />
+            <element signature="e#6648#6704#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Meters/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/organization.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="21" column="33" lean-forward="true" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/meters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-870">
+          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/OrganizationManage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="337" column="98" selection-start-line="337" selection-start-column="98" selection-end-line="337" selection-end-column="98" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/PageHeader/index.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/PageHeaderLayout.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/BasicLayout.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/PlatformManagement/CardList.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1682">
+          <caret line="58" column="12" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/BasicLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9512">
+          <caret line="349" column="9" selection-start-line="349" selection-start-column="9" selection-end-line="349" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Endpoints.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22504">
+          <caret line="776" column="38" selection-start-line="776" selection-start-column="38" selection-end-line="776" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/UserLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4437">
+          <caret line="173" column="46" selection-start-line="173" selection-start-column="46" selection-end-line="173" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/headerBodyContent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9715">
+          <caret line="369" column="11" selection-start-line="369" selection-start-column="11" selection-end-line="369" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/NewPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5394">
+          <caret line="204" column="19" selection-start-line="204" selection-start-column="19" selection-end-line="204" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2175">
+          <caret line="115" selection-start-line="115" selection-end-line="115" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Pagination/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="667">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Detail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="103" column="5" selection-start-line="103" selection-start-column="5" selection-end-line="113" selection-end-column="8" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
             <element signature="e#259#351#0" expanded="true" />
@@ -1362,10 +1446,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/UserMeterAnalysis/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="704" column="27" selection-start-line="704" selection-start-column="27" selection-end-line="704" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+            <element signature="e#24039#28378#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/Sider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5800">
+          <caret line="206" column="30" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/MyPageHeader/index.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="232">
+          <caret line="8" column="73" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="73" />
         </state>
       </provider>
     </entry>

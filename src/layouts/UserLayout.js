@@ -159,6 +159,21 @@ class UserLayout extends React.PureComponent {
 
   render() {
     console.log('this.state.company_code',this.state.company_code)
+    let pawerByText=poweredBy;
+    switch(this.state.company_code){
+      case 'hngydx':
+        pawerByText='珠华水工业、湖南工业大学';
+        break;
+      case 'demo':
+      case 'system':
+        pawerByText='广州辂轺信息科技有限公司';
+        break;
+      default:
+        break;
+    }
+    if(this.state.company_code&&!pawerByText){
+      pawerByText='珠华水工业';
+    }
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
           <div className={styles.login_mask}></div>
@@ -180,7 +195,7 @@ class UserLayout extends React.PureComponent {
           </div>
 
         </div>
-        <GlobalFooter className={styles.footer} links={links} copyright={this.state.company_code==='hngydx'?'珠华水工业、湖南工业大学':"珠华水工业"}/>
+        <GlobalFooter className={styles.footer} links={links} copyright={pawerByText}/>
       </div>
     )
     return (

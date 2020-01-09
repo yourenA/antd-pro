@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Layout, message, Popconfirm, Modal, Badge} from 'antd';
+import {Button, Card, Layout, message, Popconfirm, Modal, Badge} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Pagination from './../../../components/Pagination/Index'
 import DefaultSearch from './Search'
@@ -15,7 +15,7 @@ const {Content} = Layout;
 import {injectIntl} from 'react-intl';
 @injectIntl
 @connect(state => ({
-  pressure: state.pressure,
+  electric_valves: state.electric_valves,
   sider_regions: state.sider_regions,
   global: state.global,
 }))
@@ -23,9 +23,11 @@ class MeterModel extends PureComponent {
   constructor(props) {
     super(props);
     this.permissions = JSON.parse(sessionStorage.getItem('permissions'));
+    this.timer=null;
     this.state = {
-      showAddBtn: find(this.permissions, {name: 'pressure_sensor_add_and_edit'}),
-      showdelBtn: find(this.permissions, {name: 'pressure_sensor_delete'}),
+      showAddBtn: find(this.permissions, {name: 'electric_valve_add_and_edit'}),
+      showdelBtn: find(this.permissions, {name: 'electric_valve_delete'}),
+      showCommandBtn: find(this.permissions, {name: 'user_send_command'}),
       tableY: 0,
       page: 1,
       initPage:1,
@@ -37,7 +39,7 @@ class MeterModel extends PureComponent {
       editModal: false,
       addModal: false,
       commandModal: false,
-      canOperateMeter: localStorage.getItem('canOperatePressure') === 'true' ? true : false,
+      canOperateMeter: localStorage.getItem('canOperateelectric_valves') === 'true' ? true : false,
       per_page:30,
       canLoadByScroll:true,
     }
@@ -47,7 +49,7 @@ class MeterModel extends PureComponent {
     document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
 
     // dispatch({
-    //   type: 'pressure/fetch',
+    //   type: 'electric_valves/fetch',
     //   payload: {
     //     page: 1,
     //   },
@@ -65,6 +67,7 @@ class MeterModel extends PureComponent {
   }
   componentWillUnmount() {
     document.querySelector('.ant-table-body').removeEventListener('scroll',debounce(this.scrollTable,200))
+    clearTimeout(this.timer)
   }
   scrollTable=()=>{
     const scrollTop=document.querySelector('.ant-table-body').scrollTop;
@@ -73,7 +76,7 @@ class MeterModel extends PureComponent {
     const that=this;
     if(scrollTop+offsetHeight>scrollHeight-300){
       if(this.state.canLoadByScroll){
-        const {pressure: {meta}} = this.props;
+        const {electric_valves: {meta}} = this.props;
         if(this.state.page<meta.pagination.total_pages){
           this.setState({
             canLoadByScroll:false,
@@ -147,7 +150,7 @@ class MeterModel extends PureComponent {
     const {dispatch} = this.props;
     const that = this;
     dispatch({
-      type:fetchAndPush?'pressure/fetchAndPush': 'pressure/fetch',
+      type:fetchAndPush?'electric_valves/fetchAndPush': 'electric_valves/fetch',
       payload: {
         ...values,
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
@@ -162,6 +165,17 @@ class MeterModel extends PureComponent {
             initPage:values.page
           })
         }
+        if(that.timer){
+          clearTimeout(that.timer)
+        }
+        that.timer=setTimeout(function () {
+          that.handleSearch({
+            page: that.state.page,
+            number:that.state.number,
+            address:that.state.address,
+            per_page:that.state.per_page,
+          })
+        },10000)
         if(cb) cb()
       }
     });
@@ -187,7 +201,7 @@ class MeterModel extends PureComponent {
     const formValues = this.formRef.props.form.getFieldsValue();
     console.log('formValues', formValues);
     this.props.dispatch({
-      type: 'pressure/add',
+      type: 'electric_valves/add',
       payload: {
         ...formValues,
         enabled_date:formValues.enabled_date?moment(formValues.enabled_date).format('YYYY-MM-DD'):'',
@@ -197,7 +211,7 @@ class MeterModel extends PureComponent {
         message.success(
           formatMessage(
             {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.add'}), type: formatMessage({id: 'intl.pressure_sensors'})}
+            {operate: formatMessage({id: 'intl.add'}), type: '远程电控阀门'}
           )
         )
         that.setState({
@@ -213,12 +227,33 @@ class MeterModel extends PureComponent {
     });
 
   }
+  handleCommand = (record, command)=> {
+    console.log('command ', command);
+    const that = this;
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'user_command_data/add',
+      payload: {
+        electric_valve_number: record.number,
+        feature: command
+      },
+      callback: ()=> {
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
+          )
+        )
+      }
+    });
+  }
   handleEdit = ()=> {
     const formValues = this.editFormRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
     const that = this;
     this.props.dispatch({
-      type: 'pressure/edit',
+      type: 'electric_valves/edit',
       payload: {
         ...formValues,
         enabled_date:formValues.enabled_date?moment(formValues.enabled_date).format('YYYY-MM-DD'):'',
@@ -229,7 +264,7 @@ class MeterModel extends PureComponent {
         message.success(
           formatMessage(
             {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.edit'}), type: formatMessage({id: 'intl.pressure_sensors'})}
+            {operate: formatMessage({id: 'intl.edit'}), type: '远程电控阀门'}
           )
         )
         that.setState({
@@ -247,7 +282,7 @@ class MeterModel extends PureComponent {
   handleRemove = (id)=> {
     const that = this;
     this.props.dispatch({
-      type: 'pressure/remove',
+      type: 'electric_valves/remove',
       payload: {
         id: id,
       },
@@ -256,7 +291,7 @@ class MeterModel extends PureComponent {
         message.success(
           formatMessage(
             {id: 'intl.operate_successful'},
-            {operate: formatMessage({id: 'intl.delete'}), type: formatMessage({id: 'intl.pressure_sensors'})}
+            {operate: formatMessage({id: 'intl.delete'}), type:'远程电控阀门'}
           )
         )
         that.handleSearch({
@@ -286,41 +321,94 @@ class MeterModel extends PureComponent {
 
   render() {
     const {intl:{formatMessage}} = this.props;
-    const {pressure: {data, meta, loading},sider_regions} = this.props;
+    const {electric_valves: {data, meta, loading},sider_regions} = this.props;
     const columns = [
       {
-        title: '压力传感器名称',
-        dataIndex: 'name',
-        key: 'name',
+        title: '远程电控阀门编号',
+        dataIndex: 'number',
+        key: 'number',
         fixed: 'left',
-        width: 120,
-        render: (text, record, index) => {
-          return ellipsis2(text, 120)
-        }
-      },
-      {
-        title: formatMessage({id: 'intl.pressure_sensors_number'}), width: 140, dataIndex: 'number', key: 'number',
-        render: (val, record, index) => {
-          return ellipsis2(val, 140)
-        }
-      },
-
-      {
-        title:formatMessage({id: 'intl.pressure_sensors_index'}) ,
-        dataIndex: 'index',
-        key: 'index',
         width: 140,
         render: (text, record, index) => {
           return ellipsis2(text, 140)
         }
       },
       {
-        title: formatMessage({id: 'intl.unit'}) ,
-        dataIndex: 'unit',
-        key: 'unit',
-        width: 120,
+        title: '名称',
+        dataIndex: 'name',
+        key: 'name',
+        fixed: 'left',
+        width: 100,
         render: (text, record, index) => {
-          return ellipsis2(text, 120)
+          return ellipsis2(text, 100)
+        }
+      },
+      {
+        title:'阀门状态',
+        dataIndex: 'valve_status',
+        key: 'valve_status',
+        width: 100,
+        render: (text, record, index) => {
+          let label='';
+          let status='';
+          switch(text){
+            case -4:
+              label='抄读失败';
+              status='error';
+              break;
+            case -2:
+              label='异常';
+              status='danger';
+              break;
+            case -1:
+              label='关';
+              status='error';
+              break;
+            case 1:
+              label='开';
+              status='success';
+              break;
+          }
+          return   <div><Badge status={status}/>{label}</div>
+        }
+      },
+      {
+        title:'在线状态',
+        dataIndex: 'online_status',
+        key: 'online_status',
+        width: 100,
+        render: (text, record, index) => {
+          let label='';
+          let status='';
+          switch(text){
+            case -1:
+              label='离线';
+              status='error';
+              break;
+            case 1:
+              label='在线';
+              status='success';
+              break;
+          }
+          return   <div><Badge status={status}/>{label}</div>
+        }
+      },
+      {
+        title:'上传时间',
+        dataIndex: 'uploaded_at',
+        key: 'uploaded_at',
+        width: 150,
+        render: (text, record, index) => {
+          return ellipsis2(text, 150)
+        }
+      },
+      {
+        title:'规格',
+        dataIndex: 'specification',
+        key: 'specification',
+        width: 100,
+        render: (text, record, index) => {
+          return ellipsis2(text, 100)
         }
       },
       {
@@ -336,10 +424,9 @@ class MeterModel extends PureComponent {
         title: formatMessage({id: 'intl.install_address'}) ,
         dataIndex: 'address',
         key: 'address',
-
-        width: 140,
+        width: 120,
         render: (text, record, index) => {
-          return ellipsis2(text, 140)
+          return ellipsis2(text, 120)
         }
       },
       {
@@ -349,36 +436,65 @@ class MeterModel extends PureComponent {
       },
       {
         title: formatMessage({id: 'intl.remark'}) ,dataIndex: 'remark', key: 'remark', render: (text, record, index) => {
-        return ellipsis2(text, 100)
+        return ellipsis2(text, 150)
       }
       }
 
     ];
     const operate={
       title:formatMessage({id: 'intl.operate'}) ,
-      width:  90 ,
+      width:  280 ,
       fixed: 'right',
       render: (val, record, index) => (
         <p>
           {
             this.state.showAddBtn &&
-            <span>
-                      <a href="javascript:;" onClick={()=> {
-                        this.setState(
-                          {
-                            editRecord: record,
-                            editModal: true
-                          }
-                        )
-                      }}>{formatMessage({id: 'intl.edit'})}</a>
-            <span className="ant-divider"/>
-                </span>
+              <Button type="primary" size='small' icon='edit'
+                      onClick={()=>{
+                        this.setState({
+                          editRecord:record,
+                          editModal:true
+                        })
+                      }}>编辑</Button>
+          }
+          {
+            this.state.showCommandBtn&&
+            <Button  loading={this.state['open'+record.number]} type="primary" size='small'
+                    onClick={()=>{
+                      const that=this
+                      this.setState({
+                        ['open'+record.number]:true
+                      })
+                      this.handleCommand(record,'open_electric_valve')
+                      setTimeout(function () {
+                        that.setState({
+                          ['open'+record.number]:false
+                        })
+                      },5000)
+                    }}>开阀</Button>
+          }
+          {
+            this.state.showCommandBtn&&
+            <Button loading={this.state['close'+record.number]}  type="danger" size='small'
+                    onClick={()=>{
+                      const that=this
+                      this.setState({
+                        ['close'+record.number]:true
+                      })
+                      this.handleCommand(record,'close_electric_valve')
+                      setTimeout(function () {
+                        that.setState({
+                          ['close'+record.number]:false
+                        })
+                      },5000)
+                    }}>关阀</Button>
           }
           {
             this.state.showdelBtn &&
             <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
                         onConfirm={()=>this.handleRemove(record.id)}>
-              <a href="">{formatMessage({id: 'intl.delete'})}</a>
+              <Button  icon='delete' type="danger" size='small'
+                   >删除</Button>
             </Popconfirm>
           }
 
@@ -396,7 +512,7 @@ class MeterModel extends PureComponent {
         <Content >
           <div className="content">
             <PageHeaderLayout title="设备管理 "  breadcrumb={[{name: formatMessage({id: 'intl.device'})},
-              {name: formatMessage({id: 'intl.pressure_sensors_manage'})}]}>
+              {name:'远程电控阀门'}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -414,7 +530,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x:1500,y: this.state.tableY}}
+                                 scroll={{x:1600,y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperateMeter}

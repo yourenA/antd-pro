@@ -79,6 +79,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   getChildContext() {
+
     const {location} = this.props;
     const routeData = getRouteData('BasicLayout');
     const menuData = getNavData().reduce((arr, current) => arr.concat(current.children), []);
@@ -90,6 +91,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   componentDidMount() {
+    document.title='广州辂轺信息科技有限公司'
     const { location } = this.props;
     let { pathname } = location;
     this.props.dispatch({
@@ -260,10 +262,10 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const {location} = this.props;
     const {pathname} = location;
-    let title = '珠华水工业';
+    let title = '广州辂轺信息科技有限公司';
     getRouteData('BasicLayout').forEach((item) => {
       if (item.path === pathname) {
-        title = `${item.name} - 珠华水工业`;
+        title = `${item.name} - 广州辂轺信息科技有限公司`;
       }
     });
     return title;
@@ -323,6 +325,18 @@ class BasicLayout extends React.PureComponent {
     };
     const company_code = sessionStorage.getItem('company_code');
     console.log('company_code',company_code)
+    let pawerByText=poweredBy;
+    switch(company_code){
+      case 'hngydx':
+        pawerByText='珠华水工业、湖南工业大学';
+        break;
+      case 'demo':
+      case 'system':
+        pawerByText='广州辂轺信息科技有限公司';
+        break;
+      default:
+        break;
+    }
     const layout = (
       <div>
         <Sider
@@ -338,8 +352,8 @@ class BasicLayout extends React.PureComponent {
             <Link onClick={()=>{
               this.setState({activeKey:`/${company_code}/home`});
             }} to={`/${company_code}/home`}>
-              <img src={zhuhuaLogo} alt="logo"/>
-              <h1>{poweredBy}</h1>
+              {/*<img src={zhuhuaLogo} alt="logo"/>*/}
+              <h1>广州辂轺信息科技</h1>
             </Link>
           </div>
           <Menu
@@ -384,41 +398,7 @@ class BasicLayout extends React.PureComponent {
           </Header>
           <Content className={styles.main_area}>
             <div className={styles.main}>
-           {/*   <Switch>
-                {
-                  (sessionStorage.getItem('role_display_name') === '系统管理员') ?
-                    <Redirect exact from="/" to="/home"/>
-                    : <Redirect exact from="/" to="/main"/>
-                }
-              </Switch>*/}
               <BackTop />
-             {/* {
-                this.state.panes.length>0&&
-                <Tabs
-                  className={styles.tabs}
-                  onChange={this.onChange}
-                  activeKey={this.state.activeKey}
-                  type="editable-card"
-                  onEdit={this.onEdit}
-                  hideAdd={true}
-                  tabBarExtraContent={<Button onClick={this.refreshTab}><Icon type="sync" /></Button>}
-                >
-                  {this.state.panes.map(pane => {
-                    const Conp = pane.component
-                    return (
-                      <TabPane  closable={pane.path==='/home'?false:true} tab={<span><Icon type={pane.icon} />{ pane.name}</span>} key={ pane.path}>
-                        /!*<Route
-                         exact={pane.exact}
-                         key={pane.path}
-                         path={pane.path}
-                         component={pane.component}
-                         />*!/
-                        <Conp findChildFunc={this.findChildFunc} activeKey={this.state.activeKey} foce={this.state.foce}/>
-                      </TabPane>
-                    )
-                  })}
-                </Tabs>
-              }*/}
             <Switch>
                {
                getRouteData('BasicLayout').map(item =>{
@@ -456,7 +436,7 @@ class BasicLayout extends React.PureComponent {
               <GlobalFooter
                 copyright={
                   <div>
-                    powered by {company_code==='hngydx'?'珠华水工业、湖南工业大学':poweredBy}
+                    powered by {pawerByText}
                   </div>
                 }
               />

@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'dva';
-import {
+import  {
   Card,
   Form,
   Input,
@@ -16,7 +16,8 @@ import {
   List,
   Badge,
   Tooltip,
-  Avatar
+  Avatar,
+  Pagination
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {Link} from 'dva/router';
@@ -135,6 +136,7 @@ export default class EndpointsList extends PureComponent {
       type: 'organization/fetch',
       payload: {
         name: values,
+        page: 1
       },
     });
     this.setState({
@@ -153,6 +155,7 @@ export default class EndpointsList extends PureComponent {
   }
   handleAdd = () => {
     const that = this;
+    const {organization: { meta}} = this.props;
     const formValues = this.formRef.props.form.getFieldsValue();
     this.props.dispatch({
       type: 'organization/add',
@@ -168,6 +171,7 @@ export default class EndpointsList extends PureComponent {
           type: 'organization/fetch',
           payload: {
             query: that.state.query,
+            page: meta.pagination.current_page,
           }
         });
       }
@@ -175,6 +179,7 @@ export default class EndpointsList extends PureComponent {
   }
   handleEdit = () => {
     const that = this;
+    const {organization: { meta}} = this.props;
     const formValues = this.editFormRef.props.form.getFieldsValue();
     this.props.dispatch({
       type: 'organization/edit',
@@ -191,12 +196,14 @@ export default class EndpointsList extends PureComponent {
           type: 'organization/fetch',
           payload: {
             query: that.state.query,
+            page: meta.pagination.current_page,
           }
         });
       }
     });
   }
   handleRemove = (id)=> {
+    const {organization: { meta}} = this.props;
     const that = this;
     this.props.dispatch({
       type: 'organization/remove',
@@ -204,17 +211,19 @@ export default class EndpointsList extends PureComponent {
         id: id,
       },
       callback: function () {
-        message.success('删除设备成功')
+        message.success('删除机构成功')
         that.props.dispatch({
           type: 'organization/fetch',
           payload: {
             query: that.state.query,
+            page: meta.pagination.current_page,
           }
         });
       }
     });
   }
   handleForbid = (id,status)=> {
+    const {organization: { meta}} = this.props;
     console.log(id)
     if(status===1){
       status=-1
@@ -234,6 +243,7 @@ export default class EndpointsList extends PureComponent {
           type: 'organization/fetch',
           payload: {
             query: that.state.query,
+            page: meta.pagination.current_page,
           }
         });
       }
@@ -241,6 +251,7 @@ export default class EndpointsList extends PureComponent {
   }
   handleResetPassword = (id)=> {
     console.log(id)
+    const {organization: { meta}} = this.props;
     const that = this;
     this.props.dispatch({
       type: 'organization/resetPassword',
@@ -253,6 +264,7 @@ export default class EndpointsList extends PureComponent {
           type: 'organization/fetch',
           payload: {
             query: that.state.query,
+            page: meta.pagination.current_page,
           }
         });
       }
@@ -261,7 +273,18 @@ export default class EndpointsList extends PureComponent {
   onVisibleChange = (visible)=> {
     console.log(visible)
   }
-
+  onChange = page => {
+    console.log(page);
+    const that=this
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'organization/fetch',
+      payload: {
+        page: page,
+        query: that.state.query,
+      }
+    });
+  };
   render() {
     const {organization: {data, meta, loading}} = this.props;
     const {modalVisible, modalEditVisible, editRecord} = this.state;
@@ -279,7 +302,7 @@ export default class EndpointsList extends PureComponent {
     const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
     return (
       <PageHeaderLayout title={{label: '机构管理'}} breadcrumb={[{name: '平台管理'}, {name: '机构管理'}]}
-                        content={pageHeaderContent}>
+                        content={''}>
         <List
           rowKey="id"
           grid={{gutter: 24, lg: 3, md: 2, sm: 1, xs: 1}}
@@ -312,8 +335,9 @@ export default class EndpointsList extends PureComponent {
                   <Card.Meta
                     className={styles.antCardMeta}
                     avatar={<div>
-                      <Avatar  style={{ backgroundColor:colorList[index % colorList.length]}} >{item.code.toLocaleUpperCase()}</Avatar>
-                      {item.status === 1 ? <p>已{item.status_explain}</p> : <p> 已{item.status_explain}</p>}
+                      <Avatar  style={{ backgroundColor:colorList[index % colorList.length],marginLeft:'14px'}} >{item.code.toLocaleUpperCase()}</Avatar>
+                      {item.status === 1 ? <p><Badge color="#87d068" text={`已${item.status_explain}`} /></p>
+                        :<p> <Badge color="#f50" text={`已${item.status_explain}`} /></p>}
                     </div>}
                     title={item.lock===1?<p className={styles.cardTitle}>{item.name}</p>:<span className={styles.cardTitle}>{item.name}  {item.code}</span>}
                     description={(
@@ -339,6 +363,15 @@ export default class EndpointsList extends PureComponent {
             )
           )}
         />
+        <Pagination
+          style={{paddingLeft:'16px'}}
+          total={meta ? meta.pagination.total : 0}
+          showTotal={(total, range) => `获取 ${range[0]}-${range[1]} 全部: ${total}项`}
+          current={meta ? meta.pagination.current_page : 0}
+          onChange={this.onChange}
+          pageSize={meta ? meta.pagination.per_page : 0}
+        />
+
         <Modal
           title="新建机构"
           visible={modalVisible}

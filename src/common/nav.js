@@ -134,6 +134,7 @@ import LiquidValveAnalysis from './../routes/HeaderBody/LiquidValveAnalysis/Inde
 // )
 import Meters from './../routes/HeaderBody/Meters/Index'
 import Pressure from './../routes/HeaderBody/Pressure/Index'
+import ElectricValve from './../routes/HeaderBody/ElectricValve/Index'
 import Temperature from './../routes/HeaderBody/Temperature/Index'
 
 // const ConcentratorModels = asyncComponent(() =>
@@ -206,7 +207,7 @@ const data = [{
   path: '',
   children: [
     {
-      name: 'home',            // 页面名称，会展示在菜单栏中
+      name: '首页',            // 页面名称，会展示在菜单栏中
       path: 'home',   // 匹配的路由
       icon: 'home',              // 页面图标，会展示在菜单栏中
       component: NewPage,
@@ -436,7 +437,10 @@ const data = [{
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
       permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete','liquid_sensor_add_and_edit','liquid_sensor_delete',
         'temperature_sensor_add_and_edit', 'temperature_sensor_delete', 'pressure_sensor_add_and_edit',
-        'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete','pressure_sensor_delete', 'concentrator_model_delete', 'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit', 'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete'],
+        'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete','pressure_sensor_delete', 'concentrator_model_delete',
+        'concentrator_model_add_and_edit', 'meter_model_delete', 'meter_model_add_and_edit', 'meter_add_and_edit',
+        'meter_delete', 'concentrator_add_and_edit', 'concentrator_delete', 'flow_meter_add_and_edit', 'flow_meter_delete',
+        'electric_valve_add_and_edit', 'electric_valve_delete'],
       children: [
 
         //   ,
@@ -511,6 +515,13 @@ const data = [{
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
           showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx']
+        },
+        {
+          name: 'electric_valves_manage',
+          path: 'electric_valves',
+          component: ElectricValve,
+          permissions: [ 'electric_valve_add_and_edit', 'electric_valve_delete'],
+          showCompany: ['zhsgy','amwares','mys','test']
         },
         {
           name: 'temperature_sensors_manage',
