@@ -134,7 +134,7 @@ class AddPoliciesForm extends Component {
             )}
           >
             {getFieldDecorator('hours', {
-              initialValue:  this.props.editModelRecord ? this.props.editModelRecord.hours :0,
+              initialValue:  this.props.editSpecialRecord ? this.props.editSpecialRecord.hours :0,
               rules: [{required: true, message:'异常判断连续小时数'+ formatMessage({id: 'intl.can_not_be_empty'})}],
 
             })(

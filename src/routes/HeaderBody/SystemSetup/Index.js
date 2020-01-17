@@ -8,6 +8,7 @@ import './index.less'
 import NightWarningSetup from './NightWarningSetup'
 import ZeroWarningSetup from './ZeroWarningSetup'
 import Unusual_water from './Unusual_water'
+import AlarmSetup from './AlarmSetup'
 // import MemberMeterSetup from './MemberMeterSetup/Index'
 import LeakWarningSetup from './LeakWarningSetup'
 import VoltageSetup from './VoltageSetup'
@@ -80,6 +81,10 @@ class UserMeterLife extends PureComponent {
               <Route
                 path={`/${company_code}/main/system_manage/system_setup/export_setup`}
                 component={ExportSetup}
+              />
+              <Route
+                path={`/${company_code}/main/system_manage/system_setup/alarm_setup`}
+                component={AlarmSetup}
               />
            {/*   <Route
                 path={`/${company_code}/main/system_manage/system_setup/member_meter_setup`}

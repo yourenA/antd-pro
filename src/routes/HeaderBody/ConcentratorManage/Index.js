@@ -795,7 +795,7 @@ class ConcentratorManage extends PureComponent {
               mapModal: true
             }
           )
-        }}><img src={map} alt="" style={{width:'30px',cursor:'pointer'}} className="concentrator-map"/></div>
+        }}><img src={map} alt="" style={{width:'25px',cursor:'pointer'}} className="concentrator-map"/></div>
       }})
 
     const operate = {

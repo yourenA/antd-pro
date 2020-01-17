@@ -369,7 +369,6 @@ class Main extends PureComponent {
                  <TreeSelect
                    value={this.state.value}
                    style={{width: 150, marginLeft: '10px'}}
-                   treeDefaultExpandAll={true}
                    onChange={(value)=> {
                      this.setState({value});
                      this.onChangeArea(value)
