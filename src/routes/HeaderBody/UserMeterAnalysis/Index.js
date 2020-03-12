@@ -625,9 +625,9 @@ class UserMeterAnalysis extends PureComponent {
           dataIndex: 'install_address',
           key: 'install_address',
           sorter: true,
-          width: 130,
+          width: 200,
           render: (val, record, index) => {
-            return ellipsis2(val, 130)
+            return ellipsis2(val, 200)
           }
         },
         {

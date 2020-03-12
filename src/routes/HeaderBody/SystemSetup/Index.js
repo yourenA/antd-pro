@@ -82,10 +82,10 @@ class UserMeterLife extends PureComponent {
                 path={`/${company_code}/main/system_manage/system_setup/export_setup`}
                 component={ExportSetup}
               />
-              <Route
+             {/* <Route
                 path={`/${company_code}/main/system_manage/system_setup/alarm_setup`}
                 component={AlarmSetup}
-              />
+              />*/}
            {/*   <Route
                 path={`/${company_code}/main/system_manage/system_setup/member_meter_setup`}
                 component={MemberMeterSetup}

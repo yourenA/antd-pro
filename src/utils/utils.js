@@ -362,19 +362,34 @@ export function ellipsis(val, len = 8) {
 
 export function ellipsis2(val, len = 150) {
   if (val !== undefined) {
-    return (
-      <Tooltip
-        placement="topLeft"
-        title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
-        <p style={{
-          display: 'inline-block',
-          width: `${len - 15}px`,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
-        }}>{val}</p>
-      </Tooltip>
-    )
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code==='hngydx'){
+      return (
+        <Tooltip
+          placement="topLeft"
+          title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
+          <p style={{
+            display: 'inline-block',
+            width: `${len - 15}px`,
+          }}>{val}</p>
+        </Tooltip>
+      )
+    }else{
+      return (
+        <Tooltip
+          placement="topLeft"
+          title={<p style={{wordWrap: 'break-word'}}>{val}</p>}>
+          <p style={{
+            display: 'inline-block',
+            width: `${len - 15}px`,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}>{val}</p>
+        </Tooltip>
+      )
+    }
+
   } else {
     return ''
   }

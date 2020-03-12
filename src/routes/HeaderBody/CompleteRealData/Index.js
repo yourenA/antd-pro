@@ -240,8 +240,8 @@ class UserMeterAnalysis extends PureComponent {
       {title: formatMessage({id: 'intl.user_number'}), width: 80, dataIndex: 'member_number', fixed: 'left', render: (text, record, index) => {
         return ellipsis2(text,80)
       }},
-      {title:  formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name', width: 80, fixed:isMobile?'':'left', render: (text, record, index) => {
-        return ellipsis2(text,80)
+      {title:  formatMessage({id: 'intl.user_name'}), dataIndex: 'real_name', key: 'real_name', width: 120, fixed:isMobile?'':'left', render: (text, record, index) => {
+        return ellipsis2(text,120)
       }},
       {title:  formatMessage({id: 'intl.water_meter_number'}), width: 80, dataIndex: 'meter_number', key: 'meter_number', fixed: isMobile?'':'left', render: (text, record, index) => {
         return ellipsis2(text,80)
@@ -254,11 +254,11 @@ class UserMeterAnalysis extends PureComponent {
 
         return ellipsis2(val.join('|'), 100)
       }},
-      {title:  formatMessage({id: 'intl.concentrator_type'}), dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 100, render: (text, record, index) => {
-        return ellipsis2(text,100)
+      {title:  formatMessage({id: 'intl.concentrator_type'}), dataIndex: 'concentrator_model_name', key: 'concentrator_model_name', width: 130, render: (text, record, index) => {
+        return ellipsis2(text,130)
       }},
-      {title:  formatMessage({id: 'intl.meter_type_manage'}), dataIndex: 'meter_model_name', key: 'meter_model_name', width: 100, render: (text, record, index) => {
-        return ellipsis2(text,100)
+      {title:  formatMessage({id: 'intl.meter_type_manage'}), dataIndex: 'meter_model_name', key: 'meter_model_name', width: 130, render: (text, record, index) => {
+        return ellipsis2(text,130)
       },},
       {title:  formatMessage({id: 'intl.concentrator_number'}), dataIndex: 'concentrator_number', key: 'concentrator_number', width: 90, render: (text, record, index) => {
         return ellipsis2(text,90)

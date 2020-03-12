@@ -17,7 +17,8 @@ import {
   Tabs,
   Icon,
   InputNumber,
-  Popconfirm
+  Popconfirm,
+  Tooltip
 } from "antd";
 import {connect} from "dva";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
@@ -28,12 +29,15 @@ import forEach from "lodash/forEach";
 import filter from "lodash/filter";
 import AddOrEditUnusualModels from './addOrEditUnusualModels'
 import AddOrEditUnusualSpecial from './addOrEditUnusualSpecial'
+
 const {Content} = Layout;
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const {TextArea} = Input;
 import {injectIntl} from 'react-intl';
+
 @injectIntl
 @connect(state => ({
   meter_models: state.meter_models,
@@ -47,6 +51,7 @@ class EditPassword extends Component {
       consumption_abnormality_normal_meter_value: {},
       consumption_abnormality_meter_models: {},
       consumption_abnormality_special_meters: {},
+      alarm_contact_numbers: {},
       searchInputValue: '',
       searchSpecialValue: '',
       tableY: 0,
@@ -68,9 +73,10 @@ class EditPassword extends Component {
     request(`/configs?groups[]=consumption_abnormality`, {
       method: 'GET',
       query: {}
-    }).then((response)=> {
+    }).then((response) => {
       console.log(response);
-      this.changeTableY()
+      this.changeTableY();
+      const company_code = sessionStorage.getItem('company_code');
       that.setState({
         consumption_abnormality_alarm_level: find(response.data.data, function (o) {
           return o.name === 'consumption_abnormality_alarm_level'
@@ -84,18 +90,22 @@ class EditPassword extends Component {
         consumption_abnormality_special_meters: find(response.data.data, function (o) {
           return o.name === 'consumption_abnormality_special_meters'
         }),
+        alarm_contact_numbers: find(response.data.data, function (o) {
+          return o.name === 'alarm_contact_numbers'
+        }),
       }, function () {
         const {form} = that.props;
         form.setFieldsValue({
           consumption_abnormality_alarm_level: that.state.consumption_abnormality_alarm_level.value,
           consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
+          alarm_contact_numbers: that.state.alarm_contact_numbers.value,
         });
       })
 
     })
   }
 
-  changeTableY = ()=> {
+  changeTableY = () => {
     this.setState({
       tableY: document.body.offsetHeight - document.querySelector('.system-tabs').offsetTop - (68 + 54 + 50 + 60 + 17)
     })
@@ -106,9 +116,10 @@ class EditPassword extends Component {
     form.setFieldsValue({
       consumption_abnormality_alarm_level: that.state.consumption_abnormality_alarm_level.value,
       consumption_abnormality_normal_meter_value: that.state.consumption_abnormality_normal_meter_value.value,
+      alarm_contact_numbers: that.state.alarm_contact_numbers.value,
     });
   }
-  handleSubmit = ()=> {
+  handleSubmit = () => {
     const that = this;
     this.props.form.validateFields({force: false},
       (err, values) => {
@@ -117,22 +128,23 @@ class EditPassword extends Component {
           method: 'PATCH',
           data: {
             consumption_abnormality_alarm_level: values.consumption_abnormality_alarm_level,
-            consumption_abnormality_normal_meter_value: values.consumption_abnormality_normal_meter_value
+            consumption_abnormality_normal_meter_value: values.consumption_abnormality_normal_meter_value,
+            alarm_contact_numbers: values.alarm_contact_numbers
           }
-        }).then((response)=> {
+        }).then((response) => {
           console.log(response);
 
           if (response.status === 200) {
-            const {intl:{formatMessage}} = that.props;
+            const {intl: {formatMessage}} = that.props;
             message.success(`${formatMessage({id: 'intl.edit'})} ${this.state.consumption_abnormality_normal_meter_value.display_name} ${formatMessage({id: 'intl.successful'})}`)
           }
         })
       }
     );
   }
-  handleSubmitModel = ()=> {
+  handleSubmitModel = () => {
     const that = this;
-    const {intl:{formatMessage}} = that.props;
+    const {intl: {formatMessage}} = that.props;
     const formValues = this.formRef.props.form.getFieldsValue();
     console.log(formValues)
     if (formValues.meter_model_ids.length === 0) {
@@ -145,15 +157,15 @@ class EditPassword extends Component {
       return false
     }
 
-    let newModels=[];
+    let newModels = [];
     for (let i = 0; i < formValues.meter_model_ids.length; i++) {
       const isExit = find(this.state.consumption_abnormality_meter_models.value, function (o) {
         return o.id === formValues.meter_model_ids[i].key;
       });
       if (isExit) {
-        message.error(`${ formValues.meter_model_ids[i].label}${formatMessage({id: 'intl.already_exists'})}`)
+        message.error(`${formValues.meter_model_ids[i].label}${formatMessage({id: 'intl.already_exists'})}`)
         return false
-      }else{
+      } else {
         newModels.push({
           id: formValues.meter_model_ids[i].key,
           value: formValues.value,
@@ -161,7 +173,7 @@ class EditPassword extends Component {
         })
       }
     }
-    this.state.consumption_abnormality_meter_models.value= [...newModels, ...this.state.consumption_abnormality_meter_models.value]
+    this.state.consumption_abnormality_meter_models.value = [...newModels, ...this.state.consumption_abnormality_meter_models.value]
 
     this.setState({
       hadEditModel: true,
@@ -171,8 +183,8 @@ class EditPassword extends Component {
 
 
   }
-  handleSubmitEditModel = ()=> {
-    const {intl:{formatMessage}} = this.props;
+  handleSubmitEditModel = () => {
+    const {intl: {formatMessage}} = this.props;
     const formValues = this.EditformRef.props.form.getFieldsValue();
     if (formValues.value === undefined) {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
@@ -194,8 +206,8 @@ class EditPassword extends Component {
 
     return false
   }
-  handleRemoveModel = (id)=> {
-    const {intl:{formatMessage}} = this.props;
+  handleRemoveModel = (id) => {
+    const {intl: {formatMessage}} = this.props;
     const deleteIndex = findIndex(this.state.consumption_abnormality_meter_models.value, function (o) {
       return o.id === id;
     });
@@ -213,22 +225,21 @@ class EditPassword extends Component {
     }
   }
 
-  saveModel=()=>{
+  saveModel = () => {
     forEach(this.state.consumption_abnormality_meter_models.value, function (item, index) {
       delete item.name;
 
     });
-    const that=this
+    const that = this
     request(`/configs`, {
       method: 'PATCH',
       data: {
         consumption_abnormality_meter_models: this.state.consumption_abnormality_meter_models.value
       }
-    }).then((response)=> {
+    }).then((response) => {
       console.log(response);
       if (response.status === 200) {
-        this.setState({
-        })
+        this.setState({})
         message.success('保存成功')
         that.setState({
           consumption_abnormality_meter_models: find(response.data.data, function (o) {
@@ -239,12 +250,12 @@ class EditPassword extends Component {
       }
     })
   }
-  handleSubmitSpecial = ()=> {
+  handleSubmitSpecial = () => {
     const that = this;
-    const {intl:{formatMessage}} = that.props;
+    const {intl: {formatMessage}} = that.props;
     const formValues = this.specialFormRef.props.form.getFieldsValue();
     console.log(formValues)
-    if (formValues.meter_numbers.length===0) {
+    if (formValues.meter_numbers.length === 0) {
       message.error(`${formatMessage({id: 'intl.water_meter_number'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
@@ -252,16 +263,16 @@ class EditPassword extends Component {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
       return false
     }
-    let newMeters=[];
+    let newMeters = [];
 
     for (let i = 0; i < formValues.meter_numbers.length; i++) {
       const isExit = find(this.state.consumption_abnormality_special_meters.value, function (o) {
         return o.number === formValues.meter_numbers[i];
       });
       if (isExit) {
-        message.error(`${ formValues.meter_numbers[i]}${formatMessage({id: 'intl.already_exists'})}`)
+        message.error(`${formValues.meter_numbers[i]}${formatMessage({id: 'intl.already_exists'})}`)
         return false
-      }else{
+      } else {
         newMeters.push({
           number: formValues.meter_numbers[i],
           value: formValues.value
@@ -269,7 +280,7 @@ class EditPassword extends Component {
       }
     }
 
-    this.state.consumption_abnormality_special_meters.value= [...newMeters, ...this.state.consumption_abnormality_special_meters.value]
+    this.state.consumption_abnormality_special_meters.value = [...newMeters, ...this.state.consumption_abnormality_special_meters.value]
 
     this.setState({
       hadEditSpecial: true,
@@ -279,9 +290,9 @@ class EditPassword extends Component {
 
   }
 
-  handleRemoveSpecial = (number)=> {
+  handleRemoveSpecial = (number) => {
     const that = this;
-    const {intl:{formatMessage}} = that.props;
+    const {intl: {formatMessage}} = that.props;
     const deleteIndex = findIndex(this.state.consumption_abnormality_special_meters.value, function (o) {
       return o.number === number;
     });
@@ -297,9 +308,9 @@ class EditPassword extends Component {
 
     }
   }
-  handleSubmitEditSpecial = ()=> {
+  handleSubmitEditSpecial = () => {
     const that = this;
-    const {intl:{formatMessage}} = that.props;
+    const {intl: {formatMessage}} = that.props;
     const formValues = this.specialEditFormRef.props.form.getFieldsValue();
     if (formValues.value === undefined) {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
@@ -317,18 +328,18 @@ class EditPassword extends Component {
       consumption_abnormality_special_meters: this.state.consumption_abnormality_special_meters
     })
   }
-  saveSpecial=()=>{
+  saveSpecial = () => {
     forEach(this.state.consumption_abnormality_special_meters.value, function (item, index) {
       delete item.name;
       delete item.id;
     });
-    const that=this
+    const that = this
     request(`/configs`, {
       method: 'PATCH',
       data: {
         consumption_abnormality_special_meters: this.state.consumption_abnormality_special_meters.value
       }
-    }).then((response)=> {
+    }).then((response) => {
       console.log(response);
       if (response.status === 200) {
         message.success('保存成功')
@@ -341,17 +352,18 @@ class EditPassword extends Component {
       }
     })
   }
+
   render() {
-    const {intl:{formatMessage}} = this.props;
-    const {meter_models}=this.props
+    const {intl: {formatMessage}} = this.props;
+    const {meter_models} = this.props
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 12},
+        sm: {span: 11},
       },
       wrapperCol: {
         xs: {span: 24},
-        sm: {span: 12},
+        sm: {span: 13},
       }
     };
     const radioStyle = {
@@ -365,6 +377,7 @@ class EditPassword extends Component {
       return o.number.indexOf(that.state.searchInputValue) >= 0
     }) : []
     const Models_dataSource = this.state.consumption_abnormality_meter_models.value ? this.state.consumption_abnormality_meter_models.value : []
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <Layout className="layout">
         <Content style={{background: '#fff'}}>
@@ -381,7 +394,7 @@ class EditPassword extends Component {
                         {...formItemLayoutWithLabel}
                       >
                         {getFieldDecorator('consumption_abnormality_normal_meter_value', {})(
-                          <Input />
+                          <Input/>
                         )}
                       </FormItem>
                       <FormItem
@@ -396,8 +409,23 @@ class EditPassword extends Component {
                           </RadioGroup>
                         )}
                       </FormItem>
+                      {
+                        company_code === 'hngydx' &&
+                        <FormItem
+                          label={<span>{this.state.alarm_contact_numbers.display_name}<Tooltip
+                            title="多个号码之间逗号分隔">
+             <Icon type="question-circle" />
+            </Tooltip></span>}
+                          {...formItemLayoutWithLabel}
+                        >
+                          {getFieldDecorator('alarm_contact_numbers', {})(
+                            <TextArea rows={3}/>
+                          )}
+                        </FormItem>
+                      }
+
                       <FormItem
-                        wrapperCol={ {
+                        wrapperCol={{
                           offset: 10,
                         }}>
                         <Button onClick={this.handleFormReset}>{formatMessage({id: 'intl.reset'})}</Button>
@@ -406,7 +434,8 @@ class EditPassword extends Component {
                       </FormItem>
                     </Form>
                   </TabPane>
-                  <TabPane tab={this.state.consumption_abnormality_meter_models.display_name} key="2"  style={{ background: this.state.hadEditModel ? '#fce4d6' : '#e2efda'}}>
+                  <TabPane tab={this.state.consumption_abnormality_meter_models.display_name} key="2"
+                           style={{background: this.state.hadEditModel ? '#fce4d6' : '#e2efda'}}>
                     <div>
                       <div style={{margin: '0 0 10px 0'}}>
                         <Button onClick={() => {
@@ -429,18 +458,18 @@ class EditPassword extends Component {
                       </div>
                       <div className="alarm-tabs-content">
                         {
-                          Models_dataSource.map((item, index)=> {
+                          Models_dataSource.map((item, index) => {
                             return <div key={index} className="alarm-item">
                               <h2 title={item.name}><Icon type="appstore" style={{marginRight: '5px'}}/>{item.name}</h2>
-                              <p className="alarm-item-value">异常报警值 : <span >{item.value}</span> m³</p>
+                              <p className="alarm-item-value">异常报警值 : <span>{item.value}</span> m³</p>
                               <div className="alarm-item-edit">
                                 <Popconfirm
-                                  title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
-                                  onConfirm={()=> this.handleRemoveModel(item.id)}>
+                                  title={formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
+                                  onConfirm={() => this.handleRemoveModel(item.id)}>
                                   <Button size="small" type="dashed"
                                   >  {formatMessage({id: 'intl.delete'})}</Button>
                                 </Popconfirm>
-                                <Button size="small" type="dashed" onClick={()=> {
+                                <Button size="small" type="dashed" onClick={() => {
                                   this.setState({
                                     editModelRecord: item,
                                     editModelModal: true
@@ -453,10 +482,11 @@ class EditPassword extends Component {
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane tab={this.state.consumption_abnormality_special_meters.display_name} key="3"  style={{ background: this.state.hadEditSpecial ? '#fce4d6' : '#e2efda'}}>
+                  <TabPane tab={this.state.consumption_abnormality_special_meters.display_name} key="3"
+                           style={{background: this.state.hadEditSpecial ? '#fce4d6' : '#e2efda'}}>
                     <div style={{margin: '0 0 10px 0', overflow: 'hidden'}}>
                       <Input placeholder={formatMessage({id: 'intl.water_meter_number'})}
-                             style={{width: '150px', marginRight: '10px'}} onChange={(e)=> {
+                             style={{width: '150px', marginRight: '10px'}} onChange={(e) => {
                         this.setState({
                           searchInputValue: e.target.value,
                         })
@@ -480,20 +510,20 @@ class EditPassword extends Component {
                       }
                     </div>
                     <div className="alarm-tabs-content">
-                    {
-                        Special_dataSource.map((item, index)=> {
+                      {
+                        Special_dataSource.map((item, index) => {
                           return <div key={index} className="alarm-item">
                             <h2 title={item.name}><Icon type="user" style={{marginRight: '5px'}}/>{item.name}</h2>
                             <p className="alarm-item-number">{item.number}</p>
-                            <p className="alarm-item-value">异常报警值 : <span >{item.value}</span> m³</p>
+                            <p className="alarm-item-value">异常报警值 : <span>{item.value}</span> m³</p>
                             <div className="alarm-item-edit">
                               <Popconfirm
-                                title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
-                                onConfirm={()=> this.handleRemoveSpecial(item.number)}>
+                                title={formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.delete'})})}
+                                onConfirm={() => this.handleRemoveSpecial(item.number)}>
                                 <Button size="small" type="dashed"
                                 >  {formatMessage({id: 'intl.delete'})}</Button>
                               </Popconfirm>
-                              <Button size="small" type="dashed" onClick={()=> {
+                              <Button size="small" type="dashed" onClick={() => {
                                 this.setState({
                                   editSpecialRecord: item,
                                   editSpecialModal: true
@@ -518,7 +548,7 @@ class EditPassword extends Component {
                                           wrappedComponentRef={(inst) => this.formRef = inst}/>
                 </Modal>
                 <Modal
-                  key={ Date.parse(new Date()) + 1}
+                  key={Date.parse(new Date()) + 1}
                   title={formatMessage({id: 'intl.edit'}) + " " + this.state.consumption_abnormality_meter_models.display_name}
                   visible={this.state.editModelModal}
                   onOk={this.handleSubmitEditModel}
@@ -536,7 +566,7 @@ class EditPassword extends Component {
                   <AddOrEditUnusualSpecial wrappedComponentRef={(inst) => this.specialFormRef = inst}/>
                 </Modal>
                 <Modal
-                  key={ Date.parse(new Date()) + 2}
+                  key={Date.parse(new Date()) + 2}
                   title={formatMessage({id: 'intl.edit'}) + " " + this.state.consumption_abnormality_special_meters.display_name}
                   visible={this.state.editSpecialModal}
                   onOk={this.handleSubmitEditSpecial}

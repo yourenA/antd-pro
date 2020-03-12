@@ -26,7 +26,7 @@ class SiderNav extends PureComponent {
         {name: formatMessage({id: 'intl.meter_upload_setup'}) , url: 'meter_upload_setup'},
         // {name: '压力/温度传感器设置', url: 'pressure_temperature_setup'},
         {name: formatMessage({id: 'intl.export_setup'}) , url: 'export_setup'},
-        {name: '手机报警', url: 'alarm_setup'},
+       // {name: '手机报警', url: 'alarm_setup'},
         //{name: '水表水量分析页面设置', url: 'member_meter_setup'},
         // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
         //           {name: '邮件通知设置', url: 'email_notice' }
