@@ -61,7 +61,7 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
-    this.changeTableY();
+   
     // this.handleSearch({
     //   page: 1,
     //   meter_number: this.state.meter_number,
@@ -82,8 +82,9 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   changeTableY = ()=> {
+
     this.setState({
-      tableY: document.body.offsetHeight - document.querySelector('.scroll-box').offsetTop - (68 + 54 + 50 + 38 + 5)
+      tableY: document.body.offsetHeight - document.querySelector('.scroll-box').offsetTop - (40+ 54 + 50 + 38 + 5)
     })
   }
 
@@ -104,6 +105,7 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number: '',
       village_id: village_id
     }, function () {
+       this.changeTableY();
       this.handleSearch({
         page: 1,
         site_type:3
@@ -205,7 +207,7 @@ class UserMeterAnalysis extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const {isMobile} =this.props.global;
     const colorList = ['#f56a00', '#00a2ae'];
-
+    
     return (
       <Layout className="layout">
         <Sider
@@ -234,7 +236,7 @@ class UserMeterAnalysis extends PureComponent {
                             clickAdd={()=>this.setState({addModal: true})}/>
                   </div>
                 </div>
-                <div className="scroll-box">
+                <div className="scroll-box" style={{height:this.state.tableY+'px',overflowY: 'scroll'}}>
                   <List
                     rowKey="id"
                     grid={{gutter: 24, xl: 4, lg: 3, md: 2, sm: 2, xs: 1}}

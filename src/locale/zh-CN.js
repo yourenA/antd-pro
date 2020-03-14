@@ -18,6 +18,9 @@ const zh_CN = {
   'intl.search':'搜索',//搜索
   'intl.start':'开始时间',//开始时间
   'intl.end':'结束时间',//结束时间
+  'intl.reset_meter_type':'只重置选择水表类型数据 ',//是
+  'intl.reset_village':'只重置选择小区数据',//是
+  'intl.reset_all':'重置全部',//是
   'intl.yes':'是',//是
   'intl.no':'否',//否
   'intl.sleep':'睡眠',//睡眠

@@ -219,7 +219,31 @@ class UserMeterAnalysis extends PureComponent {
       // area: this.state.area
     }, true)
   }
+  handleRemove = (id)=> {
+    const that = this;
+    this.props.dispatch({
+      type: 'manually_monitoring_meter_data/remove',
+      payload: {
+        id: id,
+      },
+      callback: function () {
+        const {intl:{formatMessage}} = that.props;
+        message.success(
+          formatMessage(
+            {id: 'intl.operate_successful'},
+            {operate: formatMessage({id: 'intl.delete'}), type: '记录'}
+          )
+        )
+         that.handleSearchHistory({
+        page: that.state.page,
+        started_at: that.state.history_started_at ? that.state.history_started_at : moment(that.state.initRange[0]).format('YYYY-MM-DD'),
+        ended_at: that.state.history_ended_at ? that.state.history_ended_at : moment(that.state.initRange[1]).format('YYYY-MM-DD'),
+      }, false, function () {
+      })
 
+      }
+    });
+  }
   render() {
     const {manually_monitoring_meter_data: {data, historyData, loading, historyLoading}, concentrators, meters} = this.props;
     const {intl:{formatMessage}} = this.props;
@@ -381,6 +405,25 @@ class UserMeterAnalysis extends PureComponent {
         )
       }
       },
+      {
+      title: formatMessage({id: 'intl.operate'}),
+      width: 100,
+      fixed: 'right',
+      render: (val, record, index) => (
+        <p>
+         
+          {
+            this.state.showdelBtn &&
+            <Popconfirm placement="topRight"  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.delete'})})}
+                        onConfirm={()=>this.handleRemove(record.id)}>
+              <a href="">{formatMessage({id: 'intl.delete'})}</a>
+            </Popconfirm>
+          }
+
+        </p>
+      ),
+    }
+
 
 
     ];
@@ -492,7 +535,7 @@ class UserMeterAnalysis extends PureComponent {
 
                       }}
                       columns={historyColumns}
-                      scroll={{x: 1100, y: this.state.tableY}}
+                      scroll={{x: 1200, y: this.state.tableY}}
                       pagination={false}
                       size="small"
                     />

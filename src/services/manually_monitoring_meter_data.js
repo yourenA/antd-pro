@@ -18,3 +18,9 @@ export async function queryHistory(params) {
     }
   });
 }
+
+export async function remove({id}) {
+  return request(`/village_meter_historical_data/${id}`, {
+    method: 'DELETE',
+  });
+}

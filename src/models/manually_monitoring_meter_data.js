@@ -1,4 +1,4 @@
-import {query, queryHistory} from '../services/manually_monitoring_meter_data';
+import {query, queryHistory,remove} from '../services/manually_monitoring_meter_data';
 import {parseHistory,Delayering} from './../utils/utils'
 export default {
   namespace: 'manually_monitoring_meter_data',
@@ -88,6 +88,12 @@ export default {
         if (callback) callback();
       }
 
+    },
+     *remove({ payload, callback }, { call, put }) {
+      const response = yield call(remove, payload);
+      if(response.status===200){
+        if (callback) callback();
+      }
     },
   },
 

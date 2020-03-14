@@ -208,7 +208,7 @@ class EditUserArchives extends Component {
             rules: [{required: true}],
           })(
             <Select labelInValue={true} >
-              { [{key:1,label:formatMessage({id: 'intl.yes'})},{key:-1,label:formatMessage({id: 'intl.no'})}].map((item, key) => {
+              { [{key:3,label:formatMessage({id: 'intl.reset_meter_type'})},{key:2,label:formatMessage({id: 'intl.reset_village'})},{key:1,label:formatMessage({id: 'intl.reset_all'})},{key:-1,label:formatMessage({id: 'intl.no'})}].map((item, key) => {
                 return (
                   <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
                 )

@@ -18,6 +18,9 @@ const en_US = {
   'intl.search':'Search',//搜索
   'intl.start':'start',//开始时间
   'intl.end':'end',//结束时间
+  'intl.reset_meter_type':'only reset selected meter type ',//是
+  'intl.reset_village':'only reset selected village',//是
+  'intl.reset_all':'reset all',//是
   'intl.yes':'yes',//是
   'intl.no':'no',//否
   'intl.sleep':'sleep',//睡眠
