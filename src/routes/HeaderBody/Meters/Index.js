@@ -6,7 +6,7 @@ import DefaultSearch from './Search'
 import {connect} from 'dva';
 import moment from 'moment'
 import Sider from './../Sider'
-import {renderIndex, ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis2,renderNotification} from './../../../utils/utils'
 import find from 'lodash/find'
 import AddOrEditForm from './addOrEditMeterModels'
 import ChangeTable from './ChangeTable'
@@ -392,7 +392,7 @@ class MeterModel extends PureComponent {
       sort_direction: order,
     })
   }
-  handleCommand = (record, command)=> {
+  handleCommand = (record, command,renderNotificationObj)=> {
     console.log('command ', command);
     const that = this;
     const {dispatch} = this.props;
@@ -410,6 +410,7 @@ class MeterModel extends PureComponent {
             {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
           )
         )
+        renderNotification(renderNotificationObj)
         that.handleSearch({
           page: that.state.page,
           number: that.state.number,
@@ -716,7 +717,8 @@ class MeterModel extends PureComponent {
                 {record.valve_status === -1 &&
                 <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve'})})}
                             onConfirm={()=> {
-                              this.handleCommand(record, 'open_valve')
+                              const renderNotificationObj={key:'open_valve'+record.number,  message:formatMessage({id: 'intl.open_valve'})+record.number+' 进度'}
+                              this.handleCommand(record, 'open_valve',renderNotificationObj)
                             }}>
                 <span>
                   <a href="javascript:;">{formatMessage({id: 'intl.open_valve'})}</a>
@@ -725,7 +727,8 @@ class MeterModel extends PureComponent {
               {record.valve_status === 1 &&
               <Popconfirm placement="topRight" title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve'})})}
                           onConfirm={()=> {
-                            this.handleCommand(record, 'close_valve')
+                            const renderNotificationObj={key:'close_valve'+record.number,  message:formatMessage({id: 'intl.close_valve'})+record.number+' 进度'}
+                            this.handleCommand(record, 'close_valve',renderNotificationObj)
                           }}>
                 <span>
                    <a href="javascript:;">{formatMessage({id: 'intl.close_valve'})}</a>

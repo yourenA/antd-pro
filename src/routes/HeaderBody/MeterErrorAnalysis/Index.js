@@ -13,7 +13,7 @@ import config from '../../../common/config'
 import uuid from 'uuid/v4'
 import Export from './ExportForm'
 import debounce from 'lodash/throttle'
-import {download, renderErrorData, ellipsis2} from './../../../utils/utils'
+import {download, renderErrorData, ellipsis2,renderNotification} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import Detail from './../UserMeterAnalysis/Detail'
 const {Content} = Layout;
@@ -72,7 +72,7 @@ class UserMeterAnalysis extends PureComponent {
         // disabled:false
         time: new Date().getTime()
       })
-    }, 5000)
+    }, 2000)
   }
 
   componentWillUnmount() {
@@ -232,7 +232,7 @@ class UserMeterAnalysis extends PureComponent {
       per_page: per_page
     })
   }
-  read_single_901f = (command, meter_number)=> {
+  read_single_901f = (command, meter_number,renderNotificationObj)=> {
     const company_code = sessionStorage.getItem('company_code');
     console.log('点抄：', meter_number)
     const {dispatch} = this.props;
@@ -257,6 +257,7 @@ class UserMeterAnalysis extends PureComponent {
             {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
           )
         )
+        renderNotification(renderNotificationObj)
       }
     });
   }
@@ -439,7 +440,9 @@ class UserMeterAnalysis extends PureComponent {
         return (
           <Button loading={isLoading} key={index} type="primary" size="small" style={{marginLeft: 3, marginBottom: 3}}
                   onClick={()=> {
-                    that.read_single_901f(item, record.meter_number)
+                    let renderNotificationObj={key:item.toUpperCase()+record.meter_number,
+                      message:item.toUpperCase()+formatMessage({id: 'intl.upload_single'})+record.meter_number+' 进度'};
+                    that.read_single_901f(item, record.meter_number,renderNotificationObj)
                   }}>{item.toUpperCase()}{formatMessage({id: 'intl.upload_single'})}</Button>
         )
       })

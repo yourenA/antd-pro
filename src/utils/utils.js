@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-import {message, Badge, Tooltip} from 'antd'
+import {message, Badge, Tooltip,Progress,notification} from 'antd'
 import uuid from 'uuid/v4'
 import messageJson from './message.json';
 export function fixedZero(val) {
@@ -600,6 +600,7 @@ export function fillZero(val) {
   return val
 }
 import request from '../utils/request';
+import React from "react";
 export async function processed_request(params) {
   return request(`/processed_abnormalities`,{
     method:'POST',
@@ -694,3 +695,49 @@ export function Delayering(data) {
 }
 
 
+export function renderNotification(renderNotificationObj){
+  let i=0;
+  let percent=0
+  let conf={
+    key:renderNotificationObj.key,
+    message:renderNotificationObj.message,
+    placement:'bottomRight',
+    duration: 10,
+    description:<Progress percent={percent}  size="small" status="active" strokeColor={{
+      '0%': '#108ee9',
+      '100%': '#87d068',
+    }}/>,
+    onClick: () => {
+      clearInterval(timer)
+      console.log('Notification Clicked!');
+    },
+  }
+  notification.open(conf);
+  let arr  = new Array(20).fill(0)
+  for(let i=0;i<100;i++){
+    let num = parseInt(Math.random()*20)
+    arr[num] ++
+  }
+  let timer=setInterval(function () {
+    percent=percent+arr[i]
+    notification.open({
+      key:renderNotificationObj.key,
+      message:renderNotificationObj.message,
+      placement:'bottomRight',
+      duration: 12,
+      description:<Progress percent={percent}  size="small" status="active"  strokeColor={{
+        '0%': '#108ee9',
+        '100%': '#87d068',
+      }}/>,
+      onClick: () => {
+        clearInterval(timer)
+        console.log('Notification Clicked!');
+      },
+    });
+    if(i===19){
+      console.log('clearInterval(timer)')
+      clearInterval(timer)
+    }
+    i=i+1;
+  },500)
+}

@@ -2,7 +2,8 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form,Row,Popconfirm ,Input,Button,Switch} from 'antd';
+import {Form,Row,Popconfirm ,Input,Button,Switch,notification,Progress } from 'antd';
+import {renderNotification} from './../../../utils/utils'
 const FormItem = Form.Item;
 import {injectIntl} from 'react-intl';
 @injectIntl
@@ -22,7 +23,7 @@ class SearchForm extends Component {
         // disabled:false
         time:new Date().getTime()
       })
-    },10000)
+    },1000)
   }
   componentWillUnmount() {
     clearInterval(this.timer)
@@ -51,29 +52,44 @@ class SearchForm extends Component {
     const that=this;
     const renderCommandBtn=command.map((item,index)=>{
       const clickTime=sessionStorage.getItem(`concentrator_number-${item}-${this.props.concentratorNumber}`)
-      const isLoading=clickTime&&this.state.time-clickTime<120000
+      const isLoading=clickTime&&this.state.time-clickTime<10000
       return(
         <Button loading={isLoading} key={index} type="primary" style={{marginLeft: 8}}
-                onClick={()=>{this.setState({ time:new Date().getTime()});this.props.read_multiple_901f(item)}}>
+                onClick={()=>{
+                  that.setState({ time:new Date().getTime()})
+                  let concentratorNumber=that.props.concentratorNumber
+                  const renderNotificationObj={key:item.toUpperCase()+concentratorNumber, message:item.toUpperCase()+formatMessage({id: 'intl.upload_multiple'})+concentratorNumber+' 进度'}
+                  this.props.read_multiple_901f(item,renderNotificationObj)
+                }}>
           {item.toUpperCase()+" "}&nbsp;{formatMessage({id: 'intl.upload_multiple'})+"  "}&nbsp;{this.props.concentratorNumber}</Button>
       )
     })
     const renderOpenValveBtn=function () {
       const clickTime=sessionStorage.getItem(`open_all_valve-${that.props.concentratorNumber}`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
+      const isLoading=clickTime&&that.state.time-clickTime<10000
       return(
       <Popconfirm
         title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.open_valve'})})+that.props.concentratorNumber}
-        onConfirm={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand('open_all_valve')}}>
+        onConfirm={()=>{
+          that.setState({ time:new Date().getTime()});
+          let concentratorNumber=that.props.concentratorNumber
+          const renderNotificationObj={key:'open'+concentratorNumber,  message:formatMessage({id: 'intl.open_valve'})+concentratorNumber+' 进度'}
+          that.props.valveCommand('open_all_valve',renderNotificationObj)
+        }}>
         <Button loading={isLoading}  type="primary" style={{marginLeft: 8}}>{formatMessage({id: 'intl.open_valve'})+"  "} &nbsp;{that.props.concentratorNumber}</Button>
       </Popconfirm>
       )
     }
     const renderCloseValveBtn=function () {
       const clickTime=sessionStorage.getItem(`close_all_valve-${that.props.concentratorNumber}`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
+      const isLoading=clickTime&&that.state.time-clickTime<10000
       return(
-      <Popconfirm         title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.close_valve'})})+that.props.concentratorNumber} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.props.valveCommand( 'close_all_valve')}}>
+      <Popconfirm         title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.close_valve'})})+that.props.concentratorNumber} onConfirm={()=>{
+        that.setState({ time:new Date().getTime()});
+        let concentratorNumber=that.props.concentratorNumber
+        const renderNotificationObj={key:'close'+concentratorNumber,  message:formatMessage({id: 'intl.close_valve'})+concentratorNumber+' 进度'}
+        that.props.valveCommand( 'close_all_valve',renderNotificationObj)
+      }}>
         <Button loading={isLoading}  type="danger" style={{marginLeft: 8}}>{formatMessage({id: 'intl.close_valve'})+" "} &nbsp;{that.props.concentratorNumber}</Button>
       </Popconfirm>
       )

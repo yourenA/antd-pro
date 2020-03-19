@@ -4,7 +4,7 @@ import Pagination from './../../../components/Pagination/Index'
 import DetailSearch from './DetailSearch'
 import AddConcentrator from './AddOrEditConcentrator'
 import Sider from './../Sider'
-import {renderIndex,ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis2, renderNotification} from './../../../utils/utils'
 import {connect} from 'dva';
 import Detail from './Detail'
 import moment from 'moment'
@@ -59,7 +59,7 @@ class UserMeterAnalysis extends PureComponent {
         // disabled:false
         time:new Date().getTime()
       })
-    },3000)
+    },1000)
   }
   changeTableY = ()=> {
     this.setState({
@@ -139,7 +139,7 @@ class UserMeterAnalysis extends PureComponent {
       per_page:per_page
     })
   }
-  read_multiple_901f=(command)=>{
+  read_multiple_901f=(command,renderNotificationObj)=>{
     console.log('集抄：',this.props.concentratorNumber)
     const {dispatch} = this.props;
     const that=this;
@@ -163,10 +163,11 @@ class UserMeterAnalysis extends PureComponent {
             {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
           )
         )
+        renderNotification(renderNotificationObj)
       }
     });
   }
-  read_single_901f=(command,meter_number)=>{
+  read_single_901f=(command,meter_number,renderNotificationObj)=>{
     const company_code = sessionStorage.getItem('company_code');
     console.log('点抄：',meter_number)
     const {dispatch} = this.props;
@@ -191,10 +192,11 @@ class UserMeterAnalysis extends PureComponent {
             {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
           )
         )
+        renderNotification(renderNotificationObj)
       }
     });
   }
-  valveCommand=(command)=>{
+  valveCommand=(command,renderNotificationObj)=>{
     console.log(command,this.props.concentratorNumber)
     const {dispatch} = this.props;
     const that=this;
@@ -217,10 +219,11 @@ class UserMeterAnalysis extends PureComponent {
             {operate: formatMessage({id: 'intl.send'}), type: formatMessage({id: 'intl.command'})}
           )
         )
+        renderNotification(renderNotificationObj)
       }
     });
   }
-  singleValveCommand=(command,meter)=>{
+  singleValveCommand=(command,meter,renderNotificationObj)=>{
     const {dispatch} = this.props;
     const that=this;
     dispatch({
@@ -236,6 +239,7 @@ class UserMeterAnalysis extends PureComponent {
           time:new Date().getTime()
         });
         message.success('发送指令成功')
+        renderNotification(renderNotificationObj)
       }
     });
   }
@@ -252,7 +256,11 @@ class UserMeterAnalysis extends PureComponent {
         return(
           <Button loading={isLoading} key={index} type="primary" size="small"
                   style={{marginBottom:(index===0||record.protocols.length>1)?5:0}}
-                  onClick={()=>{that.read_single_901f(item,record.meter_number)}}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
+                  onClick={()=>{
+                    let renderNotificationObj={key:item.toUpperCase()+record.meter_number,
+                      message:item.toUpperCase()+formatMessage({id: 'intl.upload_single'})+record.meter_number+' 进度'};
+                    that.read_single_901f(item,record.meter_number,renderNotificationObj)
+                  }}>{item.toUpperCase()}&nbsp;{formatMessage({id: 'intl.upload_single'})}</Button>
         )
       })
       return renderCommandBtn
@@ -260,18 +268,28 @@ class UserMeterAnalysis extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const renderOpenValveBtn=function (record) {
       const clickTime=sessionStorage.getItem(`open_valve-selected-${record.meter_number}`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
+      const isLoading=clickTime&&that.state.time-clickTime<10000
       return(
-        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.singleValveCommand('open_valve',record.meter_number)}}>
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.open_valve'})})}
+                     onConfirm={()=>{
+                       that.setState({ time:new Date().getTime()});
+                       let renderNotificationObj={key:'open'+record.meter_number, message:formatMessage({id: 'intl.open_valve'})+record.meter_number+' 进度'}
+                       that.singleValveCommand('open_valve',record.meter_number,renderNotificationObj)
+                     }}>
           <Button size="small" loading={isLoading}  type="primary" >{isLoading?'':''}{formatMessage({id: 'intl.open_valve'})}</Button>
         </Popconfirm>
       )
     }
     const renderCloseValveBtn=function (record) {
       const clickTime=sessionStorage.getItem(`close_valve-selected-${record.meter_number}`)
-      const isLoading=clickTime&&that.state.time-clickTime<12000
+      const isLoading=clickTime&&that.state.time-clickTime<10000
       return(
-        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve'})})} onConfirm={()=>{that.setState({ time:new Date().getTime()});that.singleValveCommand( 'close_valve',record.meter_number)}} >
+        <Popconfirm  title={ formatMessage({id: 'intl.are_you_sure_to'},{operate:formatMessage({id: 'intl.close_valve'})})}
+                     onConfirm={()=>{that.setState({ time:new Date().getTime()});
+                       that.setState({ time:new Date().getTime()});
+                       let renderNotificationObj={key:'close'+record.meter_number, message:formatMessage({id: 'intl.close_valve'})+record.meter_number+' 进度'}
+                       that.singleValveCommand( 'close_valve',record.meter_number,renderNotificationObj)
+                     }} >
           <Button size="small"  loading={isLoading}  type="danger" >{isLoading?'':''}{formatMessage({id: 'intl.close_valve'})}</Button>
         </Popconfirm>
       )

@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {Form, Row, Input, Button, Switch, Icon, Modal, Popconfirm, message} from 'antd';
 import {injectIntl} from 'react-intl';
 import {connect} from 'dva';
+import {renderNotification} from './../../../utils/utils'
+
 const FormItem = Form.Item;
 
 @connect(state => ({}))
@@ -50,7 +52,7 @@ class SearchForm extends Component {
     form.resetFields();
     this.props.handleFormReset()
   }
-  valveCommand = (command)=> {
+  valveCommand = (command,renderNotificationObj)=> {
     const {dispatch} = this.props;
     const that = this;
     dispatch({
@@ -66,6 +68,7 @@ class SearchForm extends Component {
           time: new Date().getTime()
         });
         message.success('发送指令成功')
+        renderNotification(renderNotificationObj)
       }
     });
   }
@@ -83,7 +86,8 @@ class SearchForm extends Component {
           title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.open_valve_batch'})})}
           onConfirm={()=> {
             that.setState({time: new Date().getTime()});
-            that.valveCommand('open_valve')
+            const renderNotificationObj={key:'open_valve_batch',  message:formatMessage({id: 'intl.open_valve_batch'})+' 进度'}
+            that.valveCommand('open_valve',renderNotificationObj)
           }}>
           <Button loading={isLoading} type="primary"
                   style={{marginLeft: 8}}>{isLoading ? '' : ''}{formatMessage({id: 'intl.open_valve_batch'})} {that.props.concentratorNumber}</Button>
@@ -98,7 +102,8 @@ class SearchForm extends Component {
           title={ formatMessage({id: 'intl.are_you_sure_to'}, {operate: formatMessage({id: 'intl.close_valve_batch'})})}
           onConfirm={()=> {
             that.setState({time: new Date().getTime()});
-            that.valveCommand('close_valve')
+            const renderNotificationObj={key:'close_valve_batch',  message:formatMessage({id: 'intl.close_valve_batch'})+' 进度'}
+            that.valveCommand('close_valve',renderNotificationObj)
           }}>
           <Button loading={isLoading} type="danger"
                   style={{marginLeft: 8}}>{isLoading ? '' : ''}{formatMessage({id: 'intl.close_valve_batch'})} {that.props.concentratorNumber}</Button>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Tabs,DatePicker,Button,Table,Badge,Modal ,message,Alert} from 'antd';
+import { Tabs,DatePicker,Button,Table,Badge,Modal ,message,Radio,Row, Col} from 'antd';
 import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
@@ -12,6 +12,14 @@ import DelMeterValueForm from './DelMeterValueForm'
 import EditUnusualSpecial from './editUnusualSpecial'
 import find from 'lodash/find'
 import findIndex from 'lodash/findIndex'
+import padStart from 'lodash/padStart'
+import ReactFC from "react-fusioncharts";
+import FusionCharts from "fusioncharts";
+import styles from './index.less'
+import Column2D from "fusioncharts/fusioncharts.charts";
+import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+
+ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 const TabPane = Tabs.TabPane;
 import {injectIntl} from 'react-intl';
 @injectIntl
@@ -27,7 +35,11 @@ class Detail extends PureComponent {
     this.permissions =  JSON.parse(sessionStorage.getItem('permissions'));
     this.state = {
       Data:[],
+      totalDate:[],
+      diffDate:[],
       difference_value:0,
+      cicle:0,
+      mysActiveType:'diff',
       showEditBtn: find(this.permissions, {name: 'meter_data_edit'}),
       showdelBtn: find(this.permissions, {name: 'meter_data_delete'}),
       rangePickerValue: [moment(new Date().getFullYear() + '-' + (parseInt(new Date().getMonth()) + 1) + '-' + '01', 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
@@ -51,14 +63,28 @@ class Detail extends PureComponent {
         return:'all'
       }
     }).then((response)=>{
-
       console.log(response);
       if(response.status===200){
         this.setState({
           Data:response.data
         })
         if(cb){ cb()}
-        that.dynamic(response.data)
+        const company_code = sessionStorage.getItem('company_code');
+
+        if(company_code==='mys'){
+          let difference_value=0
+          forEach(response.data,(value,index)=>{
+            difference_value=(difference_value+value.difference_value).toFixed(10)-0
+          })
+          this.setState({
+            cicle:document.querySelector('#cicle').offsetWidth
+          })
+          this.setState({difference_value:difference_value})
+
+        }else{
+          that.dynamic(response.data)
+        }
+
       }
 
     });
@@ -190,7 +216,6 @@ class Detail extends PureComponent {
   isActive(type) {
     const {rangePickerValue} = this.state;
     const value = getTimeDistance(type);
-    console.log('value',value)
     if (!rangePickerValue[0] || !rangePickerValue[1]) {
       return false;
     }
@@ -376,6 +401,37 @@ class Detail extends PureComponent {
       },
     ];
     const company_code = sessionStorage.getItem('company_code');
+    const chartConfigs = {
+      type: "column3d", // The chart type
+      width: "100%", // Width of the chart
+      height: this.props.tableY, // Height of the chart
+      dataFormat: "json", // Data type
+      dataSource: {
+        // Chart Configuration
+        chart: {
+          //Set the chart caption
+          caption: this.state.mysActiveType==='diff'?"每日用水量":"水表读数",
+          //Set the chart subcaption
+          //Set the x-axis name
+          xAxisName: "日期",
+          //Set the y-axis name
+          numberSuffix: " T",
+          //Set the theme for your chart
+          theme: "fusion",
+          canvasbgColor: "#29b720",
+          canvasbgAlpha: "10",
+        },
+        // Chart Data
+        data: this.state.Data.reduce((pre,item)=>{
+          pre.push({
+            label: item.date.slice(5),
+            value: this.state.mysActiveType==='diff'?item.difference_value:item.value,
+            color:(item.status===-2||item.status===-4)?'#c23531':item.status===-1?'#faad14':''
+          })
+          return pre
+        },[])
+      }
+    };
     return (
       <div>
         <div >
@@ -404,7 +460,7 @@ class Detail extends PureComponent {
             placeholder={formatMessage({id: 'intl.end'})}
             onChange={(e)=>this.handleRangePickerChange(e,'end')}
           />
-          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>{formatMessage({id: 'intl.total_water_consumption'})}:{this.state.difference_value}</span>
+          <span style={{fontSize:'16px',padding:'3px 5px',marginLeft:'5px',fontWeight:'500'}}>{formatMessage({id: 'intl.total_water_consumption'})}:{this.state.difference_value} T</span>
           {/*<RangePicker
             disabledDate={disabledDate}
             value={this.state.rangePickerValue}
@@ -424,7 +480,35 @@ class Detail extends PureComponent {
             <Button  type="primary" onClick={this.props.operateValueAnalysis}>水量分析</Button>
           </div>:null
         } >
-          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1">  <div className="month-analysis" style={{height:this.props.tableY+'px'}}></div></TabPane>
+          <TabPane tab={formatMessage({id: 'intl.line_chart'})} key="1">
+            {
+              company_code==='mys'?
+                <Row gutter={16}>
+                  <Col className="gutter-row" span={18}>
+                    <Radio.Group value={this.state.mysActiveType} onChange={(e)=>{
+                      this.setState({
+                        mysActiveType:e.target.value
+                      })
+                    }} buttonStyle="solid">
+                      <Radio.Button value="diff">每日用水量</Radio.Button>
+                      <Radio.Button value="total">水表读数</Radio.Button>
+                    </Radio.Group>
+                    <ReactFC {...chartConfigs} />
+                  </Col>
+                  <Col className="gutter-row" span={6}>
+                    <div className={styles.mys_meter} id={'cicle'} style={{height:this.state.cicle+'px'}}>
+                      <div className={styles.mys_meter_content}>
+                        <p>{this.state.Data[this.state.Data.length-1]&&
+                        padStart(this.state.Data[this.state.Data.length-1].value.toFixed(2), 9,0)}</p>
+                      </div>
+                    </div>
+                  </Col>
+
+                </Row>:
+                <div className="month-analysis" style={{height:this.props.tableY+'px'}}></div>
+            }
+
+          </TabPane>
           <TabPane tab={formatMessage({id: 'intl.table'})} key="2">
             <Table
               className={'meter-table'}

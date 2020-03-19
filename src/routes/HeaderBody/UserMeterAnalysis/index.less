@@ -1,0 +1,40 @@
+@font-face {
+  font-family: yjsz;
+  src: url('../../../fonts/yjsz.TTF')
+}
+.mys_meter{
+  margin: 0 auto;
+  width: 100%;
+  max-width: 250px;
+  max-height: 250px;
+  border-radius: 50%;
+  background: #be725a;
+  position: relative;
+  overflow: hidden;
+  margin-top: 105px;
+  box-shadow: 0px 8px 5px #999;
+}
+.mys_meter_content{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #4b4b4b;
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+  font-size: 48px;
+  font-family: yjsz;
+  letter-spacing:5px;
+
+  &:after{
+    content:"当前水表读数";
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+  }
+}
+.mys_meter_tip{
+
+}
