@@ -276,7 +276,9 @@ class UserMeterAnalysis extends PureComponent {
         ...formValues,
         started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
         ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
-        village_id: formValues.village_id ? formValues.village_id[formValues.village_id.length - 1] : ''
+        village_id: formValues.village_id ? formValues.village_id: '',
+        size_type: formValues.size_type ? formValues.size_type.key : '',
+        temperature_type: formValues.temperature_type ? formValues.temperature_type.key : '',
       },
       callback: function (download_key) {
         download(`${config.prefix}/download?download_key=${download_key}`)
@@ -292,17 +294,6 @@ class UserMeterAnalysis extends PureComponent {
       data[i].uuidkey = uuid()
     }
     const columns = [
-      // {
-      //   title: '序号',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: 50,
-      //   className: 'table-index',
-      //   fixed: 'left',
-      //   render: (text, record, index) => {
-      //     return renderIndex(meta,this.state.initPage,index)
-      //   }
-      // },
       {
         title: formatMessage({id: 'intl.concentrator_number'}),
         width: 100,
@@ -430,6 +421,25 @@ class UserMeterAnalysis extends PureComponent {
       {title: formatMessage({id: 'intl.vendor_name'}), dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
 
     ];
+    if(company_code==='mys'){
+      columns.splice(7,0,   {
+        title: formatMessage({id: 'intl.Temperature_medium_type'}),
+        width: 100,
+        dataIndex: 'temperature_type_explain',
+        key: 'temperature_type_explain',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      },{
+        title: '尺寸类型',
+        width: 100,
+        dataIndex: 'size_type_explain',
+        key: 'size_type_explain',
+        render: (val, record, index) => {
+          return ellipsis2(val, 100)
+        }
+      })
+    }
     const that = this;
     const renderComandRecord = (record)=> {
       const command = record.protocols;
@@ -515,7 +525,7 @@ class UserMeterAnalysis extends PureComponent {
                       </div>
                       <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                        dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                       scroll={{x: 2000, y: this.state.tableY}}
+                                       scroll={{x: 2050, y: this.state.tableY}}
                                        history={this.props.history}
                                        operate={operate}
                                        canOperate={this.state.canOperate}
