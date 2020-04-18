@@ -36,6 +36,8 @@ class SearchForm extends Component {
         member_number: fieldsValue.member_number,
         meter_number: fieldsValue.meter_number,
         manufacturer_id: fieldsValue.manufacturer_id ? fieldsValue.manufacturer_id.key : '',
+        size_type: fieldsValue.size_type ? fieldsValue.size_type.key : '',
+        temperature_type: fieldsValue.temperature_type ? fieldsValue.temperature_type.key : '',
         started_at: fieldsValue['started_at'] ? moment(fieldsValue['started_at']).format('YYYY-MM-DD') : '',
         ended_at: fieldsValue['ended_at'] ? moment(fieldsValue['ended_at']).format('YYYY-MM-DD') : '',
       };
@@ -111,6 +113,34 @@ class SearchForm extends Component {
             })(
               <Select allowClear={true} labelInValue={true} style={{width: 120}}>
                 { this.props.manufacturers.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            label={'尺寸类型'}
+            style={{display: expand ? 'inline-block' : 'none'}}>
+            {getFieldDecorator('size_type', {
+              initialValue:{key:'',label:''},
+            })(
+              <Select
+                allowClear={true}
+                labelInValue={true} style={{width: 120}}
+              >
+                { [{id:1,name:'小表'},{id:2,name:'大表'}].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            label={'温度介质类型'}
+            style={{display: expand ? 'inline-block' : 'none'}}>
+            {getFieldDecorator('temperature_type', {
+              initialValue:{key:'',label:''},
+            })(
+              <Select
+                allowClear={true}
+                labelInValue={true} style={{width: 120}}
+              >
+                {[{id:1,name:'冷水表'},{id:2,name:'热水表'}].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
               </Select>
             )}
           </FormItem>

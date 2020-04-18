@@ -73,7 +73,7 @@ class AddPoliciesForm extends Component {
       request(`/concentrators`, {
         method: 'get',
         params: {
-          village_id:value?value[value.length-1]:'',
+          village_id:value?value:'',
           return:'all'
         }
       }).then((response)=> {
@@ -138,8 +138,25 @@ class AddPoliciesForm extends Component {
             </Select>
           )}
         </FormItem>
-
         <FormItem
+          {...formItemLayoutWithLabel}
+          label={(
+            <span>
+              {formatMessage({id: 'intl.village_name'})}
+            </span>
+          )}>
+          {getFieldDecorator('village_id', {
+            initialValue:[],
+          })(
+            <TreeSelect
+              allowClear
+              onChange={this.onChangeCasader}
+            >
+              {this.renderTreeNodes(data)}
+            </TreeSelect>
+          )}
+        </FormItem>
+      {/*  <FormItem
           {...formItemLayoutWithLabel}
           label={(
             <span>
@@ -150,7 +167,7 @@ class AddPoliciesForm extends Component {
           })(
             <Cascader onChange={this.onChangeCasader} options={this.renderTreeSelect(data)} placeholder="请选择"/>
           )}
-        </FormItem>
+        </FormItem>*/}
         <FormItem
           label={formatMessage({id: 'intl.concentrator_number'})}
           {...formItemLayoutWithLabel}
@@ -165,6 +182,34 @@ class AddPoliciesForm extends Component {
               }
             >
               { this.state.concentrators.map(item => <Option key={item.id} value={item.number}>{item.number}</Option>) }
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          label={'尺寸类型'}
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('size_type', {
+            initialValue:{key:'',label:''},
+          })(
+            <Select
+              labelInValue={true}
+            >
+              { [{id:1,name:'小表'},{id:2,name:'大表'}].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          label={'温度介质类型'}
+          {...formItemLayoutWithLabel}
+        >
+          {getFieldDecorator('temperature_type', {
+            initialValue:{key:'',label:''},
+          })(
+            <Select
+              labelInValue={true}
+            >
+              { [{id:1,name:'冷水表'},{id:2,name:'热水表'}].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
             </Select>
           )}
         </FormItem>
