@@ -222,7 +222,7 @@ class AddPoliciesForm extends Component {
               {name:'90EF不带每小时用水量大表',key:4},
               {name:'90EF带15分钟用水量大表',key:5},
               {name:'Lorawan',key:7},
-              {name:'东剑水表',key:8}].map((item, key) => {
+              {name:'迈拓水表',key:8}].map((item, key) => {
                 return (
                   <Option key={item.key} value={item.key.toString()}>{item.name}</Option>
                 )
