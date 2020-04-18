@@ -212,7 +212,7 @@ class AddPoliciesForm extends Component {
         >
           {getFieldDecorator('protocol_number', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.protocol_number.toString(),label:this.props.editRecord.protocol_number.toString()}:
-            company_code==='nxzw'?{key:'8',label:'东剑水表'}:{key:'',label:''},
+            company_code==='nxzw'?{key:'8',label:'迈拓水表'}:{key:'',label:''},
           })(
             <Select allowClear={true} labelInValue={true} >
               { [
