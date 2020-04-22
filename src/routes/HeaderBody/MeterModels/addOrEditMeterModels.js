@@ -212,7 +212,7 @@ class AddPoliciesForm extends Component {
         >
           {getFieldDecorator('protocol_number', {
             initialValue: this.props.editRecord?{key:this.props.editRecord.protocol_number.toString(),label:this.props.editRecord.protocol_number.toString()}:
-            company_code==='nxzw'?{key:'8',label:'东剑水表'}:{key:'',label:''},
+            company_code==='nxzw'?{key:'8',label:'迈拓水表'}:{key:'',label:''},
           })(
             <Select allowClear={true} labelInValue={true} >
               { [
@@ -222,7 +222,7 @@ class AddPoliciesForm extends Component {
               {name:'90EF不带每小时用水量大表',key:4},
               {name:'90EF带15分钟用水量大表',key:5},
               {name:'Lorawan',key:7},
-              {name:'东剑水表',key:8}].map((item, key) => {
+              {name:'迈拓水表',key:8}].map((item, key) => {
                 return (
                   <Option key={item.key} value={item.key.toString()}>{item.name}</Option>
                 )
