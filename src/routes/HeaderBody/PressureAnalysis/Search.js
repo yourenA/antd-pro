@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Col, Input, Button, Switch} from 'antd';
+import {Form, DatePicker, Row, Col, Input, Button, Switch,Tabs} from 'antd';
 import moment from 'moment'
 import {disabledDate} from './../../../utils/utils'
 

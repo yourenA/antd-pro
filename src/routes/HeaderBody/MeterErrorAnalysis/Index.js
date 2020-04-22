@@ -421,10 +421,10 @@ class UserMeterAnalysis extends PureComponent {
       {title: formatMessage({id: 'intl.vendor_name'}), dataIndex: 'manufacturer_name', key: 'manufacturer_name'},
 
     ];
-    if(company_code==='mys'){
+    if(company_code==='mys'||company_code==='hngydx'){
       columns.splice(7,0,   {
         title: formatMessage({id: 'intl.Temperature_medium_type'}),
-        width: 100,
+        width: 120,
         dataIndex: 'temperature_type_explain',
         key: 'temperature_type_explain',
         render: (val, record, index) => {
@@ -525,7 +525,7 @@ class UserMeterAnalysis extends PureComponent {
                       </div>
                       <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                        dataSource={data} columns={columns} rowKey={record => record.uuidkey}
-                                       scroll={{x: 2050, y: this.state.tableY}}
+                                       scroll={{x: 2150, y: this.state.tableY}}
                                        history={this.props.history}
                                        operate={operate}
                                        canOperate={this.state.canOperate}
