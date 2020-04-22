@@ -29,7 +29,29 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="402" selection-start-line="402" selection-end-line="407" selection-end-column="7" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/addOrEditMeterModels.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="319">
+              <caret line="213" column="60" lean-forward="true" selection-start-line="213" selection-start-column="60" selection-end-line="213" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -69,8 +91,8 @@
       <find>compa</find>
       <find>Resizable</find>
       <find>ResizableBox</find>
-      <find>mys</find>
       <find>tabs</find>
+      <find>mys</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -85,7 +107,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/Sider.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/CompleteRealData/Chart.js" />
         <option value="$PROJECT_DIR$/src/locale/zh-CN.js" />
         <option value="$PROJECT_DIR$/src/services/electric_valves.js" />
@@ -136,6 +157,7 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Search.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Search.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/addOrEditMeterModels.js" />
       </list>
     </option>
   </component>
@@ -174,26 +196,7 @@
               <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
               <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-              <item name="Exception" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
@@ -208,7 +211,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
               <item name="HeaderBody" type="462c0819:PsiDirectoryNode" />
-              <item name="PressureAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="MeterModels" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -990,6 +993,7 @@
       <workItem from="1587114467159" duration="819000" />
       <workItem from="1587350236061" duration="6687000" />
       <workItem from="1587435851549" duration="871000" />
+      <workItem from="1587526570389" duration="1711000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -1009,7 +1013,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3693202000" />
+    <option name="totallyTimeSpent" value="3694913000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
@@ -1104,9 +1108,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditUnusualModels.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/SystemSetup/addOrEditPhone.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1479">
@@ -1449,13 +1450,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="1" column="11" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/PressureAnalysis/Index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1493,6 +1487,23 @@
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterErrorAnalysis/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="402" selection-start-line="402" selection-end-line="407" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/MeterModels/addOrEditMeterModels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="213" column="60" lean-forward="true" selection-start-line="213" selection-start-column="60" selection-end-line="213" selection-end-column="60" />
         </state>
       </provider>
     </entry>
