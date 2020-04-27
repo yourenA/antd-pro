@@ -232,7 +232,7 @@ export function disabledDate(current) {
 }
 
 export function disabledPreDate(current) {
-  return (current && current > moment().add(-1, 'days')) || (current && current < moment('2017-10-01'));
+  return (current && current > moment()) || (current && current < moment('2017-10-01'));
 }
 
 export function getPreMonth() {

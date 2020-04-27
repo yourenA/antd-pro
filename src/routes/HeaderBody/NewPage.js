@@ -39,7 +39,7 @@ class Main extends PureComponent {
       server: {},
       last30day: [],
       last12month: [],
-      initDate:moment().add(-1, 'days'),
+      initDate:moment(),
       village_id:'',
       manufacturer_id:''
     }
@@ -96,6 +96,7 @@ class Main extends PureComponent {
   }
   getHomepage=(date)=>{
     const that = this;
+    console.log('moment(this.state.date).format("YYYY-MM-DD")',moment(this.state.date).format("YYYY-MM-DD"))
     request(`/homepage`, {
       method: 'GET',
       params:{
