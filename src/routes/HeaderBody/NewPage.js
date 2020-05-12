@@ -41,7 +41,8 @@ class Main extends PureComponent {
       last12month: [],
       initDate:moment(),
       village_id:'',
-      manufacturer_id:''
+      manufacturer_id:''  ,
+      totalData:0
     }
   }
 
@@ -65,8 +66,8 @@ class Main extends PureComponent {
         console.log('callback')
         const {sider_regions:{data}}=that.props;
         if(data.length>0){
-          this.setState({value: data[0].id});
-          that.onChangeArea(data[0].id)
+          this.setState({value: ''});
+          that.onChangeArea('')
         }
 
       }
@@ -112,6 +113,27 @@ class Main extends PureComponent {
         meter: response.data.meter,
         server: response.data.server
       })
+    })
+
+    request(`/meter_model_meter_data`, {
+      method: 'GET',
+      params: {
+        village_id: '',
+        interval: 'day',
+        started_at: moment(this.state.date).format("YYYY-MM-DD"),
+        ended_at:moment(this.state.date).format("YYYY-MM-DD"),
+      }
+    }).then((response)=> {
+      let data=0
+      for(let i=0;i<response.data.length;i++){
+        for (let j=0;j<response.data[i].detail.length;j++){
+          data=data+response.data[i].detail[j].difference_value
+        }
+      }
+      that.setState({
+        totalData:data
+      })
+      console.log('totalData',response);
     })
   }
   onChangeArea = (value)=> {
@@ -207,10 +229,10 @@ class Main extends PureComponent {
       pawerByText='珠华水工业';
     }
     return (
-      <div className={styles.main}>
-        <Collapse activeKey={['1']} style={{marginBottom:'16px'}}>
-          <Panel header={<h3 style={{fontSize:'18px'}}><DatePicker allowClear={false}  style={{marginRight:'8px'}} defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
-          </h3>} key="1" showArrow={false}>
+      <div className={`${styles.main} homepage-content`}>
+        <div  style={{marginBottom:'16px'}}>
+          <h3 style={{fontSize:'18px',color:'#fff',marginBottom:'12px'}}><DatePicker allowClear={false}  style={{marginRight:'8px',width:'130px'}} defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
+          </h3>
             {
               company_code==='hy'&&
               <div   style={{marginBottom:'12px'}}>
@@ -232,26 +254,38 @@ class Main extends PureComponent {
 
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem1}`}>
-                  <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>
-                  <div className={styles.explain}>{formatMessage({id: 'intl.total_number_of_concentrators'})}</div>
+                  <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_22.png" alt=""/></div>
+                  <div>
+                    <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>
+                    <div className={styles.explain}>{formatMessage({id: 'intl.total_number_of_concentrators'})}</div>
+                  </div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
-                  <div className={styles.count}><CountUp   decimals={2} end={parseFloat(this.state.concentrator.yesterday_excellent_rate)||0} />%</div>
-                  <div className={styles.explain}>{formatMessage({id: 'intl.concentrator_online_rate'})}</div>
+                  <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_1.png" alt=""/></div>
+                  <div>
+                    <div className={styles.count}><CountUp   decimals={2} end={parseFloat(this.state.concentrator.yesterday_excellent_rate)||0} />%</div>
+                    <div className={styles.explain}>{formatMessage({id: 'intl.concentrator_online_rate'})}</div>
+                  </div>
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem2}`}>
-                  <div className={styles.count}><CountUp end={this.state.meter.total_count||0} /></div>
+                  <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_6.png" alt=""/></div>
+                  <div>
+                    <div className={styles.count}><CountUp end={this.state.meter.total_count||0} /></div>
                   <div className={styles.explain}>{formatMessage({id: 'intl.total_number_of_water_meter'})}</div>
+                  </div>
                 </div>
               </Col>
             <Col xl={6} lg={6} md={12} sm={24}>
                 <div className={`${styles.topItem} ${styles.topItem3}`}>
-                  <div className={styles.count}><CountUp  decimals={2}  end={parseFloat(this.state.meter.yesterday_upload_rate)||0}/>%</div>
-                  <div className={styles.explain}>{formatMessage({id: 'intl.water_meter_online_rate'})}</div>
+                  <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_11.png" alt=""/></div>
+                  <div>
+                    <div className={styles.count}><CountUp  decimals={2}  end={parseFloat(this.state.meter.yesterday_upload_rate)||0}/>%</div>
+                    <div className={styles.explain}>{formatMessage({id: 'intl.water_meter_online_rate'})}</div>
+                  </div>
                 </div>
               </Col>
 
@@ -271,7 +305,7 @@ class Main extends PureComponent {
             <Row gutter={16}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Card
-                  title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                  title={<span><Icon type='bar-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                     {formatMessage({id: 'intl.concentrator_online_statistics'})}
                   </span>}
                   bodyStyle={{padding: 0}}
@@ -282,18 +316,17 @@ class Main extends PureComponent {
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Card
-                  title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                  title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                     {formatMessage({id: 'intl.water_meter_status_statistics'})}
                     </span>}
                   bodyStyle={{padding: 0}}
                   style={{minHeight: 'auto'}}
                 >
-                  <Proportion meter={this.state.meter}/>
+                  <Proportion totalData={this.state.totalData} meter={this.state.meter}/>
                 </Card>
               </Col>
               </Row>
-          </Panel>
-        </Collapse>
+        </div>
 
         <Row gutter={16}>
           {/*  {
@@ -315,7 +348,7 @@ class Main extends PureComponent {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
                 bordered={false}
-                title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
 
                   {formatMessage({id: 'intl.water_meter_online_rate'})}
                   </span>}
@@ -331,8 +364,7 @@ class Main extends PureComponent {
             prefix === 'http://api.water.test.com' &&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
-                bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                   {formatMessage({id: 'intl.water_meter_online_rate'})}
                   </span>}
                 bodyStyle={{padding: 0}}
@@ -364,10 +396,10 @@ class Main extends PureComponent {
           </Col>*/}
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card
-              bordered={false}
-              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+              title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                 {formatMessage({id: 'intl.water_consumption_of_each_type_of_water_meter'})}
                  <TreeSelect
+                   allowClear={true}
                    value={this.state.value}
                    style={{width: 150, marginLeft: '10px'}}
                    onChange={(value)=> {
@@ -386,8 +418,7 @@ class Main extends PureComponent {
           </Col>
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
-              bordered={false}
-              title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+              title={<span><Icon type='pie-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                 {formatMessage({id: 'intl.Manufacturer_concentrator/water_meter_number'})}
                 </span>}
               bodyStyle={{padding: 12}}
@@ -402,9 +433,8 @@ class Main extends PureComponent {
                 extra={<a href="javascript:;" onClick={()=> {
                   dispatch(routerRedux.push(`/${company_code}/main/run_manage/DMA/DMA_data`));
                 }}>查看详情</a>}
-                bordered={false}
                 title={<span><Icon type='area-chart'
-                                   style={{marginRight: '5px', color: '#1890ff'}}/>
+                                   style={{marginRight: '5px', color: '#24fff9'}}/>
                   {formatMessage({id: 'intl.5_DMA_water_consumption'})}
                   </span>}
                 style={{marginBottom: 16, minHeight: 'auto'}}
@@ -417,8 +447,7 @@ class Main extends PureComponent {
             (company_code === 'mys')  &&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
-                bordered={false}
-                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#1890ff'}}/>
+                title={<span><Icon type='area-chart' style={{marginRight: '5px', color: '#24fff9'}}/>
                   {formatMessage({id: 'intl.current_level_sensor_value'})}
                   </span>}
                 bodyStyle={{padding: 12}}
@@ -432,8 +461,7 @@ class Main extends PureComponent {
             (company_code === 'mys')  &&
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Card
-                bordered={false}
-                title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#1890ff'}}/>
+                title={<span><Icon type='area-pie' style={{marginRight: '5px', color: '#24fff9'}}/>
                   {formatMessage({id: 'intl.current_valve_sensor_opening_value'})}
                   </span>}
                 bodyStyle={{padding: 12}}
@@ -457,7 +485,7 @@ class Main extends PureComponent {
         </Row>
         <GlobalFooter
           copyright={
-            <div>
+            <div style={{color:'#fff'}}>
               powered by  {pawerByText}
             </div>
           }

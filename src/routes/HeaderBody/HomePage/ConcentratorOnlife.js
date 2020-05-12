@@ -32,28 +32,67 @@ export default class EndpointsList extends PureComponent {
     this.myChart = this.echarts.init(document.querySelector('.concentratorOnline'));
     console.log(concentrator)
     let option = {
-      backgroundColor: '#eee',
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
       },
+
       grid: {
         top: 70
       },
       legend: {
         left: 'left',
-        data: [formatMessage({id: 'intl.online'}), formatMessage({id: 'intl.sleep'}),formatMessage({id: 'intl.offline'}) ]
+        top:5,
+        data: [formatMessage({id: 'intl.online'}), formatMessage({id: 'intl.sleep'}),formatMessage({id: 'intl.offline'}) ],
+        textStyle:{
+          color:'#fff'
+        }
+
       },
       yAxis: {
         type: 'value',
         name: formatMessage({id: 'intl.concentrator_count'}),
+        nameTextStyle:{
+          color:'#fff'
+        },
+        axisLabel:{
+          textStyle:{
+            color:'#fff'
+          }
+        },
+        lineStyle:{
+          color:'#fff'
+        },
+        axisLine:{
+          lineStyle:{
+            color:'#fff'
+          }
+        }
       },
       xAxis : {
         name:  formatMessage({id: 'intl.time'}),
         type: 'category',
-        data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+        data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+        nameTextStyle:{
+          color:'#fff'
+        },
+        splitLine:{
+          lineStyle:{
+            color:'#ccc'
+          }
+        },
+        axisLabel:{
+          textStyle:{
+            color:'#fff'
+          }
+        },
+        axisLine:{
+          lineStyle:{
+            color:'#fff'
+          }
+        }
       },
       series: [
         {
@@ -68,7 +107,7 @@ export default class EndpointsList extends PureComponent {
           },
           itemStyle:{
             normal: {
-              color: '#61a0a8',
+              color: '#04e000',
             }
           },
           data: concentrator.yesterday_online_status

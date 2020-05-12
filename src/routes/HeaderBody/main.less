@@ -1,5 +1,5 @@
 .main{
-  padding: 12px;
+  padding: 16px;
   :global {
     .ant-collapse-header{
       padding: 6px 0 6px 6px!important;
@@ -15,49 +15,34 @@
 
   .topItem{
     height: 100px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     position: relative;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
     color: #ffffff;
-    box-shadow:0 15px 10px -10px rgba(0, 0, 0, 0.3);
+    box-shadow:0px 0px 3px 1px rgb(255, 255, 255);
+    border-radius: 5px;
     transition: all 0.3s;
+    .image{
+      margin-right: 10px;
+      img{
+        width: 54px;
+        height: 54px;
+      }
+
+    }
     .count{
       font-weight: bold;
       text-align: center;
-      font-size: 28px;
-
+      font-size: 24px;
+      margin-top: -10px;
     }
     .explain{
-      font-size: 18px;
+      font-size: 16px;
       text-align: center;
-    }
-    &:after{
-      content: '';
-      position: absolute;
-      width: 100px;
-      height: 8px;
-      border-bottom: 1px dotted #000;
-      background: #ffffff;
-      right: -25px;
-      top: 0;
-      transform: rotate(45deg);
-
-    }
-    &.topItem1{
-      background: #40c4ff;
-    }
-    &.topItem2{
-      background: #26a69a;
-    }
-    &.topItem3{
-      background: #63869e;
-    }
-
-    &.topItem4{
-      background: #ef5350;
     }
 
   }

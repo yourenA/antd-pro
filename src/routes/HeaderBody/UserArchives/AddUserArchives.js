@@ -46,8 +46,8 @@ class EditUserArchives extends Component {
     console.log('删除的item',item)
     if(this.state.meterArr.length===1){
       console.log('只有一个水表')
-      message.error('至少需要一个水表')
-      return false
+      // message.error('至少需要一个水表')
+      // return false
     }
     const index=this.state.meterArr.indexOf(item);
     console.log('index',index)

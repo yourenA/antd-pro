@@ -386,7 +386,7 @@ class TestLayout extends React.PureComponent {
           </Link>
         </Menu.Item>*/}
         <SubMenu style={{float: 'right'}} title={ <span className={`${styles.action} ${styles.account}`}>
-                     <Avatar icon="user" className={styles.avatar}/>
+                     <Avatar  src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_19.png" className={styles.avatar}/>
           {login.username}
                   </span>}>
           <Menu.Item key="password"><Icon type="user"/>{formatMessage({id: 'intl.change_password'})}</Menu.Item>
@@ -430,7 +430,7 @@ class TestLayout extends React.PureComponent {
           }
         </div>
         <Layout className={styles.layoutContainer} >
-          <Content style={{background: '#f0f2f5'}} className={company_code === 'amwares'?'amwares':''}>
+          <Content style={{background: '#145ecb'}} className={company_code === 'amwares'?'amwares':''}>
             <BackTop />
             <Switch>
               {

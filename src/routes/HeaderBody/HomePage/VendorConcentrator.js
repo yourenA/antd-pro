@@ -50,12 +50,12 @@ export default class VendorConcentrator extends PureComponent {
       parseData2.push({name:data[i].name,value:data[i].meter_count})
     }
     let option  = {
-      backgroundColor: '#eee',
       // title : {
       //   text: '厂商-集中器/水表比例',
       //   x:'center',
       //   top:'20'
       // },
+      color:[ '#04e000','#47e1ed', '#ff2115','#ea924c','#c23531','#2f4554',   '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
       tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -63,7 +63,10 @@ export default class VendorConcentrator extends PureComponent {
       legend: {
         orient: 'horizontal',
         bottom: '50',
-        data: parseData
+        data: parseData,
+        textStyle:{
+          color:'#fff'
+        }
       },
       series : [
         {

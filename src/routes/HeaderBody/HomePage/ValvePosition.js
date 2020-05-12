@@ -65,12 +65,12 @@ export default class LiquidPosition extends PureComponent {
         that.myChart.push(that['myChart' + i])
         let spare = 100 - parseFloat(data[i].current_value)
         let option = {
-          backgroundColor: '#eee',
           title : {
             text: data[i].number,
             x:'right',
             textStyle:{
-              fontSize:16
+              fontSize:14,
+              color:'#fff'
             }
           },
           tooltip: {
@@ -80,7 +80,10 @@ export default class LiquidPosition extends PureComponent {
           legend: {
             orient: 'vertical',
             left: 'left',
-            data: ['当前阀门开度', '']
+            data: ['当前阀门开度', ''],
+            textStyle:{
+              color:'#fff'
+            }
           },
           series: [
             {
@@ -94,7 +97,7 @@ export default class LiquidPosition extends PureComponent {
                   ,
                   itemStyle: {
                     normal: {
-                      color: '#3398DB',
+                      color: '#00c1ff',
                     }
                   }
                 },
@@ -102,7 +105,7 @@ export default class LiquidPosition extends PureComponent {
                   value: spare, name: '',
                   itemStyle: {
                     normal: {
-                      color: '#FFF',
+                      color: '#00000040',
                     }
                   },
                   label: {

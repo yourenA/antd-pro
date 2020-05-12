@@ -40,7 +40,6 @@ export default class LiquidPosition extends PureComponent {
       yData.push(data[i].current_value)
     }
     let option = {
-      backgroundColor: '#eee',
       color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
@@ -52,10 +51,26 @@ export default class LiquidPosition extends PureComponent {
         type: 'category',
         data: xData,
         name: '传感器编号',
+        nameTextStyle:{
+          color:'#fff'
+        },
+        axisLine:{
+          lineStyle:{
+            color:'#fff'
+          }
+        },
       },
       yAxis: {
         type: 'value',
         name: '单位0.01米',
+        nameTextStyle:{
+          color:'#fff'
+        },
+        axisLine:{
+          lineStyle:{
+            color:'#fff'
+          }
+        },
       },
       series: [{
         data: yData,
