@@ -26,7 +26,7 @@ export default class Proportion extends PureComponent {
         this.myChart2.setOption({
           title: {
             id: 'title',
-            text:nextProps.totalData,
+            text:nextProps.totalData.toFixed(2),
           },
         })
       }
@@ -133,7 +133,7 @@ export default class Proportion extends PureComponent {
     let option = {
       title: {
         id:'title',
-        text: this.props.totalData,
+        text: this.props.totalData.toFixed(2),
         textStyle: {
           fontSize: 24,
           fontFamily: 'Microsoft Yahei',

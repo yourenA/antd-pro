@@ -33,8 +33,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5613">
-              <caret line="498" selection-start-line="498" selection-end-line="498" />
+            <state relative-caret-position="250">
+              <caret line="324" column="27" lean-forward="true" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="27" />
               <folding>
                 <element signature="e#140#186#0" expanded="true" />
               </folding>
@@ -45,35 +45,32 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="249" column="77" selection-start-line="249" selection-start-column="77" selection-end-line="249" selection-end-column="77" />
+            <state relative-caret-position="-609">
+              <caret line="43" column="19" lean-forward="true" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+              <folding>
+                <element signature="e#3563#6353#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/layouts/headerBodyContent.js">
+        <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="523">
-              <caret line="388" column="29" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+            <state relative-caret-position="1450">
+              <caret line="50" column="5" lean-forward="true" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/main.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1972">
-              <caret line="421" column="7" selection-start-line="421" selection-start-column="7" selection-end-line="425" selection-end-column="12" />
+            <state relative-caret-position="435">
+              <caret line="47" column="3" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="47" selection-end-column="3" />
+              <folding>
+                <element signature="e#282#890#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -90,8 +87,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>todayLastSecond</find>
-      <find>expla</find>
       <find>onChangeCasader</find>
       <find>temperature_type</find>
       <find>renderTreeNodes</find>
@@ -120,6 +115,8 @@
       <find>dynamic2</find>
       <find>dynamic</find>
       <find>value</find>
+      <find>coun</find>
+      <find>CountUp</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -181,9 +178,9 @@
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/VendorConcentrator.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js" />
-        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
         <option value="$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less" />
         <option value="$PROJECT_DIR$/src/layouts/headerBodyContent.js" />
+        <option value="$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js" />
         <option value="$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js" />
       </list>
     </option>
@@ -206,7 +203,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -214,10 +210,29 @@
               <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
               <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ant-pro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ant-pro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="HeaderBody" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -229,7 +244,7 @@
     <property name="editor.config.accepted" value="true" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
-    <property name="last_opened_file_path" value="E:/oneNet-admin" />
+    <property name="last_opened_file_path" value="E:/new-system" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="E:\ant-pro\y\ant-pro\node_modules\mocha" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
@@ -1012,7 +1027,11 @@
       <workItem from="1588839165061" duration="1428000" />
       <workItem from="1588904976312" duration="611000" />
       <workItem from="1589162774480" duration="19371000" />
-      <workItem from="1589250269187" duration="2182000" />
+      <workItem from="1589250269187" duration="3637000" />
+      <workItem from="1589277018759" duration="234000" />
+      <workItem from="1589336210762" duration="792000" />
+      <workItem from="1589343508942" duration="537000" />
+      <workItem from="1589349652453" duration="1634000" />
     </task>
     <task id="LOCAL-00001" summary="test webstorm commit">
       <created>1522822406961</created>
@@ -1032,10 +1051,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3732836000" />
+    <option name="totallyTimeSpent" value="3737575000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.496208" visible="true" weight="0.15384616" />
       <window_info id="Structure" order="1" weight="0.2497349" />
@@ -1126,23 +1146,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/index.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="725">
-          <caret line="55" column="3" lean-forward="true" selection-start-line="55" selection-start-column="3" selection-end-line="55" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/Index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/Sider.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-31">
@@ -1433,13 +1436,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/common/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="3" column="19" lean-forward="true" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/ConcentratorOnlife.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="436">
@@ -1451,13 +1447,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
           <caret line="103" column="68" selection-start-line="103" selection-start-column="68" selection-end-line="103" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/main.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1496,41 +1485,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js">
+    <entry file="file://$PROJECT_DIR$/src/common/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1972">
-          <caret line="421" column="7" selection-start-line="421" selection-start-column="7" selection-end-line="425" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+        <state relative-caret-position="319">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/layouts/headerBodyContent.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
+        <state relative-caret-position="10266">
           <caret line="388" column="29" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/layouts/HeaderBodyLayout.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1508">
+          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/MYSHomepageChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12151">
+          <caret line="421" column="7" selection-start-line="421" selection-start-column="7" selection-end-line="425" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/DMA/addOrEditVendor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/NewPage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5613">
-          <caret line="498" selection-start-line="498" selection-end-line="498" />
+        <state relative-caret-position="250">
+          <caret line="324" column="27" lean-forward="true" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="27" />
           <folding>
             <element signature="e#140#186#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1450">
+          <caret line="50" column="5" lean-forward="true" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/main.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="47" column="3" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="47" selection-end-column="3" />
+          <folding>
+            <element signature="e#282#890#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/HeaderBody/HomePage/Proportion.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="249" column="77" selection-start-line="249" selection-start-column="77" selection-end-line="249" selection-end-column="77" />
+        <state relative-caret-position="-609">
+          <caret line="43" column="19" lean-forward="true" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+          <folding>
+            <element signature="e#3563#6353#0" />
+          </folding>
         </state>
       </provider>
     </entry>
