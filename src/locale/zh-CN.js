@@ -331,10 +331,11 @@ const zh_CN = {
   'intl.field': '字段',//字段
   'intl.format': '格式',//格式
   'intl.save': '保存',//保存
-  'intl.meter_successful_upload_count': '水表上传数量',//水表上传数量
-  'intl.meter_no_upload_count': '水表没有上传数量',//水表没有上传数量
-  'intl.meter_error_upload_count': '水表错误上传数量',//水表错误上传数量
-  'intl.meter_stop_upload_count': '水表停止上传数量',//水表停止上传数量
+  'intl.meter_successful_upload_count': '正常',//水表上传数量
+  'intl.meter_no_upload_count': '漏报',//水表没有上传数量
+  'intl.meter_no_upload_count_today': '待报',//水表没有上传数量
+  'intl.meter_error_upload_count': '错报',//水表错误上传数量
+  'intl.meter_stop_upload_count': '停止上传',//水表停止上传数量
   'intl.meter_consumption_last_30_days': '过去30天各类型水表用水量',//过去30天各类型水表用水量
   'intl.meter_consumption_last_12_months': '过去12月各类型水表用水量',//过去12月各类型水表用水量
   'intl.average_value': '平均值',//平均值

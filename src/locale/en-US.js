@@ -330,6 +330,7 @@ const en_US = {
   'intl.save': 'Save',//保存
   'intl.meter_successful_upload_count': 'meter successful upload count',//水表上传数量
   'intl.meter_no_upload_count': 'meter no upload count',//水表没有上传数量
+  'intl.meter_no_upload_count_today': 'wait to upload',//水表没有上传数量
   'intl.meter_error_upload_count': 'meter error upload count',//水表错误上传数量
   'intl.meter_stop_upload_count': 'meter stop upload count',//水表停止上传数量
   'intl.meter_consumption_last_30_days': 'last 30 days hot/cold water consumption',//过去30天各类型水表用水量(虚线箭头为平均值)

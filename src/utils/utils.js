@@ -741,3 +741,6 @@ export function renderNotification(renderNotificationObj){
     i=i+1;
   },500)
 }
+export function dateIsToday(data) {
+  return moment(data).format("YYYY-MM-DD")===moment().format("YYYY-MM-DD");
+}

@@ -13,7 +13,7 @@ import config from '../../../common/config'
 import uuid from 'uuid/v4'
 import Export from './ExportForm'
 import debounce from 'lodash/throttle'
-import {download, renderErrorData, ellipsis2,renderNotification} from './../../../utils/utils'
+import {download, renderErrorData, ellipsis2, renderNotification, dateIsToday} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import Detail from './../UserMeterAnalysis/Detail'
 const {Content} = Layout;
@@ -375,28 +375,30 @@ class UserMeterAnalysis extends PureComponent {
       },
       {
         title: formatMessage({id: 'intl.status'}), width: 100, dataIndex: 'status', key: 'status'
-        , render: (val, record, index) => {
-        let status = 'success';
-        switch (val) {
-          case -4:
-            status = 'error'
-            break;
-          case -2:
-            status = 'error'
-            break;
-          case -1:
-            status = 'warning'
-            break;
-          default:
-            status = 'success'
+        , render: (val, record, index) =>{
+          let isToday=dateIsToday(record.date);
+          let status = 'success';
+          let  status_explain=record.status_explain
+          switch (val) {
+            case -4:
+              status = 'error'
+              break;
+            case -2:
+              status = 'error';
+              break;
+            case -1:
+              status = 'warning';
+              status_explain= isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.meter_no_upload_count'})
+              break;
+            default:
+              status = 'success'
+          }
+          return (
+            <p>
+              <Badge status={status}/>{status_explain}
+            </p>
+          )
         }
-
-        return (
-          <p>
-            <Badge status={status}/>{record.status_explain}
-          </p>
-        )
-      }
       },
 
       {

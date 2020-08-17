@@ -40,6 +40,7 @@ class Main extends PureComponent {
       last30day: [],
       last12month: [],
       initDate:moment(),
+      date:moment(),
       village_id:'',
       manufacturer_id:''  ,
       totalData:0
@@ -322,7 +323,7 @@ class Main extends PureComponent {
                   bodyStyle={{padding: 0}}
                   style={{minHeight: 'auto'}}
                 >
-                  <Proportion totalData={this.state.totalData} meter={this.state.meter}/>
+                  <Proportion date={this.state.date} totalData={this.state.totalData} meter={this.state.meter}/>
                 </Card>
               </Col>
               </Row>

@@ -4,7 +4,7 @@ import {connect} from 'dva';
 import forEach from 'lodash/forEach'
 const {RangePicker} = DatePicker;
 const ButtonGroup = Button.Group;
-import {getTimeDistance,disabledDate,errorNumber,renderIndex} from './../../../utils/utils';
+import {getTimeDistance, disabledDate, errorNumber, renderIndex, dateIsToday} from './../../../utils/utils';
 import request from './../../../utils/request'
 import moment from 'moment'
 import ChangeMeterValueForm from './ChangeMeterValueForm'
@@ -374,6 +374,7 @@ class Detail extends PureComponent {
         render: (val, record, index) => {
           let status='success';
           let explain='';
+          let isToday=dateIsToday(record.date);
           switch (val){
             case -4:
               status='error'
@@ -385,7 +386,7 @@ class Detail extends PureComponent {
               break;
             case -1:
               status='warning'
-              explain= formatMessage({id: 'intl.missing'})
+              explain= isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.missing'})
 
               break;
             default:
@@ -436,7 +437,7 @@ class Detail extends PureComponent {
       <div>
         <div >
             <Button type="primary" style={{marginRight:'12px'}} icon="arrow-left" onClick={this.props.onBack}>{formatMessage({id: 'intl.back'})}</Button>
-         <ButtonGroup>
+             <ButtonGroup>
             <Button  onClick={() => this.selectDate('week')} type={this.isActive('week')?'primary':''}>{formatMessage({id: 'intl.this_week'})}</Button>
             <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
             <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>{formatMessage({id: 'intl.this_year'})}</Button>

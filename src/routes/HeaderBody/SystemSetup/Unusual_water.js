@@ -410,7 +410,7 @@ class EditPassword extends Component {
                         )}
                       </FormItem>
                       {
-                        company_code === 'hngydx' &&
+                        (company_code === 'hngydx'||company_code === 'lqsrmyy') &&
                         <FormItem
                           label={<span>{this.state.alarm_contact_numbers.display_name}<Tooltip
                             title="多个号码之间逗号分隔">

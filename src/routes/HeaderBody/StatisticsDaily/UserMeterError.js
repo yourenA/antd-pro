@@ -4,7 +4,7 @@ import Pagination from './../../../components/Pagination/Index'
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import DefaultSearch from './Search'
 import {connect} from 'dva';
-import {renderIndex,ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis2, dateIsToday} from './../../../utils/utils'
 import moment from 'moment'
 import { routerRedux} from 'dva/router';
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
@@ -181,11 +181,30 @@ class FunctionContent extends PureComponent {
         render: (val, record, index) => {
           return ellipsis2(val, 200)
         }},
-      {title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status' ,render:(val, record, index) => (
-        <p>
-          <Badge status={val===-1?"warning":"error"} />{record.status_explain}
-        </p>
-      )},
+      {title:  formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status' ,render:(val, record, index) => {
+          let isToday=dateIsToday(this.state.date);
+          let status = 'success';
+          let  status_explain=record.status_explain
+          switch (val) {
+            case -4:
+              status = 'error'
+              break;
+            case -2:
+              status = 'error';
+              break;
+            case -1:
+              status = 'warning';
+              status_explain= isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.meter_no_upload_count'})
+              break;
+            default:
+              status = 'success'
+          }
+          return (
+            <p>
+              <Badge status={status}/>{status_explain}
+            </p>
+          )
+        }},
     ];
     const {isMobile} =this.props.global;
     return (

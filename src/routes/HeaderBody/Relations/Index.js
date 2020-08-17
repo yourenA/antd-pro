@@ -1,15 +1,10 @@
 import React, {PureComponent} from 'react';
 import {Tabs, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import Search from './Search'
 import Sider from './../EmptySider'
 import {connect} from 'dva';
-import moment from 'moment'
-import update from 'immutability-helper'
 import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, renderIndex2} from './../../../utils/utils'
-import debounce from 'lodash/throttle'
-import Pagination from './../../../components/Pagination/Index'
 import AddOrEditForm from './addOrEditArea'
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';

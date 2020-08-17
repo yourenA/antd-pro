@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Form,DatePicker,Row,message,Input,Button,Icon,Radio} from 'antd';
 import moment from 'moment'
-import {disabledDate,searchFormItemLayout} from './../../../utils/utils'
+import {disabledDate,searchFormItemLayout,  dateIsToday} from './../../../utils/utils'
 import {injectIntl} from 'react-intl';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -100,7 +100,8 @@ class SearchForm extends Component {
     const { intl:{formatMessage} } = this.props;
     const {getFieldDecorator} = this.props.form;
     const company_code = sessionStorage.getItem('company_code');
-    const {expand}=this.state
+    const {expand}=this.state;
+    let isToday=dateIsToday(this.props.ended_at);
     return (
       <Form onSubmit={this.handleSubmit} layout="inline">
         <Row >
@@ -177,7 +178,7 @@ class SearchForm extends Component {
               <RadioGroup>
                 <RadioButton value="all">{formatMessage({id: 'intl.all'})}</RadioButton>
                 <RadioButton value="only_normal">{formatMessage({id: 'intl.only_normal'})}</RadioButton>
-                <RadioButton value="only_missing_upload">{formatMessage({id: 'intl.only_missing'})}</RadioButton>
+                <RadioButton value="only_missing_upload">{isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.only_missing'})}</RadioButton>
                 <RadioButton value="only_error_upload">{formatMessage({id: 'intl.only_error'})}</RadioButton>
                 <RadioButton value="only_fail_upload">{formatMessage({id: 'intl.only_fail_upload'})}</RadioButton>
               </RadioGroup>

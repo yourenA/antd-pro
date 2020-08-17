@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {injectIntl} from 'react-intl';
+import {dateIsToday} from './../../../utils/utils'
 @injectIntl
 export default class Proportion extends PureComponent {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class Proportion extends PureComponent {
   dynamic=(meter)=>{
     const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
+    let isToday=dateIsToday(this.props.date);
     let option = {
       title :'',
       tooltip : {
@@ -61,7 +63,7 @@ export default class Proportion extends PureComponent {
       legend: {
         left: 'left',
         top:5,
-        data: [formatMessage({id: 'intl.meter_successful_upload_count'}),formatMessage({id: 'intl.meter_no_upload_count'}),
+        data: [formatMessage({id: 'intl.meter_successful_upload_count'}),isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.meter_no_upload_count'}),
           formatMessage({id: 'intl.meter_error_upload_count'}),
           formatMessage({id: 'intl.meter_stop_upload_count'}),'抄表失败'],
         textStyle:{
@@ -84,7 +86,7 @@ export default class Proportion extends PureComponent {
                   color: '#04e000',
                 }
               },},
-            {value:meter.yesterday_missing_upload_count, name:formatMessage({id: 'intl.meter_no_upload_count'}),
+            {value:meter.yesterday_missing_upload_count, name:isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.meter_no_upload_count'}),
               itemStyle:{
                 normal: {
                   color: '#ff9d78',

@@ -14,6 +14,7 @@ import AddOrEditForm from './addOrEditArea'
 import uuid from 'uuid/v4'
 import {disabledDate,getTimeDistance} from './../../../utils/utils'
 import {injectIntl} from 'react-intl';
+import 'react-sortable-tree/style.css';
 const TabPane = Tabs.TabPane;
 import SortableTree, {
   toggleExpandedForAll,

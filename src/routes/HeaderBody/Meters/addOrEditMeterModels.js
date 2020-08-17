@@ -108,6 +108,21 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
+              IMEI
+            </span>
+            )}
+          >
+            {getFieldDecorator('imei', {
+              initialValue: this.props.editRecord ? this.props.editRecord.imei : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            style={{width:'50%',display:'inline-block'}}
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               {formatMessage({id: 'intl.manufactured_date'})}
             </span>
             )}>

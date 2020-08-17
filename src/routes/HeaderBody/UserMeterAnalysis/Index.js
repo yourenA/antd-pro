@@ -13,7 +13,14 @@ import './index.less'
 import config from '../../../common/config'
 import {routerRedux} from 'dva/router';
 import uuid from 'uuid/v4'
-import {getPreDay, ellipsis2, download, renderIndex, renderErrorData} from './../../../utils/utils'
+import {
+  getPreDay,
+  ellipsis2,
+  download,
+  renderIndex,
+  renderErrorData,
+  dateIsToday
+} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import ExportForm from './ExportForm'
 import AnalysisDetail from './../BigMeterAnalysis/AnalysisDetail'
@@ -524,23 +531,26 @@ class UserMeterAnalysis extends PureComponent {
       {
         title: formatMessage({id: 'intl.status'}), dataIndex: 'status', key: 'status', width: 90,
         render: (val, record, index) => {
+          let isToday=dateIsToday(this.state.ended_at);
           let status = 'success';
+          let  status_explain=record.status_explain
           switch (val) {
             case -4:
               status = 'error'
               break;
             case -2:
-              status = 'error'
+              status = 'error';
               break;
             case -1:
-              status = 'warning'
+              status = 'warning';
+              status_explain= isToday?formatMessage({id: 'intl.meter_no_upload_count_today'}):formatMessage({id: 'intl.meter_no_upload_count'})
               break;
             default:
               status = 'success'
           }
           return (
             <p>
-              <Badge status={status}/>{record.status_explain}
+              <Badge status={status}/>{status_explain}
             </p>
           )
         }
