@@ -320,7 +320,7 @@ class TestLayout extends React.PureComponent {
         return (
           <Menu.Item key={item.key || item.path}>
             <Link to={itemPath} target={item.target}>
-              {icon} <FormattedMessage id={`intl.${item.name}`}/>
+              {icon} {(company_code==='lqsrmyy'&&item.path==='liquid_valve_analysis')?'液位传感器分析':<FormattedMessage id={`intl.${item.name}`}/>}
               {showBadge && < Badge status="error"/>}
             </Link>
           </Menu.Item>
