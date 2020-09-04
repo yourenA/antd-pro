@@ -18,6 +18,7 @@ const {Content} = Layout;
 import {injectIntl} from 'react-intl';
 @injectIntl
 @connect(state => ({
+  dma: state.dma,
   voltage_status_abnormality: state.voltage_status_abnormality,
   global: state.global,
 }))
@@ -56,6 +57,15 @@ class Leak_abnormality extends PureComponent {
     document.querySelector('.ant-table-body').addEventListener('scroll',debounce(this.scrollTable,200))
     const {dispatch} = this.props;
     const that=this;
+    dispatch({
+      type: 'dma/fetchAll',
+      payload: {
+        return: 'all'
+      },
+      callback: ()=> {
+        that.changeTableY()
+      }
+    });
     this.handleSearch({
       // area_id: '',
       page: 1,
@@ -249,7 +259,7 @@ class Leak_abnormality extends PureComponent {
       onChange: this.onSelectChange,
     };
     const {intl:{formatMessage}} = this.props;
-    const {voltage_status_abnormality: {data, meta, loading}} = this.props;
+    const {voltage_status_abnormality: {data, meta, loading},dma} = this.props;
     for (let i = 0; i < data.length; i++) {
       data[i].uuidkey = uuid()
     }
@@ -317,6 +327,7 @@ class Leak_abnormality extends PureComponent {
                         })
                       }}
                       per_page={this.state.per_page}
+                      dma={dma}
                       handleSearch={this.handleSearch}
                       handleFormReset={this.handleFormReset} initRange={this.state.initRange}/>
                   </div>

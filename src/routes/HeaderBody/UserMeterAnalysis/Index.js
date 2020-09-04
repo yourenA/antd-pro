@@ -282,7 +282,7 @@ class UserMeterAnalysis extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const formValues = this.ExportformRef.props.form.getFieldsValue();
     console.log('formValues', formValues)
-    const payload = (company_code === 'dy' || company_code === 'mys') ? {
+    const payload = (company_code === 'dy' || company_code === 'mys'||company_code === 'ms') ? {
       village_id: formValues.village_id === 'all' ? '' : formValues.village_id,
       started_at: moment(formValues.date).format('YYYY-MM-DD'),
       ended_at: moment(formValues.date).format('YYYY-MM-DD'),
@@ -293,6 +293,9 @@ class UserMeterAnalysis extends PureComponent {
       ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
       concentrator_number: formValues.concentrator_number,
       export_type: formValues.export_type
+    }
+    if(company_code === 'ms'){
+      payload.export_type='all'
     }
     this.props.dispatch({
       type: 'member_meter_data/exportCSV',

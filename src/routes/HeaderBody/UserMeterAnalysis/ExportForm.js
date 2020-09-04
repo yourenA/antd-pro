@@ -121,7 +121,7 @@ class AddPoliciesForm extends Component {
             </Select>
           )}
         </FormItem>
-        {(company_code === 'dy'||company_code === 'mys') ? <FormItem label=   {formatMessage({id: 'intl.date'})}
+        {(company_code === 'dy'||company_code === 'mys'||company_code === 'ms') ? <FormItem label=   {formatMessage({id: 'intl.date'})}
                                              {...formItemLayoutWithLabel}>
           {getFieldDecorator('date', {
             initialValue: moment(),
@@ -147,7 +147,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         }
-        {(company_code === 'dy'||company_code === 'mys') ? null : <FormItem label=   {formatMessage({id: 'intl.end'})}
+        {(company_code === 'dy'||company_code === 'mys'||company_code === 'ms') ? null : <FormItem label=   {formatMessage({id: 'intl.end'})}
                   {...formItemLayoutWithLabel}>
           {getFieldDecorator('ended_at', {
             initialValue: moment(),
@@ -160,7 +160,7 @@ class AddPoliciesForm extends Component {
           )}
         </FormItem>
         }
-        {(company_code === 'hy'||company_code === 'dy'||company_code === 'mys') ? null : <FormItem
+        {(company_code === 'hy'||company_code === 'dy'||company_code === 'mys'||company_code === 'ms') ? null : <FormItem
           {...formItemLayoutWithLabel}
           label= {formatMessage({id: 'intl.export_type'})}
         >
