@@ -49,12 +49,14 @@ export default class VendorConcentrator extends PureComponent {
       parseData1.push({name:data[i].name,value:data[i].concentrator_count})
       parseData2.push({name:data[i].name,value:data[i].meter_count})
     }
+    const company_code = sessionStorage.getItem('company_code');
     let option  = {
       // title : {
       //   text: '厂商-集中器/水表比例',
       //   x:'center',
       //   top:'20'
       // },
+
       color:[ '#04e000','#47e1ed', '#ff2115','#ea924c','#c23531','#2f4554',   '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
       tooltip : {
         trigger: 'item',
@@ -65,7 +67,7 @@ export default class VendorConcentrator extends PureComponent {
         bottom: '50',
         data: parseData,
         textStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       },
       series : [

@@ -127,7 +127,7 @@ export default class MYSHomepageChart extends PureComponent {
         text: formatMessage({id: 'intl.meter_consumption_last_30_days'}),
         top: 3,
         textStyle: {
-          color: '#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       }, {
         id: 'subtext',
@@ -137,7 +137,7 @@ export default class MYSHomepageChart extends PureComponent {
         top: '30%',
         textAlign: 'center',
         subtextStyle: {
-          color: '#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       }],
       tooltip: {
@@ -152,7 +152,7 @@ export default class MYSHomepageChart extends PureComponent {
         x: 'center',
         top: '90%',
         textStyle: {
-          color: '#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       },
       grid: {
@@ -166,16 +166,16 @@ export default class MYSHomepageChart extends PureComponent {
             type: 'shadow'
           },
           nameTextStyle: {
-            color: '#fff'
+            color:company_code==='hy'?'#333':'#fff'
           },
           axisLabel: {
             textStyle: {
-              color: '#fff'
+              color:company_code==='hy'?'#333':'#fff'
             }
           },
           axisLine: {
             lineStyle: {
-              color: '#fff'
+              color:company_code==='hy'?'#333':'#fff'
             }
           }
         }
@@ -187,15 +187,15 @@ export default class MYSHomepageChart extends PureComponent {
           axisLabel: {
             formatter: '{value} T',
             textStyle: {
-              color: '#fff'
+              color:company_code==='hy'?'#333':'#fff'
             }
           },
           nameTextStyle: {
-            color: '#fff'
+            color:company_code==='hy'?'#333':'#fff'
           },
           axisLine: {
             lineStyle: {
-              color: '#fff'
+              color:company_code==='hy'?'#333':'#fff'
             }
           },
           splitLine: {
@@ -334,7 +334,7 @@ export default class MYSHomepageChart extends PureComponent {
         text: formatMessage({id: 'intl.meter_consumption_last_12_months'}),
         top: 3,
         textStyle: {
-          color: '#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       }, {
         id: 'subtext',
@@ -344,7 +344,7 @@ export default class MYSHomepageChart extends PureComponent {
         top: '30%',
         textAlign: 'center',
         subtextStyle: {
-          color: '#fff'
+           color:company_code==='hy'?'#333':'#fff'
         }
       }],
       tooltip: {
@@ -362,7 +362,7 @@ export default class MYSHomepageChart extends PureComponent {
         x: 'center',
         top: '90%',
         textStyle: {
-          color: '#fff'
+           color:company_code==='hy'?'#333':'#fff'
         }
       },
       xAxis: [
@@ -373,11 +373,11 @@ export default class MYSHomepageChart extends PureComponent {
             type: 'shadow'
           },
           nameTextStyle: {
-            color: '#fff'
+             color:company_code==='hy'?'#333':'#fff'
           },
           axisLine: {
             lineStyle: {
-              color: '#fff'
+               color:company_code==='hy'?'#333':'#fff'
             }
           },
 
@@ -391,15 +391,15 @@ export default class MYSHomepageChart extends PureComponent {
           axisLabel: {
             formatter: '{value} T',
             textStyle: {
-              color: '#fff'
+               color:company_code==='hy'?'#333':'#fff'
             }
           },
           nameTextStyle: {
-            color: '#fff'
+             color:company_code==='hy'?'#333':'#fff'
           },
           axisLine: {
             lineStyle: {
-              color: '#fff'
+               color:company_code==='hy'?'#333':'#fff'
             }
           },
           splitLine: {

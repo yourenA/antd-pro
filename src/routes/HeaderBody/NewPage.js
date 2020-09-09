@@ -232,7 +232,7 @@ class Main extends PureComponent {
     return (
       <div className={`${styles.main} homepage-content`}>
         <div  style={{marginBottom:'16px'}}>
-          <h3 style={{fontSize:'18px',color:'#fff',marginBottom:'12px'}}><DatePicker allowClear={false}  style={{marginRight:'8px',width:'130px'}} defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
+          <h3 style={{fontSize:'18px',color:company_code==='hy'?"":'#fff',marginBottom:'12px'}}><DatePicker allowClear={false}  style={{marginRight:'8px',width:'130px'}} defaultValue={this.state.initDate} onChange={this.changeDate} disabledDate={disabledPreDate} />{formatMessage({id: 'intl.basic_statistics_info'})}
           </h3>
             {
               company_code==='hy'&&
@@ -254,7 +254,7 @@ class Main extends PureComponent {
             <Row gutter={16}>
 
               <Col xl={6} lg={6} md={12} sm={24}>
-                <div className={`${styles.topItem} ${styles.topItem1}`}>
+                <div className={`${company_code==='hy'&& styles.hyTopItem} ${styles.topItem} ${company_code==='hy'&& styles.topItem1}`}>
                   <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_22.png" alt=""/></div>
                   <div>
                     <div className={styles.count}><CountUp  end={this.state.concentrator.total_count||0} /></div>
@@ -263,7 +263,7 @@ class Main extends PureComponent {
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
-                <div className={`${styles.topItem} ${styles.topItem3}`}>
+                <div className={`${company_code==='hy'&& styles.hyTopItem} ${styles.topItem} ${company_code==='hy'&& styles.topItem3}`}>
                   <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_1.png" alt=""/></div>
                   <div>
                     <div className={styles.count}><CountUp   decimals={2} end={parseFloat(this.state.concentrator.yesterday_excellent_rate)||0} />%</div>
@@ -272,7 +272,7 @@ class Main extends PureComponent {
                 </div>
               </Col>
               <Col xl={6} lg={6} md={12} sm={24}>
-                <div className={`${styles.topItem} ${styles.topItem2}`}>
+                <div className={`${company_code==='hy'&& styles.hyTopItem} ${styles.topItem} ${company_code==='hy'&& styles.topItem2}`}>
                   <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_6.png" alt=""/></div>
                   <div>
                     <div className={styles.count}><CountUp end={this.state.meter.total_count||0} /></div>
@@ -281,7 +281,7 @@ class Main extends PureComponent {
                 </div>
               </Col>
             <Col xl={6} lg={6} md={12} sm={24}>
-                <div className={`${styles.topItem} ${styles.topItem3}`}>
+                <div className={`${company_code==='hy'&& styles.hyTopItem} ${styles.topItem} ${company_code==='hy'&& styles.topItem3}`}>
                   <div className={styles.image}><img src="https://www.17sucai.com/preview/3250/2013-10-10/demo2/images/icon_11.png" alt=""/></div>
                   <div>
                     <div className={styles.count}><CountUp  decimals={2}  end={parseFloat(this.state.meter.yesterday_upload_rate)||0}/>%</div>

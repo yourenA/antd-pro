@@ -430,7 +430,7 @@ class TestLayout extends React.PureComponent {
           }
         </div>
         <Layout className={styles.layoutContainer} >
-          <Content style={{background: '#145ecb'}} className={company_code === 'amwares'?'amwares':''}>
+          <Content  className={company_code === 'hy'?'hy-company':'other-company'}>
             <BackTop />
             <Switch>
               {

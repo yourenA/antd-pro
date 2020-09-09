@@ -31,6 +31,7 @@ export default class EndpointsList extends PureComponent {
     const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.concentratorOnline'));
     console.log(concentrator)
+    const company_code = sessionStorage.getItem('company_code');
     let option = {
       tooltip: {
         trigger: 'axis',
@@ -47,7 +48,7 @@ export default class EndpointsList extends PureComponent {
         top:5,
         data: [formatMessage({id: 'intl.online'}), formatMessage({id: 'intl.sleep'}),formatMessage({id: 'intl.offline'}) ],
         textStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
 
       },
@@ -55,19 +56,19 @@ export default class EndpointsList extends PureComponent {
         type: 'value',
         name: formatMessage({id: 'intl.concentrator_count'}),
         nameTextStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         },
         axisLabel:{
           textStyle:{
-            color:'#fff'
+            color:company_code==='hy'?'#333':'#fff'
           }
         },
         lineStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         },
         axisLine:{
           lineStyle:{
-            color:'#fff'
+            color:company_code==='hy'?'#333':'#fff'
           }
         }
       },
@@ -76,21 +77,21 @@ export default class EndpointsList extends PureComponent {
         type: 'category',
         data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
         nameTextStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         },
         splitLine:{
           lineStyle:{
-            color:'#ccc'
+            color:company_code==='hy'?'#333':'#fff'
           }
         },
         axisLabel:{
           textStyle:{
-            color:'#fff'
+            color:company_code==='hy'?'#333':'#fff'
           }
         },
         axisLine:{
           lineStyle:{
-            color:'#fff'
+            color:company_code==='hy'?'#333':'#fff'
           }
         }
       },

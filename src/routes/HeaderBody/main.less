@@ -12,7 +12,35 @@
       padding: 8px 0 !important;
     }
   }
+.hyTopItem {
+  color: #f9f9f9 !important;
+  box-shadow:0 15px 10px -10px rgba(0, 0, 0, 0.3) !important;
+  &.topItem1{
+    background: #40c4ff;
+  }
+  &.topItem2{
+    background: #26a69a;
+  }
+  &.topItem3{
+    background: #63869e;
+  }
 
+  &.topItem4{
+    background: #ef5350;
+  }
+  &:after{
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 8px;
+    border-bottom: 1px dotted #000;
+    background: #ffffff;
+    right: -25px;
+    top: 0;
+    transform: rotate(45deg);
+
+  }
+}
   .topItem{
     height: 100px;
     margin-bottom: 16px;

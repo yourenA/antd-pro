@@ -46,6 +46,8 @@ export default class Proportion extends PureComponent {
     const {intl:{formatMessage}} = this.props;
     this.myChart = this.echarts.init(document.querySelector('.proportion-data'));
     let isToday=dateIsToday(this.props.date);
+    const company_code = sessionStorage.getItem('company_code');
+
     let option = {
       title :'',
       tooltip : {
@@ -67,7 +69,7 @@ export default class Proportion extends PureComponent {
           formatMessage({id: 'intl.meter_error_upload_count'}),
           formatMessage({id: 'intl.meter_stop_upload_count'}),'抄表失败'],
         textStyle:{
-          color:'#fff'
+          color:company_code==='hy'?'#333':'#fff'
         }
       },
       grid: {
