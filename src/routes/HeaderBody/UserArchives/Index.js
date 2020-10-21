@@ -294,9 +294,10 @@ class UserMeterAnalysis extends PureComponent {
         meter_model_id:formValues[`meter_model_id-${meterskey[i]}`],
         initial_water:formValues[`initial_water-${meterskey[i]}`],
         sort_number:formValues[`sort_number-${meterskey[i]}`],
+        imei:formValues[`imei-${meterskey[i]}`],
       })
     }
-    console.log('metersArr',metersArr)
+    console.log('metersArr',metersArr);
     this.props.dispatch({
       type: 'members/add',
       payload: {

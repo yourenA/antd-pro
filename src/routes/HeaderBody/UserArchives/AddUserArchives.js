@@ -190,6 +190,17 @@ class EditUserArchives extends Component {
                 <InputNumber />
               )}
             </FormItem>
+            <FormItem
+              label={'IMEI'}
+              style={{width:'33%',display:'inline-block'}}
+              {...formItemLayoutWithLabel}
+            >
+              {getFieldDecorator(`imei-${item}`, {
+                initialValue: '',
+              })(
+                <Input />
+              )}
+            </FormItem>
             {
               (company_code==='hy')&&
               <FormItem

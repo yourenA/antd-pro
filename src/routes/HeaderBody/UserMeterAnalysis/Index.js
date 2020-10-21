@@ -75,19 +75,25 @@ class UserMeterAnalysis extends PureComponent {
     this.changeTableY();
     const that = this
     // document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
-    this.timer = setInterval(function () {
-      that.setState({
-        // disabled:false
-        time: new Date().getTime()
-      })
-    }, 3000)
+    const company_code = sessionStorage.getItem('company_code');
+    if(company_code==='hy'){
+      this.timer = setInterval(function () {
+        that.setState({
+          // disabled:false
+          time: new Date().getTime()
+        })
+      }, 3000)
+    }
+
   }
 
   componentWillUnmount() {
     if (document.querySelector('.ant-table-body')) {
       // document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
     }
-    clearInterval(this.timer)
+    if(this.timer){
+      clearInterval(this.timer)
+    }
   }
 
   handleBack = ()=> {

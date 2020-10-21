@@ -7,196 +7,196 @@ import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagem
 )
 
 //以下代码非按需加载
-import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
-import HYCommunityAnalysis from './../routes/HeaderBody/HYCommunityAnalysis/Index'
-import ManuallyCommunityAnalysis from './../routes/HeaderBody/ManuallyCommunityAnalysis/Index'
-import MapDemo from './../routes/HeaderBody/MapDemo/Index'
-import ConcentratorMaps from './../routes/HeaderBody/ConcentratorMaps/Index'
-import BigMeterAnalysis from './../routes/HeaderBody/BigMeterAnalysis/Index'
-import MonitoringMeterManage from './../routes/HeaderBody/MonitoringMeterManage/Index'
-import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Index'
-import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
-import Relations from './../routes/HeaderBody/Relations/Index'
-import RelationsAnalysis from './../routes/HeaderBody/RelationsAnalysis/Index'
-import PressureAnalysis from './../routes/HeaderBody/MYSPressureAnalysis/Index'
-import MYSBigMeterAnalysis from './../routes/HeaderBody/MYSBigMeterAnalysis/Index'
-import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
-import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'
-import ConcentratorManage from './../routes/HeaderBody/ConcentratorManage/Index'
-import VendorConcentrator from './../routes/HeaderBody/VendorConcentrator/Index'
-import VendorMeter from './../routes/HeaderBody/VendorMeter/Index'
-import DMA from '../routes/HeaderBody/DMA/Index'
-import FlowMeters from './../routes/HeaderBody/FlowMeters/Index'
-import Servers from './../routes/HeaderBody/Servers/Index'
-import Locations from './../routes/HeaderBody/LocationsManage/Index'
-import UserArchives from './../routes/HeaderBody/UserArchives/Index'
-import VendorMange from './../routes/HeaderBody/VendorMange/Index'
-import MeterModels from './../routes/HeaderBody/MeterModels/Index'
-import LiquidSensors from './../routes/HeaderBody/LiquidSensors/Index'
-import ValveSensors from './../routes/HeaderBody/ValveSensors/Index'
-import LiquidValveAnalysis from './../routes/HeaderBody/LiquidValveAnalysis/Index'
-import Meters from './../routes/HeaderBody/Meters/Index'
-import Pressure from './../routes/HeaderBody/Pressure/Index'
-import ElectricValve from './../routes/HeaderBody/ElectricValve/Index'
-import Temperature from './../routes/HeaderBody/Temperature/Index'
-import ConcentratorModels from './../routes/HeaderBody/ConcentratorModels/Index'
-import AccountManage from './../routes/HeaderBody/AccountManage/Index'
-import AreaManage from './../routes/HeaderBody/AreaManage/Index'
-import DataImportProcess from './../routes/HeaderBody/DataImportProcess/Index'
-import SystemSetup from './../routes/HeaderBody/SystemSetup/Index'
-import ConcentratorErrorAnalysis from './../routes/HeaderBody/ConcentratorErrorAnalysis/Index'
-import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
-import Consumption_abnormality from '../routes/HeaderBody/Consumption_abnormality/Index'
-import Leak_abnormality from '../routes/HeaderBody/Leak_abnormality/Index'
-import ValveStatusAbnormality from '../routes/HeaderBody/Valve_status_abnormality/Index'
-import VoltageStatusAbnormality from '../routes/HeaderBody/VoltageStatusAbnormality/Index'
-import StatisticsDaily from './../routes/HeaderBody/StatisticsDaily/Index'
-import NewPage from './../routes/NewPage'
-import NightAbnormality from './../routes/HeaderBody/NightAbnormality/Index'
-import ZeroAbnormality from './../routes/HeaderBody/ZeroAbnormality/Index'
+// import CommunityAnalysis from './../routes/HeaderBody/CommunityAnalysis/Index'
+// import HYCommunityAnalysis from './../routes/HeaderBody/HYCommunityAnalysis/Index'
+// import ManuallyCommunityAnalysis from './../routes/HeaderBody/ManuallyCommunityAnalysis/Index'
+// import MapDemo from './../routes/HeaderBody/MapDemo/Index'
+// import ConcentratorMaps from './../routes/HeaderBody/ConcentratorMaps/Index'
+// import BigMeterAnalysis from './../routes/HeaderBody/BigMeterAnalysis/Index'
+// import MonitoringMeterManage from './../routes/HeaderBody/MonitoringMeterManage/Index'
+// import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Index'
+// import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
+// import Relations from './../routes/HeaderBody/Relations/Index'
+// import RelationsAnalysis from './../routes/HeaderBody/RelationsAnalysis/Index'
+// import PressureAnalysis from './../routes/HeaderBody/MYSPressureAnalysis/Index'
+// import MYSBigMeterAnalysis from './../routes/HeaderBody/MYSBigMeterAnalysis/Index'
+// import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
+// import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'
+// import ConcentratorManage from './../routes/HeaderBody/ConcentratorManage/Index'
+// import VendorConcentrator from './../routes/HeaderBody/VendorConcentrator/Index'
+// import VendorMeter from './../routes/HeaderBody/VendorMeter/Index'
+// import DMA from '../routes/HeaderBody/DMA/Index'
+// import FlowMeters from './../routes/HeaderBody/FlowMeters/Index'
+// import Servers from './../routes/HeaderBody/Servers/Index'
+// import Locations from './../routes/HeaderBody/LocationsManage/Index'
+// import UserArchives from './../routes/HeaderBody/UserArchives/Index'
+// import VendorMange from './../routes/HeaderBody/VendorMange/Index'
+// import MeterModels from './../routes/HeaderBody/MeterModels/Index'
+// import LiquidSensors from './../routes/HeaderBody/LiquidSensors/Index'
+// import ValveSensors from './../routes/HeaderBody/ValveSensors/Index'
+// import LiquidValveAnalysis from './../routes/HeaderBody/LiquidValveAnalysis/Index'
+// import Meters from './../routes/HeaderBody/Meters/Index'
+// import Pressure from './../routes/HeaderBody/Pressure/Index'
+// import ElectricValve from './../routes/HeaderBody/ElectricValve/Index'
+// import Temperature from './../routes/HeaderBody/Temperature/Index'
+// import ConcentratorModels from './../routes/HeaderBody/ConcentratorModels/Index'
+// import AccountManage from './../routes/HeaderBody/AccountManage/Index'
+// import AreaManage from './../routes/HeaderBody/AreaManage/Index'
+// import DataImportProcess from './../routes/HeaderBody/DataImportProcess/Index'
+// import SystemSetup from './../routes/HeaderBody/SystemSetup/Index'
+// import ConcentratorErrorAnalysis from './../routes/HeaderBody/ConcentratorErrorAnalysis/Index'
+// import MeterErrorAnalysis from './../routes/HeaderBody/MeterErrorAnalysis/Index'
+// import Consumption_abnormality from '../routes/HeaderBody/Consumption_abnormality/Index'
+// import Leak_abnormality from '../routes/HeaderBody/Leak_abnormality/Index'
+// import ValveStatusAbnormality from '../routes/HeaderBody/Valve_status_abnormality/Index'
+// import VoltageStatusAbnormality from '../routes/HeaderBody/VoltageStatusAbnormality/Index'
+// import StatisticsDaily from './../routes/HeaderBody/StatisticsDaily/Index'
+// import NewPage from './../routes/NewPage'
+// import NightAbnormality from './../routes/HeaderBody/NightAbnormality/Index'
+// import ZeroAbnormality from './../routes/HeaderBody/ZeroAbnormality/Index'
 
 //以下代码按需加载
-// const CommunityAnalysis = asyncComponent(() =>
-// import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
-// )
-// const HYCommunityAnalysis = asyncComponent(() =>
-// import(/* webpackChunkName: "HYCommunityAnalysis" */ "./../routes/HeaderBody/HYCommunityAnalysis/Index")
-// )
-// const ManuallyCommunityAnalysis = asyncComponent(() =>
-// import(/* webpackChunkName: "ManuallyCommunityAnalysis" */ "./../routes/HeaderBody/ManuallyCommunityAnalysis/Index")
-// )
-// const MapDemo = asyncComponent(() =>
-// import(/* webpackChunkName: "MapDemo" */ "./../routes/HeaderBody/MapDemo/Index")
-// )
-// const ConcentratorMaps = asyncComponent(() =>
-// import(/* webpackChunkName: "ConcentratorMaps" */ "./../routes/HeaderBody/ConcentratorMaps/Index")
-// )
-// const BigMeterAnalysis = asyncComponent(() =>
-// import(/* webpackChunkName: "BigMeterAnalysis" */ "./../routes/HeaderBody/BigMeterAnalysis/Index")
-// )
-// const MonitoringMeterManage = asyncComponent(() =>
-// import(/* webpackChunkName: "MonitoringMeterManage" */ "./../routes/HeaderBody/MonitoringMeterManage/Index")
-// )
-// const ManuallyMeterManage = asyncComponent(() =>
-// import(/* webpackChunkName: "ManuallyMeterManage" */ "./../routes/HeaderBody/ManuallyMeterManage/Index")
-// )
-// const UserMeterAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
-// )
-// const Relations = asyncComponent(() =>
-//   import(/* webpackChunkName: "Relations" */ "./../routes/HeaderBody/Relations/Index")
-// )
-// const RelationsAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "RelationsAnalysis" */ "./../routes/HeaderBody/RelationsAnalysis/Index")
-// )
-// const PressureAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "PressureAnalysis" */ "./../routes/HeaderBody/MYSPressureAnalysis/Index")
-// )
-// const MYSBigMeterAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "MYSBigMeterAnalysis" */ "./../routes/HeaderBody/MYSBigMeterAnalysis/Index")
-// )
-// const MemberConsumption = asyncComponent(() =>
-//   import(/* webpackChunkName: "MemberConsumption" */ "./../routes/HeaderBody/MemberConsumption/Index")
-// )
-// const CompleteRealData = asyncComponent(() =>
-//   import(/* webpackChunkName: "CompleteRealData" */ "./../routes/HeaderBody/CompleteRealData/Index")
-// )
-// const ConcentratorManage = asyncComponent(() =>
-//   import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
-// )
-// const VendorConcentrator = asyncComponent(() =>
-//   import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
-// )
-// const VendorMeter = asyncComponent(() =>
-//   import(/* webpackChunkName: "VendorMeter" */ "./../routes/HeaderBody/VendorMeter/Index")
-// )
-// const DMA = asyncComponent(() =>
-//   import(/* webpackChunkName: "DMA" */ "../routes/HeaderBody/DMA/Index")
-// )
-// const FlowMeters = asyncComponent(() =>
-//   import(/* webpackChunkName: "FlowMeters" */ "./../routes/HeaderBody/FlowMeters/Index")
-// )
-// const Servers = asyncComponent(() =>
-//   import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
-// )
-// const Locations = asyncComponent(() =>
-//   import(/* webpackChunkName: "Locations" */ "./../routes/HeaderBody/LocationsManage/Index")
-// )
-// const UserArchives = asyncComponent(() =>
-//   import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
-// )
-// const VendorMange = asyncComponent(() =>
-//   import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
-// )
-// const MeterModels = asyncComponent(() =>
-//   import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
-// )
-// const LiquidSensors = asyncComponent(() =>
-//   import(/* webpackChunkName: "LiquidSensors" */ "./../routes/HeaderBody/LiquidSensors/Index")
-// )
-// const ValveSensors = asyncComponent(() =>
-//   import(/* webpackChunkName: "ValveSensors" */ "./../routes/HeaderBody/ValveSensors/Index")
-// )
-// const LiquidValveAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "LiquidValveAnalysis" */ "./../routes/HeaderBody/LiquidValveAnalysis/Index")
-// )
-// const Meters = asyncComponent(() =>
-//   import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
-// )
-// const Pressure = asyncComponent(() =>
-//   import(/* webpackChunkName: "Pressure" */ "./../routes/HeaderBody/Pressure/Index")
-// )
-// const ElectricValve = asyncComponent(() =>
-//   import(/* webpackChunkName: "ElectricValve" */ "./../routes/HeaderBody/ElectricValve/Index")
-// )
-// const Temperature = asyncComponent(() =>
-//   import(/* webpackChunkName: "Temperature" */ "./../routes/HeaderBody/Temperature/Index")
-// )
-// const ConcentratorModels = asyncComponent(() =>
-//   import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
-// )
-// const AccountManage = asyncComponent(() =>
-//   import(/* webpackChunkName: "AccountManage" */ "./../routes/HeaderBody/AccountManage/Index")
-// )
-// const AreaManage = asyncComponent(() =>
-//   import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
-// )
-// const DataImportProcess = asyncComponent(() =>
-//   import(/* webpackChunkName: "DataImportProcess" */ "./../routes/HeaderBody/DataImportProcess/Index")
-// )
-// const SystemSetup = asyncComponent(() =>
-//   import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
-// )
-// const ConcentratorErrorAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
-// )
-// const MeterErrorAnalysis = asyncComponent(() =>
-//   import(/* webpackChunkName: "MeterErrorAnalysis" */ "./../routes/HeaderBody/MeterErrorAnalysis/Index")
-// )
-// const Consumption_abnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "Consumption_abnormality" */ "../routes/HeaderBody/Consumption_abnormality/Index")
-// )
-// const Leak_abnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "Leak_abnormality" */ "../routes/HeaderBody/Leak_abnormality/Index")
-// )
-// const ValveStatusAbnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "ValveStatusAbnormality" */ "../routes/HeaderBody/Valve_status_abnormality/Index")
-// )
-// const VoltageStatusAbnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "VoltageStatusAbnormality" */ "../routes/HeaderBody/VoltageStatusAbnormality/Index")
-// )
-// const StatisticsDaily = asyncComponent(() =>
-//   import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
-// )
-// const NewPage = asyncComponent(() =>
-//   import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
-// )
-// const NightAbnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "NightAbnormality" */ "./../routes/HeaderBody/NightAbnormality/Index")
-// )
-// const ZeroAbnormality = asyncComponent(() =>
-//   import(/* webpackChunkName: "ZeroAbnormality" */ "./../routes/HeaderBody/ZeroAbnormality/Index")
-// )
+const CommunityAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
+)
+const HYCommunityAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "HYCommunityAnalysis" */ "./../routes/HeaderBody/HYCommunityAnalysis/Index")
+)
+const ManuallyCommunityAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "ManuallyCommunityAnalysis" */ "./../routes/HeaderBody/ManuallyCommunityAnalysis/Index")
+)
+const MapDemo = asyncComponent(() =>
+import(/* webpackChunkName: "MapDemo" */ "./../routes/HeaderBody/MapDemo/Index")
+)
+const ConcentratorMaps = asyncComponent(() =>
+import(/* webpackChunkName: "ConcentratorMaps" */ "./../routes/HeaderBody/ConcentratorMaps/Index")
+)
+const BigMeterAnalysis = asyncComponent(() =>
+import(/* webpackChunkName: "BigMeterAnalysis" */ "./../routes/HeaderBody/BigMeterAnalysis/Index")
+)
+const MonitoringMeterManage = asyncComponent(() =>
+import(/* webpackChunkName: "MonitoringMeterManage" */ "./../routes/HeaderBody/MonitoringMeterManage/Index")
+)
+const ManuallyMeterManage = asyncComponent(() =>
+import(/* webpackChunkName: "ManuallyMeterManage" */ "./../routes/HeaderBody/ManuallyMeterManage/Index")
+)
+const UserMeterAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
+)
+const Relations = asyncComponent(() =>
+  import(/* webpackChunkName: "Relations" */ "./../routes/HeaderBody/Relations/Index")
+)
+const RelationsAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "RelationsAnalysis" */ "./../routes/HeaderBody/RelationsAnalysis/Index")
+)
+const PressureAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "PressureAnalysis" */ "./../routes/HeaderBody/MYSPressureAnalysis/Index")
+)
+const MYSBigMeterAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "MYSBigMeterAnalysis" */ "./../routes/HeaderBody/MYSBigMeterAnalysis/Index")
+)
+const MemberConsumption = asyncComponent(() =>
+  import(/* webpackChunkName: "MemberConsumption" */ "./../routes/HeaderBody/MemberConsumption/Index")
+)
+const CompleteRealData = asyncComponent(() =>
+  import(/* webpackChunkName: "CompleteRealData" */ "./../routes/HeaderBody/CompleteRealData/Index")
+)
+const ConcentratorManage = asyncComponent(() =>
+  import(/* webpackChunkName: "ConcentratorManage" */ "./../routes/HeaderBody/ConcentratorManage/Index")
+)
+const VendorConcentrator = asyncComponent(() =>
+  import(/* webpackChunkName: "VendorConcentrator" */ "./../routes/HeaderBody/VendorConcentrator/Index")
+)
+const VendorMeter = asyncComponent(() =>
+  import(/* webpackChunkName: "VendorMeter" */ "./../routes/HeaderBody/VendorMeter/Index")
+)
+const DMA = asyncComponent(() =>
+  import(/* webpackChunkName: "DMA" */ "../routes/HeaderBody/DMA/Index")
+)
+const FlowMeters = asyncComponent(() =>
+  import(/* webpackChunkName: "FlowMeters" */ "./../routes/HeaderBody/FlowMeters/Index")
+)
+const Servers = asyncComponent(() =>
+  import(/* webpackChunkName: "Servers" */ "./../routes/HeaderBody/Servers/Index")
+)
+const Locations = asyncComponent(() =>
+  import(/* webpackChunkName: "Locations" */ "./../routes/HeaderBody/LocationsManage/Index")
+)
+const UserArchives = asyncComponent(() =>
+  import(/* webpackChunkName: "UserArchives" */ "./../routes/HeaderBody/UserArchives/Index")
+)
+const VendorMange = asyncComponent(() =>
+  import(/* webpackChunkName: "VendorMange" */ "./../routes/HeaderBody/VendorMange/Index")
+)
+const MeterModels = asyncComponent(() =>
+  import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
+)
+const LiquidSensors = asyncComponent(() =>
+  import(/* webpackChunkName: "LiquidSensors" */ "./../routes/HeaderBody/LiquidSensors/Index")
+)
+const ValveSensors = asyncComponent(() =>
+  import(/* webpackChunkName: "ValveSensors" */ "./../routes/HeaderBody/ValveSensors/Index")
+)
+const LiquidValveAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "LiquidValveAnalysis" */ "./../routes/HeaderBody/LiquidValveAnalysis/Index")
+)
+const Meters = asyncComponent(() =>
+  import(/* webpackChunkName: "Meters" */ "./../routes/HeaderBody/Meters/Index")
+)
+const Pressure = asyncComponent(() =>
+  import(/* webpackChunkName: "Pressure" */ "./../routes/HeaderBody/Pressure/Index")
+)
+const ElectricValve = asyncComponent(() =>
+  import(/* webpackChunkName: "ElectricValve" */ "./../routes/HeaderBody/ElectricValve/Index")
+)
+const Temperature = asyncComponent(() =>
+  import(/* webpackChunkName: "Temperature" */ "./../routes/HeaderBody/Temperature/Index")
+)
+const ConcentratorModels = asyncComponent(() =>
+  import(/* webpackChunkName: "ConcentratorModels" */ "./../routes/HeaderBody/ConcentratorModels/Index")
+)
+const AccountManage = asyncComponent(() =>
+  import(/* webpackChunkName: "AccountManage" */ "./../routes/HeaderBody/AccountManage/Index")
+)
+const AreaManage = asyncComponent(() =>
+  import(/* webpackChunkName: "AreaManage" */ "./../routes/HeaderBody/AreaManage/Index")
+)
+const DataImportProcess = asyncComponent(() =>
+  import(/* webpackChunkName: "DataImportProcess" */ "./../routes/HeaderBody/DataImportProcess/Index")
+)
+const SystemSetup = asyncComponent(() =>
+  import(/* webpackChunkName: "SystemSetup" */ "./../routes/HeaderBody/SystemSetup/Index")
+)
+const ConcentratorErrorAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "ConcentratorErrorAnalysis" */ "./../routes/HeaderBody/ConcentratorErrorAnalysis/Index")
+)
+const MeterErrorAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "MeterErrorAnalysis" */ "./../routes/HeaderBody/MeterErrorAnalysis/Index")
+)
+const Consumption_abnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "Consumption_abnormality" */ "../routes/HeaderBody/Consumption_abnormality/Index")
+)
+const Leak_abnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "Leak_abnormality" */ "../routes/HeaderBody/Leak_abnormality/Index")
+)
+const ValveStatusAbnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "ValveStatusAbnormality" */ "../routes/HeaderBody/Valve_status_abnormality/Index")
+)
+const VoltageStatusAbnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "VoltageStatusAbnormality" */ "../routes/HeaderBody/VoltageStatusAbnormality/Index")
+)
+const StatisticsDaily = asyncComponent(() =>
+  import(/* webpackChunkName: "StatisticsDaily" */ "./../routes/HeaderBody/StatisticsDaily/Index")
+)
+const NewPage = asyncComponent(() =>
+  import(/* webpackChunkName: "NewPage" */ "./../routes/NewPage")
+)
+const NightAbnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "NightAbnormality" */ "./../routes/HeaderBody/NightAbnormality/Index")
+)
+const ZeroAbnormality = asyncComponent(() =>
+  import(/* webpackChunkName: "ZeroAbnormality" */ "./../routes/HeaderBody/ZeroAbnormality/Index")
+)
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -352,7 +352,7 @@ const data = [{
           path: 'relations_analysis',
           component: RelationsAnalysis,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy']
         },
         {
           name: 'pressure/temperature_map',
@@ -475,7 +475,7 @@ const data = [{
           path: 'relations',
           component: Relations,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy']
         },
 
         {
