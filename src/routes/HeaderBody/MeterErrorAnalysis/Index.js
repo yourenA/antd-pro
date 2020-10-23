@@ -66,18 +66,14 @@ class UserMeterAnalysis extends PureComponent {
       },
     });
 
-    const that = this;
-    this.timer = setInterval(function () {
-      that.setState({
-        // disabled:false
-        time: new Date().getTime()
-      })
-    }, 2000)
   }
 
   componentWillUnmount() {
     // document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
-    clearInterval(this.timer)
+
+    if(this.timer){
+      clearInterval(this.timer)
+    }
   }
 
   handleBack = ()=> {
@@ -237,6 +233,17 @@ class UserMeterAnalysis extends PureComponent {
     console.log('点抄：', meter_number)
     const {dispatch} = this.props;
     const that = this;
+    this.timer = setInterval(function () {
+      that.setState({
+        // disabled:false
+        time: new Date().getTime()
+      })
+    }, 4000)
+    setTimeout(function () {
+      if(that.timer){
+        clearInterval(that.timer)
+      }
+    },14000)
     dispatch({
       type: 'user_command_data/add',
       payload: {
