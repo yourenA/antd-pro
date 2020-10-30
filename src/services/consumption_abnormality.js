@@ -23,6 +23,14 @@ export async function add({...restParams}) {
     },
   });
 }
+export async function exportCSV(params) {
+  return request(`/consumption_abnormality_files`,{
+    method:'GET',
+    params:{
+      ...params
+    }
+  });
+}
 
 export async function edit({id,...restParams}) {
   return request(`/flow_meters/${id}`, {

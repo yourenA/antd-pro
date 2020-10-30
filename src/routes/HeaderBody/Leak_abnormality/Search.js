@@ -149,6 +149,8 @@ class SearchForm extends Component {
             <Button type="primary"  className="btn-cyan" onClick={this.props.processed}>
               批量确认异常
             </Button>
+            <Button type="primary" className="btn-cyan" style={{marginLeft: 8}} onClick={() => this.props.exportCSV()}
+                    icon='export'>用水量异常导出</Button>
           </FormItem>
         </Row>
       </Form>

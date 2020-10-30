@@ -11,12 +11,14 @@ import find from 'lodash/find'
 import './index.less'
 import uuid from 'uuid/v4'
 import Detail from './../UserMeterAnalysis/Detail'
-import {renderIndex,ellipsis2} from './../../../utils/utils'
+import {renderIndex, ellipsis2, download} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 import ProcessedForm from './../ZeroAbnormality/ProcessedForm'
 const {Content} = Layout;
 import {injectIntl} from 'react-intl';
+import ExportForm from "./ExportForm";
+import config from "../../../common/config";
 @injectIntl
 @connect(state => ({
   dma: state.dma,
@@ -255,6 +257,24 @@ class Consumption_abnormality extends PureComponent {
       editModal: true
     })
   }
+  exportCSV = ()=> {
+    const that = this;
+    const formValues = this.ExportformRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
+    const payload = {
+      started_at: moment(formValues.started_at).format('YYYY-MM-DD'),
+      ended_at: moment(formValues.ended_at).format('YYYY-MM-DD'),
+      concentrator_number: formValues.concentrator_number,
+      meter_number: formValues.meter_number
+    }
+    this.props.dispatch({
+      type: 'consumption_abnormality/exportCSV',
+      payload: payload,
+      callback: function (download_key) {
+        download(`${config.prefix}/download?download_key=${download_key}`)
+      }
+    });
+  }
   render() {
     const rowSelection = {
       selectedRowKeys:this.state.selectedRowKeys,
@@ -340,6 +360,11 @@ class Consumption_abnormality extends PureComponent {
                           editRecord:{}
                         })
                       }}
+                      exportCSV={()=>{
+                        this.setState({
+                          exportModal: true
+                        })
+                      }}
                       dma={dma}
                             initRange={this.state.initRange}
                             handleSearch={this.handleSearch} handleFormReset={this.handleFormReset}
@@ -375,6 +400,14 @@ class Consumption_abnormality extends PureComponent {
               >
                 <Detail meter_number={this.state.show_meter_number} ended_at={this.state.ended_at}
                         started_at={this.state.started_at}/>
+              </Modal>
+              <Modal
+                title={formatMessage({id: 'intl.export'})}
+                visible={this.state.exportModal}
+                onOk={this.exportCSV}
+                onCancel={() => this.setState({exportModal: false})}
+              >
+                <ExportForm wrappedComponentRef={(inst) => this.ExportformRef = inst}/>
               </Modal>
             </PageHeaderLayout>
           </div>
