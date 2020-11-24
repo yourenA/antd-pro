@@ -372,7 +372,7 @@ const data = [{
           name: 'mys_big_meter_analysis',
           path: 'mys_big_meter_analysis',
           component: MYSBigMeterAnalysis,
-          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','lqsrmyy','sz','nxzw']
+          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','lqsrmyy','sz','nxzw','jgs']
         },
         {
           name: 'pressure_history',
