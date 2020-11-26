@@ -352,7 +352,7 @@ const data = [{
           path: 'relations_analysis',
           component: RelationsAnalysis,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw']
         },
         {
           name: 'pressure/temperature_map',
@@ -475,7 +475,7 @@ const data = [{
           path: 'relations',
           component: Relations,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw']
         },
 
         {
