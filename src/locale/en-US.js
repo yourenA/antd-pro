@@ -48,6 +48,7 @@ const en_US = {
   'intl.concentrator_type_manage':'Concentrator Type',//集中器类型管理
   'intl.meter_manage':'Meter',//水表管理
   'intl.meter_type_manage':'Meter Type',//水表类型管理
+  'intl.reduce_pressure_manage':'Reduce Pressure',//减压阀管理
   'intl.liquid_sensors_manage':'liquid Sensors',//液位传感器管理
   'intl.valve_sensors_manage':'Valve Sensors',//阀控传感器管理
   'intl.monitor_meter_manage':'Monitor Meter',//监控表管理

@@ -50,6 +50,7 @@ const zh_CN = {
   'intl.concentrator_type_manage':'集中器类型管理',//集中器类型管理
   'intl.meter_manage':'水表管理',//水表管理
   'intl.meter_type_manage':'水表类型管理',//水表类型管理
+  'intl.reduce_pressure_manage':'减压阀管理',//减压阀管理
   'intl.liquid_sensors_manage':'液位传感器管理',//液位传感器管理
   'intl.valve_sensors_manage':'阀控传感器管理',//阀控传感器管理
   'intl.monitor_meter_manage':'监控表管理',//监控表管理

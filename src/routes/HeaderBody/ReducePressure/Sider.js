@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import {Icon, Tree, Layout} from 'antd';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
-import './../StatisticsDaily/index.less'
+
 const { Sider} = Layout;
 import {injectIntl} from 'react-intl';
 @injectIntl
@@ -13,25 +13,9 @@ class SiderNav extends PureComponent {
   constructor(props) {
     super(props);
     const {isMobile} =this.props.global;
-    const {intl:{formatMessage}} = this.props;
     this.state = {
       collapsed: isMobile,
-      siderNav: [
-        {name: formatMessage({id: 'intl.night_warning_setup'}), url: 'night_warning_setup'},
-        {name: formatMessage({id: 'intl.zero_warning_setup'}) , url: 'zero_warning_setup'},
-        {name: formatMessage({id: 'intl.unusual_water'}) , url: 'unusual_water'},
-        {name: formatMessage({id: 'intl.leak_warning_setup'}) , url: 'leak_warning_setup'},
-        {name: formatMessage({id: 'intl.valve_status_setup'}) , url: 'valve_status_setup'},
-        {name: formatMessage({id: 'intl.voltage_status_setup'}) , url: 'voltage_status_setup'},
-        {name: formatMessage({id: 'intl.concentrator_offline_setup'}) , url: 'concentrator_offline_setup'},
-        {name: formatMessage({id: 'intl.meter_upload_setup'}) , url: 'meter_upload_setup'},
-        // {name: '压力/温度传感器设置', url: 'pressure_temperature_setup'},
-        {name: formatMessage({id: 'intl.export_setup'}) , url: 'export_setup'},
-       // {name: '手机报警', url: 'alarm_setup'},
-        //{name: '水表水量分析页面设置', url: 'member_meter_setup'},
-        // {name: '系统名称设置', url: 'system_name'}, {name: '短信通知设置', url: 'sms_notice' },
-        //           {name: '邮件通知设置', url: 'email_notice' }
-                  ],
+      siderNav: [{name: '减压阀列表' , url: 'reduce_pressure_list'},{name: '减压阀任务' , url: 'reduce_pressure_task'}],
       activeNav:this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1]
     }
   }
@@ -41,6 +25,7 @@ class SiderNav extends PureComponent {
         activeNav:nextProps.location.pathname.split('/')[nextProps.location.pathname.split('/').length-1]
       })
     }
+
   }
   onCollapse = () => {
     this.setState({
@@ -53,20 +38,20 @@ class SiderNav extends PureComponent {
     })
   }
   render() {
-    const {intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
+
     const that=this;
     const renderSiderNav=this.state.siderNav.map((item,index)=>{
       return (
         <div onClick={()=>that.changeNavIndex(item.url)} key={index} className={that.state.activeNav===item.url?"siderNav-item siderNav-item-active":"siderNav-item"}>
-          <Link to={`/${company_code}/main/system_manage/system_setup/${item.url}`}>{item.name}</Link>
+          <Link to={`/${company_code}/main/run_manage/reduce_pressure_manage/${item.url}`}>{item.name}</Link>
         </div>
       )
     })
     return (
       <Sider collapsed={this.state.collapsed}  collapsedWidth={0} className="sider" width="210">
         <div className="sider-title">
-          { formatMessage({id: 'intl.option'})}
+          选项
         </div>
         <div className="siderNav">
           {renderSiderNav}

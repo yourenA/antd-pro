@@ -131,6 +131,9 @@ const VendorMange = asyncComponent(() =>
 const MeterModels = asyncComponent(() =>
   import(/* webpackChunkName: "MeterModels" */ "./../routes/HeaderBody/MeterModels/Index")
 )
+const ReducePressure = asyncComponent(() =>
+  import(/* webpackChunkName: "ReducePressure" */ "./../routes/HeaderBody/ReducePressure/Index")
+)
 const LiquidSensors = asyncComponent(() =>
   import(/* webpackChunkName: "LiquidSensors" */ "./../routes/HeaderBody/LiquidSensors/Index")
 )
@@ -470,7 +473,13 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
-        }, {
+        },    {
+          name: 'reduce_pressure_manage',
+          path: 'reduce_pressure_manage',
+          component: ReducePressure,
+          permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
+          showCompany: ['amwares','hngydx','test','zhsgy']
+        },{
           name: 'meter_relations',
           path: 'relations',
           component: Relations,
