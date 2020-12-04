@@ -83,6 +83,11 @@ import(/* webpackChunkName: "ManuallyMeterManage" */ "./../routes/HeaderBody/Man
 const UserMeterAnalysis = asyncComponent(() =>
   import(/* webpackChunkName: "UserMeterAnalysis" */ "./../routes/HeaderBody/UserMeterAnalysis/Index")
 )
+
+const BatchAnalysis= asyncComponent(() =>
+  import(/* webpackChunkName: "BatchAnalysis" */ "./../routes/HeaderBody/BatchAnalysis/Index")
+)
+
 const Relations = asyncComponent(() =>
   import(/* webpackChunkName: "Relations" */ "./../routes/HeaderBody/Relations/Index")
 )
@@ -339,6 +344,12 @@ const data = [{
           permissions: ['member_meter_data'],
         },
         {
+          name: 'batch_analysis',
+          path: 'batch_analysis',
+          component: BatchAnalysis,
+          showCompany: ['amwares','nxzw']
+        },
+        {
           name: 'big_meter_volume',
           path: 'big_meter_analysis',
           component: BigMeterAnalysis,
@@ -473,13 +484,15 @@ const data = [{
           path: 'water_meter_search',
           component: MeterModels,
           permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
-        },    {
-          name: 'reduce_pressure_manage',
-          path: 'reduce_pressure_manage',
-          component: ReducePressure,
-          permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
-          showCompany: ['amwares','hngydx','test','zhsgy']
-        },{
+        },
+        // {
+        //   name: 'reduce_pressure_manage',
+        //   path: 'reduce_pressure_manage',
+        //   component: ReducePressure,
+        //   permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
+        //   showCompany: ['amwares','hngydx','test','zhsgy']
+        // },
+        {
           name: 'meter_relations',
           path: 'relations',
           component: Relations,

@@ -34,6 +34,7 @@ const zh_CN = {
   'intl.meter_relations_analysis':' 水表损耗率分析',
   'intl.relations':'水表关系',
   'intl.meter_volume_data':'水表水量分析',//水表水量分析
+  'intl.batch_analysis':'水表批量分析',//水表批量分析
   'intl.big_meter_volume':'大表水量分析',//大表水量分析
   'intl.user_meter_volume':'用户水量分析',//用户水量分析
   'intl.pressure/temperature_map':'温度地图',//压力/温度地图
