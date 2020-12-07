@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Table, Card, Popconfirm, Layout, message, Row, Col,Button,Modal} from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
-import Sider from './../Sider'
+import Sider from './../EmptySider'
 import {connect} from 'dva';
 import moment from 'moment'
 import Pagination from './../../../components/Pagination/Index'
@@ -53,8 +53,14 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentDidMount() {
-    this.changeTableY();
-    document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+    // this.changeTableY();
+    // document.querySelector('.ant-table-body').addEventListener('scroll', debounce(this.scrollTable, 200))
+    this.handleSearch({
+      number: this.state.number,
+      // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
+      // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
+
+    })
     const that = this;
     request(`/configs?groups[]=pressure_sensor_abnormality`, {
       method: 'GET',
@@ -75,7 +81,8 @@ class UserMeterAnalysis extends PureComponent {
   }
 
   componentWillUnmount() {
-    document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
+    // document.querySelector('.ant-table-body').removeEventListener('scroll', debounce(this.scrollTable, 200))
+
   }
 
   scrollTable = ()=> {
@@ -151,8 +158,6 @@ class UserMeterAnalysis extends PureComponent {
   }
   handleFormReset = () => {
     this.handleSearch({
-      page: 1,
-      per_page: 30,
       number: '',
       // started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       // ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
@@ -165,6 +170,7 @@ class UserMeterAnalysis extends PureComponent {
     dispatch({
       type: fetchAndPush ? 'pressure/fetchAndPush' : 'pressure/fetch',
       payload: {
+        return:'all',
         concentrator_number: this.state.concentrator_number ? this.state.concentrator_number : '',
         village_id: this.state.village_id ? this.state.village_id : '',
         ...values,
@@ -186,15 +192,11 @@ class UserMeterAnalysis extends PureComponent {
   }
   handPageChange = (page)=> {
     this.handleSearch({
-      page: page,
       number: this.state.number,
-      per_page: this.state.per_page,
     })
   }
   handPageSizeChange = (per_page)=> {
     this.handleSearch({
-      page: 1,
-      per_page: per_page,
         number: this.state.number,
     })
   }
@@ -259,8 +261,7 @@ class UserMeterAnalysis extends PureComponent {
     ];
     return (
       <Layout className="layout">
-        <Sider changeArea={this.changeArea} changeConcentrator={this.changeConcentrator}
-               siderLoadedCallback={this.siderLoadedCallback}/>
+        <Sider />
         <Content style={{background: '#fff'}}>
           <div className="content">
             <PageHeaderLayout title="实时数据分析" breadcrumb={[{name:  formatMessage({id: 'intl.data_analysis'})},
@@ -284,7 +285,6 @@ class UserMeterAnalysis extends PureComponent {
                                      dataSource={data} columns={columns} rowKey={record => record.uuidkey}
                                      history={this.props.history}
                                      scroll={{ y: this.state.tableY}}/>
-                    <Pagination  initPage={this.state.initPage} handPageSizeChange={this.handPageSizeChange} meta={meta} handPageChange={this.handPageChange}/>
 
                   </Col>
                 </Row>

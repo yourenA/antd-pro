@@ -43,7 +43,7 @@ const zh_CN = {
   'intl.real_time_data':'完整实时数据',//完整实时数据
   'intl.vendor_concentrator_statistics':'厂商-集中器统计',//厂商-集中器统计
   'intl.vendor_meter_statistics':'厂商-水表统计',//厂商-水表统计
-  'intl.liquid/valve_analysis':'比例阀控传感器分析',//液位/比例阀控传感器分析
+  'intl.liquid/valve_analysis':'液位/比例阀控传感器分析',//液位/比例阀控传感器分析
   'intl.device':'设备管理',//设备管理
   'intl.map':'地图',//地图
   'intl.concentrator':'集中器',//集中器
@@ -353,7 +353,7 @@ const zh_CN = {
   'intl.cancel': '取消',//取消
   'intl.can_not_be_empty': '不能为空',//不能为空
   'intl.concentrator_tip': '会同时对集中器进行初始化',//会同时对集中器进行初始化
-  'intl.detail_info': '(红色柱状图表示当天错报,黄色表示当天漏报)',//(红色柱状图表示当天错报,黄色表示当天漏报)
+  'intl.detail_info': '(红色柱状图表示当天错报,黄色表示当天漏报,蓝色表示上报正常)',//(红色柱状图表示当天错报,黄色表示当天漏报)
   'intl.manual_selection': '手动选点',//手动选点
   'intl.drag_the_red_dot': '拖动红点选择地址',//拖动红点选择地址
   'intl.concentrator_upload_valve_control_initialize': '集中器集抄/阀控/初始化',//集中器集抄/阀控/初始化

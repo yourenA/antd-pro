@@ -89,6 +89,11 @@ export default class LiquidPosition extends PureComponent {
               type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
           },
+          grid: {
+            left: '15%',
+            right: '20%',
+            bottom: '10%',
+          },
           xAxis: {
             type: 'category',
             data: xData,
@@ -96,7 +101,7 @@ export default class LiquidPosition extends PureComponent {
           },
           yAxis: {
             type: 'value',
-            name: formatMessage({id: 'intl.unit'})+' 0.01m',
+            name: formatMessage({id: 'intl.unit'})+' 米',
             max:maxValue
           },
           series: [{
@@ -137,8 +142,8 @@ export default class LiquidPosition extends PureComponent {
             {this.state.data.length>0?
               <Row gutter={24}>
                 {this.state.data.map((item, index)=> {
-                  return <Col xs={1} sm={24} md={12} lg={12} xl={8} key={index}>
-                    <div className={ `valve-item-${index}`} style={{width: '100%', height: '300px'}}></div>
+                  return <Col xs={1} sm={24} md={12} lg={6} xl={6} xxl={4} key={index}>
+                    <div className={ `valve-item-${index}`} style={{width: '100%', height: '200px'}}></div>
                     <Button type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
                   </Col>
                 })}

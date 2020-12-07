@@ -219,9 +219,9 @@ class UserMeterAnalysis extends PureComponent {
     const {intl:{formatMessage}} = this.props;
     const columns = [
       {
-        title: formatMessage({id: 'intl.user_name'}), width: 100, dataIndex: 'real_name', key: 'real_name',
+        title: formatMessage({id: 'intl.user_name'}), width: 200, dataIndex: 'real_name', key: 'real_name',
         render: (val, record, index) => {
-          return ellipsis2(val, 100)
+          return ellipsis2(val, 200)
         }
       },
       {

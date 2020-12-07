@@ -76,7 +76,7 @@ class Detail extends PureComponent {
         }
       },
       grid: {
-        bottom: 90
+        bottom: 70
       },
       dataZoom: [{
         type: 'inside'
@@ -98,7 +98,7 @@ class Detail extends PureComponent {
         splitArea: {
           show: false
         },
-        name: formatMessage({id: 'intl.unit'}) +' 0.01m',
+        name: formatMessage({id: 'intl.unit'}) +' 米',
         max:this.props.maxValue
       },
       series: [{

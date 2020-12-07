@@ -388,13 +388,7 @@ const data = [{
           component: MYSBigMeterAnalysis,
           showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','lqsrmyy','sz','nxzw','jgs']
         },
-        {
-          name: 'pressure_history',
-          path: 'pressure_analysis',
-          component: PressureAnalysis,
-          permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','lqsrmyy','sz']
-        },
+
         // {
         //   name: '温度传感器历史分析',
         //   path: 'temperature_analysis',
@@ -429,6 +423,13 @@ const data = [{
           permissions: ['manufacturer_status'],
         },
         {
+          name: 'pressure_history',
+          path: 'pressure_analysis',
+          component: PressureAnalysis,
+          permissions: ['pressure_sensor_historical_data'],
+          showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','lqsrmyy','sz']
+        },
+        {
           name: 'liquid/valve_analysis',
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
@@ -442,7 +443,62 @@ const data = [{
         //   permissions:['village_difference_consumption'],
         // },
       ],
-    }, {
+    },
+
+    {
+      name: 'abnormal_analysis',            // 页面名称，会展示在菜单栏中
+      path: 'unusual_analysis',   // 匹配的路由
+      icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
+      permissions: ['concentrator_error_analysis', 'meter_error_analysis', 'daily_error', 'consumption_abnormality', 'zero_abnormality', 'leak_abnormality', 'night_abnormality'],
+      children: [{
+        name: 'concentrator_abnormal_analysis',
+        path: 'concentrator_unusual_analysis',
+        component: ConcentratorErrorAnalysis,
+        permissions: ['concentrator_error_analysis'],
+      }, {
+        name: 'water_meter_abnormal_analysis',
+        path: 'meter_unusual_analysis',
+        component: MeterErrorAnalysis,
+        permissions: ['meter_error_analysis'],
+      }, {
+        name: 'Statistical_daily',
+        path: 'statistics_daily',
+        component: StatisticsDaily,
+        permissions: ['daily_error'],
+      }, {
+        name: 'water_consumption_abnormal_analysis',
+        path: 'consumption_abnormality',
+        component: Consumption_abnormality,
+        permissions: ['consumption_abnormality'],
+      }, {
+        name: 'zero_consumption_abnormal_analysis',
+        path: 'zero_abnormality',
+        component: ZeroAbnormality,
+        permissions: ['zero_abnormality'],
+      }, {
+        name: 'water_leak_abnormal_analysis',
+        path: 'leak_abnormality',
+        component: Leak_abnormality,
+        permissions: ['leak_abnormality'],
+      }, {
+        name: 'night_consumption_abnormal_analysis',
+        path: 'night_abnormality',
+        component: NightAbnormality,
+        permissions: ['night_abnormality'],
+      }, {
+        name: 'valve_status_abnormal_analysis',
+        path: 'valve_status_abnormality',
+        component: ValveStatusAbnormality,
+        permissions: ['valve_status_abnormality'],
+      }
+        , {
+          name: 'voltage_status_abnormal_analysis',
+          path: 'voltage_status_abnormality',
+          component: VoltageStatusAbnormality,
+          permissions: ['voltage_status_abnormality'],
+        }],
+    },
+    {
       name: 'device',            // 页面名称，会展示在菜单栏中
       path: 'run_manage',   // 匹配的路由
       icon: 'dashboard',              // 页面图标，会展示在菜单栏中
@@ -499,7 +555,13 @@ const data = [{
           permissions: ['attrition_rate_analysis'],
           showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw']
         },
-
+        {
+          name: 'pressure_sensors_manage',
+          path: 'pressure_sensors',
+          component: Pressure,
+          permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
+          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx','lqsrmyy','sz']
+        },
         {
           name: 'liquid_sensors_manage',
           path: 'liquid_sensors_manage',
@@ -528,12 +590,13 @@ const data = [{
           permissions: [ 'manually_monitoring_meter_add_and_edit','manually_monitoring_meter_delete'],
           showCompany: ['hy','sj_test','amwares','hz_test','wm_test','sc_test','hz_test_8409','wm_test_8410','sc_test_8411']
         },
+
         {
-          name: 'pressure_sensors_manage',
-          path: 'pressure_sensors',
-          component: Pressure,
-          permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx','lqsrmyy','sz']
+          name: 'flow_meters_manage',
+          path: 'flow_meters',
+          component: FlowMeters,
+          permissions: [ 'flow_meter_add_and_edit', 'flow_meter_delete'],
+          showCompany: ['hy','amwares']
         },
         {
           name: 'electric_valves_manage',
@@ -555,16 +618,11 @@ const data = [{
         //   component: StatusCheck,
         //   permissions:['company_visit'],
         // },
-        {
-          name: 'flow_meters_manage',
-          path: 'flow_meters',
-          component: FlowMeters,
-          permissions: [ 'flow_meter_add_and_edit', 'flow_meter_delete'],
-          showCompany: ['hy','amwares']
-        }
+
 
       ],
-    }, {
+    },
+    {
       name: 'system',            // 页面名称，会展示在菜单栏中
       path: 'system_manage',   // 匹配的路由
       icon: 'setting',              // 页面图标，会展示在菜单栏中
@@ -627,59 +685,8 @@ const data = [{
           component: DataImportProcess,
           permissions: ['member_add_and_edit', 'concentrator_add_and_edit', 'meter_model_delete', 'meter_add_and_edit', 'village_add_and_edit', 'concentrator_model_add_and_edit', 'manufacturer_add_and_edit'],
         }],
-    }, {
-      name: 'abnormal_analysis',            // 页面名称，会展示在菜单栏中
-      path: 'unusual_analysis',   // 匹配的路由
-      icon: 'pie-chart',              // 页面图标，会展示在菜单栏中
-      permissions: ['concentrator_error_analysis', 'meter_error_analysis', 'daily_error', 'consumption_abnormality', 'zero_abnormality', 'leak_abnormality', 'night_abnormality'],
-      children: [{
-        name: 'concentrator_abnormal_analysis',
-        path: 'concentrator_unusual_analysis',
-        component: ConcentratorErrorAnalysis,
-        permissions: ['concentrator_error_analysis'],
-      }, {
-        name: 'water_meter_abnormal_analysis',
-        path: 'meter_unusual_analysis',
-        component: MeterErrorAnalysis,
-        permissions: ['meter_error_analysis'],
-      }, {
-        name: 'Statistical_daily',
-        path: 'statistics_daily',
-        component: StatisticsDaily,
-        permissions: ['daily_error'],
-      }, {
-        name: 'water_consumption_abnormal_analysis',
-        path: 'consumption_abnormality',
-        component: Consumption_abnormality,
-        permissions: ['consumption_abnormality'],
-      }, {
-        name: 'zero_consumption_abnormal_analysis',
-        path: 'zero_abnormality',
-        component: ZeroAbnormality,
-        permissions: ['zero_abnormality'],
-      }, {
-        name: 'water_leak_abnormal_analysis',
-        path: 'leak_abnormality',
-        component: Leak_abnormality,
-        permissions: ['leak_abnormality'],
-      }, {
-        name: 'night_consumption_abnormal_analysis',
-        path: 'night_abnormality',
-        component: NightAbnormality,
-        permissions: ['night_abnormality'],
-      }, {
-        name: 'valve_status_abnormal_analysis',
-        path: 'valve_status_abnormality',
-        component: ValveStatusAbnormality,
-        permissions: ['valve_status_abnormality'],
-      }
-        , {
-          name: 'voltage_status_abnormal_analysis',
-          path: 'voltage_status_abnormality',
-          component: VoltageStatusAbnormality,
-          permissions: ['voltage_status_abnormality'],
-        }],
-    }],
+    },
+    ],
 },
   /*{
    component: UserLayout,
