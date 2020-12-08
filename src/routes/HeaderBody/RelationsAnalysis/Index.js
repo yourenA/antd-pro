@@ -277,7 +277,14 @@ class UserMeterAnalysis extends PureComponent {
                                     用水量 : {rowInfo.node.consumption}
                                   </Tag>,
                                   ];
-                                  if(rowInfo.node.children){
+                                  if(rowInfo.node.children&&company_code==='lqsrmyy'){
+                                    btns.push(<Tag
+                                      color="#87d068"
+                                      style={{marginRight: '5px',fontSize:'14px'}}
+                                    >
+                                      下属分表用水总量 : {rowInfo.node.child_consumption}
+                                    </Tag>)
+                                  }else if(rowInfo.node.children&&company_code!=='lqsrmyy'){
                                     btns.push(<Tag
                                       color="#87d068"
                                       style={{marginRight: '5px',fontSize:'14px'}}
