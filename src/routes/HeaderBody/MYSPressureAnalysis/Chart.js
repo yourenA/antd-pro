@@ -49,7 +49,7 @@ export default class DMArate extends PureComponent {
     request(`/pressure_sensor_historical_data`, {
       method: 'GET',
       params: {
-        pressure_sensor_number: this.props.meter_number,
+        pressure_sensor_number: this.props.number,
         date: moment(date).format('YYYY-MM-DD')
       }
     }).then((response)=> {

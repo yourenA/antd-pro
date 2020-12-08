@@ -10,7 +10,7 @@ import ManuallyMeterManage from './../routes/HeaderBody/ManuallyMeterManage/Inde
 import UserMeterAnalysis from './../routes/HeaderBody/UserMeterAnalysis/Index'
 import Relations from './../routes/HeaderBody/Relations/Index'
 import RelationsAnalysis from './../routes/HeaderBody/RelationsAnalysis/Index'
-import PressureAnalysis from './../routes/HeaderBody/MYSPressureAnalysis/Index'
+import PressureAnalysis from '../routes/HeaderBody/MYSPressureAnalysis/Index3'
 import MYSBigMeterAnalysis from './../routes/HeaderBody/MYSBigMeterAnalysis/Index'
 import MemberConsumption from './../routes/HeaderBody/MemberConsumption/Index'
 import CompleteRealData from './../routes/HeaderBody/CompleteRealData/Index'

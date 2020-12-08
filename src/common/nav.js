@@ -95,7 +95,7 @@ const RelationsAnalysis = asyncComponent(() =>
   import(/* webpackChunkName: "RelationsAnalysis" */ "./../routes/HeaderBody/RelationsAnalysis/Index")
 )
 const PressureAnalysis = asyncComponent(() =>
-  import(/* webpackChunkName: "PressureAnalysis" */ "./../routes/HeaderBody/MYSPressureAnalysis/Index")
+  import(/* webpackChunkName: "PressureAnalysis" */ "../routes/HeaderBody/MYSPressureAnalysis/Index")
 )
 const MYSBigMeterAnalysis = asyncComponent(() =>
   import(/* webpackChunkName: "MYSBigMeterAnalysis" */ "./../routes/HeaderBody/MYSBigMeterAnalysis/Index")
@@ -386,7 +386,7 @@ const data = [{
           name: 'mys_big_meter_analysis',
           path: 'mys_big_meter_analysis',
           component: MYSBigMeterAnalysis,
-          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','lqsrmyy','sz','nxzw','jgs']
+          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','sz','nxzw','jgs']
         },
 
         // {
