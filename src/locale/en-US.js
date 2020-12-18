@@ -56,6 +56,7 @@ const en_US = {
   'intl.manually_meter_manage':'Manually Meter',//手工监控表管理
   'intl.pressure_sensors_manage':'Pressure Sensors',//压力传感器
   'intl.temperature_sensors_manage':'Temperature Sensors',//温度传感器
+  'intl.workstations':'workstations',//工作站管理
   'intl.flow_meters_manage':'Flow Meters',//流量计管理
   'intl.system':'System',//系统管理
   'intl.system_setting':'System Setting',//系统设置

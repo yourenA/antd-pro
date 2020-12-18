@@ -205,6 +205,11 @@ const NightAbnormality = asyncComponent(() =>
 const ZeroAbnormality = asyncComponent(() =>
   import(/* webpackChunkName: "ZeroAbnormality" */ "./../routes/HeaderBody/ZeroAbnormality/Index")
 )
+
+const Workstations= asyncComponent(() =>
+  import(/* webpackChunkName: "Workstations" */ "./../routes/HeaderBody/Workstations/Index")
+)
+
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -611,6 +616,11 @@ const data = [{
           component: Temperature,
           permissions: [ 'temperature_sensor_add_and_edit', 'temperature_sensor_delete'],
           showCompany: ['zhsgy','amwares']
+        },  {
+          name: 'workstations',
+          path: 'workstations',
+          component: Workstations,
+          showCompany: ['zhsgy','amwares','test','hngydx']
         },
         //   {
         //   name: '指令和状态查看',

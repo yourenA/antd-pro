@@ -93,7 +93,7 @@ export default class LiquidPosition extends PureComponent {
         console.log('maxValue', maxValue)
         let option = {
           title: {
-            text: data[i].number,
+            text: data[i].name,
             x: 'right'
           },
           backgroundColor: '#eee',
