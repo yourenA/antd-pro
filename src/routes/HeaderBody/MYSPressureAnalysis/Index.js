@@ -92,9 +92,20 @@ export default class LiquidPosition extends PureComponent {
         let maxValue = max(itemMax);
         console.log('maxValue', maxValue)
         let option = {
-          title: {
-            text: data[i].name,
-            x: 'right'
+          title : {
+            text: data[i].number,
+            textStyle: {
+              color: '#272727',
+              fontSize: 16
+            },
+            subtext: data[i].address,
+            subtextStyle: {
+              color: '#272727',
+              fontSize: 14
+            },
+            x:'right',
+            top:5,
+            right:5
           },
           backgroundColor: '#eee',
           color: ['#3398DB'],
@@ -112,11 +123,10 @@ export default class LiquidPosition extends PureComponent {
           xAxis: {
             type: 'category',
             data: xData,
-            name: '压力传感器号',
           },
           yAxis: {
             type: 'value',
-            name: formatMessage({id: 'intl.unit'}) + ' KPa',
+            name: 'KPa',
           },
           series: [{
             data: yData,

@@ -71,6 +71,9 @@ import(/* webpackChunkName: "MapDemo" */ "./../routes/HeaderBody/MapDemo/Index")
 const ConcentratorMaps = asyncComponent(() =>
 import(/* webpackChunkName: "ConcentratorMaps" */ "./../routes/HeaderBody/ConcentratorMaps/Index")
 )
+const GYDXMaps = asyncComponent(() =>
+  import(/* webpackChunkName: "GYDXMaps" */ "./../routes/HeaderBody/GYDXMaps/Index")
+)
 const BigMeterAnalysis = asyncComponent(() =>
 import(/* webpackChunkName: "BigMeterAnalysis" */ "./../routes/HeaderBody/BigMeterAnalysis/Index")
 )
@@ -386,6 +389,13 @@ const data = [{
           component: ConcentratorMaps,
           permissions: ['concentrator_maps',],
           showCompany: ['mys','gxcz','amwares','sz']
+        },
+        {
+          name: 'hngydx_map',
+          path: 'hngydx_map',
+          component: GYDXMaps,
+          permissions: ['concentrator_maps',],
+          showCompany: ['hngydx','amwares']
         },
         {
           name: 'mys_big_meter_analysis',

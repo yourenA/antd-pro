@@ -66,16 +66,31 @@ export default class LiquidPosition extends PureComponent {
 
     const that = this;
     const {intl:{formatMessage}} = this.props;
+    function array2obj (array, key) {
+      var resObj = {}
+      for (var i = 0; i < array.length; i++) {
+        resObj[array[i][key]] = array[i]
+      }
+      return resObj
+    }
     setTimeout(function () {
       for (let i = 0; i < data.length; i++) {
         that['myChart' + i] = that.echarts.init(document.querySelector(`.valve-item-${i}`));
         that.myChart.push(that['myChart' + i])
-        let spare = 100 - parseFloat(data[i].current_value)
+        let spare = 100 - parseFloat(data[i].current_value);
+
         let option = {
           backgroundColor: '#eee',
           title : {
             text: data[i].number,
-            x:'right'
+            subtext: data[i].address,
+            subtextStyle: {
+              color: '#272727',
+              fontSize: 14
+            },
+            x:'right',
+            top:5,
+            right:5
           },
           tooltip: {
             trigger: 'item',
@@ -83,15 +98,18 @@ export default class LiquidPosition extends PureComponent {
           },
           legend: {
             orient: 'vertical',
-            left: 'left',
-            data: [formatMessage({id: 'intl.current_valve_open_value'}) , '']
+            bottom:'1%',
+            data: [formatMessage({id: 'intl.current_valve_open_value'}) , ''],
+            formatter: function (name) {
+              return `${name} ${parseFloat(data[i].current_value)} %`
+            },
           },
           series: [
             {
 
               type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
+              radius: '50%',
+              center: ['50%', '55%'],
               data: [
                 {
                   value: parseFloat(data[i].current_value), name: formatMessage({id: 'intl.current_valve_open_value'})
@@ -161,11 +179,11 @@ export default class LiquidPosition extends PureComponent {
           {name: formatMessage({id: 'intl.liquid/valve_analysis'})}, {name: formatMessage({id: 'intl.valve_sensors'}) }]}>
           <Card bordered={false} style={{margin: '-16px -16px 0'}}>
             {this.state.data.length>0?
-              <Row gutter={24}>
+              <Row gutter={16}>
                 {this.state.data.map((item, index)=> {
-                  return <Col xs={1} sm={24} md={12} lg={12} xl={8} key={index}>
-                    <div className={ `valve-item-${index}`} style={{width: '100%', height: '250px'}}></div>
-                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
+                  return <Col  xs={1} sm={24} md={8} lg={8} xl={6} xxl={6} key={index}>
+                    <div className={ `valve-item-${index}`} style={{width: '100%', height: '250px',}}></div>
+                    <Button style={{marginBottom:'16px'}} type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
                   </Col>
                 })}
 

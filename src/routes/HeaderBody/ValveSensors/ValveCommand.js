@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/21.
  */
 import React, {Component} from 'react';
-import {Form, Input,  Radio, InputNumber} from 'antd';
+import {Form, Input,  Radio, InputNumber,Slider} from 'antd';
 import {connect} from 'dva';
 const FormItem = Form.Item;
 import {injectIntl} from 'react-intl';
@@ -82,7 +82,7 @@ class AddPoliciesForm extends Component {
           {...formItemLayoutWithLabel}
           label={(
             <span>
-              {formatMessage({id: 'intl.value'})}
+              {formatMessage({id: 'intl.value'})}(%)
             </span>
           )}
         >
@@ -90,10 +90,16 @@ class AddPoliciesForm extends Component {
             initialValue: this.props.editRecord ? parseFloat(this.props.editRecord.target_value).toString()==='NaN'?'': parseFloat(this.props.editRecord.target_value): '',
             rules: [{required: true, message:  formatMessage({id: 'intl.value'})+formatMessage({id: 'intl.can_not_be_empty'})}],
           })(
-            <InputNumber
-              min={0}
-              max={100}
-              formatter={value => `${value}%`}
+
+            <Slider
+            marks={{
+            0: '0',
+            20: '20',
+            40: '40',
+            60: '60',
+            80: '80',
+            100: '100',
+          }}
             />
           )}
         </FormItem>

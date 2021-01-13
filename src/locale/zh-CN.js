@@ -39,6 +39,7 @@ const zh_CN = {
   'intl.user_meter_volume':'用户水量分析',//用户水量分析
   'intl.pressure/temperature_map':'温度地图',//压力/温度地图
   'intl.big_meter_analysis_map':'大表实时地图',//大表实时地图
+  'intl.hngydx_map':'设备信息地图',//设备信息地图
   'intl.pressure_history':'压力传感器分析',//压力传感器分析
   'intl.real_time_data':'完整实时数据',//完整实时数据
   'intl.vendor_concentrator_statistics':'厂商-集中器统计',//厂商-集中器统计

@@ -79,7 +79,14 @@ export default class LiquidPosition extends PureComponent {
         let option = {
           title : {
             text: data[i].number,
-            x:'right'
+            subtext: data[i].address,
+            subtextStyle: {
+              color: '#272727',
+              fontSize: 14
+            },
+            x:'right',
+            top:5,
+            right:5
           },
           backgroundColor: '#eee',
           color: ['#3398DB'],
@@ -97,7 +104,6 @@ export default class LiquidPosition extends PureComponent {
           xAxis: {
             type: 'category',
             data: xData,
-            name:formatMessage({id: 'intl.liquid_sensors_number'}) ,
           },
           yAxis: {
             type: 'value',
@@ -140,11 +146,11 @@ export default class LiquidPosition extends PureComponent {
           {name: formatMessage({id: 'intl.liquid/valve_analysis'})}, {name: formatMessage({id: 'intl.liquid_sensors'}) }]}>
           <Card bordered={false} style={{margin: '-16px -16px 0'}}>
             {this.state.data.length>0?
-              <Row gutter={24}>
+              <Row gutter={16}>
                 {this.state.data.map((item, index)=> {
-                  return <Col xs={1} sm={24} md={12} lg={6} xl={6} xxl={4} key={index}>
+                  return <Col  xs={1} sm={24} md={12} lg={6} xl={6} xxl={4} key={index}>
                     <div className={ `valve-item-${index}`} style={{width: '100%', height: '200px'}}></div>
-                    <Button type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
+                    <Button style={{marginBottom:'16px'}} type="primary" block onClick={()=>{this.showDetail(item)}}>{formatMessage({id: 'intl.detail'})}</Button>
                   </Col>
                 })}
 

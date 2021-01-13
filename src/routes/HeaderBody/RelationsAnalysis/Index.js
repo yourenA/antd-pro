@@ -10,6 +10,7 @@ import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, renderIndex2,ellipsis2} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
 import Pagination from './../../../components/Pagination/Index'
+import meter from './../../../images/meter.png'
 import AddOrEditForm from './addOrEditArea'
 import uuid from 'uuid/v4'
 import {disabledDate,getTimeDistance} from './../../../utils/utils'
@@ -124,7 +125,7 @@ class UserMeterAnalysis extends PureComponent {
   }
   parseTree = (data)=> {
     for (var i in data) {
-      data[i].title = data[i].name;
+      data[i].title2 = data[i].name;
       data[i].expanded = data[i].expanded==='1'?true:false;
       data[i].subtitle2 = data[i].meter_number;
       if (data[i].children) {
@@ -194,7 +195,6 @@ class UserMeterAnalysis extends PureComponent {
     });
   }
   render() {
-    console.log(this.state)
     const {relations_analysis: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
     return (
@@ -269,37 +269,51 @@ class UserMeterAnalysis extends PureComponent {
                                 scaffoldBlockPxWidth={34}
                                 searchQuery={this.state.searchString}
                                 searchFocusOffset={this.state.searchFocusIndex}
+                                searchMethod={(e)=>{
+                                  // console.log(e);
+                                  if(this.state.searchString===''){
+                                    return false
+                                  }
+                                  if(e.node.name.indexOf(this.state.searchString)>=0){
+                                    return true
+                                  }else{
+                                    return  false
+                                  }
+                                }}
                                 generateNodeProps={rowInfo => {
-                                  let btns=[<Tag
+                                  let btns=[<div style={{color:'#000',fontSize:'16px',lineHeight:'30px',marginRight:'5px'}}>
+                                    <img src={meter} alt="" style={{width:'50px',height:'30px'}}/>
+                                    {rowInfo.node.title2}</div>
+                                    ,<Tag
                                     color="#108ee9"
-                                    style={{marginRight: '5px',fontSize:'14px'}}
+                                    style={{marginRight: '5px',fontSize:'14px',marginTop:'5px'}}
                                   >
-                                    用水量 : {rowInfo.node.consumption}
-                                  </Tag>,
+                                    用水量 : <span style={{fontSize:'17px'}}>{rowInfo.node.consumption}</span>
+                                  </Tag>
                                   ];
                                   if(rowInfo.node.children&&company_code==='lqsrmyy'){
                                     btns.push(<Tag
-                                      color="#87d068"
-                                      style={{marginRight: '5px',fontSize:'14px'}}
+                                      color="#00BCD4"
+                                      style={{marginRight: '5px',fontSize:'14px',marginTop:'5px'}}
                                     >
-                                      下属分表用水总量 : {rowInfo.node.child_consumption}
+                                      下属分表用水总量 :  <span style={{fontSize:'17px'}}>{rowInfo.node.child_consumption}</span>
                                     </Tag>)
                                   }else if(rowInfo.node.children&&company_code!=='lqsrmyy'){
                                     btns.push(<Tag
-                                      color="#87d068"
-                                      style={{marginRight: '5px',fontSize:'14px'}}
+                                      color="#00BCD4"
+                                      style={{marginRight: '5px',fontSize:'14px',marginTop:'5px'}}
                                     >
-                                      下属分表用水总量 : {rowInfo.node.child_consumption}
+                                      下属分表用水总量 :  <span style={{fontSize:'17px'}}>{rowInfo.node.child_consumption}</span>
                                     </Tag>,<Tag
                                       color="#f50"
-                                      style={{marginRight: '5px',fontSize:'14px'}}
+                                      style={{marginRight: '5px',fontSize:'14px',marginTop:'5px'}}
                                     >
-                                      损耗量 : {rowInfo.node.attrition_value}
+                                      损耗量 :  <span style={{fontSize:'17px'}}>{rowInfo.node.attrition_value}</span>
                                     </Tag>,<Tag
                                       color="#f50"
-                                      style={{marginRight: '5px',fontSize:'14px'}}
+                                      style={{marginRight: '5px',fontSize:'14px',marginTop:'5px'}}
                                     >
-                                      损耗率 : {rowInfo.node.attrition_rate}
+                                      损耗率 :  <span style={{fontSize:'17px'}}>{rowInfo.node.attrition_rate}</span>
                                     </Tag>,)
                                   }
                                   return ({

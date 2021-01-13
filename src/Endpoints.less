@@ -785,7 +785,9 @@
       padding: 4px !important;
     }
   }
-
+  .rst__rowLabel{
+    padding-right: 5px !important;
+  }
   .map-tip {
     padding: 5px 10px;
     background: rgba(255, 255, 255, 0.7);
@@ -994,6 +996,26 @@
 
   .rst__rowWrapper {
     padding: 8px 8px 0 0 !important;
+  }
+
+  .rst__lineHalfHorizontalRight::before {
+    height: 4px !important;
+    top: 45% !important;
+    right: 0 !important;
+    width: 50% !important;
+    background: url("./images/turnRight.gif") no-repeat bottom center;
+  }
+  .rst__lineFullVertical::after, .rst__lineHalfVerticalTop::after, .rst__lineHalfVerticalBottom::after {
+    width:  4px !important;
+    left: 45% !important;
+    top: 0;
+    height: 100%;
+    background: url("./images/turnBottom.gif") no-repeat bottom center;
+  }
+  .rst__lineHalfHorizontalRight::before, .rst__lineFullVertical::after, .rst__lineHalfVerticalTop::after, .rst__lineHalfVerticalBottom::after {
+    position: absolute;
+    content: '';
+    background-color: #2196F3 !important;
   }
 
 }
