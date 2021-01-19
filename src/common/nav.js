@@ -100,6 +100,9 @@ const RelationsAnalysis = asyncComponent(() =>
 const PressureAnalysis = asyncComponent(() =>
   import(/* webpackChunkName: "PressureAnalysis" */ "../routes/HeaderBody/MYSPressureAnalysis/Index")
 )
+const DiefaAnalysis = asyncComponent(() =>
+  import(/* webpackChunkName: "PressureAnalysis" */ "../routes/HeaderBody/DiefaAnalysis/Index")
+)
 const MYSBigMeterAnalysis = asyncComponent(() =>
   import(/* webpackChunkName: "MYSBigMeterAnalysis" */ "./../routes/HeaderBody/MYSBigMeterAnalysis/Index")
 )
@@ -211,6 +214,9 @@ const ZeroAbnormality = asyncComponent(() =>
 
 const Workstations= asyncComponent(() =>
   import(/* webpackChunkName: "Workstations" */ "./../routes/HeaderBody/Workstations/Index")
+)
+const Workstations2= asyncComponent(() =>
+  import(/* webpackChunkName: "Workstations2" */ "./../routes/HeaderBody/Workstations2/Index")
 )
 
 const data = [{
@@ -445,6 +451,12 @@ const data = [{
           showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','lqsrmyy','sz']
         },
         {
+          name: 'yk0802da_history',
+          path: 'yk0802da_analysis',
+          component: DiefaAnalysis,
+          showCompany: ['zhsgy','amwares','mys','gxcz','test']
+        },
+        {
           name: 'liquid/valve_analysis',
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
@@ -630,6 +642,11 @@ const data = [{
           name: 'workstations',
           path: 'workstations',
           component: Workstations,
+          showCompany: ['zhsgy','amwares','test','hngydx']
+        }, {
+          name: 'yk0802da',
+          path: 'yk0802da',
+          component: Workstations2,
           showCompany: ['zhsgy','amwares','test','hngydx']
         },
         //   {

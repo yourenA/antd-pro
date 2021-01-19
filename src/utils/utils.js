@@ -744,3 +744,44 @@ export function renderNotification(renderNotificationObj){
 export function dateIsToday(data) {
   return moment(data).format("YYYY-MM-DD")===moment().format("YYYY-MM-DD");
 }
+
+export function todayLastSecond(){
+  let todayYear=(new Date()).getFullYear();
+  let todayMonth=(new Date()).getMonth();
+  let todayDay=(new Date()).getDate();
+  return moment(todayYear+'-'+(parseInt(todayMonth)+1)+'-'+todayDay+' 23:59:59' , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss")
+}
+function fixZero(number) {
+  if(number<10){
+    return '0'+number
+  }
+  else{
+    return  number
+  }
+}
+export function  timeStamp( second_time ){
+
+  let time ="0d "+"00:00:"+fixZero(parseInt(second_time));
+  if( parseInt(second_time )> 59){
+
+    let second = fixZero(parseInt(second_time) % 60);
+    let min = fixZero(parseInt(second_time / 60));
+    time ="0d "+"00:"+min+":"+second;
+
+    if( min > 59 ){
+      min = fixZero(parseInt(second_time / 60) % 60);
+      let hour = fixZero(parseInt( parseInt(second_time / 60) /60 ));
+      time ="0d "+hour+":"+min+":"+second;
+
+      if( hour > 23 ){
+        hour =fixZero( parseInt( parseInt(second_time / 60) /60 ) % 24);
+        let day = parseInt( parseInt( parseInt(second_time / 60) /60 ) / 24 );
+        time =day+"d "+hour+":"+min+":"+second;
+      }
+    }
+
+
+  }
+
+  return time;
+}

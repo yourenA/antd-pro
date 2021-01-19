@@ -36,7 +36,7 @@ export default class MyPagination extends PureComponent {
           }
           }
           showQuickJumper className='pagination'
-          total={meta ? meta.pagination.total : 0}
+          total={(meta&&meta.pagination) ? meta.pagination.total : 0}
           current={meta ? meta.pagination.current_page : 0} pageSize={meta ? meta.pagination.per_page : 0}
           style={{marginTop: '10px'}} onChange={handPageChange}/>
       </div>
