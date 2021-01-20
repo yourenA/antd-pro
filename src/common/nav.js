@@ -450,19 +450,20 @@ const data = [{
           permissions: ['pressure_sensor_historical_data'],
           showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','lqsrmyy','sz']
         },
-        {
-          name: 'yk0802da_history',
-          path: 'yk0802da_analysis',
-          component: DiefaAnalysis,
-          showCompany: ['zhsgy','amwares','mys','gxcz','test']
-        },
+
         {
           name: 'liquid/valve_analysis',
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
           showCompany: ['mys','gxcz','test','amwares','hngydx','sz','lqsrmyy']
-        }
+        },
+        {
+          name: 'yk0802da_history',
+          path: 'yk0802da_analysis',
+          component: DiefaAnalysis,
+          showCompany: ['zhsgy','amwares','mys','gxcz','test']
+        },
         // ,{
         //   name: '产销差分析',
         //   path: 'production_marketing__analysis',
@@ -647,7 +648,7 @@ const data = [{
           name: 'yk0802da',
           path: 'yk0802da',
           component: Workstations2,
-          showCompany: ['zhsgy','amwares','test','hngydx']
+          showCompany: ['zhsgy','amwares','test','mys']
         },
         //   {
         //   name: '指令和状态查看',

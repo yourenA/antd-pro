@@ -25,7 +25,7 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(query, {...payload,template:51300401});
+      const response = yield call(query, {...payload,template:51300401,order_direction:'desc'});
       console.log(response)
       if(response.status===200){
         yield put({

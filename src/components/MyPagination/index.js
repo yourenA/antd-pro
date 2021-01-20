@@ -4,7 +4,6 @@ export default class TopProjectTitle extends PureComponent {
   render() {
     const {meta}=this.props
     const paginationProps = {
-      showSizeChanger: true,
       showTotal: (total, range)  => {
         return <span>
           当前显示 <span className="pagination-blue">{range[0]}</span> 到 <span className="pagination-blue">{range[1]}</span> 条 , 共 <span  className="pagination-blue">{total}</span> 条

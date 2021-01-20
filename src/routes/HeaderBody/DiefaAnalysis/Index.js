@@ -5,11 +5,17 @@ import {Table, Card, Popconfirm, Layout, message, Row, Col,Button,Modal} from 'a
 import Detail from './Chart.js'
 import request from "./../../../utils/request";
 import max from 'lodash/max'
+import {connect} from 'dva';
 import {injectIntl} from 'react-intl';
 import Sider from "../EmptySider";
 import Search from "./Search";
+import AddTask from "../Workstations2/addTask";
+import History from "../Workstations2/RTU03";
 const {Content} = Layout;
 @injectIntl
+@connect(state => ({
+  workstations2: state.workstations2,
+}))
 export default class LiquidPosition extends PureComponent {
   constructor(props) {
     super(props);
@@ -19,6 +25,7 @@ export default class LiquidPosition extends PureComponent {
     this.state = {
       data: [],
       maxValue: 0,
+      editRecord:{},
     }
   }
 
@@ -28,11 +35,11 @@ export default class LiquidPosition extends PureComponent {
     this.handleSearch({
       number: '',
     });
-    // this.timer = setInterval(function () {
-    //   that.handleSearch({
-    //     number: '',
-    //   })
-    // }, 20000)
+    this.timer = setInterval(function () {
+      that.handleSearch({
+        number: '',
+      })
+    }, 20000)
 
   }
   handleFormReset = () => {
@@ -61,7 +68,10 @@ export default class LiquidPosition extends PureComponent {
   }
 
   componentWillUnmount() {
-    // clearInterval(this.timer)
+    if(  this.timer){
+      clearInterval(this.timer)
+    }
+
     window.removeEventListener('resize', this.resizeChart)
   }
 
@@ -71,6 +81,30 @@ export default class LiquidPosition extends PureComponent {
         this.myChart[i].resize();
       }
     }
+  }
+  handleEditDA=()=>{
+    const formValues = this.editDAFormRef.props.form.getFieldsValue();
+    console.log('formValues', formValues)
+    const that = this;
+    this.props.dispatch({
+      type: 'workstations2/addTask',
+      payload: {
+        id:this.state.editRecord.id,
+        da0:formValues.da0!==''?16*(formValues.da0/100)+4:'',
+        da1:formValues.da1!==''?16*(formValues.da1/100)+4:'',
+        channel:0
+      },
+      callback:function () {
+        message.success('修改开度成功')
+        that.setState({
+          taskModal: false,
+        });
+        that.handleSearch({
+          page: that.state.page,
+          per_page: that.state.per_page
+        })
+      }
+    })
   }
   dynamic = (data)=> {
 
@@ -93,10 +127,18 @@ export default class LiquidPosition extends PureComponent {
         that.myChart.push(that['myChart' + i])
         let spare = '';
         let realSpare=''
-        if(data[i].workstation_data.modbus.length>0&&data[i].workstation_data.modbus[0].ain0){
-          realSpare=((Number(data[i].workstation_data.modbus[0].ain0)-4)/16*100).toFixed(2)
-          spare = 100-realSpare
+        if(data[i].workstation_data.modbus.length>0&&data[i].workstation_data.modbus[0].parameters.ain0){
+          realSpare=((Number(data[i].workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)
+          if(Number(realSpare)<0){
+            spare = 100;
+            realSpare=0
+          }else{
+            spare = 100-realSpare
+          }
+
         }
+        console.log('realSpare',realSpare)
+        console.log('spare',spare)
         let option = {
           backgroundColor: '#eee',
           title : {
@@ -119,7 +161,7 @@ export default class LiquidPosition extends PureComponent {
             bottom:'1%',
             data: ['蝶阀开度' , ''],
             formatter: function (name) {
-              return realSpare?`${name} ${realSpare} %`:''
+              return realSpare!==''?`${name} ${realSpare} %`:''
             },
           },
           series: [
@@ -130,7 +172,7 @@ export default class LiquidPosition extends PureComponent {
               center: ['50%', '55%'],
               data: [
                 {
-                  value: parseFloat(data[i].current_value),
+                  value: realSpare,
                   name: '蝶阀开度'
                   ,
                   itemStyle: {
@@ -140,7 +182,8 @@ export default class LiquidPosition extends PureComponent {
                   }
                 },
                 {
-                  value: spare, name: '',
+                  value: spare,
+                  name: '',
                   itemStyle: {
                     normal: {
                       color: '#FFF',
@@ -207,9 +250,24 @@ export default class LiquidPosition extends PureComponent {
                     {this.state.data.map((item, index) => {
                       return <Col style={{marginBottom:'15px'}} xs={1} sm={24} md={12} lg={6} xl={6} xxl={4} key={index}>
                         <div className={`valve-item-${index}`} style={{width: '100%', height: '200px'}}></div>
-                        <Button type="primary" block onClick={() => {
-                          this.showDetail(item)
-                        }}>{formatMessage({id: 'intl.detail'})}</Button>
+
+                        <Button.Group style={{width:'100%'}}>
+                          <Button type="primary" style={{width:'50%'}} icon={'tool'} onClick={() => {
+                            this.setState({
+                              editRecord:item,
+                              da0:item.hardware_configs.modbus[0].da0?(item.hardware_configs.modbus[0].da0-4)/16*100:0,
+                              da1:item.hardware_configs.modbus[0].da1?(item.hardware_configs.modbus[0].da1-4)/16*100:0,
+                              taskModal:true
+                            })
+                          }}>修改开度</Button>
+                          <Button type="primary" style={{width:'50%'}} icon={'history'} onClick={() => {
+                            this.setState({
+                              editRecord:item,
+                              historyModal:true
+                            })
+                          }}>历史纪录</Button>
+                        </Button.Group>
+
                       </Col>
                     })}
 
@@ -218,14 +276,25 @@ export default class LiquidPosition extends PureComponent {
               </Card>
             </PageHeaderLayout>
             <Modal
-              width="950px"
+              width={500}
               destroyOnClose={true}
-              title={`${this.state.number} ${formatMessage({id: 'intl.detail'})}`}
-              visible={this.state.showModal}
-              onOk={this.handleEdit}
-              onCancel={() => this.setState({showModal: false})}
+              title={`修改 ${this.state.editRecord.name} 开度`}
+              visible={this.state.taskModal}
+              onCancel={() => this.setState({taskModal: false})}
+              onOk={this.handleEditDA}
             >
-              <Detail maxValue={this.state.maxValue} number={this.state.number}/>
+              <AddTask da0={this.state.da0} da1={this.state.da1} editRecord={this.state.editRecord}
+                       wrappedComponentRef={(inst)=> this.editDAFormRef = inst}/>
+            </Modal>
+            <Modal
+              width={1100}
+              destroyOnClose={true}
+              title={`${this.state.editRecord.name} 历史纪录`}
+              visible={this.state.historyModal}
+              onCancel={() => this.setState({historyModal: false})}
+              footer={null}
+            >
+              <History id={this.state.editRecord.id} name={this.state.editRecord.name} config_data={this.state.editRecord.hardware_configs}/>
             </Modal>
           </div>
 

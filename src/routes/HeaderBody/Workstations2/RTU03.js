@@ -150,14 +150,14 @@ class BasicList extends PureComponent {
       type:'device',
       channel:0,
       page:1,
-      per_page:20,
+      per_page:30,
     })
     for(let i=0;i<2;i++){
       this.fetch({
         type:'digital_input',
         channel:i,
         page:1,
-        per_page:20,
+        per_page:30,
       })
     }
     for(let i=0;i<4;i++){
@@ -165,7 +165,7 @@ class BasicList extends PureComponent {
         type:'sensor',
         channel:i,
         page:1,
-        per_page:20,
+        per_page:30,
       })
     }
     for(let i=0;i<4;i++){
@@ -173,7 +173,7 @@ class BasicList extends PureComponent {
         type:'modbus',
         channel:i,
         page:1,
-        per_page:20,
+        per_page:30,
       })
     }
   }
@@ -288,13 +288,13 @@ class BasicList extends PureComponent {
               },function () {
                 // this.fetchLog({
                 //   page:1,
-                //   per_page:20,
+                //   per_page:30,
                 // })
                 this.fetch({
                   type:'device',
                   channel:0,
                   page:1,
-                  per_page:20,
+                  per_page:30,
 
                 })
                 for(let i=0;i<4;i++){
@@ -302,14 +302,14 @@ class BasicList extends PureComponent {
                     type:'sensor',
                     channel:i,
                     page:1,
-                    per_page:20,
+                    per_page:30,
 
                   })
                   this.fetch({
                     type:'modbus',
                     channel:i,
                     page:1,
-                    per_page:20,
+                    per_page:30,
 
                   })
                 }
@@ -319,21 +319,21 @@ class BasicList extends PureComponent {
                     type:'digital_input',
                     channel:i,
                     page:1,
-                    per_page:20,
+                    per_page:30,
 
                   })
                   this.fetch({
                     type:'digital_output',
                     channel:i,
                     page:1,
-                    per_page:20,
+                    per_page:30,
 
                   })
                   this.fetch({
                     type:'ball_valve',
                     channel:i,
                     page:1,
-                    per_page:20,
+                    per_page:30,
 
                   })
                 }
@@ -365,21 +365,21 @@ class BasicList extends PureComponent {
         type:'device',
         channel:0,
         page:1,
-        per_page:20,
+        per_page:30,
       })
       for(let i=0;i<4;i++){
         this.fetch({
           type:'sensor',
           channel:i,
           page:1,
-          per_page:20,
+          per_page:30,
 
         })
         this.fetch({
           type:'modbus',
           channel:i,
           page:1,
-          per_page:20,
+          per_page:30,
         })
       }
       for(let i=0;i<2;i++){
@@ -388,19 +388,19 @@ class BasicList extends PureComponent {
           type:'digital_input',
           channel:i,
           page:1,
-          per_page:20,
+          per_page:30,
         })
         this.fetch({
           type:'digital_output',
           channel:i,
           page:1,
-          per_page:20,
+          per_page:30,
         })
         this.fetch({
           type:'ball_valve',
           channel:i,
           page:1,
-          per_page:20,
+          per_page:30,
         })
       }
     })
@@ -1592,6 +1592,7 @@ class BasicList extends PureComponent {
                               column.push({
                                 title: <span>AIN{i}(mA)</span>,
                                 dataIndex: `ain${i}`,
+                                width: 100,
                                 render: (text, record) => (
                                   ellipsis2(record.data[`ain${i}`],100)
                                 )
@@ -1601,6 +1602,7 @@ class BasicList extends PureComponent {
                               column.push({
                                 title: <span>DA{i}(mA)</span>,
                                 dataIndex: `da${i}`,
+                                width: 100,
                                 render: (text, record) => (
                                   ellipsis2(record.data[`da${i}`],100)
                                 )

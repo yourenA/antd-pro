@@ -251,8 +251,8 @@ class MeterModel extends PureComponent {
       type: 'workstations2/addTask',
       payload: {
         id:this.state.editRecord.id,
-        da0:formValues.da0?16*(formValues.da0/100)+4:'',
-        da1:formValues.da1?16*(formValues.da1/100)+4:'',
+        da0:formValues.da0!==''?16*(formValues.da0/100)+4:'',
+        da1:formValues.da1!==''?16*(formValues.da1/100)+4:'',
         channel:0
       },
       callback:function () {
