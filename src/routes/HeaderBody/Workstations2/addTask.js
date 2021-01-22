@@ -21,7 +21,7 @@ class AddPoliciesForm extends Component {
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 8},
+        sm: {span: 7},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -38,39 +38,13 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-             DA0输出
+             设置蝶阀开度
             </span>
             )}
           >
             {getFieldDecorator('da0', {
               initialValue: this.props.editRecord ? this.props.da0 : 4,
               rules: [{required: true, message:'数据上传间隔必填' }],
-            })(
-              <Slider
-                tooltipVisible={true}
-                tipFormatter={(value)=>`${value}%`}
-                marks={{
-                  0: '0',
-                  20: '20',
-                  40: '40',
-                  60: '60',
-                  80: '80',
-                  100: '100',
-                }}
-              />
-            )}
-          </FormItem>
-          <FormItem
-            {...formItemLayoutWithLabel}
-            label={(
-              <span>
-             DA1输出
-            </span>
-            )}
-          >
-            {getFieldDecorator('da1', {
-              initialValue: this.props.editRecord ? this.props.da1 : '20',
-              rules: [{required: true, message:'da1必填' }],
             })(
               <Slider
                 tooltipVisible={true}

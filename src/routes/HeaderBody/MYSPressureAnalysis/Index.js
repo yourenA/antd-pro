@@ -90,6 +90,7 @@ export default class LiquidPosition extends PureComponent {
         let yData = [data[i].latest_value];
         let itemMax = [data[i].max_actual_value]
         let maxValue = max(itemMax);
+        const company_code = sessionStorage.getItem('company_code');
         console.log('maxValue', maxValue)
         let option = {
           title : {
@@ -98,7 +99,7 @@ export default class LiquidPosition extends PureComponent {
               color: '#272727',
               fontSize: 16
             },
-            subtext: data[i].address,
+            subtext: company_code==='mys'?data[i].address:data[i].name,
             subtextStyle: {
               color: '#272727',
               fontSize: 14

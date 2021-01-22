@@ -252,7 +252,7 @@ class MeterModel extends PureComponent {
       payload: {
         id:this.state.editRecord.id,
         da0:formValues.da0!==''?16*(formValues.da0/100)+4:'',
-        da1:formValues.da1!==''?16*(formValues.da1/100)+4:'',
+        da1:4,
         channel:0
       },
       callback:function () {
@@ -309,13 +309,15 @@ class MeterModel extends PureComponent {
         }
       },
       {
-        title: 'DA0输出值', width: 100, dataIndex: 'da0', key: 'da0', render: (text, record, index) => {
-          return record.hardware_configs.modbus[0].da0?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
+        title: '蝶阀开度返回值', width: 120, dataIndex: 'da0', key: 'da0', render: (text, record, index) => {
+          return  (record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0].parameters)?
+            ((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)+'%':''
+          // return record.hardware_configs.modbus[0].da0?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
         }
       },
       {
-        title: 'DA1输出值', width: 100, dataIndex: 'da1', key: 'da1', render: (text, record, index) => {
-          return record.hardware_configs.modbus[0].da1?((record.hardware_configs.modbus[0].da1-4)/16*100).toFixed(2) +'%':''
+        title: '蝶阀开度设置值', width: 120, dataIndex: 'da1', key: 'da1', render: (text, record, index) => {
+          return record.hardware_configs.modbus[0].da1?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
         }
       },
       {

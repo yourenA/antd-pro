@@ -91,7 +91,7 @@ export default class LiquidPosition extends PureComponent {
       payload: {
         id:this.state.editRecord.id,
         da0:formValues.da0!==''?16*(formValues.da0/100)+4:'',
-        da1:formValues.da1!==''?16*(formValues.da1/100)+4:'',
+        da1:4,
         channel:0
       },
       callback:function () {
@@ -143,6 +143,9 @@ export default class LiquidPosition extends PureComponent {
           backgroundColor: '#eee',
           title : {
             text: data[i].name,
+            textStyle: {
+              fontSize: 16
+            },
             subtext: data[i].address,
             subtextStyle: {
               color: '#272727',
