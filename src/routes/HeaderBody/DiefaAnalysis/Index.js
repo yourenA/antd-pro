@@ -132,6 +132,9 @@ export default class LiquidPosition extends PureComponent {
           if(Number(realSpare)<0){
             spare = 100;
             realSpare=0
+          }else if(Number(realSpare)>100){
+            spare = 0;
+            realSpare=100
           }else{
             spare = 100-realSpare
           }
