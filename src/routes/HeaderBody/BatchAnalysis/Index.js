@@ -9,6 +9,8 @@ import update from 'immutability-helper'
 import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, fixedZero} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
+import filter from 'lodash/filter'
+import sortBy from 'lodash/sortBy'
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';
 const {Content} = Layout;
@@ -47,6 +49,7 @@ class UserMeterAnalysis extends PureComponent {
       forwardsMeterValue: '0',
       key:uuid(),
       monthDate: moment(moment(), 'YYYY-MM'),
+      selectValue:[]
       // concentrator_number:''
     }
   }
@@ -92,6 +95,9 @@ class UserMeterAnalysis extends PureComponent {
       concentrator_number: '',
       village_id: village_id
     }, function () {
+      that.setState({
+        selectValue:[]
+      })
       this.changeTableY();
       this.handleSearch({})
     })
@@ -123,12 +129,19 @@ class UserMeterAnalysis extends PureComponent {
       },
       callback: function () {
         const {batch_analysis: {data}} = that.props;
-        that.renderChart(data)
+        if(that.state.selectValue.length>0){
+          const fliterData=filter(data,o=>{return that.state.selectValue.indexOf(o.meter_number)>=0})
+          console.log('fliterData',fliterData)
+          that.renderChart(fliterData)
+        }else{
+          that.renderChart(data)
+        }
       }
     });
   }
   renderChart=(data)=>{
     console.log('data',data);
+    data=sortBy(data, ['meter_number'])
     if( this.myChart){
       this.myChart.clear()
     }
@@ -140,7 +153,9 @@ class UserMeterAnalysis extends PureComponent {
     }
     console.log(date);
     let  series=[];
+    let legend=[]
     for(let i=0;i<data.length;i++){
+      legend.push(data[i].meter_number)
       series.push({
         name: data[i].meter_number,
         type: 'line',
@@ -166,6 +181,11 @@ class UserMeterAnalysis extends PureComponent {
       },
       tooltip: {
         formatter: "水表号:{a} <br/>{b}日用水量 : {c} m³"
+      },
+      legend: {
+        show:data.length>10?false:true,
+        left: 'center',
+        data: legend
       },
       toolbox: {
         right: '1%',
@@ -199,6 +219,22 @@ class UserMeterAnalysis extends PureComponent {
       this.handleSearch()
     })
   }
+  handleChange=(value,option)=> {
+    this.setState({
+      selectValue:value
+    },function () {
+      console.log(this.state.selectValue)
+      const {batch_analysis: {data}} = this.props;
+      if(this.state.selectValue.length>0){
+        const fliterData=filter(data,o=>{return this.state.selectValue.indexOf(o.meter_number)>=0})
+        console.log('fliterData',fliterData)
+        this.renderChart(fliterData)
+      }else{
+        this.renderChart(data)
+      }
+
+    })
+  }
   render() {
     const {batch_analysis: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -218,6 +254,9 @@ class UserMeterAnalysis extends PureComponent {
                   <div className='tableListForm'>
                     <Search wrappedComponentRef={(inst) => this.searchFormRef = inst}
                             initRange={this.state.initRange}
+                            handleChange={this.handleChange}
+                            meters={data}
+                            selectValue={this.state.selectValue}
                             village_id={this.state.village_id}
                             monthDate={this.state.monthDate}
                             setMonthdate={this.setMonthdate}

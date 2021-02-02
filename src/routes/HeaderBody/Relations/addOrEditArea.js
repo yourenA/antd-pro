@@ -77,7 +77,6 @@ class AddPoliciesForm extends Component {
 
         let exist=[]
         for(let i=0;i<this.props.tabArr.length;i++){
-          console.log('this.flatten(this.props[this.props.tabArr[i].name+ \'treeData\'])',this.flatten(this.props[this.props.tabArr[i].name+ 'treeData']))
           exist=exist.concat(this.flatten(this.props[this.props.tabArr[i].name+ 'treeData']))
         }
 
@@ -163,7 +162,6 @@ class AddPoliciesForm extends Component {
     const {getFieldDecorator,getFieldValue} = this.props.form;
     getFieldDecorator('keys', {initialValue: [uuid]});
     const keys = getFieldValue('keys');
-    console.log('this.state.meters',this.state.meters)
     return (
       <div>
       <Form onSubmit={this.handleSubmit}>

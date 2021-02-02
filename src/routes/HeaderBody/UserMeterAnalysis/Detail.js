@@ -121,11 +121,15 @@ class Detail extends PureComponent {
         trigger: 'axis' //只显示一条线
       },
       toolbox: {
-        show: false,
+        right: '1%',
         feature: {
-          dataView: {readOnly: false},
-          saveAsImage: {}
+          saveAsImage: {},
+          dataView: {readOnly: true},
         }
+      },
+      legend: {
+        left: 'center',
+        data: [formatMessage({id: 'intl.meter_reading'}),formatMessage({id: 'intl.water_consumption'})]
       },
       dataZoom: [
         {
