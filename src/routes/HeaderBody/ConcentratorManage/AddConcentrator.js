@@ -21,7 +21,8 @@ class AddConcentrator extends Component {
     }
     this.state = {
       mapModal: false,
-      point:''
+      point:'',
+      showIMEI:false
     };
   }
 
@@ -357,6 +358,57 @@ class AddConcentrator extends Component {
               </Select>
             )}
           </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+            接入类型
+            </span>
+            )}>
+            {getFieldDecorator('type', {
+              initialValue: this.props.editRecord ? {
+                key: this.props.editRecord.type,
+                label:  this.props.editRecord.type
+              } : {key: 1, label:'有线集中器'},
+            })(
+              <Select labelInValue={true} onChange={(e)=>{
+                console.log(e)
+                if(e.key===4){
+                  this.setState({
+                    showIMEI:true,
+                  })
+                }else{
+                  this.setState({
+                    showIMEI:false,
+                  })
+                }
+              }}>
+                { [{key: 1, label: '有线集中器'}, {key: 2, label:'LoRaWAN网关'},
+                  {key: 3, label: 'NB虚拟集中器'}, {key: 4, label:'新有线集中器'}].map((item, key) => {
+                  return (
+                    <Option key={item.key} value={item.key}>{item.label}</Option>
+                  )
+                }) }
+              </Select>
+            )}
+          </FormItem>
+          {
+            this.state.showIMEI&&
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
+              IMEI
+            </span>
+              )}
+            >
+              {getFieldDecorator('imei', {
+                initialValue: this.props.editRecord ? this.props.editRecord.imei : '',
+              })(
+                <Input />
+              )}
+            </FormItem>
+          }
           <FormItem
             {...formItemLayoutWithLabel}
             label={(

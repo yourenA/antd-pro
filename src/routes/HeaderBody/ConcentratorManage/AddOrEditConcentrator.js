@@ -26,7 +26,8 @@ class AddConcentrator extends Component {
       day:'',
       hour:'',
       minute:'',
-      second:''
+      second:'',
+      showIMEI:false
     };
   }
   componentDidMount() {
@@ -36,6 +37,9 @@ class AddConcentrator extends Component {
         otherOperator:true
       })
     }
+    this.setState({
+      showIMEI:this.props.editRecord.type===4
+    })
     if(editRecord.upload_time){
       switch (editRecord.upload_cycle_unit){
         case 'monthly':
@@ -219,65 +223,64 @@ class AddConcentrator extends Component {
     });
     return (
       <div>
-        <Tabs activeKey={this.state.tabsActiveKey} onChange={(activeKey)=>{this.setState({tabsActiveKey:activeKey})}}>
-          <TabPane tab="" key="edit"><Form onSubmit={this.handleSubmit}>
-            <FormItem
-             label={ formatMessage({id: 'intl.server_address'})}
-             {...formItemLayoutWithLabel}
-             >
-             {getFieldDecorator('server_id', {
-             initialValue: this.props.editRecord?{key:this.props.editRecord.server_id,label:`${this.props.editRecord.server_ip}:${this.props.editRecord.server_port}`}:{key:'',label:''},
-             //rules: [{required: true, message: '服务器地址为空'}],
-             })(
-             <Select labelInValue={true}  allowClear={true}>
-             { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip+':'+item.port}</Option>) }
-             </Select>
-             )}
-             </FormItem>
-            <FormItem
-              label={ formatMessage({id: 'intl.concentrator_type'})}
-              {...formItemLayoutWithLabel}
-            >
-              {getFieldDecorator('concentrator_model_id', {
-                initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
-                rules: [{required: true, message:  formatMessage({id: 'intl.concentrator_type'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
-              })(
-                <Select labelInValue={true} >
-                  { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            label={ formatMessage({id: 'intl.server_address'})}
+            {...formItemLayoutWithLabel}
+          >
+            {getFieldDecorator('server_id', {
+              initialValue: this.props.editRecord?{key:this.props.editRecord.server_id,label:`${this.props.editRecord.server_ip}:${this.props.editRecord.server_port}`}:{key:'',label:''},
+              //rules: [{required: true, message: '服务器地址为空'}],
+            })(
+              <Select labelInValue={true}  allowClear={true}>
+                { this.props.servers.map(item => <Option key={item.id} value={item.id}>{item.ip+':'+item.port}</Option>) }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            label={ formatMessage({id: 'intl.concentrator_type'})}
+            {...formItemLayoutWithLabel}
+          >
+            {getFieldDecorator('concentrator_model_id', {
+              initialValue: this.props.editRecord?{key:this.props.editRecord.concentrator_model_id,label:this.props.editRecord.concentrator_model_name}:{key:'',label:''},
+              rules: [{required: true, message:  formatMessage({id: 'intl.concentrator_type'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
+            })(
+              <Select labelInValue={true} >
+                { this.props.concentrator_models.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>) }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               { formatMessage({id: 'intl.concentrator_number'})}
             </span>
-              )}
-            >
-              {getFieldDecorator('number', {
-                initialValue: this.props.editRecord ? this.props.editRecord.number : '',
-                rules: [{required: true, message: formatMessage({id: 'intl.concentrator_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
+            )}
+          >
+            {getFieldDecorator('number', {
+              initialValue: this.props.editRecord ? this.props.editRecord.number : '',
+              rules: [{required: true, message: formatMessage({id: 'intl.concentrator_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               { formatMessage({id: 'intl.serial_number'})}
             </span>
-              )}
-            >
-              {getFieldDecorator('serial_number', {
-                initialValue: this.props.editRecord ? this.props.editRecord.serial_number : '',
-                rules: [{required: true, message: formatMessage({id: 'intl.serial_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            {/*<FormItem
+            )}
+          >
+            {getFieldDecorator('serial_number', {
+              initialValue: this.props.editRecord ? this.props.editRecord.serial_number : '',
+              rules: [{required: true, message: formatMessage({id: 'intl.serial_number'})+ formatMessage({id: 'intl.can_not_be_empty'})}],
+            })(
+              <Input />
+            )}
+          </FormItem>
+          {/*<FormItem
               {...formItemLayoutWithLabel}
               label={(
                 <span>
@@ -291,152 +294,201 @@ class AddConcentrator extends Component {
                 <Cascader options={this.renderTreeSelect(this.props.area)} placeholder="请选择"/>
               )}
             </FormItem>*/}
-            {formItems}
-            <FormItem {...formItemLayoutWithOutLabel}>
-              <Button  onClick={this.add} style={{width: '60%'}}>
-                <Icon type="plus"/> { formatMessage({id: 'intl.add'})}
-              </Button>
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
+          {formItems}
+          <FormItem {...formItemLayoutWithOutLabel}>
+            <Button  onClick={this.add} style={{width: '60%'}}>
+              <Icon type="plus"/> { formatMessage({id: 'intl.add'})}
+            </Button>
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
               { formatMessage({id: 'intl.sim_number'})}
             </span>
-              )}
-            >
-              {getFieldDecorator('sim_number', {
-                initialValue: this.props.editRecord ? this.props.editRecord.sim_number : '',
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
+            )}
+          >
+            {getFieldDecorator('sim_number', {
+              initialValue: this.props.editRecord ? this.props.editRecord.sim_number : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
                    { formatMessage({id: 'intl.SIM_card_number_type'})}
             </span>
-              )}
-            >
-              {getFieldDecorator('sim_number_type', {
-                initialValue:this.props.editRecord ? this.props.editRecord.sim_number_type.toString() : '',
-              })(
-                <Select >
-                  <Option value="1">{ formatMessage({id: 'intl.ICC_card_number'})}</Option>
-                  <Option value="2">{ formatMessage({id: 'intl.identification_number'})}</Option>
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
+            )}
+          >
+            {getFieldDecorator('sim_number_type', {
+              initialValue:this.props.editRecord ? this.props.editRecord.sim_number_type.toString() : '',
+            })(
+              <Select >
+                <Option value="1">{ formatMessage({id: 'intl.ICC_card_number'})}</Option>
+                <Option value="2">{ formatMessage({id: 'intl.identification_number'})}</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
                  { formatMessage({id: 'intl.sim_operator'})}
             </span>
-              )}
-            >
-              {getFieldDecorator('sim_operator', {
-                initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?this.props.editRecord.sim_operator : 'other',
-              })(
-                <Select onChange={(e)=>{
-                  this.setState({
-                    otherOperator:e==='other'
-                  })
-                }} >
-                  <Option value="中国移动"> { formatMessage({id: 'intl.China_Mobile'})}</Option>
-                  <Option value="中国电信"> { formatMessage({id: 'intl.China_Telecom'})}</Option>
-                  <Option value="中国联通"> { formatMessage({id: 'intl.China_Unicom'})}</Option>
-                  <Option value=""> { formatMessage({id: 'intl.null'})}</Option>
-                  <Option value="other"> { formatMessage({id: 'intl.other'})}</Option>
-                </Select>
-              )}
-            </FormItem>
-            {
-              this.state.otherOperator&&<FormItem
-                {...formItemLayoutWithLabel}
-                label={(
-                  <span>
+            )}
+          >
+            {getFieldDecorator('sim_operator', {
+              initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?this.props.editRecord.sim_operator : 'other',
+            })(
+              <Select onChange={(e)=>{
+                this.setState({
+                  otherOperator:e==='other'
+                })
+              }} >
+                <Option value="中国移动"> { formatMessage({id: 'intl.China_Mobile'})}</Option>
+                <Option value="中国电信"> { formatMessage({id: 'intl.China_Telecom'})}</Option>
+                <Option value="中国联通"> { formatMessage({id: 'intl.China_Unicom'})}</Option>
+                <Option value=""> { formatMessage({id: 'intl.null'})}</Option>
+                <Option value="other"> { formatMessage({id: 'intl.other'})}</Option>
+              </Select>
+            )}
+          </FormItem>
+          {
+            this.state.otherOperator&&<FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
                 { formatMessage({id: 'intl.other_SIM_card_operators'})}
             </span>
-                )}
-              >
-                {getFieldDecorator('other_sim_operator', {
-                  initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?'' :this.props.editRecord.sim_operator,
-                })(
-                  <Input />
-                )}
-              </FormItem>
-            }
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
-              { formatMessage({id: 'intl.install_address'})}
-            </span>
               )}
             >
-              {getFieldDecorator('install_address', {
-                initialValue: this.props.editRecord ? this.props.editRecord.install_address : '',
-              })(
-                <Input style={{width: '70%'}}/>
-              )}
-              <Button type="primary" onClick={this.showMap}> { formatMessage({id: 'intl.manual_selection'})}</Button>
-            </FormItem>
-            {getFieldDecorator('latitude_longitude', {})(
-              <div>
-                <Input type={'hidden'}/>
-              </div>
-            )}
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
-               { formatMessage({id: 'intl.is_count'})}
-            </span>
-              )}>
-              {getFieldDecorator('is_count', {
-                initialValue: this.props.editRecord ? {
-                  key: this.props.editRecord.is_count.toString(),
-                  label: this.props.editRecord.is_count === 1 ?formatMessage({id: 'intl.yes'})  : formatMessage({id: 'intl.no'})
-                } : {key: '1', label:formatMessage({id: 'intl.yes'})},
-              })(
-                <Select labelInValue={true}>
-                  { [{key: 1, label: formatMessage({id: 'intl.yes'})}, {key: -1, label: formatMessage({id: 'intl.no'})}].map((item, key) => {
-                    return (
-                      <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
-                    )
-                  }) }
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayoutWithLabel}
-              label={(
-                <span>
-              { formatMessage({id: 'intl.remark'})}
-            </span>
-              )}
-            >
-              {getFieldDecorator('remark', {
-                initialValue: this.props.editRecord ? this.props.editRecord.remark : '',
+              {getFieldDecorator('other_sim_operator', {
+                initialValue:  ['中国移动','中国电信','中国联通',''].indexOf(this.props.editRecord.sim_operator)>=0?'' :this.props.editRecord.sim_operator,
               })(
                 <Input />
               )}
             </FormItem>
-            {
-              this.props.editRecord?null:
-                <FormItem
-                  style={{color:'red'}}
-                  label={ formatMessage({id: 'intl.prompt'})}
-                  {...formItemLayoutWithLabel}>
-                  <div>{ formatMessage({id: 'intl.concentrator_tip'})}</div>
-                </FormItem>
-            }
+          }
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              { formatMessage({id: 'intl.install_address'})}
+            </span>
+            )}
+          >
+            {getFieldDecorator('install_address', {
+              initialValue: this.props.editRecord ? this.props.editRecord.install_address : '',
+            })(
+              <Input style={{width: '70%'}}/>
+            )}
+            <Button type="primary" onClick={this.showMap}> { formatMessage({id: 'intl.manual_selection'})}</Button>
+          </FormItem>
+          {getFieldDecorator('latitude_longitude', {})(
+            <div>
+              <Input type={'hidden'}/>
+            </div>
+          )}
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+               { formatMessage({id: 'intl.is_count'})}
+            </span>
+            )}>
+            {getFieldDecorator('is_count', {
+              initialValue: this.props.editRecord ? {
+                key: this.props.editRecord.is_count.toString(),
+                label: this.props.editRecord.is_count === 1 ?formatMessage({id: 'intl.yes'})  : formatMessage({id: 'intl.no'})
+              } : {key: '1', label:formatMessage({id: 'intl.yes'})},
+            })(
+              <Select labelInValue={true}>
+                { [{key: 1, label: formatMessage({id: 'intl.yes'})}, {key: -1, label: formatMessage({id: 'intl.no'})}].map((item, key) => {
+                  return (
+                    <Option key={item.key} value={item.key.toString()}>{item.label}</Option>
+                  )
+                }) }
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+            接入类型
+            </span>
+            )}>
+            {getFieldDecorator('type', {
+              initialValue: this.props.editRecord ? {
+                key: this.props.editRecord.type,
+                label:  this.props.editRecord.type
+              } : {key: 1, label:'有线集中器'},
+            })(
+              <Select labelInValue={true} disabled={true} onChange={(e)=>{
+                console.log(e)
+                if(e.key===4){
+                  this.setState({
+                    showIMEI:true,
+                  })
+                }else{
+                  this.setState({
+                    showIMEI:false,
+                  })
+                }
+              }}>
+                { [{key: 1, label: '有线集中器'}, {key: 2, label:'LoRaWAN网关'},
+                  {key: 3, label: 'NB虚拟集中器'}, {key: 4, label:'新有线集中器'}].map((item, key) => {
+                  return (
+                    <Option key={item.key} value={item.key}>{item.label}</Option>
+                  )
+                }) }
+              </Select>
+            )}
+          </FormItem>
+          {
+            this.state.showIMEI&&
+            <FormItem
+              {...formItemLayoutWithLabel}
+              label={(
+                <span>
+              IMEI
+            </span>
+              )}
+            >
+              {getFieldDecorator('imei', {
+                initialValue: this.props.editRecord ? this.props.editRecord.imei : '',
+              })(
+                <Input  disabled={true}/>
+              )}
+            </FormItem>
+          }
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+              { formatMessage({id: 'intl.remark'})}
+            </span>
+            )}
+          >
+            {getFieldDecorator('remark', {
+              initialValue: this.props.editRecord ? this.props.editRecord.remark : '',
+            })(
+              <Input />
+            )}
+          </FormItem>
+          {
+            this.props.editRecord?null:
+              <FormItem
+                style={{color:'red'}}
+                label={ formatMessage({id: 'intl.prompt'})}
+                {...formItemLayoutWithLabel}>
+                <div>{ formatMessage({id: 'intl.concentrator_tip'})}</div>
+              </FormItem>
+          }
 
-          </Form></TabPane>
-
-        </Tabs>
+        </Form>
 
         <Modal
           style={{ top: 20 }}

@@ -378,7 +378,7 @@ class Detail extends PureComponent {
             {getFieldDecorator('radio-group', {
               initialValue: this.state.value,
             })(
-              <RadioGroup onChange={this.onChange}>
+              <RadioGroup onChange={this.onChange} disabled={this.props.editRecord.type===4}>
                 <Radio value="monthly">{formatMessage({id: 'intl.monthly'})}</Radio>
                 <Radio value="daily">{formatMessage({id: 'intl.daily'})}</Radio>
                 <Radio value="hourly">{formatMessage({id: 'intl.hourly'})}</Radio>

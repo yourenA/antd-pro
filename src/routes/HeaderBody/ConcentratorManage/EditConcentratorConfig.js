@@ -17,7 +17,8 @@ class AddConcentrator extends Component {
       day:'',
       hour:'',
       minute:'',
-      second:''
+      second:'',
+      showIMEI:false
     };
   }
 
@@ -129,7 +130,7 @@ class AddConcentrator extends Component {
             {getFieldDecorator('radio-group', {
               initialValue: this.state.value,
             })(
-              <RadioGroup onChange={this.onChange}>
+              <RadioGroup onChange={this.onChange} disabled={this.props.editRecord.type===4}>
                 <Radio value="monthly">每月</Radio>
                 <Radio value="daily">每天</Radio>
                 <Radio value="hourly">每小时</Radio>

@@ -284,6 +284,7 @@ class ConcentratorManage extends PureComponent {
         // village_id: formValues.village_id[formValues.village_id.length - 1],
         village_ids: formValues.villages,
         server_id: formValues.server_id ? formValues.server_id.key : '',
+        type: formValues.type ? formValues.type.key : 1,
         concentrator_model_id: formValues.concentrator_model_id.key,
         is_count: formValues.is_count.key,
       },
@@ -421,6 +422,7 @@ class ConcentratorManage extends PureComponent {
         server_id: formValues.server_id ? formValues.server_id.key : '',
         concentrator_model_id: formValues.concentrator_model_id.key,
         // village_id: formValues.village_id[formValues.village_id.length - 1],
+        type: formValues.type ? formValues.type.key : 1,
         village_ids: formValues.villages,
         is_count: formValues.is_count.key,
         id: this.state.editRecord.id
