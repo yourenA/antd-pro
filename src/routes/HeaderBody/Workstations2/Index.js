@@ -304,8 +304,8 @@ class MeterModel extends PureComponent {
       //   }
       // },
       {
-        title: '名称', width: 150, dataIndex: 'name', key: 'name', render: (text, record, index) => {
-          return ellipsis2(text, 150)
+        title: '名称', width: 250, dataIndex: 'name', key: 'name', render: (text, record, index) => {
+          return ellipsis2(text, 250)
         }
       },
       {
@@ -318,6 +318,12 @@ class MeterModel extends PureComponent {
       {
         title: '蝶阀开度设置值', width: 120, dataIndex: 'da1', key: 'da1', render: (text, record, index) => {
           return record.hardware_configs.modbus[0].da1?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
+        }
+      },
+      {
+        title: '采集时间', width: 160, dataIndex: 'collected_at', key: 'collected_at', render: (text, record, index) => {
+          return  (record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0])?
+            record.workstation_data.modbus[0].collected_at:''
         }
       },
       {
@@ -435,7 +441,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x: 1200, y: this.state.tableY}}
+                                 scroll={{x: 1500, y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}

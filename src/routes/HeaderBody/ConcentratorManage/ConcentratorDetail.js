@@ -246,6 +246,7 @@ class UserMeterAnalysis extends PureComponent {
   render() {
     const {intl:{formatMessage}} = this.props;
     const {concentrator_water: {data, meta, loading}} = this.props;
+    console.log('data',data)
     const that=this;
     // const command=this.props.protocols;
     const renderComandRecord=(record)=>{
@@ -335,7 +336,6 @@ class UserMeterAnalysis extends PureComponent {
     if (this.state.canOperate) {
       columns.push(operate)
     }
-
     return (
 
       <div>

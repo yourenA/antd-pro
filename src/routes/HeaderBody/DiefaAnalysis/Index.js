@@ -240,7 +240,21 @@ export default class LiquidPosition extends PureComponent {
       showModal: true
     })
   }
-
+  readModbus=(item)=>{
+    const that = this;
+    request(`/workstations/${item.id}/read_modbus`, {
+      method: 'POST',
+      data:{
+        channel:0
+      }
+    }).then((response) => {
+      console.log(response);
+      if(response.status===200){
+        message.success('读取实时开度成功')
+        that.handleSearch()
+      }
+    })
+  }
   render() {
     const {intl: {formatMessage}} = this.props;
     return (
@@ -254,11 +268,17 @@ export default class LiquidPosition extends PureComponent {
                 {this.state.data.length > 0 ?
                   <Row gutter={24}>
                     {this.state.data.map((item, index) => {
-                      return <Col style={{marginBottom:'15px'}} xs={1} sm={24} md={12} lg={6} xl={6} xxl={4} key={index}>
+                      return <Col style={{marginBottom:'15px'}} xs={1} sm={24} md={12} lg={6} xl={6} xxl={6} key={index}>
                         <div className={`valve-item-${index}`} style={{width: '100%', height: '200px'}}></div>
-
+                        <div style={{background:'#eee',textAlign:'center',paddingBottom:'5px'}}>
+                          采集时间 : { (item.workstation_data.modbus.length>0&&item.workstation_data.modbus[0])?
+                          item.workstation_data.modbus[0].collected_at:''}
+                        </div>
                         <Button.Group style={{width:'100%'}}>
-                          <Button type="primary" style={{width:'50%'}} icon={'tool'} onClick={() => {
+                          <Button type="primary" style={{width:'33.33%'}} icon={'cloud-download'} onClick={() => {
+                            this.readModbus(item)
+                          }}>读取开度</Button>
+                          <Button type="primary" style={{width:'33.33%'}} icon={'tool'} onClick={() => {
                             this.setState({
                               editRecord:item,
                               da0:item.hardware_configs.modbus[0].da0?(item.hardware_configs.modbus[0].da0-4)/16*100:0,
@@ -266,7 +286,7 @@ export default class LiquidPosition extends PureComponent {
                               taskModal:true
                             })
                           }}>修改开度</Button>
-                          <Button type="primary" style={{width:'50%'}} icon={'history'} onClick={() => {
+                          <Button type="primary" style={{width:'33.33%'}} icon={'history'} onClick={() => {
                             this.setState({
                               editRecord:item,
                               historyModal:true
