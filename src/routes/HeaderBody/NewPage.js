@@ -484,13 +484,17 @@ class Main extends PureComponent {
            </Card>
            </Col>*/}
         </Row>
-        <GlobalFooter
-          copyright={
-            <div style={{color:'#fff'}}>
-              powered by  {pawerByText}
-            </div>
-          }
-        />
+        {
+          (company_code.indexOf('hy')<0)  &&
+          <GlobalFooter
+            copyright={
+              <div style={{color:'#fff'}}>
+                powered by  {pawerByText}
+              </div>
+            }
+          />
+        }
+
       </div>
     );
   }

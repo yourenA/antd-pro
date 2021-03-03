@@ -54,8 +54,13 @@ import(/* webpackChunkName: "OrganizationManage" */ "./../routes/PlatformManagem
 // import NewPage from './../routes/NewPage'
 // import NightAbnormality from './../routes/HeaderBody/NightAbnormality/Index'
 // import ZeroAbnormality from './../routes/HeaderBody/ZeroAbnormality/Index'
+// import BatchAnalysis from './../routes/HeaderBody/BatchAnalysis/Index'
+// import GYDXMaps from './../routes/HeaderBody/GYDXMaps/Index'
+// import DiefaAnalysis from './../routes/HeaderBody/DiefaAnalysis/Index'
+// import Workstations from  './../routes/HeaderBody/Workstations/Index'
+// import Workstations2 from  './../routes/HeaderBody/Workstations2/Index'
 
-//以下代码按需加载
+// //以下代码按需加载
 const CommunityAnalysis = asyncComponent(() =>
 import(/* webpackChunkName: "CommunityAnalysis" */ "./../routes/HeaderBody/CommunityAnalysis/Index")
 )

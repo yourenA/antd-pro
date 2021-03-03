@@ -315,7 +315,7 @@ class Detail extends PureComponent {
             >
               {renderCommandBtn}
             </FormItem>
-            {(company_code !== 'hy' && company_code.indexOf("test") === -1) && <FormItem
+            {(company_code !== 'hy' ) && <FormItem
               label={formatMessage({id: 'intl.batch_valve_control'})}
               {...formItemLayoutWithLabel}
             >

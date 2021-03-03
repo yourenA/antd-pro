@@ -18,8 +18,12 @@ export default class Proportion extends PureComponent {
     this.dynamic2();
   }
   componentWillReceiveProps(nextProps) {
+    const that=this;
     if ((nextProps.meter !== this.props.meter) && nextProps.meter.total_count) {
-      this.dynamic(nextProps.meter);
+      setTimeout(function () {
+        that.dynamic(nextProps.meter);
+      },0)
+
 
     }
     if (this.props.totalData !== nextProps.totalData) {
