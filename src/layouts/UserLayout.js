@@ -174,6 +174,9 @@ class UserLayout extends React.PureComponent {
     if(this.state.company_code&&!pawerByText){
       pawerByText='珠华水工业';
     }
+    if(this.state.company_code.indexOf('hy')>=0){
+      pawerByText='';
+    }
     const layout = ( <div className={styles.container}>
         <div className={styles.box}>
           <div className={styles.login_mask}></div>
