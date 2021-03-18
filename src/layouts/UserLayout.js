@@ -86,10 +86,6 @@ class UserLayout extends React.PureComponent {
           const company_name = find(this.state.company, function (o) {
             return o.code === url_code;
           });
-          // if (window.location.hostname === '124.228.9.126' && url_code !== 'hy') {
-          //   console.log('试图在124.228.9.126登陆非衡阳用户')
-          //   return false
-          // }
           if (window.location.hostname === '182.61.56.51' && url_code === 'hy') {
             console.log('试图在182.61.56.51登陆衡阳用户')
             return false

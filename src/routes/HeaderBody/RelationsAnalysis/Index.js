@@ -54,7 +54,7 @@ class UserMeterAnalysis extends PureComponent {
       area: '',
       canLoadByScroll: true,
       canOperate: localStorage.getItem('canOperateArea') === 'true' ? true : false,
-      rangePickerValue:   [moment(new Date(), 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
+      rangePickerValue:  [moment().add(-1, 'days'), moment(new Date(), 'YYYY-MM-DD')],
       expandedRowKeys: [],
       otherMeterValue: '0',
       forwardsMeterValue: '0',
@@ -148,28 +148,12 @@ class UserMeterAnalysis extends PureComponent {
       })
 
     }
-    // this.setState(prevState => ({
-    //   treeData: toggleExpandedForAll({
-    //     treeData: prevState.treeData,
-    //     expanded,
-    //   }),
-    // }));
   };
   handleSearchOnChange = e => {
     this.setState({
       searchString: e.target.value,
     });
   };
-  isActive(type) {
-    const {rangePickerValue} = this.state;
-    const value = getTimeDistance(type);
-    if (!rangePickerValue[0] || !rangePickerValue[1]) {
-      return false;
-    }
-    if (rangePickerValue[0].isSame(value[0], 'day') && rangePickerValue[1].isSame(value[1], 'day')) {
-      return true;
-    }
-  }
   handleRangePickerChange = (datePickerValue,type) => {
     const that=this;
     if(type==='start'){
@@ -194,6 +178,21 @@ class UserMeterAnalysis extends PureComponent {
       that.handleSearch()
     });
   }
+  disabledStartDate = (startValue) => {
+    const endValue = this.state.rangePickerValue[1];
+    if (!startValue || !endValue) {
+      return false;
+    }
+    return moment(moment(startValue.valueOf()).format('YYYY-MM-DD')) >= moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) || startValue > moment().add(-1, 'days') || startValue < moment('2017-10-01');
+  }
+
+  disabledEndDate = (endValue) => {
+    const startValue = this.state.rangePickerValue[0];
+    if (!endValue || !startValue) {
+      return false;
+    }
+    return moment(moment(endValue.valueOf()).format('YYYY-MM-DD')) <= moment(moment(startValue.valueOf()).format('YYYY-MM-DD')) || endValue > moment().add(0, 'days') || endValue < moment('2017-10-01');
+  }
   render() {
     const {relations_analysis: {data, meta, loading}, concentrators, meters, intl:{formatMessage}} = this.props;
     const company_code = sessionStorage.getItem('company_code');
@@ -210,26 +209,21 @@ class UserMeterAnalysis extends PureComponent {
                 <div className="sort-content" >
                   <div className='tableList'>
                     <div className='tableListForm' >
-                      <ButtonGroup>
-                        <Button  onClick={() => this.selectDate('today')} type={this.isActive('today')?'primary':''}>{formatMessage({id: 'intl.today'})}</Button>
-                        <Button  onClick={() => this.selectDate('month')} type={this.isActive('month')?'primary':''}>{formatMessage({id: 'intl.this_month'})}</Button>
-                        <Button  onClick={() => this.selectDate('year')} type={this.isActive('year')?'primary':''}>{formatMessage({id: 'intl.this_year'})}</Button>
-                      </ButtonGroup>
-
-                      <DatePicker
+                      开始日期 : <DatePicker
                         value={this.state.rangePickerValue[0]}
                         allowClear={false}
-                        disabledDate={disabledDate}
+                        disabledDate={this.disabledStartDate}
                         format="YYYY-MM-DD"
-                        style={{width: 120}}
+                        style={{width: 120,marginRight:'10px'}}
                         placeholder={formatMessage({id: 'intl.start'})}
                         onChange={(e)=>this.handleRangePickerChange(e,'start')}
                       />
-                      <DatePicker
+                      结束日期 : <DatePicker
                         style={{marginRight: '5px',width: 120}}
                         allowClear={false}
                         value={this.state.rangePickerValue[1]}
-                        disabledDate={disabledDate}
+                        disabledDate={this.disabledEndDate}
+
                         format="YYYY-MM-DD"
                         placeholder={formatMessage({id: 'intl.end'})}
                         onChange={(e)=>this.handleRangePickerChange(e,'end')}
