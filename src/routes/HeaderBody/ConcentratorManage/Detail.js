@@ -253,7 +253,7 @@ class Detail extends PureComponent {
               key: 'open' + concentratorNumber,
               message: formatMessage({id: 'intl.open_valve'}) + concentratorNumber + ' 进度'
             }
-            that.valveCommand('open_all_valve',renderNotificationObj)
+            that.valveCommand('valveCommand',renderNotificationObj)
           }}>
           <Button loading={isLoading} type="primary"
                   style={{marginRight: 10}}>{formatMessage({id: 'intl.open_valve'})} </Button>
@@ -394,34 +394,37 @@ class Detail extends PureComponent {
             >
               {
                 that.state.value === 'monthly' &&
-                <span style={{marginRight: '10px'}}>{formatMessage({id: 'intl.day'})}: <InputNumber min={1} max={28}
-                                                                                                    step={1}
-                                                                                                    precision={0}
-                                                                                                    value={this.state.day}
-                                                                                                    onChange={(val) => {
-                                                                                                      this.setState({day: val})
-                                                                                                    }}
-                                                                                                    style={{width: '60px'}}/></span>
+                <span style={{marginRight: '10px'}}>{formatMessage({id: 'intl.day'})}:
+                  <InputNumber min={1} max={28}
+                               step={1}
+                               precision={0}
+                               value={this.state.day}
+                               onChange={(val) => {
+                                 this.setState({day: val})
+                               }}
+                               style={{width: '60px'}}/></span>
               }
               {
                 (that.state.value === 'monthly' || that.state.value === 'daily') &&
-                <span style={{marginRight: '10px'}}>{formatMessage({id: 'intl.hour'})}: <InputNumber min={0} max={59}
-                                                                                                     step={1}
-                                                                                                     precision={0}
-                                                                                                     value={this.state.hour}
-                                                                                                     onChange={(val) => {
-                                                                                                       this.setState({hour: val})
-                                                                                                     }}
-                                                                                                     style={{width: '60px'}}/></span>
+                <span style={{marginRight: '10px'}}>{formatMessage({id: 'intl.hour'})}:
+                  <InputNumber min={0} max={59}
+                               step={1}
+                               precision={0}
+                               value={this.state.hour}
+                               onChange={(val) => {
+                                 this.setState({hour: val})
+                               }}
+                               style={{width: '60px'}}/></span>
               }
-              {formatMessage({id: 'intl.minute'})}: <span style={{marginRight: '10px'}}><InputNumber min={0} max={59}
-                                                                                                     step={1}
-                                                                                                     precision={0}
-                                                                                                     value={this.state.minute}
-                                                                                                     onChange={(val) => {
-                                                                                                       this.setState({minute: val})
-                                                                                                     }}
-                                                                                                     style={{width: '60px'}}/></span>
+              {formatMessage({id: 'intl.minute'})}: <span style={{marginRight: '10px'}}>
+              <InputNumber min={0} max={59}
+                           step={1}
+                           precision={0}
+                           value={this.state.minute}
+                           onChange={(val) => {
+                             this.setState({minute: val})
+                           }}
+                           style={{width: '60px'}}/></span>
               {formatMessage({id: 'intl.second'})}: <span><InputNumber min={0} max={59} step={1} precision={0}
                                                                        value={this.state.second} onChange={(val) => {
               this.setState({second: val})

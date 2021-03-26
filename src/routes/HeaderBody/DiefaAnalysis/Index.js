@@ -127,7 +127,7 @@ export default class LiquidPosition extends PureComponent {
         that.myChart.push(that['myChart' + i])
         let spare = '';
         let realSpare=''
-        if(data[i].workstation_data.modbus.length>0&&data[i].workstation_data.modbus[0].parameters.ain0){
+        if(data[i].workstation_data.modbus&&data[i].workstation_data.modbus.length>0&&data[i].workstation_data.modbus[0].parameters.ain0){
           realSpare=((Number(data[i].workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)
           if(Number(realSpare)<0){
             spare = 100;
@@ -271,7 +271,7 @@ export default class LiquidPosition extends PureComponent {
                       return <Col style={{marginBottom:'15px'}} xs={1} sm={24} md={12} lg={6} xl={6} xxl={6} key={index}>
                         <div className={`valve-item-${index}`} style={{width: '100%', height: '200px'}}></div>
                         <div style={{background:'#eee',textAlign:'center',paddingBottom:'5px'}}>
-                          采集时间 : { (item.workstation_data.modbus.length>0&&item.workstation_data.modbus[0])?
+                          采集时间 : { (item.workstation_data.modbus&&item.workstation_data.modbus.length>0&&item.workstation_data.modbus[0])?
                           item.workstation_data.modbus[0].collected_at:''}
                         </div>
                         <Button.Group style={{width:'100%'}}>

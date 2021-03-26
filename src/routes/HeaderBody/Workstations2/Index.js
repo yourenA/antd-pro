@@ -310,7 +310,7 @@ class MeterModel extends PureComponent {
       },
       {
         title: '蝶阀开度返回值', width: 120, dataIndex: 'da0', key: 'da0', render: (text, record, index) => {
-          return  (record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0].parameters)?
+          return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0].parameters)?
             ((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100)>100?100+'%':((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)+'%':''
           // return record.hardware_configs.modbus[0].da0?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
         }
@@ -322,7 +322,7 @@ class MeterModel extends PureComponent {
       },
       {
         title: '采集时间', width: 160, dataIndex: 'collected_at', key: 'collected_at', render: (text, record, index) => {
-          return  (record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0])?
+          return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0])?
             record.workstation_data.modbus[0].collected_at:''
         }
       },

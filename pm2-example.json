@@ -1,14 +1,483 @@
 {
-  "apps": [
+  "type": "FeatureCollection",
+  "features": [
     {
-      "name": "WATER-IOT",
-      "script": "./server.js",
-      "env": {
-        "NODE_ENV": "development"
+      "type": "Feature",
+      "id": "reducevalve.1",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.07172265,
+          43.02213977
+        ]
       },
-      "env_production": {
-        "NODE_ENV": "production"
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 1,
+        "name": "GC-JY-03",
+        "frontpress": 60,
+        "backpress": 30
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.2",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.07360349,
+          43.01411586
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 2,
+        "name": "GC-JY-04",
+        "frontpress": 59,
+        "backpress": 29
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.3",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.08352252,
+          43.01379075
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 3,
+        "name": "GC-JY-05",
+        "frontpress": 59,
+        "backpress": 29
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.4",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.09576442,
+          43.0144141
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 4,
+        "name": "GC-JY-06",
+        "frontpress": 60,
+        "backpress": 30
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.5",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.09968427,
+          43.00580452
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 5,
+        "name": "GC-JY-09",
+        "frontpress": 65,
+        "backpress": 25
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.6",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.11232065,
+          43.01449024
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 6,
+        "name": "GC-JY-07",
+        "frontpress": 60,
+        "backpress": 30
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.7",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.11982966,
+          43.01605117
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 7,
+        "name": "GC-JY-08",
+        "frontpress": 60,
+        "backpress": 30
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.8",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.11126941,
+          43.0069875
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 8,
+        "name": "GC-JY-10",
+        "frontpress": 64,
+        "backpress": 24
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.9",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.12024709,
+          43.00761402
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 9,
+        "name": "GC-JY-11",
+        "frontpress": 64,
+        "backpress": 24
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.10",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.16776387,
+          42.96415029
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 10,
+        "name": "LC-JY-01",
+        "frontpress": 52,
+        "backpress": 22
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.11",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.1767173,
+          42.96368709
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 11,
+        "name": "LC-JY-02",
+        "frontpress": 60,
+        "backpress": 30
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.12",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.18529134,
+          42.96498821
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 12,
+        "name": "LC-JY-03",
+        "frontpress": 57,
+        "backpress": 23
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.13",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.19507625,
+          42.96669682
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 13,
+        "name": "LC-JY-04",
+        "frontpress": 59,
+        "backpress": 29
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.14",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.16540112,
+          42.94278476
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 14,
+        "name": "LC-JY-05",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.15",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.17826439,
+          42.94551218
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 15,
+        "name": "LC-JY-06",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.16",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.19336128,
+          42.95176016
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 16,
+        "name": "LC-JY-08",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.17",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.18585721,
+          42.9489565
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 17,
+        "name": "LC-JY-07",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.18",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.23242584,
+          42.97582296
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-01",
+        "frontpress": 65,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.19",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.24570666,
+          42.9666444
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-03",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.20",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.23019324,
+          42.96673463
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-04",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.21",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.23765587,
+          42.9667829
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-05",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.22",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.25495995,
+          42.96785538
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-06",
+        "frontpress": 50,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.23",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.2239998,
+          42.95816973
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-07",
+        "frontpress": 60,
+        "backpress": 25
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.24",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.23239252,
+          42.95818084
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-08",
+        "frontpress": 58,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.25",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.23745897,
+          42.95460153
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-09",
+        "frontpress": 60,
+        "backpress": 28
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "reducevalve.26",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.25336539,
+          42.9556174
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "id": 0,
+        "name": "SF-JY-11",
+        "frontpress": 60,
+        "backpress": 28
       }
     }
-  ]
+  ],
+  "totalFeatures": 26,
+  "numberMatched": 26,
+  "numberReturned": 26,
+  "timeStamp": "2021-03-19T07:30:49.419Z",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::4326"
+    }
+  }
 }

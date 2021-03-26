@@ -252,10 +252,12 @@ export default class Proportion extends PureComponent {
     that.myChart2.resize();
   }
   render() {
+    const company_code = sessionStorage.getItem('company_code');
     return (
       <div style={{position:'relative'}}>
         <div className="proportion-data"></div>
-        <div className="yongshuiliang" style={{position:'absolute',bottom:'47px',left:'10%',width:'150px',height:'150px'}}></div>
+        <div className="yongshuiliang" style={{position:'absolute',bottom:'47px',left:'10%',width:'150px',height:'150px',
+          visibility:company_code==='lqsrmyy'?'hidden':''}}></div>
       </div>
 
     );

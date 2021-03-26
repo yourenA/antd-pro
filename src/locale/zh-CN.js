@@ -32,6 +32,7 @@ const zh_CN = {
   'intl.village_meter_data_manual':'小区水量分析(手工)',//小区水量分析(手工)
   'intl.meter_relations':'水表关系管理',
   'intl.meter_relations_analysis':' 水表损耗率分析',
+  'intl.meter_summary_consumption':' 水表用水量汇总',
   'intl.relations':'水表关系',
   'intl.meter_volume_data':'水表水量分析',//水表水量分析
   'intl.batch_analysis':'水表批量分析',//水表批量分析
