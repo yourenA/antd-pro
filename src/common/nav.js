@@ -388,7 +388,7 @@ const data = [{
           path: 'relations_analysis',
           component: RelationsAnalysis,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
         },{
           name: 'meter_summary_consumption',
           path: 'meter_summary_consumption',
@@ -595,7 +595,7 @@ const data = [{
           path: 'relations',
           component: Relations,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz']
+          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
         },
         {
           name: 'pressure_sensors_manage',
