@@ -2,10 +2,11 @@
  * Created by Administrator on 2017/11/17.
  */
 import React, {Component} from 'react';
-import {Form, DatePicker, Row, Col, Alert, Button,message} from 'antd';
+import {Form, DatePicker, Row, Col, Select, Button,message} from 'antd';
 import {injectIntl} from 'react-intl';
 import moment from 'moment'
 import {connect} from 'dva';
+const {Option} = Select;
 
 const FormItem = Form.Item;
 @connect(state => ({
@@ -141,6 +142,17 @@ class SearchForm extends Component {
                 //disabledDate={disabledDate}
                 format="YYYY-MM-DD"
               />
+          </FormItem>
+          <FormItem label={'是否忽略0用水量'}>
+            {getFieldDecorator('ignore_zero')(
+              <Select
+                style={{width: '80px'}}
+              >
+                <Option value={'-1'}>不忽略</Option>
+                <Option value={'1'}>忽略</Option>
+              </Select>
+            )}
+
           </FormItem>
           <FormItem >
             <Button type="primary" htmlType="submit">{ formatMessage({id: 'intl.search'})}</Button>

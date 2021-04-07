@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Alert, Button, Tooltip, Row, Col, Input } from 'antd';
+import {Table, Card, Popconfirm, Layout, message, Alert, Button, Tooltip, Row, Col, Drawer } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -12,6 +12,8 @@ import debounce from 'lodash/throttle'
 import ReactDataGrid from 'react-data-grid';
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';
+import request from "../../../utils/request";
+import Detail from "../Meters/Detail";
 const {Content} = Layout;
 @connect(state => ({
   meter_summary_consumption: state.meter_summary_consumption,
@@ -33,6 +35,7 @@ class UserMeterAnalysis extends PureComponent {
       install_address: '',
       page: 1,
       initPage: 1,
+      ignore_zero:'-1',
       initRange:[moment(new Date().getFullYear()+'-'+(parseInt(new  Date().getMonth())+1)+'-'+'01' , 'YYYY-MM-DD'), moment(new Date(), 'YYYY-MM-DD')],
       started_at: '',
       ended_at: '',
@@ -92,6 +95,7 @@ class UserMeterAnalysis extends PureComponent {
         meter_number: this.state.meter_number,
         member_number: this.state.member_number,
         install_address: this.state.install_address,
+        ignore_zero:this.state.ignore_zero,
         started_at: this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD'),
       }, false, function () {
@@ -113,6 +117,7 @@ class UserMeterAnalysis extends PureComponent {
         meter_number: this.state.meter_number,
         member_number: this.state.member_number,
         install_address: this.state.install_address,
+        ignore_zero:this.state.ignore_zero,
         started_at: this.state.started_at ? this.state.started_at : moment(this.state.initRange[0]).format('YYYY-MM-DD'),
         ended_at: this.state.ended_at ? this.state.ended_at : moment(this.state.initRange[1]).format('YYYY-MM-DD'),
 
@@ -126,6 +131,7 @@ class UserMeterAnalysis extends PureComponent {
       member_number: '',
       // concentrator_number:'',
       install_address: '',
+      ignore_zero:'-1',
       started_at: moment(this.state.initRange[0]).format('YYYY-MM-DD'),
       ended_at: moment(this.state.initRange[1]).format('YYYY-MM-DD'),
     })
@@ -168,6 +174,7 @@ class UserMeterAnalysis extends PureComponent {
       install_address: this.state.install_address,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
+      ignore_zero:this.state.ignore_zero,
       // area: this.state.area
     })
   }
@@ -182,6 +189,7 @@ class UserMeterAnalysis extends PureComponent {
       install_address: this.state.install_address,
       ended_at: this.state.ended_at,
       started_at: this.state.started_at,
+      ignore_zero:this.state.ignore_zero,
       others: JSON.stringify(others)
       // area: this.state.area
     })
@@ -276,6 +284,25 @@ class UserMeterAnalysis extends PureComponent {
         name: '水表号',
         width: 150,
         key: 'meter_number',
+        formatter: (event) => {
+          const that=this
+          return <span style={{color:'#368bff',cursor:'pointer'}} onClick={()=>{
+            request(`/meters`,{
+              method:'GET',
+              params:{
+                number:event.value
+              }
+            }).then((response)=>{
+              if(response.data.data.length===1){
+                that.setState({
+                  id:response.data.data[0].id,
+                  number:response.data.data[0].number,
+                  meterModal:true
+                })
+              }
+            });
+          }}>{event.value}</span>;
+        },
       },
       {
         name: '平均用水量',
@@ -362,7 +389,22 @@ class UserMeterAnalysis extends PureComponent {
             </PageHeaderLayout>
           </div>
         </Content>
+        <Drawer
+          title={`水表 ${this.state.number} 详情`}
+          placement="right"
+          destroyOnClose
+          onClose={() => {
+            this.setState({
+              meterModal: false,
+              id: '',
+            });
+          }}
 
+          width={700}
+          visible={this.state.meterModal}
+        >
+          <Detail id={this.state.id}></Detail>
+        </Drawer>
       </Layout>
     );
   }

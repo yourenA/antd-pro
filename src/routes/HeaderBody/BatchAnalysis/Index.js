@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Table, Card, Popconfirm, Layout, message, Modal, Button, Tooltip, Row, Col, Input } from 'antd';
+import {Table, Card, Popconfirm, Layout, Drawer, Modal, Button, Tooltip, Row, Col, Input } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import Search from './Search'
 import Sider from './../Sider'
@@ -10,9 +10,11 @@ import find from 'lodash/find'
 import {getPreDay, renderIndex, renderErrorData, fixedZero} from './../../../utils/utils'
 import debounce from 'lodash/throttle'
 import filter from 'lodash/filter'
+import request from '../../../utils/request';
 import sortBy from 'lodash/sortBy'
 import uuid from 'uuid/v4'
 import {injectIntl} from 'react-intl';
+import Detail from './../Meters/Detail'
 const {Content} = Layout;
 @connect(state => ({
   batch_analysis: state.batch_analysis,
@@ -210,7 +212,26 @@ class UserMeterAnalysis extends PureComponent {
       },
       series:series
     };
+
     this.myChart.setOption(option);
+    const that=this;
+    this.myChart.on('click', function (params) {
+      console.log(params.seriesName);
+      request(`/meters`,{
+        method:'GET',
+        params:{
+          number:params.seriesName
+        }
+      }).then((response)=>{
+        if(response.data.data.length===1){
+          that.setState({
+            id:response.data.data[0].id,
+            number:response.data.data[0].number,
+            meterModal:true
+          })
+        }
+      });
+    });
   }
   setMonthdate=(date)=>{
     this.setState({
@@ -274,7 +295,22 @@ class UserMeterAnalysis extends PureComponent {
             </PageHeaderLayout>
           </div>
         </Content>
+        <Drawer
+          title={`水表 ${this.state.number} 详情`}
+          placement="right"
+          destroyOnClose
+          onClose={() => {
+            this.setState({
+              meterModal: false,
+              id: '',
+            });
+          }}
 
+          width={700}
+          visible={this.state.meterModal}
+        >
+          <Detail id={this.state.id}></Detail>
+        </Drawer>
       </Layout>
     );
   }

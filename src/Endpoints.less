@@ -1093,6 +1093,57 @@
   .react-grid-Row--odd .react-grid-Cell{
     background-color: #f9f9fe;
   }
+
+  .ant-modal-header{
+    background: #2f54eb !important;
+    padding: 12px 24px !important;
+    .ant-modal-title{
+      color: #fff !important;
+    }
+  }
+  .ant-drawer-header{
+    background: #0082f4 !important;
+
+    .ant-drawer-title{
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+
+  }
+  .ant-descriptions-bordered .ant-descriptions-item-label, .ant-descriptions-bordered .ant-descriptions-item-content{
+    padding: 8px 16px !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .ant-descriptions-item-label{
+    color: #000 !important;
+  }
+
+  .ant-descriptions-item-content{
+    color: #000 !important;
+    font-weight: bold;
+  }
+  .meter-background{
+    width: 400px;
+    height: 288px;
+    overflow: hidden;
+    background: url("./images/waterModel.png")  no-repeat center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .meter-value{
+      position: relative;
+      top: -3px;
+      font-size: 36px;
+      left: -4px;
+      font-family: DIGIT;
+      span{
+        margin-right: 4px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: @screen-lg) {

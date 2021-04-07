@@ -1,7 +1,8 @@
 import moment from 'moment';
+import {Fragment}  from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-import {message, Badge, Tooltip,Progress,notification} from 'antd'
+import {message, Badge, Tooltip,Progress,notification,Icon} from 'antd'
 import uuid from 'uuid/v4'
 import messageJson from './message.json';
 export function fixedZero(val) {
@@ -14,6 +15,31 @@ export function getMonth(val) {
   const month = date.getMonth() + 1;
 
   return `${year}-${fixedZero(month)}`
+}
+export function renderValveOpen(val,valve_status_explain){
+  let type = '';
+  let color = '';
+  let text = '';
+  switch (val) {
+    case -1:
+      type = 'close-circle', color = '#eb2f96', text = '关';
+      return <p className={'table-error table-status'}>关闭</p>;
+      break;
+    case 1:
+      type = 'check-circle', color = '#52c41a', text = '开';
+      return <p className={'table-success table-status'}>开启</p>;
+      break;
+    case 2:
+      type = 'close-circle', color = '#fe5810', text = '未上报';
+      break;
+    case 3:
+      type = 'close-circle', color = '#fe1b2e', text = '异常';
+      break;
+    default:
+      type = 'close-circle', color = '#eb2f96', text = '异常';
+      break;
+  }
+  return <Fragment> <Icon type={type} theme="twoTone" className="table-icon" twoToneColor={color}/>{text}</Fragment>;
 }
 
 export function getTimeDistance(type) {

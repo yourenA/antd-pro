@@ -30,6 +30,7 @@
     "cross-env": "^5.1.1",
     "dva": "^2.0.3",
     "echarts": "^3.8.5",
+    "echarts-for-react": "^3.0.1",
     "ejs": "^2.5.7",
     "fusioncharts": "^3.15.1-sr.1",
     "g-cloud": "^1.0.2-beta",

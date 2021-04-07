@@ -108,7 +108,7 @@ const zh_CN = {
   'intl.export_type':'导出类型',//导出类型
   'intl.correct_data':'正确数据',//正确数据
   'intl.member_count':'用户数量',//用户数量
-  'intl.water_intake':'进水量',//进水量
+  'intl.water_intake':'进水量(手工输入)',//进水量
   'intl.attrition_rate':'漏损率',//漏损率
   'intl.calculated_loss_rate':'计算漏损率',//计算漏损率
   'intl.export_water_meter_readings':'导出水表读数',//导出水表读数
