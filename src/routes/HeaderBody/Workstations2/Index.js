@@ -312,7 +312,6 @@ class MeterModel extends PureComponent {
         title: '蝶阀开度返回值', width: 120, dataIndex: 'da0', key: 'da0', render: (text, record, index) => {
           return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0].parameters)?
             ((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100)>100?100+'%':((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)+'%':''
-          // return record.hardware_configs.modbus[0].da0?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
         }
       },
       {
@@ -353,8 +352,8 @@ class MeterModel extends PureComponent {
 
       {
         title: '是否报警',
-        dataIndex: '是否报警',
-        key: '是否报警',
+        dataIndex: 'alarm',
+        key: 'alarm',
         render: (val, record, index) => (
           <p>
             <Badge status={val === 1 ? "error" : "success"}/>{val === 1 ? "报警" : "正常"}
