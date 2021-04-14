@@ -223,6 +223,9 @@ const Workstations= asyncComponent(() =>
 const Workstations2= asyncComponent(() =>
   import(/* webpackChunkName: "Workstations2" */ "./../routes/HeaderBody/Workstations2/Index")
 )
+const M1v1= asyncComponent(() =>
+  import(/* webpackChunkName: "Workstations2" */ "./../routes/HeaderBody/m1v1/Index")
+)
 const MeterSummaryConsumption= asyncComponent(() =>
   import(/* webpackChunkName: "Workstations2" */ "./../routes/HeaderBody/MeterSummaryConsumption/Index")
 )
@@ -388,7 +391,7 @@ const data = [{
           path: 'relations_analysis',
           component: RelationsAnalysis,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
+          showCompany: ['amwares','hngydx','whlgdx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
         },{
           name: 'meter_summary_consumption',
           path: 'meter_summary_consumption',
@@ -415,13 +418,13 @@ const data = [{
           path: 'hngydx_map',
           component: GYDXMaps,
           permissions: ['concentrator_maps',],
-          showCompany: ['hngydx','amwares']
+          showCompany: ['hngydx','whlgdx','amwares']
         },
         {
           name: 'mys_big_meter_analysis',
           path: 'mys_big_meter_analysis',
           component: MYSBigMeterAnalysis,
-          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','sz','nxzw','jgs']
+          showCompany: ['mys','gxcz','amwares','zhsgy','hngydx','whlgdx','sz','nxzw','jgs']
         },
 
         // {
@@ -462,7 +465,7 @@ const data = [{
           path: 'pressure_analysis',
           component: PressureAnalysis,
           permissions: ['pressure_sensor_historical_data'],
-          showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','lqsrmyy','sz']
+          showCompany: ['zhsgy','amwares','mys','gxcz','test','hngydx','whlgdx','lqsrmyy','sz']
         },
 
         {
@@ -470,7 +473,7 @@ const data = [{
           path: 'liquid_valve_analysis',
           component: LiquidValveAnalysis,
           permissions: ['company_visit',],
-          showCompany: ['mys','gxcz','test','amwares','hngydx','sz','lqsrmyy']
+          showCompany: ['mys','gxcz','test','amwares','hngydx','whlgdx','sz','lqsrmyy']
         },
         {
           name: 'yk0802da_history',
@@ -588,35 +591,35 @@ const data = [{
         //   path: 'reduce_pressure_manage',
         //   component: ReducePressure,
         //   permissions: [ 'meter_model_delete', 'meter_model_add_and_edit'],
-        //   showCompany: ['amwares','hngydx','test','zhsgy']
+        //   showCompany: ['amwares','hngydx','whlgdx','test','zhsgy']
         // },
         {
           name: 'meter_relations',
           path: 'relations',
           component: Relations,
           permissions: ['attrition_rate_analysis'],
-          showCompany: ['amwares','hngydx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
+          showCompany: ['amwares','hngydx','whlgdx','test','lqsrmyy','zhsgy','nxzw','nxzwyz','sz']
         },
         {
           name: 'pressure_sensors_manage',
           path: 'pressure_sensors',
           component: Pressure,
           permissions: [ 'pressure_sensor_add_and_edit', 'pressure_sensor_delete'],
-          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx','lqsrmyy','sz']
+          showCompany: ['zhsgy','amwares','mys','gxcz','zhsgy','test','hngydx','whlgdx','lqsrmyy','sz']
         },
         {
           name: 'liquid_sensors_manage',
           path: 'liquid_sensors_manage',
           component: LiquidSensors,
           permissions: [ 'liquid_sensor_add_and_edit','liquid_sensor_delete'],
-          showCompany: ['mys','gxcz','test','amwares','hngydx','sz','lqsrmyy']
+          showCompany: ['mys','gxcz','test','amwares','hngydx','whlgdx','sz','lqsrmyy']
         },
         {
           name: 'valve_sensors_manage',
           path: 'valve_sensors_manage',
           component: ValveSensors,
           permissions: [ 'valve_sensor_add_and_edit','valve_sensor_delete'],
-          showCompany: ['mys','gxcz','test','amwares','hngydx','sz','lqsrmyy']
+          showCompany: ['mys','gxcz','test','amwares','hngydx','whlgdx','sz','lqsrmyy']
         },
         {
           name: 'monitor_meter_manage',
@@ -657,12 +660,17 @@ const data = [{
           name: 'workstations',
           path: 'workstations',
           component: Workstations,
-          showCompany: ['zhsgy','amwares','test','hngydx']
+          showCompany: ['zhsgy','amwares','test','hngydx','whlgdx']
         }, {
           name: 'yk0802da',
           path: 'yk0802da',
           component: Workstations2,
           showCompany: ['zhsgy','amwares','test','mys']
+        },{
+          name: 'm1v1',
+          path: 'm1v1',
+          component: M1v1,
+          showCompany: ['zhsgy','amwares','test','gxcz']
         },
         //   {
         //   name: '指令和状态查看',

@@ -20,7 +20,7 @@ class AddPoliciesForm extends Component {
     const formItemLayoutWithLabel = {
       labelCol: {
         xs: {span: 24},
-        sm: {span: 8},
+        sm: {span: 10},
       },
       wrapperCol: {
         xs: {span: 24},
@@ -81,12 +81,27 @@ class AddPoliciesForm extends Component {
             {...formItemLayoutWithLabel}
             label={(
               <span>
-             modbus数据上传间隔(秒)
+             modbus#1数据上传间隔(秒)
             </span>
             )}
           >
             {getFieldDecorator('upload_interval', {
               initialValue: this.props.editRecord ? this.props.editRecord.hardware_configs.modbus[0].upload_interval : '600',
+              rules: [{required: true, message:'数据上传间隔必填' }],
+            })(
+              <InputNumber style={{width:'100%'}} />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayoutWithLabel}
+            label={(
+              <span>
+             modbus#2数据上传间隔(秒)
+            </span>
+            )}
+          >
+            {getFieldDecorator('upload_interval2', {
+              initialValue: this.props.editRecord ? this.props.editRecord.hardware_configs.modbus[1].upload_interval : '600',
               rules: [{required: true, message:'数据上传间隔必填' }],
             })(
               <InputNumber style={{width:'100%'}} />

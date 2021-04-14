@@ -74,9 +74,6 @@ class EditPassword extends Component {
       method: 'GET',
       query: {}
     }).then((response) => {
-      console.log(response);
-      this.changeTableY();
-      const company_code = sessionStorage.getItem('company_code');
       that.setState({
         consumption_abnormality_alarm_level: find(response.data.data, function (o) {
           return o.name === 'consumption_abnormality_alarm_level'
@@ -153,7 +150,6 @@ class EditPassword extends Component {
     }
     if (formValues.value === undefined) {
       message.error(`${formatMessage({id: 'intl.judgment_value'})}${formatMessage({id: 'intl.can_not_be_empty'})}`)
-
       return false
     }
 

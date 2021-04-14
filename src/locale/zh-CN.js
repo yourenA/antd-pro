@@ -64,6 +64,7 @@ const zh_CN = {
   'intl.flow_meters_manage':'流量计管理',//流量计管理
   'intl.workstations':'减压阀工作站管理',//工作站管理
   'intl.yk0802da':'220V电动蝶阀管理',//工作站管理
+  'intl.m1v1':'M1V1阀门管理',//工作站管理
   'intl.yk0802da_history':'220V电动蝶阀分析',//工作站管理
   'intl.system':'系统管理',//系统管理
   'intl.system_setting':'系统设置',//系统设置

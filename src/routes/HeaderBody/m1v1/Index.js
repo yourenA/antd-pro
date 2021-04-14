@@ -12,11 +12,11 @@ import {renderIndex, ellipsis2} from './../../../utils/utils'
 import ResizeableTable from './../../../components/ResizeableTitle/Index'
 import debounce from 'lodash/throttle'
 import {injectIntl} from 'react-intl';
-import History from './RTU03.js'
+import History from './../Workstations2/RTU03.js'
 const {Content} = Layout;
 
 @connect(state => ({
-  workstations2: state.workstations2,
+  m1v1: state.m1v1,
   manufacturers: state.manufacturers,
 }))
 @injectIntl
@@ -47,7 +47,7 @@ class MeterModel extends PureComponent {
     const {dispatch} = this.props;
     const that = this;
     dispatch({
-      type: 'workstations2/fetch',
+      type: 'm1v1/fetch',
       payload: {
         page: 1,
       },
@@ -74,7 +74,7 @@ class MeterModel extends PureComponent {
     const that = this;
     if (scrollTop + offsetHeight > scrollHeight - 300) {
       if (this.state.canLoadByScroll) {
-        const {workstations2: {meta}} = this.props;
+        const {m1v1: {meta}} = this.props;
         if (this.state.page < meta.pagination.total_pages) {
           this.setState({
             canLoadByScroll: false,
@@ -113,7 +113,7 @@ class MeterModel extends PureComponent {
     const that = this;
     const {dispatch} = this.props;
     dispatch({
-      type: fetchAndPush ? 'workstations2/fetchAndPush' : 'workstations2/fetch',
+      type: fetchAndPush ? 'm1v1/fetchAndPush' : 'm1v1/fetch',
       payload: {
         ...values,
       },
@@ -153,23 +153,28 @@ class MeterModel extends PureComponent {
       digital_output: [{enable: 0}, {enable: 0}],
       modbus: [{enable: 1,
         type:'Modbus008',
-        slave_address:1,
+        slave_address:0,
         upload_interval:Number(formValues.upload_interval),
-        alias:'YK0802DA',
+        alias:'modbus#1',
         da0:4,
         da1:4,
-      }, {enable: 0}, {enable: 0}, {enable: 0}],
+      },{enable: 1,
+        type:'Modbus009',
+        slave_address:1,
+        upload_interval:Number(formValues.upload_interval2),
+        alias:'modbus#2',
+      }, {enable: 0}, {enable: 0}],
       control_valve: [{enable: 0}, {enable: 0}],
       flowmeter: [{enable: 0}, {enable: 0}],
       ball_valve: [{enable: 0}, {enable: 0}]
     }
     this.props.dispatch({
-      type: 'workstations2/add',
+      type: 'm1v1/add',
       payload: {
         name: formValues.name,
         imei: formValues.imei,
         address: formValues.address,
-        template: 51300401,
+        template: 51300402,
         hardware_configs,
         latitude: 0,
         longitude: 0,
@@ -202,18 +207,22 @@ class MeterModel extends PureComponent {
         ...this.state.editRecord.hardware_configs.modbus[0],
         upload_interval:formValues.upload_interval,
 
-      }, {enable: 0}, {enable: 0}, {enable: 0}],
+      }, {
+        ...this.state.editRecord.hardware_configs.modbus[1],
+        upload_interval:formValues.upload_interval2,
+
+      }, {enable: 0}, {enable: 0}],
       control_valve: [{enable: 0}, {enable: 0}],
       flowmeter: [{enable: 0}, {enable: 0}],
       ball_valve: [{enable: 0}, {enable: 0}]
     }
     this.props.dispatch({
-      type: 'workstations2/edit',
+      type: 'm1v1/edit',
       payload: {
         name: formValues.name,
         imei: formValues.imei,
         address: formValues.address,
-        template: 51300401,
+        template: 51300402,
         hardware_configs,
         type: 1,
         latitude: 0,
@@ -238,25 +247,16 @@ class MeterModel extends PureComponent {
     console.log('formValues', formValues)
     console.log(this.state.editRecord.hardware_configs  )
     const that = this;
-    let hardware_configs = {
-      ...this.state.editRecord.hardware_configs,
-      modbus: [{
-        ...this.state.editRecord.hardware_configs.modbus[0],
-        da0:formValues.da0?(16*(formValues.da0/100)+4).toFixed(2):'',
-        da1:formValues.da1?(16*(formValues.da1/100)+4).toFixed(2):''
-      }, {enable: 0}, {enable: 0}, {enable: 0}],
-    }
-    console.log('hardware_configs',hardware_configs)
     this.props.dispatch({
-      type: 'workstations2/addTask',
+      type: 'm1v1/addTask',
       payload: {
         id:this.state.editRecord.id,
-        da0:formValues.da0!==''?16*(formValues.da0/100)+4:'',
+        da0:formValues.da0!==''?formValues.da0:'',
         da1:4,
         channel:0
       },
       callback:function () {
-        message.success('修改开度成功')
+        message.success('修改阀门状态成功')
         that.setState({
           taskModal: false,
         });
@@ -270,7 +270,7 @@ class MeterModel extends PureComponent {
   handleRemove = (id) => {
     const that = this;
     this.props.dispatch({
-      type: 'workstations2/remove',
+      type: 'm1v1/remove',
       payload: {
         id: id,
       },
@@ -290,7 +290,7 @@ class MeterModel extends PureComponent {
 
   render() {
     const {intl: {formatMessage}} = this.props;
-    const {workstations2: {data, meta, loading}, manufacturers} = this.props;
+    const {m1v1: {data, meta, loading}, manufacturers} = this.props;
     const columns = [
       // {
       //   title: '序号',
@@ -304,11 +304,10 @@ class MeterModel extends PureComponent {
       //   }
       // },
       {
-        title: '名称', width: 250, dataIndex: 'name', key: 'name', render: (text, record, index) => {
-          return ellipsis2(text, 250)
+        title: '名称', width: 200, dataIndex: 'name', key: 'name', render: (text, record, index) => {
+          return ellipsis2(text, 200)
         }
       },
-
       {
         title: '在线状态',
         width: 100,
@@ -322,14 +321,27 @@ class MeterModel extends PureComponent {
         )
       },
       {
-        title: '蝶阀开度返回值', width: 120, dataIndex: 'da0', key: 'da0', render: (text, record, index) => {
+        title: '阀门返回状态', width: 110, dataIndex: 'da00', key: 'da00', render: (text, record, index) => {
           return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[0].parameters)?
-            ((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100)>100?100+'%':((Number(record.workstation_data.modbus[0].parameters.ain0)-4)/16*100).toFixed(2)+'%':''
+            ((Number(record.workstation_data.modbus[0].parameters.ain0)-4))>12?
+              '开':'关':''
         }
       },
       {
-        title: '蝶阀开度设置值', width: 120, dataIndex: 'da1', key: 'da1', render: (text, record, index) => {
-          return record.hardware_configs.modbus[0].da1?((record.hardware_configs.modbus[0].da0-4)/16*100).toFixed(2) +'%':''
+        title: '阀门设置状态', width: 110, dataIndex: 'da01', key: 'da01', render: (text, record, index) => {
+          return record.hardware_configs.modbus[0].da1?((record.hardware_configs.modbus[0].da0-4))>12?'开':'关':''
+        }
+      },
+      {
+        title: '瞬时流量', width: 110, dataIndex: 'da10', key: 'da10', render: (text, record, index) => {
+          return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[1].parameters)?
+            record.workstation_data.modbus[1].parameters.instantaneous_flow:''
+        }
+      },
+      {
+        title: '正累计流量', width: 110, dataIndex: 'da11', key: 'da11', render: (text, record, index) => {
+          return  (record.workstation_data.modbus&&record.workstation_data.modbus.length>0&&record.workstation_data.modbus[1].parameters)?
+            record.workstation_data.modbus[1].parameters.cumulative_flow:''
         }
       },
       {
@@ -350,7 +362,6 @@ class MeterModel extends PureComponent {
         }
       },
 
-
       {
         title: '是否报警',
         dataIndex: 'alarm',
@@ -366,7 +377,7 @@ class MeterModel extends PureComponent {
     const company_code = sessionStorage.getItem('company_code');
     const operate = {
       title: formatMessage({id: 'intl.operate'}),
-      width: 220,
+      width: 260,
       fixed: 'right',
       render: (val, record, index) => (
         <p>
@@ -376,12 +387,11 @@ class MeterModel extends PureComponent {
                this.setState(
                  {
                    editRecord: record,
-                   da0:record.hardware_configs.modbus[0].da0?(record.hardware_configs.modbus[0].da0-4)/16*100:0,
-                   da1:record.hardware_configs.modbus[0].da1?(record.hardware_configs.modbus[0].da1-4)/16*100:0,
+                   da0:record.hardware_configs.modbus[0].da0,
                    taskModal: true
                  }
                )
-             }}>修改开度</a>
+             }}>修改阀门状态</a>
             <span className="ant-divider"/>
             </span>
           <span>
@@ -426,7 +436,7 @@ class MeterModel extends PureComponent {
         <Content>
           <div className="content">
             <PageHeaderLayout title="系统管理 " breadcrumb={[{name: formatMessage({id: 'intl.device'})},
-              {name: formatMessage({id: 'intl.yk0802da'})}]}>
+              {name: formatMessage({id: 'intl.m1v1'})}]}>
               <Card bordered={false} style={{margin: '-16px -16px 0'}}>
                 <div className='tableList'>
                   <div className='tableListForm'>
@@ -441,7 +451,7 @@ class MeterModel extends PureComponent {
                 </div>
                 <ResizeableTable loading={loading} meta={meta} initPage={this.state.initPage}
                                  dataSource={data} columns={columns} rowKey={record => record.id}
-                                 scroll={{x: 1500, y: this.state.tableY}}
+                                 scroll={{x: 1800, y: this.state.tableY}}
                                  history={this.props.history}
                                  operate={operate}
                                  canOperate={this.state.canOperate}
@@ -473,12 +483,12 @@ class MeterModel extends PureComponent {
           <Modal
             width={500}
             destroyOnClose={true}
-            title={`修改 ${this.state.editRecord.name} 开度`}
+            title={`修改 ${this.state.editRecord.name} 阀门状态`}
             visible={this.state.taskModal}
             onCancel={() => this.setState({taskModal: false})}
             onOk={this.handleEditDA}
           >
-            <AddTask da0={this.state.da0} da1={this.state.da1} editRecord={this.state.editRecord}
+            <AddTask da0={this.state.da0} editRecord={this.state.editRecord}
                       wrappedComponentRef={(inst)=> this.editDAFormRef = inst}/>
           </Modal>
           <Modal
